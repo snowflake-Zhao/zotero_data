@@ -1,0 +1,1722 @@
+Counterfactual Prediction for Outcome-Oriented Treatments
+
+Hao Zou 1 Bo Li 2 Jiangang Han 3 Shuiping Chen 3 Xuetao Ding 3 Peng Cui 1
+
+Abstract
+Large amounts of efforts have been devoted into learning counterfactual treatment outcome under various settings, including binary/continuous/multiple treatments. Most of these literature aims to minimize the estimation error of counterfactual outcome for the whole treatment space. However, in most scenarios when the counterfactual prediction model is utilized to assist decision-making, people are only concerned with the small fraction of treatments that can potentially induce superior outcome (i.e. outcomeoriented treatments). This gap of objective is even more severe when the number of possible treatments is large, for example under the continuous treatment setting. To overcome it, we establish a new objective of optimizing counterfactual prediction on outcome-oriented treatments, propose a novel Outcome-Oriented Sample Re-weighting (OOSR) method to make the predictive model concentrate more on outcome-oriented treatments, and theoretically analyze that our method can improve treatment selection towards the optimal one. Extensive experimental results on both synthetic datasets and semi-synthetic datasets demonstrate the effectiveness of our method.
+1. Introduction
+In many fields, such as healthcare (Bica et al., 2020b;a) and marketing (Charles et al., 2013; Xu et al., 2022), it is beneficial for decision-makers to accurately forecast individual outcome given different treatments. The randomized control trials (RCT) (Booth & Tannock, 2014), which is the
+1Department of Computer Science and Technology, Tsinghua University, Beijing, China; email:zouh18@mails.tsinghua.edu.cn, cuip@tsinghua.edu.cn 2School of Economics and Management, Tsinghua University, Beijing, China; email: libo@sem.tsinghua.edu.cn 3Meituan, Beijing, China; {hanjiangang,chenshuiping,dingxuetao}@meituan.com. Correspondence to: Peng Cui <cuip@tsinghua.edu.cn>.
+Proceedings of the 39 th International Conference on Machine Learning, Baltimore, Maryland, USA, PMLR 162, 2022. Copyright 2022 by the author(s).
+
+Outcome
+
+0.2 0.0 0.2 0.4 0.6 0.8 1.0 1.2 1.4
+0.0
+
+True outcome
+
+Estimated outcome 1
+
+Estimated outcome 2
+
+t2 t* t1
+
+0.2
+
+0T.4reatme0n.6t
+
+0.8
+
+1.0
+
+Figure 1. An example plot of two estimated outcome curves (red
+and blue dashed lines) and the ground truth (green solid line) for one fixed sample. The treatment value t1, t2 represent the
+pseudo-optimal treatment of the estimated outcome curve 1 and 2 respectively, and t∗ represents the true-optimal treatment.
+
+golden standard to answer this question in causal inference, is expensive in time/resource (Kohavi & Longbotham, 2011) and even can be impossible (Charles et al., 2013; Kuang et al., 2017). Fortunately, the accumulation of observational data offers an opportunity to learn individual outcome of counterfactual treatments from the observational study.
+An important challenge in counterfactual prediction is the selection bias from confounding (Hassanpour & Greiner, 2019; Assaad et al., 2021) which indicates that the treatments are assigned not randomly, but with some explicit/implicit assignment policy manifested as correlations with some other covariates called confounders. Therefore, vanilla machine learning methods may suffer from systematic bias when predicting the outcome for the treatments assigned with a different assignment policy from the one in the training dataset. A large amount of literature in causal inference field has attempted to resolve this problem. Some literature (Johansson et al., 2016; Shalit et al., 2017; Bica et al., 2020a; Yao et al., 2018) introduces the idea of treatment invariant representation learning borrowed from domain adaptation field (Ganin & Lempitsky, 2015; Bousmalis et al., 2016). As an alternative method, sample re-weighting method (Hassanpour & Greiner, 2020; Assaad et al., 2021; Lim et al., 2018) adjusts the joint distribution of treatments and confounders to make them independent. In addition, some approaches (Yoon et al., 2018; Bica et al., 2020b; Qian et al., 2021) model the data distribution to impute the
+
+Counterfactual Prediction for Outcome-Oriented Treatments
+
+counterfactual outcome and augment the biased dataset. Although targeting various settings (e.g. different types of treatments, static or longitudinal data), the main target of these works is to minimize the estimation error of counterfactual outcome over the whole treatment space (Yoon et al., 2018; Bica et al., 2020b; Schwab et al., 2020).
+In many application scenarios, however, when the researchers utilize the counterfactual prediction model to assist decision-making, they are only concerned with the treatments that can potentially induce better outcome (i.e. outcome-oriented treatments). It has also been acknowledged for long in the management science literature that better overall outcome predictions on all treatments may not result in better decisions (den Boer & Sierag, 2021; Besbes & Zeevi, 2015; Ferna´ndez-Lor´ıa & Provost, 2022). In these circumstances, the focus of counterfactual prediction models can be put more on minimizing the estimation error of counterfactual outcome over the outcome-oriented treatments (rather than solely the whole treatment space as in previous methods). But in real cases, we can hardly attain the true outcome of a counterfactual treatment to judge whether it is an outcome-oriented treatment. To remedy this, here we focus on the setting of continuous treatments, and assume a smooth outcome curve over treatments. In this way, we can reasonably use the optimal treatment derived from the counterfactual prediction model as a pseudo-optimal treatment, and regard the treatments around the pseudo-optimal treatment as outcome-oriented treatments.
+We present a motivating example in Figure 1 (den Boer & Sierag, 2021). The figure presents the true outcome curve and two estimated curves for a continuous treatment. We can observe that curve 1 achieves smaller predictive error on the entire treatment space, while curve 2 reports smaller errors on the outcome-oriented treatments. It is obvious that the pseudo-optimal treatment t2 of curve 2 is closer to the true optimal treatment t∗ than that of curve 1 t1, and the true outcome of t2 is better than t1.
+Theoretical analysis can also reveal that the treatment selection performance of model, which is characterized as the average outcome gap between true-optimal treatment and pseudo-optimal treatment over the population, is connected to the predictive error on small fraction of treatments instead of average error over the whole treatment space.
+Inspired by the motivation and theoretical analysis above, for making counterfactual learning more favorable to treatment selection, we propose Outcome-Oriented Sample Reweighting (OOSR) algorithm. Specifically, it iteratively identifies the outcome-oriented treatments based on the current model and strengthen the outcome prediction on them, while ensuring the prediction over the whole treatment space.
+
+Contribution Starting from improving treatment selection of counterfactual prediction model, we briefly define treatment selection regret (Ferna´ndez-Lor´ıa & Provost, 2022) as the performance metric and theoretically analyze that this optimization target is highly related to the outcome prediction error on the true/pseudo-optimal treatments instead of the average prediction error over the whole treatment space. To enhance the treatment selection performance, we derive a computationally tractable approximation of the regret bound as the objective function and give an easy-to-implement algorithm to minimize it. Specifically, we borrow the idea of sample re-weighting to simultaneously remove the original correlation between treatments and confounders in dataset and make the counterfactual learning concentrated on the outcome-oriented treatments. Extensive experimental results on both synthetic datasets and semi-synthetic datasets report that our method outperforms the existing methods in achieving smaller treatment selection regret.
+2. Related Works
+The related works consist of three parts, which are respectively counterfactual prediction, offline policy learning, and targeted maximum likelihood learning.
+2.1. Counterfactual Prediction
+A large amount of previous literature about counterfactual prediction focuses on the setting without unobserved confounders. The main idea of them is to remove the correlation between treatments and confounders in the observational dataset and achieve precise counterfactual outcome prediction on arbitrary treatments.
+To realize this target, some works (Johansson et al., 2016; Shalit et al., 2017; Tanimoto et al., 2021; Bica et al., 2020a) characterize the undesired correlation as the distribution imbalance of confounders between the different treatment populations. Then it introduces the idea from domain invariant learning (Tzeng et al., 2014; Ganin & Lempitsky, 2015; Zhang et al., 2021) to learn the treatment invariant transformation of confounders, which is of the balanced distribution across treatment populations, and predict the outcome based on the transformed representation and treatment variable.
+Besides the treatment invariant representation learning, sample re-weighting is an alternative method. Assaad et al. (2021) claims that over-enforcing the balancing property of representation may harm the predictive power while sample re-weighting schema can avoid it. Hence, some works (Hassanpour & Greiner, 2019; 2020; Johansson et al., 2018) calculate the sample weights based on the trained propensity score model or directly learn the weights by distribution balance.
+Yoon et al. (2018) propose to train an auxiliary model to
+
+Counterfactual Prediction for Outcome-Oriented Treatments
+
+model the data distribution and generate the counterfactual data points. By augmenting the observational dataset with these counterfactual data points, the selection bias can be removed. There is also some literature (Alaa & van der Schaar, 2018; 2017; Zhang et al., 2020) which introduces gaussian process to model the data distribution and minimize the variance of counterfactual outcome prediction.
+To deal with more complex treatments (e.g. continuous treatments, multiple treatments), some literature extends the strategies above. Arbour et al. (2021); Zou et al. (2020) applies density ratio estimation (Qin, 1998; Bickel et al., 2007; Sugiyama et al., 2012) between the original data distribution and designed target distribution to calculate sample weights. Tanimoto et al. (2021) propose to learn representation of both treatments and confounders which are independent. Bica et al. (2020b); Qian et al. (2021) propose the data augmentation methods for continuous treatment and multiple treatments.
+As presented above, a large amount of works achieve accurate counterfactual prediction over the whole treatment space. However, lower outcome prediction error over the whole treatment space does not exactly mean better decisionmaking (Ferna´ndez-Lor´ıa & Provost, 2022). Tanimoto et al. (2021) also realize this gap and propose a regularizer to resolve the problem. However, the model is mainly designed for multi-dimensional binary treatment setting and the proposed regularizer aims for reducing the classification loss of whether the treatment outcome is larger than the average outcome. It can only help identify relatively good treatments (i.e. treatments with outcomes superior to a baseline value). In this work, we focus on the continuous treatment setting where the number of treatments is infinite and target the best treatment selection.
+
+to balance the joint distribution of confounders and treatments between behavior policy and target policy to calculate the re-weighted outcome as utility. When the propensity score is unknown, the weights can be estimated by density ratio estimation (Sondhi et al., 2020) or directly balancing the distribution (Kallus, 2018). Some literature (Wang et al., 2017; Thomas & Brunskill, 2016; Dud´ık et al., 2011; Su et al., 2019) further combines the above two strategies to take both the advantages of them to obtain more accurate evaluation. To the best of our knowledge, this branch of literature mainly focuses on the finite sample property of estimators, such as the trade-off of bias and variance for precise evaluation. However, less attention has been paid to building counterfactual prediction model based on the rapidly developing machine learning for directly selecting treatments to minimize regret and bypass offline policy evaluation. Although Wang et al. (2019) also involves learning predictive model with sample re-weighting for policy learning, it only targets to minimize the evaluation error of the utility of the policy while neglecting the relationship between regret (i.e. the final goal of treatment selection) and the learned model.
+2.3. Targeted Maximum Likelihood Learning
+Our idea is potentially related to targeted maximum likelihood learning (TMLE) (Van Der Laan & Rubin, 2006), which is a framework in semi-parametric inference family. It proposes to learn an empirical density estimator which minimizes the estimation error of a target estimand. Although its application on some specific estimands (e.g. average treatment effect (ATE) estimation) is well-developed, making TMLE framework applicable to the problem in this paper is still worthy of study to the best of our knowledge.
+
+2.2. Offline Policy Learning
+The paradigm of offline policy learning methods is typically defining a class of policy functions, which take confounders as input and output the treatment (distribution), and select the policy with the optimal estimated utility.
+The class of policy function is usually defined as a parameterized model, for example, linear models (Swaminathan & Joachims, 2015a) and deep neural networks (Joachims et al., 2018). The objective function for optimizing the parameters is the utility estimated by offline policy evaluation methods. There have been many estimators proposed in the previous literature for accurate policy evaluation. The direct methods (Wang et al., 2019) learn an outcome predictive model from datasets and use the predicted result to estimate the utility. The sample re-weighting based methods, such as inverse propensity score (IPS) estimator (Swaminathan & Joachims, 2015a; Zhao et al., 2012), self-normalized estimator (Swaminathan & Joachims, 2015b; Joachims et al., 2018), attempt
+
+3. Notations and Problem Formulation
+We define X ∈ X ⊆ Rd as the observed confounder variables, t ∈ T = [a, b] ⊆ R as continuous treatment assigned to each individual and y ∈ R as outcome determined by the confounders and treatment. Hence, the observational dataset can be denoted as {(xi, ti, yi)}1≤i≤n, which is independently sampled from the joint distribution p(X, t, y). The number n is the sample size.
+We follow the potential outcome framework (Rosenbaum & Rubin, 1983; Rubin, 1984) in causal inference and assume there exists potential outcome function YX(t) denoting the potential outcome when assigned treatment t for samples with confounder X. We aim to learn a model f : X × T → R that predicts potential outcome for the individual based on confounders and treatment. Since we can only observe the factual outcome yi corresponding to the treatment ti, we assume the following standard assumptions (Rosenbaum & Rubin, 1983) to make the model f identifiable:
+
+Counterfactual Prediction for Outcome-Oriented Treatments
+
+Assumption 3.1. Stable Unit Treatment Value The potential outcome of one sample is independent of the treatment assignments on the other samples.
+Assumption 3.2. Unconfoundedness The assigned treatments and potential outcomes are independent conditional on observed covariates. Formally, t ⊥ {YX(t′)|t′ ∈ T }|X.
+Assumption 3.3. Overlap For arbitrary X ∈ X that satisfies p(X) > 0, we have p(t|X) > 0 for each t ∈ T .
+
+To characterize the treatment selection performance of a model f , we briefly define the treatment selection regret metric borrowed from decision theory (Ferna´ndez-Lor´ıa & Provost, 2022) as following:
+
+Regret(f ) = EX YX(ρ∗(X)) − YX(ρf (X)) , (1)
+
+where ρ∗(·) and ρf (·) are respectively the true-optimal treatment function and the pseudo-optimal treatment function derived from predictive model f (X, t). Formally,
+
+ρ∗(X) = arg max YX(t),
+
+(2)
+
+t
+
+ρf (X) = arg max f (X, t).
+
+(3)
+
+t
+
+In this work, we assume larger outcome is preferred, for example, gross merchandise volume (GMV) in marketing. When smaller outcome is preferred in some applications, the regret metric, and the algorithm/analysis below can be obtained in a similar manner.
+
+4. OOSR: The Proposed Method
+In this section, we firstly analyze the treatment selection regret, that is the optimization target of this problem and give an upper bound of it. Then inspired by the analysis, we give a computationally tractable approximation of the bound as the loss function and our Outcome-Oriented Sample Reweighting (OOSR) method for training model. Finally, the detailed implementation of our algorithm is presented.
+4.1. Theoretical Analysis on the Regret
+We present that the treatment selection regret can be controlled by the outcome prediction error on two treatment points rather than the whole treatment space of each sample. The detailed relationship between the regret and predictive error is as following: Proposition 4.1. With the confounders X, treatments t, potential outcome function YX(t) defined as above, the treatment selection regret (i.e. Equation 1) of counterfactual prediction model f satisfies the following inequality:
+Regret(f ) ≤ EX[(YX(ρf (X)) − f (X, ρf (X)))2]
++ EX[(YX(ρ∗(X)) − f (X, ρ∗(X)))2] (4)
+
+The proof can be found in the appendix. From the result in Propostion 4.1, it can be concluded that if the outcome prediction error on the true optimal treatment ρ∗(X) and pseudo-optimal treatment ρf (X) are optimized to zero, we can achieve perfect treatment selection.
+The first term of the r.h.s in Equation 4 can be calculated by the inverse propensity weighting (IPW) (Swaminathan & Joachims, 2015a) estimator as following:
+
+EX[(YX(ρf (X)) − f (X, ρf (X)))2]
+
+=
+
+EX,t∼p(X,t)
+
+δρf (X)(t) p(t|X)
+
+(YX
+
+(t)
+
+−
+
+f
+
+(X,
+
+t))2
+
+,(5)
+
+where δρf (X)(t) is Dirac delta function. The empirical version of the estimator in Equation 5 can be written as
+
+1 n
+
+n i=1
+
+δρf (xi)(ti p(ti|xi)
+
+)
+
+(yi
+
+−
+
+f (xi, ti))2.
+
+(6)
+
+It is an unbiased estimator if the denominator p(ti|xi) is true value (Strehl et al., 2010). However, under the continuous treatment setting, the empirical result of Equation 6 can easily be 0 since p(ti = ρf (xi)) = 0 for each unit. To make the estimator more practical, we utilize the result in Kallus & Zhou (2018) and approximate Equation 6 as following:
+
+1nK n
+i=1
+
+(ρf (xi) − ti)/τ τ p(ti|xi)
+
+(yi − f (xi, ti))2,
+
+(7)
+
+where K(·) is the kernel function that smooth δρf (xi)(ti). There are several candidate functions for K(·), for example
+
+Epanechnikov kernel and Gaussian kernel. In this work, we
+
+choose K(u) = √1
+
+·
+
+e−
+
+u2 2
+
+.
+
+For
+
+the
+
+sake
+
+of
+
+conciseness,
+
+2π
+
+we denote the estimator in Equation 7 as A(f ).
+
+Remark 4.2. We can perceive the estimator A(f ) con-
+
+centrate on the outcome-oriented treatment region around ρf (xi) rather than the single point. The hyper-parameter τ control the strength of concentration. When τ approaches 0,
+
+Equation 7 degenerates to Equation 6.
+
+Remark 4.3. The approximation in Equation 7 relies on that the error curve (YX(t) − f (X, t))2 is smooth, which
+is also implied by previous literature (Kallus & Zhou, 2018;
+
+Hansen, 2009). When the outcome curve is non-smooth,
+
+the error curve will also be non-smooth and the estimation
+
+result of Equation 7 will suffer from large approximation
+
+error. It may bring damage to performance of our method.
+
+More detailed discuss can be found in appendix.
+
+The second term of the r.h.s in Equation 4 represents the outcome prediction error on the true-optimal treatment. Unlike ρf (X), ρ∗(X) is intractable and can be arbitrary value in T in general. Hence, in order to reduce the predictive error of
+
+Counterfactual Prediction for Outcome-Oriented Treatments
+
+YX(ρ∗(X)), we resort to minimizing the mean predictive error over the treatment space T , which is also the original optimization target of counterfactual prediction. Under some mild conditions, the predictive error of YX(ρ∗(X)) can be upper bounded by the mean predictive error over T plus a constant.
+Proposition 4.4. Given the treatment space T = [a, b], if we assume the predictive loss function G(X, t) = (YX(t) − f (X, t))2 is L-Lipschitz on t, then we have:
+
+EX (YX(ρ∗(X)) − f (X, ρ∗(X)))2
+
+1
+
+b
+
+b−a
+
+≤
+
+EX
+
+b−a
+
+G(X, t)dt
+t=a
+
++L·
+
+2
+
+G(X, t)
+
+b−a
+
+= EX,t∼p(X,t) (b − a)p(t|X) + L · 2
+
+≈ 1 n (yi − f (xi, ti))2 + L · b − a
+
+(8)
+
+n
+i=1
+
+(b − a)p(ti|xi)
+
+2
+
+We also denote the last estimator in Equation 8 as B(f )
+for conciseness. There is much research space in dealing
+with the second term of the r.h.s in Equation 4, for example reducing the scope of ρ∗(X) by some extra assumption and
+domain knowledge, or building the relationship between ρ∗(X) and ρf (X). We will leave it to future work.
+
+4.2. Objective Function
+
+With the assumptions and conclusions above, we can approximate the upper bound of treatment selection regret as A(f ) + B(f ). We attempt to reduce the regret by training counterfactual prediction model f to minimize the approximated upper bound.
+
+For the stability of training process, we adopt to minimize the weighted combination γA(f ) + B(f ).
+
+Proposition 4.5. Assuming the function is parameterized by
+
+θ, that is fθ, and the functions A(fθ) and B(fθ) are differentiable and strictly convex on θ, θ∗ is the global minimum
+
+point of A(fθ) + B(fθ), then there exists γ ∈ R+ such
+
+that
+
+θ∗ = arg min γA(fθ) + B(fθ)
+
+(9)
+
+θ
+
+Remark 4.6. The minimization objective γA(fθ) + B(fθ) demonstrate that our algorithm strengthen the outcome prediction on the outcome-oriented treatment region (i.e. the treatment region around ρf (X)), while simultaneously ensure the global predictive performance over the whole treatment space to some extent.
+
+Therefore, the final loss function to optimize is as following:
+
+1 min
+θn
+
+n
+
+1+λK((ρfθ (xi)−ti)/τ )
+(b−a)p(ti |xi )
+
+·
+
+(yi
+
+−
+
+fθ(xi, ti))2,
+
+(10)
+
+i=1
+
+where λ = (b − a)γ/τ . We set λ and τ to be the hyperparameters of our loss function for training model fθ.
+
+4.3. Implementation
+
+We successively introduce the components in our methods.
+
+Inverse Propensity Score Estimation The direct estimation of p(ti|xi) usually requires to assume the type of conditional distribution. For example, the conditional distribution p(ti|xi) can be assumed to be a gaussian distribution, formally p(ti|xi) = N (µ(xi), σ(xi)). However, the assumption may be incorrect in many applications.
+
+To reduce dependency on the assumption of p(ti|xi), we resort to density ratio estimation (Qin, 1998; Bickel et al.,
+
+2007; Sugiyama et al., 2012) by solving a binary classifi-
+
+cation problem. Specifically, we define a uniform target
+
+distribution pu(X, t) = p(X)pu(t|X), where pu(t|X) is a
+
+uniform distribution on T
+
+and equals
+
+1 b−a
+
+in this problem.
+
+Therefore, the inverse of propensity score becomes
+
+1
+
+(b − a)pu(t|X) (b − a)pu(X, t)
+
+=
+
+=
+
+. (11)
+
+p(t|X)
+
+p(t|X)
+
+p(X, t)
+
+To estimate the density ratio between p(X, t) and pu(X, t), we label the samples in observational dataset
+{(xi, ti)}1≤i≤n as positive samples (L = 1) and uniformly sample treatments t′i ∼ Unif(a, b) to generate samples {(xi, t′i)}1≤i≤n with negative label (L = 0). Then we can get the density ratio as following:
+
+pu(X, t) p(X, t|L = 0) p(L = 1) p(L = 0|X, t)
+
+=
+
+=
+
+·
+
+p(X, t) p(X, t|L = 1) p(L = 0) p(L = 1|X, t)
+
+With deep neural network based classifer trained on these
+
+data points, the term p(L|X, t) can be estimated by the out-
+
+put of classifer pˆ(L|X, t).
+
+Considering the ratio
+
+p(L=1) p(L=0)
+
+=
+
+1
+
+for all the samples, the inverse propensity score can be esti-
+
+mated by:
+
+1
+
+(b − a)pˆ(L = 0|X, t)
+
+=
+
+pˆ(t|X)
+
+pˆ(L = 1|X, t)
+
+Outcome-Oriented Re-weighting Since we do not have
+
+knowledge about ρfθ (X) initially, we can divide the the
+
+training process of model fθ into two stages. In the first
+
+stage, we train the model with sample weights wi(0) =
+
+1 (b−a)pˆ(ti |xi )
+
+which
+
+removes
+
+the
+
+correlation
+
+between
+
+treat-
+
+ments and confounders in data, and get the model fθ(0).
+
+In the second stage, we alternately update the sample
+weights and model parameters θ for m rounds. For the jth round, we calculate the sample weights w(j) based on the predictive model of the previous round fθ(j−1)
+
+wi(j)
+
+=
+
+1 + λK (ρfθ(j−1) (xj ) − tj )/τ (b − a)pˆ(tj|xj)
+
+Counterfactual Prediction for Outcome-Oriented Treatments
+
+Table 1. The experimental results on synthetic datasets with the sample size n varying. The metrics are Mean±STD over 10 repeated experiments. The best performance is marked bold.
+
+Linear setting: Fix the degree of selection bias α = 6.0, varying the sample size n
+
+n
+
+n = 4000
+
+n = 6000
+
+n = 8000
+
+n = 10000
+
+Methods
+
+Within-S.
+
+Out-of-S.
+
+Within-S.
+
+Out-of-S.
+
+Within-S.
+
+Out-of-S.
+
+Within-S.
+
+Out-of-S.
+
+MLP SCIGAN RMNet IPS-BanditNet
+BCRI MLP-Debias
+OOSR
+
+0.914±0.133 0.156±0.002 0.343±0.285 0.125±0.021 0.199±0.046 0.100±0.048 0.040±0.018
+
+0.929±0.131 0.166±0.002 0.347±0.290 0.130±0.022 0.204±0.047 0.107±0.051 0.043±0.020
+
+0.887±0.160 0.140±0.002 0.286±0.241 0.105±0.018 0.172±0.035 0.081±0.057 0.034±0.023
+
+0.895±0.160 0.146±0.003 0.287±0.244 0.109±0.019 0.175±0.035 0.083±0.058 0.046±0.024
+
+0.804±0.236 0.126±0.002 0.181±0.098 0.104±0.014 0.150±0.026 0.074±0.047 0.020±0.011
+
+0.811±0.239 0.132±0.002 0.178±0.096 0.108±0.015 0.154±0.027 0.073±0.047 0.037±0.011
+
+0.833±0.207 0.130±0.003 0.192±0.136 0.103±0.019 0.137±0.015 0.053±0.029 0.015±0.010
+
+0.849±0.208 0.136±0.002 0.193±0.137 0.107±0.020 0.139±0.014 0.055±0.030 0.016±0.010
+
+Exponential setting: Fix the degree of selection bias α = 5.0, varying the sample size n
+
+n
+
+n = 4000
+
+n = 6000
+
+n = 8000
+
+n = 10000
+
+Methods
+
+Within-S.
+
+Out-of-S.
+
+Within-S.
+
+Out-of-S.
+
+Within-S.
+
+Out-of-S.
+
+Within-S.
+
+Out-of-S.
+
+MLP SCIGAN RMNet IPS-BanditNet
+BCRI MLP-Debias
+OOSR
+
+0.699±0.190 0.210±0.132 0.320±0.307 0.066±0.011 0.145±0.039 0.221±0.092 0.053±0.035
+
+0.716±0.196 0.220±0.135 0.326±0.313 0.069±0.013 0.147±0.040 0.224±0.093 0.053±0.034
+
+0.829±0.109 0.219±0.137 0.325±0.231 0.047±0.010 0.144±0.041 0.171±0.060 0.068±0.020
+
+0.847±0.114 0.229±0.142 0.331±0.228 0.050±0.011 0.147±0.043 0.174±0.059 0.069±0.020
+
+0.769±0.156 0.279±0.101 0.233±0.170 0.060±0.026 0.115±0.015 0.250±0.101 0.085±0.061
+
+0.787±0.161 0.295±0.103 0.234±0.173 0.063±0.026 0.116±0.014 0.253±0.100 0.085±0.062
+
+0.754±0.157 0.114±0.063 0.092±0.054 0.103±0.102 0.129±0.018 0.264±0.099 0.099±0.077
+
+0.772±0.161 0.119±0.067 0.094±0.053 0.122±0.105 0.129±0.017 0.266±0.099 0.098±0.078
+
+Logit setting: Fix the degree of selection bias α = 5.0, varying the sample size n
+
+n
+
+n = 4000
+
+n = 6000
+
+n = 8000
+
+n = 10000
+
+Methods
+
+Within-S.
+
+Out-of-S.
+
+Within-S.
+
+Out-of-S.
+
+Within-S.
+
+Out-of-S.
+
+Within-S.
+
+Out-of-S.
+
+MLP SCIGAN RMNet IPS-BanditNet
+BCRI MLP-Debias
+OOSR
+
+0.639±0.020 0.279±0.119 0.211±0.057 0.075±0.002 0.114±0.015 0.148±0.059 0.041±0.021
+
+0.648±0.021 0.277±0.124 0.212±0.057 0.071±0.002 0.115±0.015 0.146±0.058 0.042±0.022
+
+0.626±0.035 0.297±0.130 0.151±0.125 0.060±0.003 0.106±0.012 0.114±0.051 0.025±0.004
+
+0.634±0.036 0.300±0.132 0.152±0.125 0.059±0.003 0.107±0.012 0.113±0.050 0.023±0.004
+
+0.628±0.034 0.236±0.069 0.162±0.144 0.060±0.010 0.104±0.011 0.120±0.040 0.022±0.006
+
+0.636±0.036 0.237±0.072 0.163±0.145 0.061±0.011 0.104±0.011 0.120±0.039 0.022±0.007
+
+0.609±0.047 0.212±0.038 0.110±0.066 0.054±0.008 0.088±0.010 0.112±0.045 0.050±0.034
+
+0.616±0.048 0.210±0.037 0.109±0.065 0.055±0.008 0.089±0.010 0.111±0.044 0.049±0.033
+
+and then update the parameters of model θ based on the sample weights w(j) for a number of iterations to obtain model fθ(j).
+Outcome Predictive Model With the sample weights w(j), the loss function at the jth round is as following:
+
+L(j) = 1 n
+
+n
+
+wi(j) · (fθ(j)(xi, ti) − yi)2.
+
+i=1
+
+Specifically, because of the potential nonlinear relationship between outcomes y and the combination of confounders X and treatment t, we apply deep neural networks with parameters θ as the predictive model fθ. The pseudo-code of the whole algorithm can be found in appendix.
+
+5. Empirical Results
+Due to the lack of the observation of counterfactual outcomes in real-world datasets, we evaluate our proposed method on both synthetic datasets and semi-synthetic
+
+datasets.
+5.1. Experimental Setup
+Baselines To demonstrate the advantage of our method, we compare it with the following approaches:
+• Standard multilayer perceptron (MLP): It directly trains a predictive model on the observational dataset. The model takes the concatenation of confounder vector X and treatment variable t as input and output the corresponding outcome.
+• MLP trained on debiased dataset (MLP-Debias): The sample weights are computed by density ratio estimation described above to remove the correlation between treatment and confounders in data. Then the predictive model is trained on the re-weighted dataset.
+• SCIGAN (Bica et al., 2020a): It use generative adversarial networks to impute the outcome of counterfactual treatment of the samples and augment the dataset.
+
+Regret Regret Regret
+
+Counterfactual Prediction for Outcome-Oriented Treatments
+
+1.0
+
+1.0
+
+MLP
+
+0.8
+
+SCIGAN RMNet IPS-BanditNet
+
+0.8
+
+BCRI
+
+0.7 0.6 0.5
+
+MLP-Debias
+
+0.6
+
+OOSR
+
+0.6
+
+0.4
+
+0.4
+
+0.4
+
+0.3
+
+0.2
+
+0.2
+
+0.2 0.1
+
+0.0
+
+0.0
+
+0.0
+
+6.0
+
+6.5
+
+7.0
+
+7.5
+
+8.0
+
+4.0
+
+4.5
+
+5.0
+
+5.5
+
+6.0
+
+4.0
+
+4.5
+
+5.0
+
+5.5
+
+6.0
+
+(a) Linear setting
+
+(b) Exponential setting
+
+(c) Logit setting
+
+Figure 2. Simulation results (out-of-sample setting, the results under within-sample setting is similar and thus omitted) under different settings where the degree of selection bias α is varied. The curves present the mean value of regret in 10 repeated experiments. The shaded region presents the interval [mean − std, mean + std] of the regret.
+
+Then it trains the predictive model on the augmented dataset. The original model is designed for the combination of multi-level treatment and continuous treatment. Therefore, we constrain the number of multilevel treatment to be one for the compatibility with our setting.
+• RMNet (Tanimoto et al., 2021): It learns the balanced representation of confounders and treatment to remove the correlation between treatment and confounders in data. Furthermore, it minimizes the classification error of whether or not the treatment in dataset is relatively good for each sample. We use the model version that is designed based on Wasserstein distance. The original model is designed for multi-dimensional binary treatment, we extend it to continuous treatment.
+• IPS-BanditNet (Joachims et al., 2018) We use deep neural networks consisting of fully-connected layers as the parameterized policy πθ, which takes confounders as input and output the treatment. The objective function is the standard estimator in Kallus & Zhou (2018).
+• BCRI (Wang et al., 2019) We implement the policy πθ of the softmax version with the deep neural networks based predictive model.
+
+Evaluation Metric We evaluate the treatment selection per-
+
+formance under two different settings (Shalit et al., 2017).
+
+One is within-sample, where the metric is the average
+
+regret of the samples in the observational dataset. Formally,
+
+Regretin
+
+=
+
+1 n
+
+n i=1
+
+Yxi (ρ∗(xi)) − Yxi (ρf (xi))
+
+for methods which directly selects treatments
+
+based on predictive model and Regretin =
+
+1 n
+
+n i=1
+
+Yxi (ρ∗(xi)) − Et∼πθ(t|xi)[Yxi (t)]
+
+for policy-
+
+based methods. Conversely, the other setting is out-of-
+
+sample, where the metric is averaged over the new samples
+
+{xties}1≤i≤ntes for which no factual outcome is observed.
+
+The results of ρf (X) and some ρ∗(X) do not have closedform solution. To numerically compute it, we sample q points consecutively with equal intervals in [a, b] and select the one with largest true or predicted outcome. Formally,
+
+ρf (X) = arg max f (X, t).
+
+t∈{a,a+
+
+b−a q−1
+
+,...,b}
+
+(12)
+
+We set the number of search points q = 1001.
+
+5.2. Synthetic Dataset
+Data Generation We generate the synthetic datasets under different settings. We first generate the confounders X = (x1, x2, ..., xd), where each element is generated by uj i∼id N (0, 1), xj = |uj|. To generate outcome, we set two parameter vectors v1 ∈ Rd×1 and v2 ∈ Rd×1. They are sampled by firstly sampling each element of ui ∈ Rd×1 from Unif(0, 1), then setting vi = ui/||ui||, where || · || is Euclidean norm. Mimicking the demand curve in marketing (Besbes & Zeevi, 2015), we define the potential outcome to be YX(t) = g(X, t) · t, where the function g(X, t) is of the forms as following:
+• Linear: g(X, t) = max(−v2TX · t + 1.8v1TX, 0), where ρ∗(X) = min(0.9v1TX/v2TX, r)
+• Exponential: g(X, t) = e−v2TX·t+v1TX, where ρ∗(X) = min(1/v2TX, r)
+• Logit: g(X, t) = 2/(1 + ev2TX·t−v1TX), where ρ∗(X) is numerically calculate by Equation 12.
+
+We assign treatment for each sample with a similar policy
+
+as in Bica et al. (2020b). Specifically, we sample ti from
+
+a beta distribution. Supposed the treatment space is [0, r],
+
+the treatment follows
+
+ti r
+
+∼
+
+Beta(α, β).
+
+α
+
+≥
+
+1 controls the
+
+degree of selection bias. When α = 1, it is a uniform distri-
+
+bution.
+
+β
+
+=
+
+α−1 ρ∗ (xi )/2r
+
++
+
+2
+
+−
+
+α
+
+guarantees
+
+that
+
+the
+
+mode
+
+of
+
+Counterfactual Prediction for Outcome-Oriented Treatments
+
+Regret Regret
+RMSE on f(X) RMSE on *(X)
+
+treatment assignment distribution is ρ∗(xi)/2. After sampling the treatment, the factual outcome is the corresponding potential outcome yi = Yxi (ti) = g(xi, ti) · ti.
+In the simulations, we set the dimension of confounders d = 5 and the treatment boundary r = 2.0 for Linear setting and r = 3.0 for Exponential and Logit settings. A sample set of size 10000 is randomly generated as held-out test-set to compute the out-of-sample metric.
+Results We conduct experiments under different settings. For each setting, we repeated the experiments and train each models for 10 times. Then we calculate the mean value and standard deviation of the treatment selection regrets. The results of experiments where the sample size is varied are presented in Table 1. And the results of experiments with varying degree of selection bias is shown in Figure 2.
+The overall trend is that with the sample size increasing the treatment selection regret become smaller. And with more severe selection bias (i.e. larger α), the regret becomes larger. Among the different methods, we can observe that directly trained MLP suffers from the selection bias in observational data and results in large treatment selection regret. The MLP-Debias method eliminates the correlation between treatments and confounders and achieves lower regret than vanilla MLP method. SCIGAN imputes the counterfactual outcome and augments the observational dataset to remove selection bias. The predictive model trained on the augmented dataset can achieve improved regret. The RMNet is designed for multi-dimensional binary treatment setting, however, after adapted to the continuous treatment setting, it still has competitive performance under different settings. The policy-based methods also perform well in the experiments. Since the policy in BCRI is defined to be stochastic, it results in sub-optimal performance compared to our method. Our method fits the outcome curve based on the outcome-oriented sample weights and outperforms the other methods.
+
+0.200
+
+OOSR
+
+0.175
+
+MLP-Debias
+
+0.150
+
+0.125
+
+0.100
+
+0.075
+
+0.050
+
+0.025
+
+0.2 0.5 1.0 2.0 5.0 10.0 20.0
+
+(a) Fix τ = 0.2
+
+0.200 0.175 0.150 0.125 0.100 0.075 0.050 0.025
+0.02 0.05 0.1 0.2 0.5 1.0 2.0
+(b) Fix λ = 10.0
+
+Figure 3. Parameter analysis on λ and τ . We conduct experiments under Logit setting, while fixing α = 5.0 and n = 4000.
+
+Parameter Analysis The hyper-parameters are set to be λ = 10.0 and τ = 0.2 in the experiments above. We also analyze the influence of parameter λ and τ on regret
+
+measured under the out-of-sample setting. The results are presented in Figure 3. From the results, we can observe that larger λ contributes to better performance. Because it strengthens the local outcome prediction on outcomeoriented treatments. When λ > 10.0, the regret is stable and does not change much. The regret becomes smaller with τ increasing at first, since extremely small τ makes the loss function less smooth. When τ increases further, the performance significantly drops. This is because the strength of outcome prediction optimization on the outcomeoriented treatments becomes weak.
+
+1.2
+
+OOSR MLP-Debias
+
+MLP
+
+1.0
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0.0
+
+4.0
+
+5.0
+
+6.0
+
+(a)
+
+0.08
+
+0.06
+
+0.04
+
+0.02
+
+0.00
+
+4.0
+
+5.0
+
+6.0
+
+(b)
+
+Figure 4. Comparison of outcome prediction on ρf (X) and ρ∗(X). We conduct experiments under Logit setting, while fixing n = 4000 and varying α.
+
+Abalation study We measure the outcome prediction error (i.e. RMSE) on the treatment ρf (X) and ρ∗(X) (i.e. the two
+term in Equation 4) under Logit setting. From the results in
+Figure 4, we can observe that the outcome prediction error on ρf (X) is the domination of the r.h.s in Equation 4 and our
+method significantly reduces it. And the outcome prediction error on treatment ρ∗(X) is also suppressed to some extent. This phenomenon means the necessity of setting large λ and
+is consistent with the observation in parameter analysis.
+
+5.3. Semi-synthetic Dataset
+
+Data Generation The confounder feature is obtained from a real-world dataset TCGA (Weinstein et al., 2013). We choose the 10 columns with largest variance in the raw TCGA dataset as the confounder matrix X. In semisynthetic datasets, we set the treatment boundary as r = 1.0. To generate the treatments and outcomes, we sample three vectors v1, v2, v3 as in synthetic datasets. The outcome generation process is similar to that in Bica et al. (2020b). The two simulated outcome curve is listed below:
+
+• YX(t) = v1TX + (12v2TX − 2) · t − (12v3TX − 2) · t2, where ρ∗(X) =min((12v2TX − 2)/(24v3TX − 4), 1.0)
+
+• YX(t) = v1TX + 12t ·
+
+t
+
+−
+
+0.75
+
+v2T X v3T X
+
+2
+,
+
+
+ where ρ∗(X) =
+
+
+v2T v3T
+
+X X
+
+/4
+
+1.0
+
+v2T X v3T X
+
+≥
+
+1.0
+
+v2T X v3T X
+
+<
+
+1.0
+
+Counterfactual Prediction for Outcome-Oriented Treatments
+
+Table 2. The experimental results on semi-synthetic datasets of different methods. The metrics are Mean±STD over 10 repeated experiments. The best performance is marked bold.
+
+α
+Methods
+MLP SCIGAN RMNet IPS-BanditNet
+BCRI MLP-Debias
+OOSR
+α
+Methods
+MLP SCIGAN RMNet IPS-BanditNet
+BCRI MLP-Debias
+OOSR
+
+Setting 1: Varying the degree of selection bias α
+
+α = 6.0
+
+α = 6.5
+
+α = 7.0
+
+Within-S.
+
+Out-of-S.
+
+Within-S.
+
+Out-of-S.
+
+Within-S.
+
+Out-of-S.
+
+1.547±0.001 0.251±0.006 0.546±0.360 0.260±0.030 0.091±0.063 0.040±0.014 0.016±0.005
+
+1.532±0.001 0.254±0.006 0.550±0.363 0.259±0.030 0.093±0.061 0.039±0.014 0.015±0.005
+
+1.547±0.001 0.387±0.008 0.545±0.440 0.265±0.052 0.121±0.088 0.202±0.071 0.096±0.051
+
+1.532±0.001 0.392±0.008 0.548±0.445 0.266±0.053 0.124±0.090 0.204±0.071 0.097±0.051
+
+1.547±0.001 0.551±0.010 0.686±0.542 0.272±0.030 0.186±0.039 0.276±0.083 0.125±0.042
+
+1.532±0.001 0.556±0.009 0.685±0.537 0.275±0.030 0.187±0.038 0.278±0.086 0.127±0.041
+
+Setting 2: Varying the degree of selection bias α
+
+α = 4.0
+
+α = 4.5
+
+α = 5.0
+
+Within-S.
+
+Out-of-S.
+
+Within-S.
+
+Out-of-S.
+
+Within-S.
+
+Out-of-S.
+
+0.100±0.064 0.064±0.037 0.154±0.064 0.509±0.044 0.132±0.034 0.028±0.019 0.015±0.014
+
+0.098±0.058 0.066±0.040 0.159±0.065 0.496±0.045 0.152±0.036 0.028±0.020 0.016±0.015
+
+0.210±0.058 0.139±0.082 0.145±0.068 0.491±0.033 0.243±0.139 0.122±0.073 0.105±0.079
+
+0.195±0.054 0.143±0.082 0.149±0.070 0.473±0.034 0.254±0.135 0.113±0.065 0.100±0.071
+
+0.192±0.068 0.148±0.057 0.165±0.129 0.580±0.125 0.267±0.141 0.112±0.089 0.098±0.096
+
+0.182±0.063 0.154±0.056 0.169±0.128 0.569±0.133 0.279±0.132 0.107±0.086 0.095±0.093
+
+α = 7.5
+
+Within-S.
+
+Out-of-S.
+
+1.547±0.001 0.785±0.013 0.551±0.250 0.288±0.037 0.502±0.176 0.346±0.090 0.187±0.052
+
+1.532±0.001 0.792±0.013 0.549±0.249 0.291±0.037 0.499±0.171 0.352±0.093 0.190±0.053
+
+α = 5.5
+
+Within-S.
+
+Out-of-S.
+
+0.279±0.073 0.209±0.095 0.189±0.080 0.623±0.156 0.313±0.107 0.171±0.072 0.154±0.066
+
+0.266±0.071 0.212±0.089 0.192±0.075 0.608±0.155 0.320±0.106 0.160±0.067 0.143±0.062
+
+As in the synthetic datasets, we assign treatment for each
+
+sample from a beta distribution. The treatment follows
+
+ti ∼ Beta(α, β). α ≥ 1 controls the degree of selection
+
+bias
+
+and
+
+β
+
+=
+
+α−1 ρ∗ (xi )/2
+
++2−α.
+
+After
+
+assigning
+
+the
+
+treatment
+
+to each sample, the factual outcome is the corresponding
+
+potential outcome.
+
+We randomly split 33% of the sample as the held-out test-set to compute out-of-sample metric.
+
+Results We vary the degree of selection bias α and repeatedly conduct experiments for 10 times for each setting. The results are reported in Table 2.
+
+The overall results is quitely consistent with the simulations. The directly trained MLP is prone to selection bias and results in large regret. The MLP-Debias, SCIGAN, RMNet, BCRI improve the performance based on the vanilla MLP in different degree. Under the setting 2, the performance of IPS-BanditNet significantly declines. The reason may be that for many samples, the optimal treatment is at boundary (i.e. ρ∗(X) = 1.0) where less treatments is sampled in the observational dataset. Our proposed OOSR method attempts to optimize the outcome prediction further on the outcome-oriented treatments and achieves the best performance among the different methods.
+
+6. Conclusion
+In this paper, we study the problem of learning counterfactual outcome for treatment selection. Under the continuous treatment setting, we theoretically analyze that the treatment selection regret is connected to prediction error on
+
+two treatment points, which are true/pseudo-optimal treatments rather than the whole treatment space. To improve treatment selection, we propose Outcome-Oriented Sample Re-weighting (OOSR) method which strengthens the outcome prediction on the outcome-oriented treatment region to optimize the upper bound of regret. Extensive experimental results on the synthetic datasets and semi-synthetic datasets reveal the effectiveness of our method. The interesting direction of future work can be the more delicate analysis of the upper bound of regret and the optimization algorithm of the objective function.
+Acknowledgements
+This work was supported in part by National Key R&D Program of China (No. 2018AAA0102004), National Natural Science Foundation of China (No. 62141607, U1936219), and Beijing Academy of Artificial Intelligence (BAAI). Bo Li’s research was supported by the National Natural Science Foundation of China (No.72171131); the Tsinghua University Initiative Scientific Research Grant (No. 2019THZWJC11); Technology and Innovation Major Project of the Ministry of Science and Technology of China under Grants 2020AAA0108400 and 2020AAA0108403. We thank the reviewers for their insightful comments and suggestions.
+References
+Alaa, A. M. and van der Schaar, M. Bayesian inference of individualized treatment effects using multi-task gaussian
+
+Counterfactual Prediction for Outcome-Oriented Treatments
+
+processes. Advances in Neural Information Processing Systems, 30, 2017.
+Alaa, A. M. and van der Schaar, M. Limits of estimating heterogeneous treatment effects: Guidelines for practical algorithm design. In International Conference on Machine Learning, pp. 129–138. PMLR, 2018.
+Arbour, D., Dimmery, D., and Sondhi, A. Permutation weighting. In International Conference on Machine Learning, pp. 331–341. PMLR, 2021.
+Assaad, S., Zeng, S., Tao, C., Datta, S., Mehta, N., Henao, R., Li, F., and Duke, L. C. Counterfactual representation learning with balancing weights. In International Conference on Artificial Intelligence and Statistics, pp. 1972–1980. PMLR, 2021.
+Besbes, O. and Zeevi, A. On the (surprising) sufficiency of linear models for dynamic pricing with demand learning. Management Science, 61(4):723–739, 2015.
+Bica, I., Alaa, A. M., Jordon, J., and van der Schaar, M. Estimating counterfactual treatment outcomes over time through adversarially balanced representations. International Conference on Learning Representations, 2020a.
+Bica, I., Jordon, J., and van der Schaar, M. Estimating the effects of continuous-valued interventions using generative adversarial networks. Advances in neural information processing systems (NeurIPS), 2020b.
+Bickel, S., Bru¨ckner, M., and Scheffer, T. Discriminative learning for differing training and test distributions. In Proceedings of the 24th international conference on Machine learning, pp. 81–88, 2007.
+Booth, C. and Tannock, I. Randomised controlled trials and population-based observational research: partners in the evolution of medical evidence. British journal of cancer, 110(3):551–555, 2014.
+Bousmalis, K., Trigeorgis, G., Silberman, N., Krishnan, D., and Erhan, D. Domain separation networks. Advances in neural information processing systems, 29:343–351, 2016.
+Charles, D., Chickering, M., and Simard, P. Counterfactual reasoning and learning systems: The example of computational advertising. Journal of Machine Learning Research, 14, 2013.
+den Boer, A. V. and Sierag, D. D. Decision-based model selection. European Journal of Operational Research, 290(2):671–686, 2021.
+Dud´ık, M., Langford, J., and Li, L. Doubly robust policy evaluation and learning. In ICML, 2011.
+
+Ferna´ndez-Lor´ıa, C. and Provost, F. Causal decision making and causal effect estimation are not the same. . . and why it matters. INFORMS Journal on Data Science, 2022.
+Ganin, Y. and Lempitsky, V. Unsupervised domain adaptation by backpropagation. In International conference on machine learning, pp. 1180–1189. PMLR, 2015.
+Hansen, B. E. Lecture notes on nonparametrics. Lecture notes, 2009.
+Hassanpour, N. and Greiner, R. Counterfactual regression with importance sampling weights. In IJCAI, pp. 5880– 5887, 2019.
+Hassanpour, N. and Greiner, R. Learning disentangled representations for counterfactual regression. In International Conference on Learning Representations, 2020.
+Joachims, T., Swaminathan, A., and De Rijke, M. Deep learning with logged bandit feedback. In International Conference on Learning Representations, 2018.
+Johansson, F., Shalit, U., and Sontag, D. Learning representations for counterfactual inference. In International conference on machine learning, pp. 3020–3029. PMLR, 2016.
+Johansson, F. D., Kallus, N., Shalit, U., and Sontag, D. Learning weighted representations for generalization across designs. arXiv preprint arXiv:1802.08598, 2018.
+Kallus, N. Balanced policy evaluation and learning. Advances in neural information processing systems, 31, 2018.
+Kallus, N. and Zhou, A. Policy evaluation and optimization with continuous treatments. In International Conference on Artificial Intelligence and Statistics, pp. 1243–1251. PMLR, 2018.
+Kohavi, R. and Longbotham, R. Unexpected results in online controlled experiments. ACM SIGKDD Explorations Newsletter, 12(2):31–35, 2011.
+Kuang, K., Cui, P., Li, B., Jiang, M., Yang, S., and Wang, F. Treatment effect estimation with data-driven variable decomposition. In Proceedings of the AAAI Conference on Artificial Intelligence, volume 31, 2017.
+Lim, B., Alaa, A., and van der Schaar, M. Forecasting treatment responses over time using recurrent marginal structural networks. NeurIPS, 18:7483–7493, 2018.
+Qian, Z., Curth, A., and van der Schaar, M. Estimating multi-cause treatment effects via single-cause perturbation. Advances in Neural Information Processing Systems, 34, 2021.
+
+Counterfactual Prediction for Outcome-Oriented Treatments
+
+Qin, J. Inferences for case-control and semiparametric twosample density ratio models. Biometrika, 85(3):619–630, 1998.
+Rosenbaum, P. R. and Rubin, D. B. The central role of the propensity score in observational studies for causal effects. Biometrika, 70(1):41–55, 1983.
+Rubin, D. B. Bayesianly justifiable and relevant frequency calculations for the applied statistician. The Annals of Statistics, pp. 1151–1172, 1984.
+Schwab, P., Linhardt, L., Bauer, S., Buhmann, J. M., and Karlen, W. Learning counterfactual representations for estimating individual dose-response curves. In Proceedings of the AAAI Conference on Artificial Intelligence, volume 34, pp. 5612–5619, 2020.
+Shalit, U., Johansson, F. D., and Sontag, D. Estimating individual treatment effect: generalization bounds and algorithms. In International Conference on Machine Learning, pp. 3076–3085. PMLR, 2017.
+Sondhi, A., Arbour, D., and Dimmery, D. Balanced offpolicy evaluation in general action spaces. In International Conference on Artificial Intelligence and Statistics, pp. 2413–2423. PMLR, 2020.
+Strehl, A. L., Langford, J., Li, L., and Kakade, S. M. Learning from logged implicit exploration data. In NIPS, 2010.
+Su, Y., Wang, L., Santacatterina, M., and Joachims, T. Cab: Continuous adaptive blending for policy evaluation and learning. In International Conference on Machine Learning, pp. 6005–6014. PMLR, 2019.
+Sugiyama, M., Suzuki, T., and Kanamori, T. Density ratio estimation in machine learning. Cambridge University Press, 2012.
+Swaminathan, A. and Joachims, T. Counterfactual risk minimization: Learning from logged bandit feedback. In International Conference on Machine Learning, pp. 814–823. PMLR, 2015a.
+Swaminathan, A. and Joachims, T. The self-normalized estimator for counterfactual learning. advances in neural information processing systems, 28, 2015b.
+Tanimoto, A., Sakai, T., Takenouchi, T., and Kashima, H. Regret minimization for causal inference on large treatment space. In International Conference on Artificial Intelligence and Statistics, pp. 946–954. PMLR, 2021.
+Thomas, P. and Brunskill, E. Data-efficient off-policy policy evaluation for reinforcement learning. In International Conference on Machine Learning, pp. 2139–2148. PMLR, 2016.
+
+Tzeng, E., Hoffman, J., Zhang, N., Saenko, K., and Darrell, T. Deep domain confusion: Maximizing for domain invariance. arXiv preprint arXiv:1412.3474, 2014.
+Van Der Laan, M. J. and Rubin, D. Targeted maximum likelihood learning. The international journal of biostatistics, 2(1), 2006.
+Wang, L., Bai, Y., Bhalla, A., and Joachims, T. Batch learning from bandit feedback through bias corrected reward imputation. In ICML Workshop on Real-World Sequential Decision Making, 2019.
+Wang, Y.-X., Agarwal, A., and Dudık, M. Optimal and adaptive off-policy evaluation in contextual bandits. In International Conference on Machine Learning, pp. 3589– 3597. PMLR, 2017.
+Weinstein, J. N., Collisson, E. A., Mills, G. B., Shaw, K. R. M., Ozenberger, B. A., Ellrott, K., Shmulevich, I., Sander, C., and Stuart, J. M. The cancer genome atlas pan-cancer analysis project. Nature Genetics, 45:1113– 1120, 2013.
+Xu, R., Zhang, X., Cui, P., Li, B., Shen, Z., and Xu, J. Regulatory instruments for fair personalized pricing. In Proceedings of the ACM Web Conference 2022, pp. 4–15, 2022.
+Yao, L., Li, S., Li, Y., Huai, M., Gao, J., and Zhang, A. Representation learning for treatment effect estimation from observational data. Advances in Neural Information Processing Systems, 31, 2018.
+Yoon, J., Jordon, J., and Van Der Schaar, M. Ganite: Estimation of individualized treatment effects using generative adversarial nets. In International Conference on Learning Representations, 2018.
+Zhang, X., Zhou, L., Xu, R., Cui, P., Shen, Z., and Liu, H. Domain-irrelevant representation learning for unsupervised domain generalization. arXiv preprint arXiv:2107.06219, 2021.
+Zhang, Y., Bellot, A., and Schaar, M. Learning overlapping representations for the estimation of individualized treatment effects. In International Conference on Artificial Intelligence and Statistics, pp. 1005–1014. PMLR, 2020.
+Zhao, Y., Zeng, D., Rush, A. J., and Kosorok, M. R. Estimating individualized treatment rules using outcome weighted learning. Journal of the American Statistical Association, 107(499):1106–1118, 2012.
+Zou, H., Cui, P., Li, B., Shen, Z., Ma, J., Yang, H., and He, Y. Counterfactual prediction for bundle treatment. Advances in Neural Information Processing Systems, 33, 2020.
+
+Counterfactual Prediction for Outcome-Oriented Treatments
+A. Proof
+In this section, we give the proof of the proposition in the main paper. Proposition A.1. (Restated) With the confounders X, treatments t, potential outcome function YX(t) defined as above, the treatment selection regret (i.e. Equation 1) of counterfactual prediction model f satisfies the following inequality:
+Regret ≤ EX[(YX(ρf (X)) − f (X, ρf (X)))2] + EX[(YX(ρ∗(X)) − f (X, ρ∗(X)))2]
+Proof. According to the definition of ρf (X), we have f (X, ρf (X)) ≥ f (X, ρ∗(X)). Then, Regret = EX YX(ρ∗(X)) − YX(ρf (X)) ≤ EX YX(ρ∗(X)) − YX(ρf (X)) + f (X, ρf (X)) − f (X, ρ∗(X)) = EX [YX(ρ∗(X)) − f (X, ρ∗(X))] + EX f (X, ρf (X)) − YX(ρf (X))
+Based on mean-value inequality, we have EX [YX(ρ∗(X)) − f (X, ρ∗(X))] + EX f (X, ρf (X)) − YX(ρf (X)) ≤ EX (YX(ρ∗(X)) − f (X, ρ∗(X)))2 + EX (f (X, ρf (X)) − YX(ρf (X)))2
+
+Proposition A.2. (Restated) Given the treatment space T = [a, b], if we assume the predictive loss function G(X, t) = (YX(t) − f (X, t))2 is L-Lipschitz on t, then we have:
+
+EX (YX(ρ∗(X)) − f (X, ρ∗(X)))2
+
+≤ EX
+
+1 b−a
+
+b
+G(X, t)dt
+t=a
+
+b−a +L·
+2
+
+=
+
+EX,t∼p(X,t)
+
+G(X, t) (b − a)p(t|X)
+
+b−a 1
+
++L·
+
+≈
+
+n
+
+(yi − f (xi, ti))2 + L · b − a
+
+2
+
+n
+i=1
+
+(b − a)p(ti|xi)
+
+2
+
+Proof. Because G(X, t) is L-Lipschitz, G(X, ρ∗(X)) ≤ G(X, t) + L · |ρ∗(X) − t|. Therefore, we have
+
+b
+
+b
+
+G(X, ρ∗(X))dt ≤
+
+G(X, t) + L · |ρ∗(X) − t|dt
+
+t=a
+
+t=a
+
+⇒ (b − a)G(X, ρ∗(X)) ≤
+
+b
+
+G(X,
+
+t)
+
++
+
+L (b
+
+−
+
+a)2
+
+t=a
+
+2
+
+⇒ EX (YX(ρ∗(X)) − f (X, ρ∗(X)))2
+
+1
+
+b
+
+b−a
+
+≤
+
+EX
+
+b−a
+
+G(X, t)dt
+t=a
+
++L·
+
+2
+
+Additionally,
+
+1
+
+b
+
+b
+
+G(X, t)
+
+G(X, t)
+
+EX
+
+b−a
+
+G(X, t)dt
+t=a
+
+= EX
+
+p(t|X)
+
+dt
+
+t=a
+
+(b − a)p(t|X)
+
+= EX,t∼p(X,t)
+
+(b − a)p(t|X)
+
+.
+
+Since the observational data {(xi, ti)}1≤i≤n is sampled from p(X, t), EX,t∼p(X,t)
+
+G(X,t) (b−a)p(t|X)
+
+can be approximated by
+
+1 n
+
+n i=1
+
+(yi−f (xi,ti))2 (b−a)p(ti |xi )
+
+.
+
+Proposition A.3. (Restated) Assume the function is parameterized by θ, that is fθ, and the functions A(fθ) and B(fθ) are differentiable and strictly convex on θ, θ∗ is the global minimum point of A(fθ) + B(fθ), then there exists γ ∈ R+
+such that θ∗ = arg min γA(fθ) + B(fθ)
+θ
+
+Counterfactual Prediction for Outcome-Oriented Treatments
+
+Proof. Since θ∗ is the global minimum point of A(fθ) + B(fθ), we have
+
+∂ A(fθ) + B(fθ)
+
+= 0 ⇒ B(fθ∗ ) ∂A(fθ) + ∂B(fθ)
+
+= 0,
+
+∂θ
+
+θ=θ∗
+
+A(fθ∗ ) ∂θ
+
+∂θ θ=θ∗
+
+√ Letting γ = √B(fθ∗ ) ,
+A(fθ∗ )
+
+∂γA(fθ) + B(fθ)
+
+= 0.
+
+∂θ
+
+θ=θ∗
+
+Because the functions A(fθ) and B(fθ) are differentiable and strictly convex on θ, θ∗ is also the global minimum point of
+
+γA(fθ) + B(fθ).
+
+B. Experimental Details
+To allow for fair comparison, we ensure the different methods share the same backbone of predictive models. The predictive model is a neural networks with two hidden layers of size 20. The policy networks in IPS-BanditNet is of the same architecture. We use the ELU activation function. The predictive models are trained by SGD optimizer for 60000 iterations in synthetic experiments, 100000 iterations in setting 1 of semi-synthetic experiments and 300000 iterations in setting 2 of semi-synthetic experiments. The policy networks are trained for 4000 epochs. For our algorithm, in each experiment, the length of the first stage is 40% of the training process, and the length of each round in the second stage is 5% of the training process. Since the treatment space is bounded in the experiments, we truncate and normalize the kernel as in Kallus & Zhou (2018).
+Since validation is a difficult problem in counterfactual prediction task, we select hyper-parameter in an indirect way. Firstly, we train a neural network h(X, t) using the re-weighted dataset which is removed selection bias. Then we treat h(X, t) as the ground truth of potential outcome and update the dataset yi′ = h(xi, ti). Using the updated dataset {(xi, ti, yi′)}1≤i≤n and ”ground truth” h(X, t), we select hyper-parameters by grid searching. We choose λ = 10.0 and τ = 0.2.
+
+C. Smoothness of Outcome Curve
+
+We define error term E(X, t) = (YX(t) − f (X, t))2. Then the approximation target of Equation 5 can be written as EX[E(X, ρf (X))]. We can have the following results on the bias of estimator in Equation 7.
+
+Proposition C.1.
+
+The estimation bias of Equation 7 is Bias(A(f ))
+
+=
+
+κ2
+
+(K 2
+
+)τ
+
+2
+
+EX
+
+∂2 ∂t2
+
+E
+
+(X,
+
+ρf
+
+(X))
+
++ O(τ 2), where
+
+κ2(K) = u K(u)u2du.
+
+Proof. Following the proof in Theorem 1 of Kallus & Zhou (2018), we have
+
+E(X, t)
+
+=
+
+E(X, ρf (X)) + (t − ρf (X))
+
+∂ ∂t
+
+E
+
+(X,
+
+ρf
+
+(X))
+
++
+
+(t−ρf (X))2 2
+
+∂2 ∂t2
+
+E
+
+(X,
+
+ρf
+
+(X))
+
++ O((t − ρf (X))2).
+
+K((ρf (X) − t)/τ )
+
+K((ρf (X) − t)/τ )
+
+E [A(f )] = EX p(t|X)
+t
+
+τ p(t|X)
+
+E(X, t)dt = EX
+t
+
+τ
+
+E(X, t)dt .
+
+(13)
+
+Letting u = (t − ρf (X))/τ , we have
+
+E [A(f )] = EX K(u)E(X, ρf (X) + τ u)du
+
+u
+
+= EX
+
+K(u) E(X, ρf (X)) + uτ ∂ E(X, ρf (X)) + (uτ )2
+
+u
+
+∂t
+
+2
+
+∂2 ∂t2
+
+E
+
+(X,
+
+ρf
+
+(X))
+
++ O(τ 2)
+
+du
+
+=
+
+K(u)duEX[E(X, ρf (X))] +
+u
+
+u
+
+K
+
+(u)udu
+
+·
+
+EX[τ
+
+∂ ∂t
+
+E
+
+(X,
+
+ρf
+
+(X))]
+
++
+
+κ2(K)τ 2 2 EX
+
+∂2 ∂t2
+
+E
+
+(X,
+
+ρf
+
+(X))
+
++ O(τ 2)
+
+=
+
+EX [E (X,
+
+ρf
+
+(X))]
+
++
+
+κ2(K)τ 2 2
+
+EX
+
+∂2 ∂t2
+
+E
+
+(X,
+
+ρf
+
+(X))
+
++ O(τ 2).
+
+Counterfactual Prediction for Outcome-Oriented Treatments
+
+Table 3. The experimental results on synthetic datasets of OOSR methods. We set the sample size n = 4000 and α = 6.0.
+
+h Methods OOSR
+
+h = 0.05
+
+Within-S.
+
+Out-of-S.
+
+0.058±0.024 0.063±0.027
+
+Varying the intercept constant h.
+
+h = 0.10
+
+h = 0.15
+
+Within-S.
+
+Out-of-S.
+
+Within-S.
+
+Out-of-S.
+
+0.171±0.208 0.159±0.210 0.396±0.372 0.405±0.376
+
+h = 0.20
+
+Within-S.
+
+Out-of-S.
+
+0.646±0.364 0.659±0.366
+
+From the results in C.1, we can see that the smoothness of error curve (i.e.
+
+∂2 ∂t2
+
+E(X, ρf (X)))
+
+is
+
+highly
+
+related
+
+to
+
+the
+
+approximation error. When the slope of the outcome curve changes substantially even the outcome curve is discontinuous,
+
+the error curve also suffers from the same problem. Then our objective function can not approximate the regret upper bound
+
+well, and this may affect the effectiveness of our method. To empirically demonstrate it, we modify the outcome curve in the
+
+Linear setting of synthetic datasets as following:
+
+YX(t) =
+
+max(−v2TX · t + 1.8v1TX, 0) · t − h t < 0.8ρ∗(X) max(−v2TX · t + 1.8v1TX, 0) · t t ≥ 0.8ρ∗(X)
+
+The other mechanisms keep unchanged. Therefore, the true optimal treatments and corresponding treatment outcomes also keep unchanged. We evaluate the performance of our method varying the intercept constant h. The results shown in Table 3 reveal that larger h makes the performance of our method worse.
+
+D. Pseudo-code for Our Algorithm
+
+Algorithm 1 Outcome-Oriented Sample Re-weighting(OOSR)
+
+Input: observational dataset {(xi, ti, yi)}1≤i≤n, learning rate η, the number of iterations T1 in the first stage, the number
+
+of iterations T2 ∗ m in the second stage.
+
+Output: the predictive model fθ(m)
+
+Estimate
+
+the
+
+inverse
+
+propensity
+
+score
+
+1 pˆ(ti |xi )
+
+based
+
+on
+
+density
+
+ratio
+
+estimation.
+
+Initialize
+
+the
+
+sample
+
+weights
+
+wi(0)
+
+←
+
+1 (b−a)pˆ(ti |xi )
+
+and
+
+parameters
+
+of
+
+model
+
+θ(0)
+
+for i = 1 to T1 do
+
+Sample batch B = {(xBi , tBi , yiB)}1≤i≤|B|
+
+L(0)
+
+←
+
+1 n
+
+|B| i=1
+
+wi(B0)
+
+·
+
+(fθ(0)(xBi ,
+
+tBi )
+
+−
+
+yiB )2
+
+Update
+
+θ(0)
+
+←
+
+θ(0)
+
+−
+
+η ∂L(0)
+∂ θ (0)
+
+end for // The first stage finishes
+
+for j = 1 to m do
+
+Update weights wi(j) ← 1+λK
+
+(ρfθ(j−1) (xj )−tj )/τ (b−a)pˆ(tj |xj )
+
+Initialize θ(j) ← θ(j−1)
+
+for i = 1 to T2 do
+
+Sample batch B = {(xBi , tBi , yiB)}1≤i≤|B|
+
+L(j)
+
+←
+
+1 n
+
+|B| i=1
+
+wi(Bj)
+
+·
+
+(fθ(j)(xBi ,
+
+tBi )
+
+−
+
+yiB )2
+
+Update
+
+θ(j)
+
+←
+
+θ(j)
+
+−
+
+η ∂L(j)
+∂ θ (j )
+
+end for
+
+end for // The second stage finishes
+
+return the predictive model fθ(m)
+
