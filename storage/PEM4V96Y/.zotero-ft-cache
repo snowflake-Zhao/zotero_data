@@ -1,0 +1,339 @@
+_ _ _ _ _ _ _ _O_t__Wid_g_e_t_s _B_a_s_ic_s_ ~/
+• Episode 1 - Hello World
+• Episode 2 - Compiling Hello World
+• Episode 3 - The Qt Help text
+• Episode 4 - Qt's Object Model
+• Episode 5 - Qt's Object Model and QWidget Basics
+• Episode 6 - Signals & Slots
+• Episode 7 - Qt4's Signals & Slots
+• Episode 8 - Signals & Slots with Lambdas
+• Episode 9 - Adding your own Signals and Slots
+• Episode 10 - The Backstage Tour - Part 1
+• Episode 11 - The Backstage Tour - Part 2
+• Episode 12 - Event Handling
+Episode 1 - Hello World p.2
+App@phone —> QML App@Desktop -> Qt Widget
+
+
+// main.cpp
+1 #include <QtWldgets>
+2
+3 lnt main (int argc , char *argv []) 4{ 5 6 7 8
+9}
+QAppl{cation app(argc , argv);
+QPushButton button( "Hello world "J; button. show( ) ; return app.exec( );
+Demo: fundamentals/ex-helloworld
+_ _ _"_Hel_lo_ w_o_rl_d_"_w_it_h_ _Otw_ id_g_e_ts_ ~ /
+AKDAB
+//QApplication(int argc,char *argv[]) is called
+//start the event loop
+
+
+while
+I I I ] AKDAB
+Event loop —> Event-driven App
+
+
+,/
+QCoreApplication , QGuiApplication & QApplication /
+----~
+• QCoreApplication
+• Pass command line arguments
+Provides an event-loop to process and dispatch events
+Internationalization - QObject: :tr()
+Access to application path and pid
+• Non-Gui applications
+Qt Docs: QCoreApplication
+AKDAB
+QCo reApp licat ion
+QGuiApplication
+t
+QAppl ication
+Episode 1 - Hello World p.4
+at
+window management Mouse cursor handling Clipboard interaction Keeping track of sys properties palatte fonts style hints Non-Widget(Qt Quick) App
+Session management Widget specific initialization and finalization Style management Qtsyle Widget management
+
+
+• QObj ect is the heart of Qt's object model.
+• Adds features to C++, like
+Signals and slots
+Properties
+Event handling
+• Memory management
+•
+• Some features are standard C++.
+Some use Qt's meta-object system.
+• QObj ect has no visual representation.
+__O_t'_s_c_+_+_ o_b_j_ec_t_ _Mod_e_l_-_O_ _Obj_e_ct_ ~ /
+AKDAB
+
+
+Object Tree /
+----~
+• QObj ects organize themse lves in object trees.
+• Based on parent-child relationship
+• QObject(QObject *parent; nullptr)
+• Parent adds object to list of children.
+Parent owns children .
+• Construction/Destruction
+• Tree can be constructed in any order.
+• Tree can be destroyed in any order.
+If object has a parent, object is first removed from parent.
+If object has chi ldren, each child is deleted first.
+• No object is deleted twice.
+Note: Parent-child relationship is NOT inheritance .
+QObject
+AKDAB
+I
+Parent
+Children
+QObject
+QObj ect
+
+
+• On Heap - Q0bj ect with parent:
+Qlabet *label= new Qlabet( "Some Text" , parent) ;
+It is forbidden to copy QObject instances.
+• On Stack - Q0bj ect without parent:
+• QFile, usually local to a function
+• QGuiApplication (local to main ())
+l~p level QWidgets: QMainWindow
+• On Stack - "value" types
+1 QStri.ng name ; 2 QStri.ngli.st l ist; 3 QCotor col or;
+• Implicitly shared - Cheap to copy
+• "Value" types are not Q0bj ect subclasses.
+Creati ng Object s /
+----~
+AKDAB
+I
+Thiswillbeout ofslopeaterreading it
+Create obj on stack will be deleted when out of scope
+New will allocate the memory and return the first address of the memory
+
+
+• Derived from QObj ect
+• Adds visual representation
+• Base of widget-based user interface objects
+• Receives events
+e.g. mouse, keyboard events
+• Paints itself on screen
+Using styles
+_ _ __Ot_•_so_bj_e_c_t _M_o_d_e_l_- _O_W_i_d_g_et_ ~ / '
+QObject
+QFile QWidget
+Q Label QPushBullon QTextEdit
+.tlKDAB
+I
+
+
+
+T
+aa
+0
+AKDAB
+-'
+1
+Pointer
+
+
+Object Tree and QWidget / '
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _____/
+• new QWidget ( I* nullptr * / }
+Widget with no parent = "window"
+• QWidget's children
+• Positioned in parent's coordinate system
+Clipped by parent's boundaries
+• QWidget parent
+• Propagates state changes
+• Hides/shows children when it is hidden/shown itself
+• Enables/disables children when it is enabled/disabled itself
+top level window
+Depend on parent coordinate sys
+
+
+Callbacks /
+----~
+General Problem
+How do you get from "the user clicks a button" to your business logic?
+• Possible solutions
+Callbacks
+• Based on function pointers
+• Not type-safe
+• Observer Pattern (Listener)
+• Based on interface classes
+Needs listener registration
+• Many interface classes
+• Qt uses
+• Signals and slots for high-level (semantic) callbacks.
+• Virtual methods for low-level (syntactic) events. AKDAB
+Tension
+state thanges
+
+
+11KDAB _ _ _ _c_o_n_n_e_c_ti_n_g_ Si_g_n_a_ls__t_o_s_l_ot_s_~/
+-----.
+C ~..,_~,====::: 32 ...
+T
+QObject::connect ( slider, &QSlider::valueChanged, spinBox, &QSp inBox::setVa lue );
+signal
+emitted iolemented
+signal slot
+10hheHion
+I FuniitonPointers
+signalemission
+slot invocation
+I Signal slotmacros
+亚 FunctionObj
+
+
+void QSlider::mouseMoveEvent( ...) {
+emit va lueChanged(newValue);
+}
+C c,,_-,====:::
+Connecting Signals to Slots /
+----~
+.tlKDAB
+
+
+c::=::t...)..=-=.:=.:=.::,
+_ _ _ _c_o_n_n_e_c_ti_n_g__Sig_n_a_ls_ to_ s_lo_t_s_ ___,/
+void QSpinBox::setValue(int value) {
+m_value = value;
+}
+AKDAB
+
+
+Connect - Function Pointers /
+----~
+• Function pointers
+connect( const QObject * sender, PolnterToMemberFunction signal, const QObject * recet~er, PointerToMemberFunction method )
+• Example:
+1 QSllder *slider= new QSllder ( Qt :: Horlzontal ); 2 QSpinBox *spin= new QSplnBox ; 3 QObject : :connect ( slider, &QSllder :: valueChanged , 4 spin, &QSplnBox :: setValue );
+Demo: objects/ex-connect-function-pointers
+11KDAB
+
+
+Function Objects: Lambda Functions /
+----~
+• Lambda functions
+connect ( const QObject ,, sender , Pointe rToMemberFunct ion signal , Functor functor
+• Example:
+1 QPushButton *button = new QPushButton ( "Press Me! '' ); 2 QObject: :connect ( button , &QPushButton : :pressed ,
+3 [but ton] { but ton->setText( "Release Me !" ); } );
+Demo: objects/ex-connect-function-pointers
+ilKDAB
+I
+
+
+Connect /
+----~
+Rule for Signal/Slot Connection
+Can ignore arguments, but cannot create values from nothing
+Signal Slot
+0 setRange(int,int)
+rangeChanged( int,int) 0 setValue(int)
+0 update()
+0 setValue(int)
+valueChanged(int) 0 update()
+•
+setRange(int,int)
+textChanged(QString) • setValue(int)
+0 update() AKDAB
+clicked() • setValue(int)
+
+
+Variations of Signal/Slot Connections
+Signal(s) Connect to
+one 0
+many 0
+one 0
+• Signal to signal connection
+connect (button, &QPushButton : :clicked , this , &MyClass: :okSlgnal); connect (button, SIGNAL(cllcked( )), this , SIGNAL(okSlgnal( )));
+Slot(s)
+many
+on e
+another signal
+
+
+• Function pointers
+1 QObject: :connect ( sende r , &Sender: :valueChanged, 2 recelver, &Receiver: :updateValue );
+3
+4 QObject : :disconnect ( sender, &Sender : :valueChanged , s receiver , &Receiver : :upd~teValue );
+• SIGNAL/SLOT macros
+1 QObject : :connect ( sender , SIGNAL(valueChanged( int )) , 2 recelver, SLOT(updateValue( int )) );
+3
+4 QObject: :disconnect ( sender, SIGNAL(valueChanged( int) ) , 5 receiver, SLOT ( updateValue( int ) ) );
+Disconnecting a Connection /
+----~
+I AKDAB
+
+
+• Connection handle
+1 QMetaObject :: Connecti.on m_connecti.on ; 2 m_connection = Q~ ject :: connect ( . .. ) ;
+3
+4 QObject :: di.sconnect ( m_connection );
+_D_is_c_o_n_n_e_c_t_in_g_ a_c_o_n_ne__ct_i_o_n_(_c_o_n_t '_d_)_ __,/
+llKDAB
+
+
+• File: myclass.h
+1 class MyClass public QObject 2{ 3 Q_OBJECT // marker for moc 4 I I ...
+5 public slots : 6 void setValue( lnt value); // a custom slot 7 };
+• File: myclass.cpp
+1 void MyClass: :setValue( lnt value) { 2 // slot implementation 3}
+__________c_u_st_o__m s_l_ot_s_ ~ /
+.t!KDAB
+0
+X.h osmoc x.clp
+
+
+• File: myclass.h
+l class MyClass : public QObject 2{ 3 Q__OBJECT II marker for moc 4 II ... 5 signals :
+Custom Signals
+AlKDAB
+,I,
+6 vold valueChanged( lnt value); II a custom signal 7 };
+• File: myclass.cpp
+II No lmplementatton for a s1gnal
+• Sending a signal
+emit valueChanged(value);
+• Note: The Q_OBJECT macro is always required when defining custom signal s.
+Demo: objects/ex-window-watcher
+Episode 9 - Adding your own Signals and Slots
+/
+p.43
+0
+
+
+Event Handling /
+----~
+• QObj ect: : event ( QEvent *event)
+Handles all events for this object
+• QWindow and QWidget have specialized event handlers.
+mousePressEvent () for mouse clicks
+• keyPressEvent () for key presses
+• Accepting an event
+• event->accept(}/event->ignore()
+Accepts or ignores the event
+• Accepted is the defau lt.
+• Event propagation
+• Events might be propagated to parent widget if the even t is ignored.
+• Events on non-QWidgets are never automatica lly propagated.
+Demo: objects/ex-allevents
+llKDAB
+drag drop
+
+
+• Painting is done using the class QPainter.
+drawline()
+• drawText ( )
+• drawPixrnap ( )
+•
+• Painting is done in paintEvent ().
+• Request a paint event from code using update ().
+• QPixrnap - off-screen p ixel storage
+Demo: objects/ex-paint-program
+Interlude: Painting /
+----~
+AKDAB
