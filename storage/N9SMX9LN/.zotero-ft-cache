@@ -1,0 +1,346 @@
+European Journal of Surgical Oncology 50 (2024) 107975 Contents lists available at ScienceDirect
+European Journal of Surgical Oncology
+journal homepage: www.ejso.com
+
+The impact of lymphadenectomy on the survival outcomes of ovarian clear cell carcinoma: A retrospective study of the SEER database and Chinese registry
+Yan Liu a,b, Wenna Zhao a,b, Changzhen Huang a,b, Ran Chu c, Zhuang Li a,b, Yuanjian Wang a,b, Li Song a,b,*, Li Li a,**
+a Department of Obstetrics and Gynecology, Qilu Hospital of Shandong University, Jinan, Shandong, PR China b Division of Gynecology Oncology, Qilu Hospital of Shandong University, Jinan, Shandong, PR China c Department of Obstetrics and Gynecology, Shandong Provincial Hospital Affiliated to Shandong First Medical University, Jinan, Shandong Province, PR China
+
+ARTICLE INFO
+Keywords: Ovarian cancer Clear cell carcinoma Lymphadenectomy survival outcome Propensity score
+
+ABSTRACT
+Background: Ovarian clear cell carcinoma (OCCC) is a rare pathological type of ovarian cancer with a poor prognosis, and lymphadenectomy is controversial in patients with OCCC. The objective of this study was to evaluate the impact of lymphadenectomy on the prognosis of patients with OCCC. Methods: In this retrospective study, we collected data from the Surveillance, Epidemiology and End Results (SEER) database and institutional registries in China. The SEER cohort included 1777 women diagnosed with OCCC between 2010 and 2019, while the Chinese cohort included 199 women diagnosed between April 2004 and April 2021. Recurrence-free survival (RFS) and overall survival (OS) were studied using Kaplan-Meier curve and Cox regression analysis. We also employed propensity score matching (PSM) to adjust for baseline imbal­ ances between the lymphadenectomy group and the no-lymphadenectomy group. Results: Multivariate cox regression analysis showed that lymphadenectomy was not associated with better overall survival (OS) in either early (hazard ratio [HR] 0.84[0.50–1.43], p = 0.528) or advanced (HR 0.78 [0.50–1.21], p = 0.270) patients in the SEER cohort after PSM. Additionally, in the Kaplan-Meier curve analysis, lymphadenectomy did not significantly improve OS in both early (p = 0.28) and advanced (p = 0.49) patients in the SEER cohort after PSM. Similarly, in the Chinese cohort, lymphadenectomy had no significant effect on OS (early p = 0.22; advanced p = 0.61) or RFS (early p = 0.18; advanced p = 0.83) in both early and advanced patients. Conclusion: In completely homogeneous groups, lymphadenectomy in women diagnosed with OCCC had no effect on either recurrence-free survival or overall survival compared to patients without lymphadenectomy.
+
+1. Introduction
+Ovarian clear cell carcinoma (OCCC) is one of the rare types of ovarian tumors, and the prevalence of OCCC varies significantly by geography, being notably higher in East Asia, where it accounts for 25 %–30 % and 10.3 %–11.6 % of epithelial ovarian cancer (EOC) cases in Japan and Korea, respectively [1–4]. Furthermore, OCCC exhibits distinct molecular properties and clinical manifestations when compared to other types of EOC [5–9]. Unfortunately, the prognosis for
+
+advanced OCCC patients is considerably worse, showing limited responsiveness to platinum-containing first-line treatment [1]. Conse­ quently, the traditional treatment approach for EOC has been challenged.
+Surgery is still the primary therapeutic option for OCCC, and the surgical strategy is the same as that for EOC [5]. However, no pro­ spective trials on cytoreductive, staging, or fertility conservation surgery have been published due to the rarity of OCCC. Treatment modalities for early OCCC differ [10]. Guidelines from the National Comprehensive
+
+* Corresponding author. Department of Obstetrics and Gynecology, Qilu Hospital of Shandong University, 107 Wenhua Xi Road, Jinan, Shandong Province, 250012, PR China. ** Corresponding author. Department of Obstetrics and Gynecology, Qilu Hospital of Shandong University, 107 Wenhua Xi Road, Jinan, Shandong Province, 250012, PR China.
+E-mail addresses: sl0930china@sdu.edu.cn (L. Song), 200962000362@email.sdu.edu.cn (L. Li).
+https://doi.org/10.1016/j.ejso.2024.107975 Received 23 October 2023; Received in revised form 22 December 2023; Accepted 20 January 2024 Available online 26 January 2024 0748-7983/© 2024 Elsevier Ltd, BASO The Association for Cancer Surgery, and the European Society of Surgical Oncology. All rights reserved.
+
+Y. Liu et al.
+Cancer Network (NCCN) and the European Society for Medical Oncology (ESMO) recommend pelvic and para-aortic lymphadenectomy for early OCCC, but this recommendation is not always implemented [11]. Importantly, due to limited data from credible clinical studies, the NCCN guidelines categorize the level of evidence for OCCC as 2A. This evidence was derived from a retrospective multi-center study encom­ passing 240 OCCC patients [12].
+In the MITO-9 study, lymphadenectomy was carried out in only 54 % of the early OCCC patients [12]. And Surveillance, Epidemiology, and End Results (SEER) data indicate that only 80 % of patients with stage I OCCC received lymphadenectomy [13]. The primary goal of lympha­ denectomy for early ovarian cancer is to appropriately stage and detect the presence of macroscopic micro-metastases. However, due to the low risk of lymph node metastasis, lymphadenectomy in early clinical OCCC patients for staging remains controversial [14,15]. In advanced ovarian cancer cases, lymphadenectomy is used to achieve satisfactory cytore­ ductive surgery. However, the recent LION trial [16] demonstrated that for stage IIB-IV ovarian cancer patients with no abnormal lymph nodes indicated by preoperative imaging and intraoperative examination, lymphadenectomy should not be performed if no residual lesions are present during surgery. Additionally, recent studies by other researchers have confirmed that lymphadenectomy does not improve the prognosis of OCCC patients [17–20]. Consequently, there is an urgent need to clarify the significance of lymphadenectomy in OCCC.
+In this study, we included patients from the SEER database and the Chinese registry to comprehensively analyze the impact of lymphade­ nectomy on the survival outcomes of patients with OCCC.
+2. Methods
+2.1. Study design and participants
+The study is reported according to the Strengthening the Reporting of Observational Studies guidelines and checklist (Table S1). In this retrospective study, we utilized data from the China registry and the SEER 18 registries of the National Cancer Institute. The China registry encompassed data from women diagnosed with OCCC who underwent pathological detection at Qilu Hospital of Shandong University and Tongji Hospital of Huazhong University of Science and Technology in Wuhan from April 2004 to April 2021. The study was approved by the Ethics Committee of Qilu Hospital of Shandong University (protocol number: KYLL-202301-012), and informed consent was waived. We included patients diagnosed with OCCC in SEER database from 2010 to 2019. The information of patients was obtained using SEER*Stat soft­ ware (version 8.4.1) from SEER Research Plus data, 17 registries. The inclusion criteria were as follows: (1) histologically confirmed clear cell carcinoma of the ovary; (2) survival time exceeds 1 month; (3) under­ went surgical treatment; (4) availability of information on tumor later­ ality, lymph node status, tumor size, stage, carbohydrate antigen-125 (CA-125) level, residual tumor, and chemotherapy. Participants who lacked follow-up data were excluded.
+2.2. Procedures and outcomes
+The clinicopathologic variables considered for each patient included age, stage, tumor size, laterality, CA-125, lymph node status, lympha­ denectomy, chemotherapy, and survival time. Additionally, the SEER cohort included information on residual tumors. Age was categorized as a binary parameter (15–49 years and 50+ years) to align with the cat­ egorical variable in the SEER database and considering the age range with a high incidence of OCCC. Tumor size (cm) was categorized as 0–10 and 10+ cm, following prior studies. Lymph node status was classified as no lymphadenectomy, positive lymph node, or negative lymph node. CA-125 levels were categorized as normal or elevated based on the critical value of 35 IU/ml. Residual tumor was classified as no cytore­ ductive surgery, macroscopic residual tumor, or no gross residual tumor.
+
+European Journal of Surgical Oncology 50 (2024) 107975
+The original staging information for included patients was evaluated according to the American Joint Committee on Cancer (AJCC) edition 7, the SEER Joint Staging Group and the EOD 2018 Staging Group. We then reset the original staging information according to the Federation In­ ternational of Gynecology and Obstetrics (FIGO) 2018 staging rules. The lymphadenectomy group comprised patients who underwent pelvic or/ and para-aortic lymphadenectomy, while the no-lymphadenectomy group consisted of patients who did not have pelvic or para-aortic lymphadenectomy.
+The primary outcome for both cohorts is OS. In addition, recurrencefree survival (RFS) was analyzed in the Chinese cohort. OS is defined as the length of time between the date of surgery and the date of death from any cause or the last follow-up. RFS was defined as the duration from the date of surgery to the date of disease recurrence or the last follow-up.
+2.3. Statistical analysis
+Comparisons between groups were analyzed using χ2 or Fisher exact tests for categorical variables. with statistical significance set at p < 0.05 for both sides. Cox proportional risk models are employed to assess the hazard ratio (HR) for survival. Univariate cox regression analysis included all variables, while multivariate cox regression analyses considered variables that exhibited univariable significance or were deemed clinically relevant to patient outcomes. The hazard ratio is re­ ported with a 95 % confidence interval (CI). Survival curves were con­ structed using the Kaplan-Meier method, and differences in KaplanMeier survival were assessed using the logarithmic rank test of trends.
+Recently, a large amount of evidence has highlighted the effective­ ness of propensity score methods as an alternative to randomized controlled trials [21–24]. To minimize the influence of potential con­ founders on selection bias and primary outcomes, we applied a pro­ pensity scoring matching (PSM) for the SEER cohort. Variables such as laterality, tumor size, CA-125 level, chemotherapy, and residual tumor, which could influence preoperative management or a surgeon’s decision to perform lymphadenectomy, were used in the matching process. Notably, age, stage, and lymph node status were not included to prevent loss of stage III cases in the no-lymphadenectomy group, as these cases could not be matched with any cases in the no-lymphadenectomy group. For matching, we employed a 1:1 matching scheme with a caliper value of 0.2. We did not perform a propensity score in the Chinese cohort because the baseline data of the early and advanced lymphadenectomy groups were consistent with those of the no-lymphadenectomy groups.
+All analyses were performed using R software (version 4.3.0; R Foundation, Vienna, Austria).
+3. Results
+3.1. Baseline characteristics
+In our study, we included a total of 1777 OCCC patients with comprehensive clinical information from the SEER database and 199 patients from the Chinese registry (Fig. 1). The median follow-up time in the SEER cohort was 34 months (interquartile range [IQR] 14–66), while in the Chinese cohort, it was 38 months (IQR 24–61) (Table 1). Among the Chinese cohort, 47 (23.6 %) patients did not undergo lym­ phadenectomy, which was comparable to the SEER cohort where 365 (20.5 %) patients did not have lymphadenectomy. In the Chinese cohort, 17 (11.2 %) out of 152 patients who underwent lymphadenectomy had positive lymph nodes, compared to 186 (13.2 %) out of 1412 patients in the SEER cohort who had lymphadenectomy. In both the SEER (1121 [79.4 %] vs. 250[68.5 %], p < 0.001) and Chinese (121[79.6 %] vs. 27 [57.4 %], p = 0.004) cohorts, the lymphadenectomy group had a higher survival rate than the no-lymphadenectomy group at the end of the analysis period. Notably, in the Chinese cohort, patients in the nolymphadenectomy group were more likely to experience relapse than those in the lymphadenectomy group (22 [46.8 %] vs. 43 [28.3 %], p =
+
+2
+
+Y. Liu et al.
+
+European Journal of Surgical Oncology 50 (2024) 107975
+
+Fig. 1. Flowchart of the study and the selection of OCCC. OCCC, ovarian clear cell carcinoma; SEER, Surveillance, Epidemiology, and End Results; CA-125, carbohydrate antigen-125; RFS, recurrence-free survival; OS, overall survival.
+
+0.021). In the SEER cohort, the proportion of patients without gross residual lesions in the lymphadenectomy group was significantly higher than that in the no-lymphadenectomy group (871[61.7 %] vs. 163[44.7 %], p < 0.001).
+3.2. Risk factor analysis
+In univariate cox proportional regression analysis of the SEER cohort, lymphadenectomy was not associated with better OS in early patients (HR 0.79[95 %CI 0.54–1.16], p = 0.237), but it was signifi­ cantly associated with better OS in advanced patients (HR 0.65 [0.50–0.85], p = 0.002; Table S2). Additionally, in the Chinese cohort, patients in the lymphadenectomy group did not have better OS (Table S3) or RFS (Table S4) than those in the no-lymphadenectomy group. Furthermore, univariate analysis in the SEER cohort also revealed that tumor laterality and stage was associated with OS in early patients, and age, tumor laterality, tumor size, lymph node status, and residual tumor were associated with OS in advanced patients.
+Therefore, variables that were significant in univariate analysis and that were clinically considered to affect the prognosis of patients were included in multivariate cox regression analysis. Multivariate cox regression analysis showed that lymphadenectomy had no significant impact on OS in patients with either early (HR 0.84[0.57–1.23], p = 0.367, Fig. 2A) or advanced (HR 0.74[0.52–1.04], p = 0.083, Fig. 2B) OCCC in the SEER cohort. Meanwhile, multivariate cox regression analysis in the Chinese cohort showed that lymphadenectomy had no significant effect on OS (Fig. S1) and RFS (Fig. S2) in patients with OCCC. What’ s more, stage in the SEER cohort was associated with OS in early patients, and age, tumor size and tumor laterality were associated with OS in advanced patients.
+3.3. Kaplan-Meier survival analysis
+Kaplan-Meier survival analysis for patients with early disease demonstrated that lymphadenectomy did not improve OS (China p = 0.22, Fig. S3A; SEER p = 0.24, Fig. S4A) and RFS (China p = 0.18, Fig. S5A) compared to patients in the no-lymphadenectomy group. In the survival analysis for patients with advanced disease, the Chinese
+
+cohort analysis showed that lymphadenectomy did not enhance OS (p = 0.61, Fig. S3B) and RFS (p = 0.83, Fig. S5B), but in the SEER cohort, lymphadenectomy was associated with improved OS (p < 0.01, Fig. S4B).
+To eliminate the influence of confounding factors, we adjusted the data of the SEER database for PSM. In the SEER database, PSM for the lymphadenectomy group and no-lymphadenectomy group included 218 pairs of patients with early disease and 136 pairs of patients with advanced disease. Baseline characteristics of the unmatched and matched cohorts are provided in the supplementary material (Tables S5 and S6). Univariate analyses of early and advanced patients in the SEER cohort after adjustment for PSM are shown in Table S7. Multivariate Cox regression analysis after PSM showed that lymphadenectomy was not a prognostic factor for OS in patients with both early (HR 0.84 [95 % CI 0.50–1.43], p = 0.528; Fig. 3A) and advanced (HR 0.78 [95 % CI 0.50–1.21], p = 0.270; Fig. 3B) disease in the SEER cohort. In the SEER cohort after PSM, Kaplan-Meier analysis demonstrated that lymphade­ nectomy did not significantly impact OS in patients with early (p = 0.28, Fig. 4A) and advanced (p = 0.49, Fig. 4B) disease. In the Chinese cohort, the two groups of patients in the early and advanced stages did not differ significantly with respect to clinical or demographic variables, and all variables were generally balanced between the two groups (Table S8). Therefore, we did not perform a propensity score.
+To further refine the impact of lymphadenectomy on OCCC at different stages, we divided the patients in the SEER cohort into FIGO stages I, II, III, and IV. Survival analysis of patients in each stage from the SEER cohort showed that lymphadenectomy did not significantly affect OS in patients with stage I and IV OCCC but had a significant influence on patients with stage II and III OCCC (I p = 0.66; II p = 0.04; III p = 0.02; IV p = 0.11; Fig. S6). However, in the SEER cohort after PSM, Kaplan-Meier analysis found that lymphadenectomy did not have a significant impact on OS of patients with stage I to IV OCCC (I p = 0.56; II p = 0.79; III p = 0.62; IV p = 0.25; Fig. 5).
+4. Discussion
+Lymphadenectomy is a complex surgical procedure with intra­ operative and postoperative complications such as vascular and nerve
+
+3
+
+Y. Liu et al.
+
+European Journal of Surgical Oncology 50 (2024) 107975
+
+Table 1 Baseline characteristics of eligible patients, stratified by lymphadenectomy.
+
+Characteristics
+
+SEER database
+
+Chinese registry
+
+Total (n = 1777)
+
+No-lymphadenectomy (n = 365)
+
+lymphadenectomy (n = 1412)
+
+P value Total (n = 199)
+
+No- lymphadenectomy lymphadenectomy (n
+
+(n = 47)
+
+= 152)
+
+P value
+
+Age, years 15-49
+50+
+Laterality Unilateral
+Bilateral
+FIGO 2018 stage I
+II
+III
+IV Tumor size, cm
+0-10
+10+
+Lymph node metastasis Nolymphadenectomy Positive
+Negative
+CA-125 Normal
+Elevated
+Chemotherapy No
+Yes
+Residual tumor No cytoreductive surgery Macroscopic residual tumor No gross residual tumor
+Overall survival Alive
+Dead
+Recurrence No
+
+432 (24.3) 1345 (75.7)
+1594 (89.7) 183 (10.3)
+1105 (62.2) 213 (12.0) 339 (19.1) 120 (6.8)
+720 (40.5) 1057 (59.5)
+365 (20.5) 186 (10.5) 1226 (69.0)
+501 (28.2) 1276 (71.8)
+286 (16.1) 1491 (83.9)
+604 (34.0) 139 (7.8)
+1034 (58.2)
+1371 (77.2) 406 (22.8)
+NA
+
+Yes Median follow-up time,
+months (IQR)
+
+NA 34 (14–66)
+
+74 (20.3) 291 (79.7)
+300 (82.2) 65 (17.8)
+167 (45.8) 51 (14.0) 90 (24.7) 57 (15.6) 162 (44.4) 203 (55.6)
+365 (100.0) 0 (0.0) 0 (0.0)
+94 (25.8) 271 (74.2)
+69 (18.9) 296 (81.1)
+136 (37.3) 66 (18.1) 163 (44.7)
+250 (68.5) 115 (31.5)
+NA NA 24 (8–55)
+
+358 (25.4) 1054 (74.6)
+1294 (91.6) 118 (8.4)
+938 (66.4) 162 (11.5) 249 (17.6) 63 (4.5) 558 (39.5) 854 (60.5)
+0 (0.0) 186 (13.2) 1226 (86.8)
+407 (28.8) 1005 (71.2)
+217 (15.4) 1195 (84.6)
+468 (33.1) 73 (5.2) 871 (61.7)
+1121 (79.4) 291 (20.6)
+NA NA 36 (16–69)
+
+0.047
+
+82 (41.2)
+
+<0.001
+
+117 (58.8)
+165 (82.9) 34 (17.1)
+
+<0.001
+
+113 (56.8) 30 (15.1)
+
+50 (25.1)
+
+0.094
+
+6 (3.0)
+100 (50.3) 99 (49.7)
+
+<0.001 47 (23.6)
+
+17 (8.5)
+
+0.267
+
+135 (67.8)
+37 (18.6)
+
+0.110
+
+162 (81.4)
+85 (42.7)
+
+<0.001
+
+114 (57.3)
+NA
+
+NA
+
+NA
+
+<0.001
+
+148 (74.4) 51 (25.6)
+
+NA <0.001
+
+134 (67.3) 65 (32.7) 38 (24–61)
+
+16 (34.0) 31 (66.0)
+31 (66.0) 16 (34.0)
+17 (36.2) 5 (10.6) 22 (46.8) 3 (6.4) 24 (51.1) 23 (48.9)
+47 (100.0) 0 (0.0) 0 (0.0)
+11 (23.4) 36 (76.6)
+15 (31.9) 32 (68.1)
+NA NA NA
+27 (57.4) 20 (42.6)
+25 (53.2) 22 (46.8) 30 (11–55.5)
+
+66 (43.4) 86 (56.6)
+134 (88.2) 18 (11.8)
+96 (63.2) 25 (16.4) 28 (18.4) 3 (2.0) 76 (50.0) 76 (50.0)
+0 (0.0) 17 (11.2) 135 (88.8)
+26 (17.1) 126 (82.9)
+70 (46.1) 82 (53.9)
+NA NA NA
+121 (79.6) 31 (20.4)
+109 (71.7) 43 (28.3) 41 (25.5–62)
+
+0.310 0.001 <0.001
+1.000 <0.001
+0.391 0.094 NA
+0.004 0.021 0.032
+
+Values are present as number (%). SEER, Surveillance, Epidemiology and End Results cancer registry; CA-125, carbohydrate antigen 125; FIGO, International Federation of Gynecology and Obstetrics; IQR, interquartile range; NA, not available.
+
+injury, increased blood loss, increased operative time, and an increased risk of lymphocele and lymphedema. Moreover, it’s not always feasible to have surgeons with expertise in lymphadenectomy and comprehen­ sive staging procedures available for every initial procedure. Given these complexities and the ongoing debate about the role of lymphadenec­ tomy, this study did not find evidence that lymphadenectomy in the primary surgical treatment of OCCC has a significant impact on OS or RFS in patients. Therefore, routine systematic lymphadenectomy
+
+deserves careful consideration, but it is essential to remove pathological or enlarged lymph nodes when necessary [25].
+In the literature, the reported rate of lymph node metastasis in OCCC patients clinically confined to the ovary ranges from 0 % to 11 % [15, 26–29], which is lower than that in ovarian serous carcinoma [30]. For instance, Mahdi et al., in 2013 identified nearly 1900 OCCC patients restricted to the ovary through the SEER program. Among the 1359 cases that underwent lymphadenectomy, only 61 (4.5 %) had positive
+
+4
+
+Y. Liu et al.
+
+European Journal of Surgical Oncology 50 (2024) 107975
+
+Fig. 2. Forest plots for multivariate cox regression analyses of factors associated with OS for early (A) and advanced (B) patients in the SEER cohort. SEER, Surveillance, Epidemiology, and End Results; HR, hazard ratio; CI, confidence interval; FIGO, Federation International of Gynecology and Obstetrics; CA-125, carbohydrate antigen-125; NA, not available; OS, overall survival.
+
+lymph nodes and progressed to stage IIIC [26]. In our study, the rate of lymph node metastasis was 11.2 % in the Chinese cohort and 13.2 % in the SEER cohort, consistent with previous reports. This suggests that performing lymphadenectomy solely for the detection of positive lymph
+
+nodes results in overtreatment in at least 89 % of cases. However, it is important to note that lymphadenectomy remains crucial for detecting metastatic lymph nodes because patients with positive lymph nodes generally have a poor prognosis. For instance, one study found that the
+
+5
+
+Y. Liu et al.
+
+European Journal of Surgical Oncology 50 (2024) 107975
+
+Fig. 3. Forest plots for multivariate cox regression analyses of factors associated with OS for early (A) and advanced (B) patients in the SEER cohort after PSM. SEER, Surveillance, Epidemiology, and End Results; HR, hazard ratio; CI, confidence interval; FIGO, Federation International of Gynecology and Obstetrics; CA-125, carbohydrate antigen-125; NA, not available; OS, overall survival; PSM, propensity score matching.
+
+rate of lymph node metastasis in patients with clinically significant stage I OCCC with positive cytology and ovarian surface involvement was as high as 37.5 % [15]. This underscores the importance of carefully screening patients with stage I OCCC who exhibit positive cytology or ovarian surface involvement, as lymphadenectomy should not be readily omitted in these cases.
+The impact of lymphadenectomy on the survival of OCCC patients remains a subject of controversy, both in cases of early and advanced disease. Moreover, there have been few randomized studies published on this topic. Presently, there is a lack of robust evidence supporting the necessity of complete surgical staging, particularly in early-stage OCCC, and whether lymphadenectomy offers any benefits remains uncertain
+
+[31]. From a therapeutic standpoint, the role of lymphadenectomy re­ mains ambiguous. While lymph node metastasis is recognized as an independent prognostic factor, several studies have not found it to be associated with OS in multivariate analyses [12,17,18,27,32]. For instance, Chan et al. [17], reported that although patients with non-clear cell EOC experienced significantly improved disease-specific survival at 5 years after lymphadenectomy, this benefit was not significant in a small subgroup of patients with clear cell histology. This discrepancy could be attributed to variations in sensitivity to postoperative chemo­ therapy or an uneven distribution of stage I tumor subtypes. Similarly, Suzuki et al. [18] discovered that lymphadenectomy in clinical pTI-IIB OCCC patients did not lead to improvements in OS and disease-free
+
+6
+
+Y. Liu et al.
+
+European Journal of Surgical Oncology 50 (2024) 107975
+
+Fig. 4. OS of patients with early (A) and advanced (B) OCCC in the SEER cohort after PSM. OS, overall survival; OCCC, ovarian clear cell carcinoma; SEER, Surveillance, Epidemiology, and End Results; PSM, propensity score matching.
+
+Fig. 5. OS for patients with stage I (A), II (B), III (C), IV (D) OCCC in the SEER cohort after PSM. OS, overall survival; OCCC, ovarian clear cell carcinoma; SEER, Surveillance, Epidemiology, and End Results; PSM, propensity score matching.
+
+survival (p = 0.353 and p = 0.645, respectively). The results are congruent with our current data. One possible explanation for the lack of a significant survival benefit from lymphadenectomy is that while it may remove potentially minor lymphatic metastases, its effect is marginal when compared to platinum-based adjuvant chemotherapy. To establish the current benefit of lymphadenectomy in patients with early-stage disease, it may be necessary to conduct a prospective randomized study with longer follow-up periods and standardized chemotherapy protocols. This would provide more conclusive evidence regarding the role of lymphadenectomy in OCCC treatment.
+The recent findings from the well-known LION study have raised important questions about the role of lymphadenectomy in patients with advanced ovarian cancer [16]. These results have prompted a careful reevaluation of the benefits of lymphadenectomy in the context of advanced OCCC, which is still not fully explained. In a study involving 166 patients with advanced OCCC, no significant difference in OS was
+
+observed between the lymphadenectomy group and the no-lymphadenectomy group, even after adjusting for multiple clinico­ pathological factors using PSM (HR 1.170 [95 % CI 0.633–2.187], p = 0.615) [20]. This suggests that radical lymphadenectomy may not serve as a prognostic indicator of oncological outcomes, despite the hypoth­ esis that it could potentially improve survival by removing undetected micro-metastatic disease or drug-resistant cell clones residing in the lymph nodes. Additionally, it’s essential to recognize that lymphade­ nectomy may not completely eliminate occult metastases, even if iso­ lated lymph node metastases are identified. There could be further micro-metastases that have spread to other lymph nodes or distant or­ gans through a network of lymphatic vessels [20]. However, the ques­ tion remains open regarding whether lymphadenectomy can effectively eliminate occult metastases that might contribute to disease recurrence.
+It’s important to emphasize that these retrospective results should not lead to an immediate dismissal of lymphadenectomy in the
+
+7
+
+Y. Liu et al.
+management of OCCC. The study has several limitations, including a lack of information on the extent of lymphadenectomy. Furthermore, the study inherits inherent limitations associated with investigating rare tumor types. The small sample size restricts the strength of conclusions regarding the association of survival outcomes with specific variables. Much of the standard practice in the management and treatment of OCCC is derived from large trials that encompass clear cell histological subtypes, representing only a small fraction of the total enrolled sub­ jects. Despite these limitations, the data generated in this study can serve as a hypothesis for future prospective investigations to explore the impact of lymphadenectomy on this rare form of EOC. Therefore, it is hoped that the data reported here will contribute to the ongoing refinement of ovarian cancer management guidelines and future sys­ tematic reviews and meta-analyses, ultimately benefiting women with this rare disease.
+5. Conclusion
+In summary, when analyzing homogeneous patient groups, the per­ formance of lymphadenectomy in women diagnosed with OCCC did not demonstrate a significant impact on OS and RFS. This finding offers insights for physicians to estimate the risks and benefits of lymphade­ nectomy before surgery, particularly when assessing its impact on oncological outcomes.
+Ethics approval and consent to participate
+The retrospective study was approved by Ethics Committees of the Qilu Hospital of Shandong University and conducted according to the guidelines of the Declaration of Helsinki.
+Funding
+The work was supported by China Primary Health Care Foundation (grant numbers 6010123139) and the Natural Science Foundation joint fund project of Shandong Province (ZR202209070012).
+Availability of data and materials
+All SEER data here are publicly available in the SEER database [https ://seer.cancer.gov/]. The China dataset used during this study are available from the corresponding author on reasonable request.
+Consent for publication
+Not applicable.
+CRediT authorship contribution statement
+Yan Liu: Conceptualization, Data curation, Methodology, Formal analysis, Writing – original draft. Wenna Zhao: Resources, Writing – review & editing. Changzhen Huang: Supervision, Writing – review & editing. Ran Chu: Conceptualization, Methodology, Formal analysis, Writing – original draft. Zhuang Li: Validation, Writing – review & editing. Yuanjian Wang: Resources, Writing – review & editing. Li Song: Writing – review & editing, Project administration, Funding acquisition. Li Li: Writing – review & editing, Project administration, Funding acquisition.
+Declaration of competing interest
+The authors declare that they have no competing interests.
+Acknowledgements
+
+European Journal of Surgical Oncology 50 (2024) 107975
+collection, maintenance, distribution and so on.
+Appendix A. Supplementary data
+Supplementary data to this article can be found online at https://doi. org/10.1016/j.ejso.2024.107975.
+References
+[1] Ku FC, Wu RC, Yang LY, Tang YH, Chang WY, Yang JE, et al. Clear cell carcinomas of the ovary have poorer outcomes compared with serous carcinomas: results from a single-center Taiwanese study. J Formos Med Assoc 2018;117(2):117–25.
+[2] Machida H, Matsuo K, Yamagami W, Ebina Y, Kobayashi Y, Tabata T, et al. Trends and characteristics of epithelial ovarian cancer in Japan between 2002 and 2015: a JSGO-JSOG joint study. Gynecol Oncol 2019;153(3):589–96.
+[3] Chiang YC, Chen CA, Chiang CJ, Hsu TH, Lin MC, You SL, et al. Trends in incidence and survival outcome of epithelial ovarian cancer: 30-year national populationbased registry in Taiwan. J Gynecol Oncol 2013;24(4):342–51.
+[4] Kim SI, Lim MC, Lim J, Won YJ, Seo SS, Kang S, et al. Incidence of epithelial ovarian cancer according to histologic subtypes in Korea, 1999 to 2012. J Gynecol Oncol 2016;27(1):e5.
+[5] Zhu C, Xu Z, Zhang T, Qian L, Xiao W, Wei H, et al. Updates of Pathogenesis, diagnostic and therapeutic perspectives for ovarian clear cell carcinoma. J Cancer 2021;12(8):2295–316.
+[6] Iida Y, Okamoto A, Hollis RL, Gourley C, Herrington CS. Clear cell carcinoma of the ovary: a clinical and molecular perspective. Int J Gynecol Cancer 2021;31(4): 605–16.
+[7] Fujiwara K, Shintani D, Nishikawa T. Clear-cell carcinoma of the ovary. Ann Oncol 2016;27(Suppl 1):i50–2.
+[8] del Carmen MG, Birrer M, Schorge JO. Clear cell carcinoma of the ovary: a review of the literature. Gynecol Oncol 2012;126(3):481–90.
+[9] Okamoto A, Glasspool RM, Mabuchi S, Matsumura N, Nomura H, Itamochi H, et al. Gynecologic Cancer InterGroup (GCIG) consensus review for clear cell carcinoma of the ovary. Int J Gynecol Cancer 2014;24(9 Suppl 3):S20–5.
+[10] Manning-Geist B, Gordhandas S, Hodgson A, Zhou QC, Iasonos A, Chi DS, et al. Management of patients with early-stage ovarian clear cell carcinoma: risk stratification and fertility conservation. Int J Gynecol Cancer 2022;32(12): 1576–82.
+[11] Armstrong DK, Alvarez RD, Backes FJ, Bakkum-Gamez JN, Barroilhet L, Behbakht K, et al. NCCN Guidelines® insights: ovarian cancer, version 3.2022. J Natl Compr Cancer Netw 2022;20(9):972–80.
+[12] Magazzino F, Katsaros D, Ottaiano A, Gadducci A, Pisano C, Sorio R, et al. Surgical and medical treatment of clear cell ovarian cancer: results from the multicenter Italian Trials in Ovarian Cancer (MITO) 9 retrospective study. Int J Gynecol Cancer 2011;21(6):1063–70.
+[13] Oseledchyk A, Leitao Jr MM, Konner J, O’Cearbhaill RE, Zamarin D, Sonoda Y, et al. Adjuvant chemotherapy in patients with stage I endometrioid or clear cell ovarian cancer in the platinum era: a Surveillance, Epidemiology, and End Results Cohort Study, 2000-2013. Ann Oncol 2017;28(12):2985–93.
+[14] Takano M, Kikuchi Y, Yaegashi N, Kuzuya K, Ueki M, Tsuda H, et al. Clear cell carcinoma of the ovary: a retrospective multicentre experience of 254 patients with complete surgical staging. Br J Cancer 2006;94(10):1369–74.
+[15] Mueller JJ, Holzapfel M, Han CH, Santos K, Gunderson C, Moore K, et al. Staging lymphadenectomy in patients with clear cell carcinoma of the ovary. Int J Gynecol Cancer 2016;26(1):120–4.
+[16] Harter P, Sehouli J, Lorusso D, Reuss A, Vergote I, Marth C, et al. A randomized trial of lymphadenectomy in patients with advanced ovarian neoplasms. N Engl J Med 2019;380(9):822–32.
+[17] Chan JK, Munro EG, Cheung MK, Husain A, Teng NN, Berek JS, et al. Association of lymphadenectomy and survival in stage I ovarian cancer patients. Obstet Gynecol 2007;109(1):12–9.
+[18] Suzuki S, Kajiyama H, Shibata K, Ino K, Nawa A, Sakakibara K, et al. Is there any association between retroperitoneal lymphadenectomy and survival benefit in ovarian clear cell carcinoma patients? Ann Oncol 2008;19(7):1284–7.
+[19] Nasioudis D, Latif NA, Haggerty AF, Giuntoli Ii RL, Kim SH, Ko EM. Outcomes of comprehensive lymphadenectomy for patients with advanced stage ovarian carcinoma and rare histologic sub-types. Int J Gynecol Cancer 2021;31(8):1132–6.
+[20] Kajiyama H, Suzuki S, Yoshikawa N, Tamauchi S, Shibata K, Kikkawa F. The impact of systematic retroperitoneal lymphadenectomy on long-term oncologic outcome of women with advanced ovarian clear-cell carcinoma. J Gynecol Oncol 2020;31 (4):e47.
+[21] Hullsiek KH, Louis TA. Propensity score modeling strategies for the causal analysis of observational data. Biostatistics 2002;3(2):179–93.
+[22] Mitra N, Indurkhya A. A propensity score approach to estimating the costeffectiveness of medical therapies from observational data. Health Econ 2005;14 (8):805–15.
+[23] Schneeweiss S, Rassen JA, Glynn RJ, Avorn J, Mogun H, Brookhart MA. Highdimensional propensity score adjustment in studies of treatment effects using health care claims data. Epidemiology 2009;20(4):512–22.
+[24] Rosenbaum PR. Discussing hidden bias in observational studies. Ann Intern Med 1991;115(11):901–5.
+
+We thank all staff of the SEER database for their contribution in data
+
+8
+
+Y. Liu et al.
+[25] Hirose S, Tanabe H, Nagayoshi Y, Hirata Y, Narui C, Ochiai K, et al. Retrospective analysis of sites of recurrence in stage I epithelial ovarian cancer. J Gynecol Oncol 2018;29(3):e37.
+[26] Mahdi H, Moslemi-Kebria M, Levinson KL, Gojayev A, Lockhart D, Ali-Fehmi R, et al. Prevalence and prognostic impact of lymphadenectomy and lymph node metastasis in clinically early-stage ovarian clear cell carcinoma. Int J Gynecol Cancer 2013;23(7):1226–30.
+[27] Takano M, Sugiyama T, Yaegashi N, Suzuki M, Tsuda H, Sagae S, et al. The impact of complete surgical staging upon survival in early-stage ovarian clear cell carcinoma: a multi-institutional retrospective study. Int J Gynecol Cancer 2009;19 (8):1353–7.
+[28] Nomura H, Tsuda H, Susumu N, Fujii T, Banno K, Kataoka F, et al. Lymph node metastasis in grossly apparent stages I and II epithelial ovarian cancer. Int J Gynecol Cancer 2010;20(3):341–5.
+
+European Journal of Surgical Oncology 50 (2024) 107975
+[29] Ulker V, Kuru O, Numanoglu C, Akbayır O, Polat I, Uhri M. Lymph node metastasis in patients with epithelial ovarian cancer macroscopically confined to the ovary: review of a single-institution experience. Arch Gynecol Obstet 2014;289(5): 1087–92.
+[30] Takano M, Tsuda H, Sugiyama T. Clear cell carcinoma of the ovary: is there a role of histology-specific treatment? J Exp Clin Cancer Res 2012;31(1):53.
+[31] Yamazaki H, Todo Y, Shimada C, Takeshita S, Minobe S, Okamoto K, et al. Therapeutic significance of full lymphadenectomy in early-stage ovarian clear cell carcinoma. J Gynecol Oncol 2018;29(2):e19.
+[32] Sakuragi N, Yamada H, Oikawa M, Okuyama K, Fujino T, Sagawa T, et al. Prognostic significance of lymph node metastasis and clear cell histology in ovarian carcinoma limited to the pelvis (pT1M0 and pT2M0). Gynecol Oncol 2000;79(2): 251–5.
+
+9
+
