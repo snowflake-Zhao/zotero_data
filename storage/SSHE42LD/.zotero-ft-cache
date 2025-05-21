@@ -1,0 +1,1643 @@
+SURVSHAP(T): TIME-DEPENDENT EXPLANATIONS
+OF MACHINE LEARNING SURVIVAL MODELS
+
+arXiv:2208.11080v2 [cs.LG] 7 Sep 2022
+
+Mateusz Krzyzin´ ski Faculty of Mathematics and Information Science
+Warsaw University of Technology mateusz.krzyzinski.stud@pw.edu.pl
+Hubert Baniecki Faculty of Mathematics and Information Science
+Warsaw University of Technology
+
+Mikołaj Spytek Faculty of Mathematics and Information Science
+Warsaw University of Technology
+Przemysław Biecek Faculty of Mathematics and Information Science
+Warsaw University of Technology
+
+ABSTRACT
+Machine and deep learning survival models demonstrate similar or even improved time-to-event prediction capabilities compared to classical statistical learning methods yet are too complex to be interpreted by humans. Several model-agnostic explanations are available to overcome this issue; however, none directly explain the survival function prediction. In this paper, we introduce SurvSHAP(t), the ﬁrst time-dependent explanation that allows for interpreting survival black-box models. It is based on SHapley Additive exPlanations with solid theoretical foundations and a broad adoption among machine learning practitioners. The proposed methods aim to enhance precision diagnostics and support domain experts in making decisions. Experiments on synthetic and medical data conﬁrm that SurvSHAP(t) can detect variables with a time-dependent effect, and its aggregation is a better determinant of the importance of variables for a prediction than SurvLIME. SurvSHAP(t) is model-agnostic and can be applied to all models with functional output. We provide an accessible implementation of time-dependent explanations in Python at https://github.com/MI2DataLab/survshap.
+Keywords survival analysis · censored data · Cox Proportional Hazards model · Random Survival Forest · interpretability · explainable AI
+1 Introduction
+Machine learning has been gaining popularity in practical applications to solve various problems. Especially in the medical domain, its capabilities prove highly advantageous. Presumably, every medical professional will work with AI technology in the future, particularly deep learning [60]. Unfortunately, many machine learning models, especially complex ones such as deep neural networks [32, 38, 68], are considered black-box models, i.e., it is not possible to know directly what inﬂuences their prediction internally [9]. Such knowledge proves helpful for explaining and examining the model of interest.
+It enables to verify that the predictions are made on the same basis that human domain experts would make them and increases trust in model predictions. The fact that black-box models do not come with readily available explanations has been a hindrance in their widespread adoption, as in many areas, including medicine, it is crucial to know what affects the model output. Therefore, the need for research on explanation methods of such complex models has been postulated [3, 22]. However, often worse-performing but more common and well-established models are still preferred in many settings [5].
+This phenomenon is evident in the ﬁeld of survival analysis. In this area, the most common are parametric or semiparametric statistical models with the semi-interpretable Cox Proportional Hazards model [14] (CPH or Cox model in short) at the forefront [39, 43]. However, due to the limitations of CPH in modeling complex dependencies and its
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+observation of interest
+𝕩
+
+survival function prediction
+
+Neural Network Cox model
+
+Random Survival Forest
+
+...
+
+survival model
+
+SurvSHAP(t) values
+
+SurvSHAP(t)
+
+local accuracy
+
+average
+
+survival 
+
+
+function
+
+
+Aggregated SurvSHAP(t)
+local variable importance
+
+Figure 1: SurvSHAP(t) allows for time-dependent explainability of any survival model predictions. SurvSHAP(t) values add up to the survival function predicted by the model and aggregated over time can be treated as a local importance ranking of variables.
+strong assumptions that are often not met [52], machine learning models, which are more ﬂexible, have become used in practice, both in healthcare [17, 26, 59] and in other ﬁelds [10, 56]. The growing popularity of this class of models motivates the need to develop methods for explaining their predictions.
+To the best of our knowledge, there are few existing post-hoc explanation methods speciﬁc to complex survival models. These are counterfactual explanations [34], a technique based on the use of neural additive models called SurvNAM [61], and different versions of SurvLIME [35, 36] – an approach inspired by LIME [50]. However, in none of these methods, the time dimension, crucial for predicting the survival conditional probability distribution, is included in the ﬁnal explanation.
+Thus, we aim to extend the available techniques by presenting the new method called SurvSHAP(t) that ﬁlls this gap (see diagram in Figure 1). The proposed solution generalizes SHapley Additive exPlanations (SHAP) [41] to survival models. However, the method can be applied to any model with functional output. In the survival analysis setting, the time dimension is used in the proposed explanations – they provide an insight into how each variable inﬂuences the model’s response (survival function) at each time point. We refer to this property as time-dependent explainability. The contributions of this paper can be summarized as follows:
+1. We introduce SurvSHAP(t) – the ﬁrst time-dependent explanation that allows for interpreting any survival model with functional output. It is based on SHAP with solid theoretical foundations and a broad adoption among machine learning practitioners.
+2. We prove that SurvSHAP(t) meets the local accuracy property and accurately explains the model predictions in the form of a survival function, describing variable contributions across the entire analyzed time range. The conducted experiments conﬁrm that SurvSHAP(t) is able to detect variables with a time-dependent effect, and its aggregation is a better determinant of the importance of variables for a prediction than SurvLIME.
+3. We provide an accessible implementation of both SurvSHAP(t) and SurvLIME in Python. Source code for both methods and the data generation is available on GitHub at https://github.com/MI2DataLab/survshap.
+
+2
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+2 Related work
+Machine learning survival models. The most fundamental and frequently used approach to survival tasks is applying the Cox Proportional Hazards model, which is a semi-parametric model. It has limitations such as a degradation of performance when working with high dimensional data or correlated variables. A strong proportional hazards assumption has highlighted the need for developing methods based on classical machine learning techniques appropriately adapted to the censored data [67].
+One popular survival machine learning model, which is used in our experiments, is Random Survival Forest (RSF) [28]. The most common splitting rule for forming individual decision trees is the log-rank splitting rule based on the log-rank test [53]. The single survival tree prediction for an individual is a function computed for all individuals in the same tree terminal node; most often a cumulative hazard function estimated using the Nelson-Aalen estimator [1, 47]. The entire prediction of RSF is the function averaged over all trees, which makes them able to predict complicated survival functions. Another class of models applied to survival analysis is Gradient Boosting Machines (GBM) [51]. A GBM performs a greedy stage-wise process with the objective of optimizing a selected function. In the basic case, it maximizes the log-partial likelihood known from the Cox model. The likelihood can also be substituted with a differentiable approximation of the concordance index – a metric used to evaluate the survival models’ performance [11]. Implementations of these models are accessible through open-source software like scikit-survival [49] Python package. In R, many popular packages can be adapted for survival predictions, including randomForestSRC [27] and gbm [24].
+Early adaptations of neural networks to survival analysis were proposed in the 1990s, e.g., a non-linear proportional hazards model trained using the partial likelihood function [18]. A similar idea is also used in more recent approaches to survival prediction, such as Cox-nnet [13] – the main difference is the modiﬁcation of the loss function. Modern deep learning models, such as DeepSurv [32] and Cox-Time [37], also often model a prognostic index corresponding to the linear predictor from the Cox model. However, there are also architectures that return more ﬂexible predictions without relying on the Cox model [21, 38, 69]. Another notable deep learning approach is DeepOmix, which has been proposed as an interpretable model for multi-omics data [68].
+Unfortunately, relatively few survival deep learning models have open-source implementations. Some of the solutions are available in pycox [37] and auton-survival [46] Python packages, or survivalmodels [58] R package.
+Explanations of machine learning models. Interpretability has many deﬁnitions, and one widely-used formulation is the degree to which a human can consistently understand model predictions [33]. Many complex machine and deep learning models are not directly interpretable, which leads to the development of eXplainable AI (XAI) [25]. Explanation of machine learning models can be divided into two categories: local methods, which are used to explain the model’s predictions for a particular observation, and global ones, which provide information about the overall behavior of the model. The most widespread model-agnostic local explanations are additive variable attributions: Local Interpretable Model-agnostic Explanations (LIME) [50] and SHapley Adaptive exPlanations (SHAP) [41].
+LIME [50] uses a local interpretable surrogate model ﬁtted to the vicinity (a new dataset generated artiﬁcially) of an individual observation. For tasks of regression and classiﬁcation, linear and logistic regression models are used, whose coefﬁcients have clear interpretations.
+SHAP [41] is based on the Shapley value framework from game theory [55], which was introduced into interpreting machine learning predictions in [64, 65]. Shapley values characterize how much each variable inﬂuences the model prediction in relation to the baseline average. Attributions are calculated as a mean change to the prediction after adding the examined variable to each possible subset of the model’s variables. KernelSHAP [41] is proposed as an exact estimation of Shapley values inspired by LIME. Exact KernelSHAP has two main limitations: high computation cost and producing misleading explanations when variables are dependent. The ﬁrst can be improved when explaining tree-ensemble models like random forests with the efﬁcient TreeSHAP algorithm [42]. The second can be overcome by a more thoughtful generation of neighbourhood samples under the curse of dimensionality [2] and the use of variational encoders to model feature dependences [48]. Many more explanations based on the SHAP framework like TimeSHAP [7] and FastSHAP [30] advance our understanding of complex learning algorithms.
+Alike implementations of survival machine learning models, explanations for classiﬁcation and regression models are available through open-source software both in Python (dalex [4], shap [41]) and R (DALEX [8], shapr [54]).
+Explanations of machine learning survival models. Some explanations of predictive models for the more standard regression and classiﬁcation tasks can be adapted for survival models with the use of single-point risk predictions or aggregations of survival functions [45]. However, this leads to the loss of information contained in the survival
+3
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+distribution, especially in the case of complex models algorithms modeling ﬂexible survival functions. In contrast, SurvSHAP(t) provides explanations of the whole distribution in the form of the survival function.
+To overcome the mentioned shortcomings, [36] proposes to adapt LIME into the SurvLIME method by using another object describing survival distribution – the cumulative hazard function (CHF) – as the basis for calculations. The Cox Proportional Hazards model is used as a surrogate model, whose coefﬁcients are ﬁtted by optimizing a loss function based on the distances between CHFs predicted by the local surrogate model and the black-box model. Like in LIME, the optimization problem is based on a sample of weighted observations from the local area around the point of interest. SurvLIME uses the L2 metric to calculate the distance between functions. SurvLIME-KS [35] is an extension to the method that uses Kolmogorov-Smirnov bounds for constructing sets of predicted CHFs, which helps to robustify the explanation. However, these methods take into account the distribution only in the computation phase, and the obtained results are the coefﬁcients of the Cox Proportional Hazards model (single values). SurvSHAP(t) extends the dependency on the distribution by providing time-dependent explainability, i.e., it returns an explanation for the entire support of the considered distribution (time range) while being able to aggregate it into meaningful single values.
+Moreover, counterfactual explanations for survival analysis models have been proposed, in which the survival function is used to ﬁnd the counterfactual [34]. Speciﬁcally, the difference between the two survival functions, for the original point of interest and the counterfactual, is based on the mean time-to-event distance for the set of observations. This method falls under a different explanation methods category than SurvSHAP(t) as it does not return variable attributions.
+Despite the existence of several explanation methods, further development is needed in the ﬁeld of XAI for survival analysis, and certain problems are apparent. Firstly, none of the known approaches supply time-dependent explanations. Another major deﬁciency is the lack of publicly available implementations of the methods described in the literature. Therefore, we present SurvSHAP(t) with the expected properties of the survival model explanation along with its implementation.
+3 Preliminaries
+We ﬁrst deﬁne the notation needed to later introduce time-dependent explanations in Section 4.
+3.1 Mathematical background of survival analysis
+Survival analysis deals with tasks based on censored data. That means we have incomplete information about an individual’s survival time for a part of the population from the dataset. Usually, the case of right censoring is considered – during the study, the event of interest, e.g., a patient’s death, is not observed for some part of the population. That means the observed event time is less than or equal to the actual survival time. Mathematically, a given instance i is represented as a triplet (xi, yi, δi), where xi = [x1i , x2i , . . . , xpi ] ∈ Rp indicates the variables vector; δi is the indicator of event of interest’s occurrence; and yi stands for the observed time (either survival time Ti when δi = 1 or censoring time Ci when δi = 0). Thus, one should acknowledge that Ti is a latent value for censored observations. The primary objective of survival analysis is the estimation of Tj for an instance j with variables vector xj. Most often, instead of predicting a single time moment, a certain function of time is the output.
+The ﬁrst key object is the survival function (1) which describes the probability of an individual surviving until time t without experiencing the event, i.e.,
+
+S(t) = P(T > t) = 1 − P(T ≤ t).
+
+(1)
+
+Another fundamental concept is the hazard function (2) that can be interpreted as the conditional failure rate in a short (inﬁnitesimal) time interval, provided that the event has not occurred by time t, which is deﬁned as
+
+h(t)
+
+=
+
+lim
+
+P(t
+
+≤
+
+T
+
+<
+
+t + ∆t | T
+
+≥
+
+t)
+
+=
+
+f (t) ,
+
+t→− 0
+
+∆t
+
+S(t)
+
+(2)
+
+where
+
+f (t)
+
+=
+
+−
+
+dS(t) dt
+
+is
+
+the
+
+event
+
+of
+
+interest’s
+
+density
+
+function.
+
+Therefore, the survival function is connected with the hazard function and can be rewritten as
+
+S(t) = exp(−H(t)),
+
+(3)
+
+4
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+where H(t) =
+
+t 0
+
+h(s)
+
+ds
+
+is
+
+called
+
+the
+
+cumulative
+
+hazard
+
+function.
+
+Moreover, based on the survival function, selecting the appropriate aggregation makes it possible to obtain other predictions of the type of the single values, e.g., time until an event of interest, risk score [57].
+
+3.2 Variable importance ranking in CPH and SurvLIME
+The coefﬁcients of a Cox Proportional Hazards model can be used to rank the relative importance of variables for a given prediction. We achieve this by comparing the absolute values of the coefﬁcients multiplied by the values of its variables |x(d) · b(d)| for each variable d – higher values indicate higher importance. Note that simply comparing the values of b coefﬁcients does not inform the end-user about the importance of variables as they can be of vastly different scales. The interpretation of a coefﬁcient b(d) on its own is that an increase of the variable x(d) by one unit indicates that the hazard rate for the given observation will be exp(b(d)) times higher than the actual value.
+We later use this method of ranking variables when comparing SurvLIME to SurvSHAP(t) in Section 6.2, as the SurvLIME explanation takes the form of Cox model coefﬁcients.
+
+4 Time-dependent explanations of machine learning survival models
+
+Let D = {(xi, yi, δi) : i = 1, 2, . . . , n} be the survival dataset used for training the black-box model. Moreover, assume that t1 < t2 < . . . < tm are distinct times to event of interest from the set {yi : δi = 1; i = 1, 2, . . . , n}. For each individual described by a variables vector x, the model returns the individual’s survival distribution Sˆ(t, x) (i.e., the
+distribution of the event of interest occurring over R≥0). The returned object is the survival function as it uniquely determines the distribution. Note that most often, the value of Sˆ(t, x) is known for all t ∈ {t1, . . . , tm} and for the remaining points, interpolations or step functions are used.
+
+The idea behind the proposed SurvSHAP(t) method is to use the survival function not only to compute an explanation
+but also to present its results. For this purpose, for the observation of interest x∗ at any selected time point t the algorithm assigns an attribution (importance value) φt(x∗, d) to the value of each variable x(d), d ∈ {1, 2, . . . , p}, included in the model. In this way, the SurvSHAP(t) functions [φt1 (x∗, d), φt2 (x∗, d), . . . , φtm (x∗, d)] are generated for every predictor d. These functions describe the time-dependent inﬂuence of variables on the prediction of the model.
+
+We implement SurvSHAP(t) estimation in two ways, which are based on regression and classiﬁcation approaches. The ﬁrst is the Shapley sampling values algorithm. Let eDt,x∗ = E[Sˆ(t, x)|xD = xD∗ ] be the expected value for a conditional distribution where conditioning applies to all variables from the set D.
+
+The contribution of predictor d in time point t is calculated as
+
+1 φt(x∗, d) = |Π|
+
+ebt,exf∗ore(π,d)∪{d} − ebt,exf∗ore(π,d),
+
+(4)
+
+π∈Π
+
+where Π is a set of all permutations of p variables and before(π, d) denotes a subset of predictors that are before d in the ordering π ∈ Π. For easier comparison between different models and time points, this value can be normalized to obtain values on a common scale (from -1 to 1) according to the formula
+
+φ∗t (x∗, d) =
+
+φt
+p
+j=1
+
+(x∗, d) |φt(x∗,
+
+j
+
+)|
+
+.
+
+(5)
+
+It should be noted that thanks to the property that the expected value of the random vector is the vector of the expected values, this operation can be vectorized and performed simultaneously for all selected time points. However, due to the computational cost, permutation sampling is used in the case of high-dimensional models.
+
+Another way to calculate SurvSHAP(t) faster is to use the Shapley kernel [41] and weighted linear regression with functional responses and scalar variables [19]. Here, we need to deﬁne sample coalitions zj ∈ {0, 1}p, j ∈ {1, 2, . . . , J} where the value of 1 indicated the presence of corresponding variable in coalition, and the mapping function hx : {0, 1}p → Rp that converts binary vectors into the original input space (1 represents the original value). In this setting,
+the Shapley kernel remains the same, and the weight given to each binary vector z is
+
+p−1
+
+w(z) =
+
+p s
+
+, s(p − s)
+
+(6)
+
+5
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+where s is the number of ones in z. Let Z be the matrix of all binary vectors. Then SurvSHAP(t) is estimated as
+
+Φ = (ZT W Z)−1ZT W Y,
+
+(7)
+
+where W is the diagonal matrix consisting of Shapley kernel weights, and Y is the matrix whose rows contain the survival function values predicted by the model F for the mapping of each row of the Z matrix by the hx function. Each row of the resulting p × r matrix Φ contains an explanation for a single variable included in the model.
+
+Thanks to such algorithm structure, SurvSHAP(t) preserves the desired SHAP properties, stated in [41] extended to consider the time-dependent nature of the explanation: local accuracy, missingness, and consistency.
+
+In the context of this study, the property of local accuracy can be deﬁned as:
+
+p
+
+∀t Sˆ(t, x) = e∅t + φt(x, d).
+
+(8)
+
+d=1
+
+We use SurvSHAP(t) to calculate variable importance by aggregating the time-dependent function as
+
+tm
+
+ψ(x, d) = |φt(x, d)| dt.
+
+(9)
+
+0
+
+5 Evaluation metrics
+
+We introduce metrics used in Section 6 for assessing the quality of explanations.
+Local accuracy (10) is a time-dependent adaptation of a local accuracy metric proposed in [42]. It is calculated as the normalized standard deviation of the difference between the black-box model’s output and the explanation as follows:
+
+σ(t) =
+
+E(Sˆ(t,
+
+x) − ESˆ(t,
+
+i φt x)2
+
+(x,
+
+i))2
+
+.
+
+(10)
+
+Lower values of this metric indicate that for that speciﬁc time point, the sum of contributions of variables is closer to the actual output of the model. For methods that meet the local accuracy property, the values of this metric are zero.
+
+Another metric we propose to evaluate the ability of an explanation method to show the variables whose effect changes in time is Changing Sign Proportion (CSP). Its purpose is to numerically measure for what fraction of explained observations the value of SurvSHAP(t) was positive and negative for at least α of the considered time period. Speciﬁcally, it is deﬁned as
+
+
+
+
+
+
+
+1 1 n
+
+CSPα,ts,te = n
+
+
+
+1 {t : φt(xi, d) ≥ 0} > α · |[ts, te]| 
+
+{t : φt(xi, d) ≤ 0} > α · |[ts, te]| , (11)
+
+i=1
+
+t∈[ts ,te ]
+
+t∈[ts ,te ]
+
+where n is the number of samples in the dataset, ts, te are start and end time points of selected time range, φt(xi, d) represents the Shapley value for observation i, variable d and time t and | · | is the length of the line segments. For variables with a time-dependent nature of an effect, the metric values should be greater than for variables whose type of effect is constant. In the case of models that do not take into account time-dependent effects, e.g., CPH, the values should be 0.
+
+For evaluating the correlation between rankings of variables by their importance for prediction obtained from the explanation method and known ground-truth orderings (see Section 3.2), we use the additive hyperbolic Kendall’s τh rank correlation coefﬁcient [62]. We give the average of the coefﬁcients obtained for all analyzed observations as a ﬁnal measure.
+
+In order to assess the SurvSHAP(t) quality against the ground-truth Shapley values, we use the GT-Shapley metric. It is adapted from [42] by applying it to each considered time point as follows:
+
+1 ∀t ρ(t) = n
+
+n
+
+Pearson([φt(xi, d)]1≤d≤p, [φttrue(xi, d)]1≤d≤p),
+
+(12)
+
+i=1
+
+6
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+where the values φttrue(xi, d) are acquired using SurvSHAP(t) on a background sample with a much larger number of observations (N = 10000) generated from the same distribution.
+Additionally, we deﬁne a metric based directly on residuals between obtained explanations and ground-truth values to measure how difﬁcult it is for SurvSHAP(t) to explain a given variable d. It is given as follows:
+
+normalized RMSE(t, d) =
+
+E(φt(x, d) − Eφttrue
+
+φttrue(x, (x, d)2
+
+d))2
+
+.
+
+(13)
+
+6 Experiments
+
+Evaluation of machine learning explanations presents many challenges [3, 63] as (1) in general, no ground truth of explanation is available [40], and (2) one explains an imprecise black-box model provided imperfect data [31]. Thus, for a comprehensive evaluation scheme, we divide our experiments into three steps:
+1. Measuring local accuracy and time-dependence on synthetic data
+2. Comparison with SurvLIME to show that SurvSHAP(t) is able to detect variables with a time-dependent effect, and its aggregation is a better determinant of the importance of variables for a prediction than SurvLIME.
+3. Showing in a real-world use case that SurvSHAP(t) properly explains machine learning survival models predicting heart failure.
+
+6.1 Evaluating explanations on synthetic data
+Setup. For the ﬁrst experiment, data is generated synthetically in order to demonstrate that SurvSHAP(t) explanations work correctly for variables that have a time-dependent effect, provided that the used model can make use of such dependencies. The dataset EXP1 consisting of N = 1000 observations is generated using the method suggested for generating time-dependent effects by Crowther and Lambert [15]. The base hazard function is deﬁned as
+
+√
+
+√
+
+h0(t) = exp(−17.8 + 6.5t − 11 t · ln t + 9.5 t),
+
+(14)
+
+and for a chosen observation from the dataset, the hazard function is of the form
+
+h(t) = h0(t) · exp[(−0.9 + 0.1t + 0.9 ln(t))x(1) + 0.5x(2) − 0.2x(3) + 0.1x(4) + 10−6x(5)].
+
+(15)
+
+The coefﬁcients were chosen such that the variable x(1) has a time-dependent effect, x(2), x(3), and x(4) are variables with constant effect and x(5) is insigniﬁcant – represents random noise. Variables x(1) and x(2) are binary, sampled from the binomial distribution, such that P(x(1) = 0) = P(x(1) = 1) = P(x(2) = 1) = P(x(2) = 0) = 0.5, whereas x(3) ∼ N (10, 2), x(4) ∼ N (20, 4), and x(5) ∼ N (0, 1).
+To generate the survival times Ti, the process described in [15] is followed. In the ﬁrst step, the hazard function (15) is integrated numerically to obtain the cumulative hazard function, which is then transformed into the survival function using formula (3). Then Brent’s iterative root ﬁnding method is applied to function g(t) = S(t, x) − U , where U ∼ U [0, 1]. The found root is used as the true (latent) survival time Ti for a vector of variables xi.
+In order to determine observed times yi based on generated survival times Ti, a method proposed in [66] is used. For each observation, two values are generated from the uniform distribution: Cl,i ∼ U [11, 16], which can be interpreted as the time to administrative censoring event, and Cr,i ∼ U [0, 24] which denotes the time to the occurrence of a right censoring event. If both those values are higher than the generated time Ti then δi = 1, otherwise δi = 0. The observed time yi is deﬁned as yi = min{Ti, Cri, Cli}, which in this case translates into a censoring rate of 0.331.
+
+7
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+Results. The ﬁrst experiment intends to show how the
+
+SurvSHAP(t) works. Thus, we ﬁt Cox Proportional Hazards and 0.25
+Random Survival Forest models to the generated dataset and calcu-
+
+late the prediction explanations for each observation. The models’ 0.20 performance expressed in the Brier score measure [23] is presented
+
+in Figure 2. RSF has an integrated Brier score equal to 0.097 and, 0.15
+
+because of its ability to model complex dependencies, outperforms
+
+CPH, for which the integrated Brier score is 0.167.
+
+0.10
+
+Model performance
+
+Brier score
+
+In Figure 3 the SurvSHAP(t) functions for a selected prediction are 0.05
+
+CPH
+
+presented. In the ﬁrst row, SurvSHAP(t) functions of each variable are
+
+RSF
+
+shown for each of the two models, whereas in the second row, they are 0.00
+
+normalized according to formula (5). Positive SurvSHAP(t) values
+
+0
+
+5
+
+10
+
+15
+
+indicate that a given variable has increased the survival function by
+
+Time
+
+that much, while negative values indicate a decrease. It can be seen that the variable x(1), which has a time-dependent effect (positive at the beginning, negative later), is correctly modeled in RSF but not in CPH. This shows that SurvSHAP(t) is capable of ﬁnding such differences between models (i.e., it explains the model, not data) and
+
+Figure 2: Time-dependent performance of the RSF and CPH models measured by Brier score (lower is better; Brier score of 0.25 indicates random predictions).
+
+therefore is useful for validating if models consider time-dependent
+
+variables. Indeed, by looking at the normalized SurvSHAP(t) values, we can see that the variable effects for the CPH
+
+are constant over time (narrow boxplots). Moreover, RSF assigned part of the changing impact over time to other
+
+variables – it is expected as a non-parametric model without knowledge of a speciﬁc form of the time-dependent effect
+
+has difﬁculties with its precise separation (i.e., determination of the source of this effect).
+
+Another benchmark we perform is checking if the additivity property of SHAP is retained. For this purpose, we computed the time-dependent version of the local accuracy metric deﬁned in (10).
+
+Low values of the local accuracy metric (shown in Figure 4) on the order of 10−7 indicate that the property is preserved. The fact that they seem to rise with time is also expected as it is difﬁcult for models to make good predictions near the end of the examined time, where many observations are censored.
+
+As the data used for this experiment is synthetically generated, we know that the variable x(1) has a time-dependent effect, positive at the beginning and negative later. Therefore, if a model uses this fact in its prediction, it should be noticeable in the explanations, such that in some proportion of the considered time period, the effect is negative and in some – positive. We use the Changing Signs Proportion metric (11) deﬁned earlier with start and end time points ﬁxed at 0.1 and 0.9 quantiles of the times included in the data, respectively.
+
+SurvSHAP(t) value
+
+Normalized SurvSHAP(t) value
+
+Random Survival Forest Model
+
+0.2
+
+0.1
+
+0.0
+
+−0.1
+
+−0.2
+
+0
+
+5
+
+10
+
+15
+
+Cox Proportional Hazards Model
+
+0.2
+
+0.1
+
+0.0
+
+−0.1
+
+−0.2
+
+0
+
+5
+
+10
+
+15
+
+0.6 0.3 0.0 −0.3 −0.6
+0
+
+5
+
+10
+
+15
+
+Time
+
+0.6 0.3 0.0 −0.3 −0.6
+0
+
+5
+
+10
+
+15
+
+Time
+
+Variable
+
+x(1)
+
+x(2)
+
+x(3)
+
+x(4)
+
+x(5)
+
+Figure 3: SurvSHAP(t) for the selected observation and two models trained on the dataset EXP1.
+
+8
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+The value should be low for variables with a constant effect on
+
+the prediction and noticeably higher for the variables whose effect 3 ⋅ 10−7 changes in time. It should be very low for models we know cannot
+
+take time-dependent variables into account, e.g., the Cox Proportional
+
+Hazards model. Table 1 presents the values of CSP0.05 for each variable and for both models. We see that the metric is high for the
+
+2 ⋅ 10−7
+
+σ
+
+x(1) variable for RSF and low for other variables. For CPH, the metric
+
+is close to 0, as variables can only have either positive or negative
+
+inﬂuence independent of time.
+
+1 ⋅ 10−7
+
+Table 1: Comparison of the CSP0.05 metric values for each variable
+
+0
+
+between Random Survival Forest and Cox Model.
+
+0
+
+Local accuracy measure
+
+5
+
+10
+
+Time
+
+CPH RSF
+15
+
+Variable
+x(1) x(2) x(3) x(4) x(5)
+
+RSF
+0.954 0.127 0.154 0.274 0.481
+
+CPH
+0.000 0.000 0.072 0.066 0.015
+
+Figure 4: Sanity check of local accuracy (additivity) property for two models trained on the dataset EXP1.
+
+Moreover, we measured the value of the GT-Shapley metric (12) for explanations of CPH and RSF models. For each time point, we
+1.000
+calculate the Pearson’s correlation between SurvSHAP(t) generated on the basis of the EXP1 dataset and a larger, artiﬁcially generated sample of observations (as we know the underlying distribution of 0.995 data). The high scores shown in Figure 5 conﬁrm that the explanations are stable: a greater number of points to estimate SurvSHAP(t) does 0.990 not meaningfully change the explanations.
+
+ρ
+
+GT−Shapley
+
+We also evaluated the explanations of CPH and RSF models using the normalized RMSE metric (13), which is visualized in Figure 6. It is clearly visible that for both models, the attribution of the timedependent variable x(1) is difﬁcult to explain. We suspect that timedependent variables need a bigger background of observations to be explained correctly. Another fact worth noting is that explanations for the variable x(5) perform much worse in the CPH model – the plot needs to be cropped to show useful information. For x(5), the attributed SurvSHAP(t) values are close to 0, as we see in Figure 3, so a reason for the high value of the metric might be the numerical errors occurring when normalizing such low values.
+
+0.985
+
+CPH
+
+RSF
+
+0.980
+
+0
+
+5
+
+10
+
+15
+
+Time
+
+Figure 5: Comparison of the GT-Shapley metric for explanations of CPH and RSF.
+
+Normalized RMSE
+
+Random Survival Forest Model
+0.100
+
+Cox Proportional Hazards Model
+0.100
+
+0.075
+
+0.075
+
+0.050
+
+0.050
+
+0.025
+
+0.025
+
+0.000 0
+
+5
+
+10
+
+Time
+
+0.000
+
+15
+
+0
+
+5
+
+10
+
+15
+
+Time
+
+Variable
+
+x1
+
+x2
+
+x3
+
+x4
+
+x5
+
+Figure 6: Comparison of normalized RMSE of SurvSHAP(t) for each variable between RSF and CPH (lower is better). Note: variable x(5) is off the scale for CPH.
+
+9
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+6.2 Comparison to SurvLIME
+
+Setup. We aim to compare the explanations of SurvSHAP(t) with those provided by SurvLIME and therefore follow the same experimental setup as in [36]. We use two datasets where the vector of variables xi ∈ R5 is generated from the uniform distribution on a 5-dimensional sphere with a predeﬁned radius. The center of the sphere in dataset0 is (0, 0, 0, 0, 0), whereas dataset1 is sampled from a sphere centered around (4, −8, 2, 4, 2). Both spheres have the radius R = 8. The survival times for these data are generated according to the method proposed in [6] with the
+following formula:
+
+− ln U
+
+1/v
+
+yi = λ exp(bT xi)
+
+,
+
+(16)
+
+where U ∼ U [0, 1] and
+
+• in dataset0: λ = 10−5, v = 2, bT = (10−6, 0.1, −0.15, 10−6, 10−6), • in dataset1: λ = 10−5, v = 2, bT = (10−6, −0.15, 10−6, 10−6, −0.1).
+
+Event indicators δi are generated from the binomial distribution, such that P(δi = 1) = 0.9 and P(δi = 0) = 0.1. Each dataset consists of N = 1000 observations divided into train and test sets in the 9:1 proportion. We use the test sets to
+train the model and then evaluate it and explain it in the test setting.
+
+Brier score
+
+0.25 0.20 0.15 0.10 0.05 0.00
+0
+0.25 0.20 0.15 0.10 0.05 0.00
+0
+
+dataset0
+
+200
+
+400
+
+600
+
+800
+
+Time
+
+dataset1
+
+100
+
+200
+
+300
+
+400
+
+Time
+
+Brier score
+
+CPH
+
+RSF
+
+Figure 7: Time-dependent performance of the RSF and CPH models measured by Brier score (lower is better; Brier score of 0.25 indicates random predictions).
+
+Results. For this experiment, four models were ﬁtted, i.e., the Cox Proportional Hazards and Random Survival Forest models for each of the two datasets. For dataset0 the values of integrated Brier score indicating the performance of the models were 0.103 for RSF and 0.097 for CPH, and for dataset1 RSF achieved a score of 0.137, whereas CPH 0.139. The values of the Brier score for the entire considered time range are presented in Figure 7. The ﬁrst performed test conﬁrms that SurvSHAP(t) preserves the local accuracy property, whereas SurvLIME does not. The values of normalized standard deviations of local accuracy (10) for RSF model trained on dataset0 are presented in Figure 8. We see that the value for SurvSHAP(t) is close to 0 across the whole time range, while for SurvLIME, it is signiﬁcantly larger. This is expected as SurvSHAP(t) can explain all functions, whereas the explanation of SurvLIME always takes the form of a Cox model’s survival function.
+Both SurvLIME and SurvSHAP(t) can be used to assess the relative importance of variables on the local level (i.e., for selected prediction). First, we ﬁt Cox Proportional Hazards model to obtain the ground-truth variable importance ranking via the method described in Section 3.2 to both datasets. We calculate the rankings of variable attributions using SurvLIME and SurvSHAP(t) for each observation from the test set. Then we use the additive hyperbolic Kendall’s τh rank correlation coefﬁcient to determine the similarity between the true and explanation rankings. Finally, we average this value across all observations. Table 2 presents the results proving better variable importance ranking estimation of SurvSHAP(t) in the glass-box evaluation scheme.
+
+Table 2: Average τh correlations of the variable importance rankings according to explanations against the ground-truth ranking in the Cox model (higher is better).
+
+SurvLIME SurvSHAP(t)
+
+dataset0 dataset1
+
+0.763 0.454
+
+0.917 0.745
+
+10
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+Consecutively, we ﬁt a black-box Random Survival Forest to both datasets and explain its predictions using both methods. The groundtruth importance ranking of the RSF black-box model is not available.
+Therefore, we imitate the ranking using permutational variable importance [20] with the integrated Brier score as a loss function. Figure 9 visualizes the aggregation of variable rankings over 100 observations in the test set. Each horizontal bar represents the fraction of observations for which the variable represented as a given color was ranked 1st, 2nd, etc. The correct ordering, obtained by permutational variable importance, is presented in the legend of the Figure. We observe that the global aggregation of local SurvLIME rankings is close to random – for dataset0 almost every place has a uniform distribution of variables, whereas SurvSHAP(t) distinctly attributes one variable to the ﬁrst and second place in the ranking.
+
+Local accuracy measure
+
+0.75
+
+0.50
+
+σ
+
+0.25
+0.00 0
+
+300
+
+600
+
+Time
+
+SurvLIME SurvSHAP(t)
+900
+
+Figure 8: Normalized standard deviation of the difference between black-box model output and the explanation (lower is better). Note: the curve for SurvSHAP(t) coincides with the xaxis.
+
+Importance ranking
+
+SurvLIME
+
+dataset0
+
+SurvSHAP(t)
+
+1st
+
+24
+
+21
+
+26
+
+16
+
+13
+
+2nd
+
+19
+
+27
+
+18
+
+12
+
+24
+
+3rd
+
+21
+
+18
+
+20
+
+21
+
+20
+
+4th 17
+
+25
+
+16
+
+21
+
+21
+
+5th
+
+19
+
+9
+
+20
+
+30
+
+22
+
+1st
+
+2nd 9
+
+3rd
+
+19
+
+4th 6
+
+35
+
+5th 3
+
+25
+
+91 63 36
+
+13 27 55
+
+9
+
+45
+
+19
+
+32
+
+32
+
+17
+
+0 10 20 30 40 50 60 70 80 90 100
+
+0 10 20 30 40 50 60 70 80 90 100
+
+Global ranking
+
+x(3)
+
+x(2)
+
+x(5)
+
+x(4)
+
+x(1)
+
+of variable importance
+
+SurvLIME
+
+dataset1
+
+SurvSHAP(t)
+
+1st
+
+36
+
+2nd
+
+37
+
+3rd 17
+
+4th 8
+
+18
+
+5th 2 18
+
+0 10 20
+
+26 22
+26
+
+20 18
+19
+
+14 5 19
+12 29
+39
+
+25
+
+15
+
+11
+
+26
+
+23
+
+15
+
+30 40 50 60 70 80 90 100
+
+Global ranking
+
+x(2)
+
+of variable importance
+
+1st
+
+63
+
+2nd
+
+22
+
+37
+
+3rd 9
+
+17
+
+45
+
+4th 6 11
+
+17
+
+36
+
+5th 2 9
+
+33
+
+0 10 20 30 40 50 60
+
+x(5)
+
+x(1)
+
+x(3)
+
+x(4)
+
+33
+
+31
+
+26
+
+11 4
+
+20
+
+9
+
+30
+
+56
+
+70 80 90 100
+
+Importance ranking
+
+Figure 9: Juxtaposition of local and global importance rankings for 100 predictions of the RSF model ﬁtted to dataset0 (top) and dataset1 (bottom). In each case, there are two globally important variables and three less important ones– the colors are speciﬁcally sorted to show the global ranking of variables. We observe that SurvSHAP(t) maintains the majority observations per each consecutive variable (speciﬁcally in dataset1 the majorities are represented by 63 for x(2) in 1st, 37 for x(2) in 2nd, 45 for x(1) in 3rd, 36 for x(3) in 4th, and 56 for x(4) in 5th) outperforming SurvLIME, which provides more uniformly distributed rankings (especially in dataset0).
+
+11
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+6.3 Real-world use case: predicting survival of patients with heart failure
+
+The primary motivation for the development of SurvSHAP(t) is the potential of such a method in practical applications. In analyses of medical time-to-event data, time-dependent effects, i.e., non-proportional hazards, often occur [16, 29, 44]. The proposed method can conﬁrm that the model of interest captures such dependencies. However, SurvSHAP(t) gives valuable insights into the operation of the model not only when such a phenomenon occurs. Provided explanations may help to interpret and understand critical decisions or generate new domain knowledge.
+In order to show the use case of the SurvSHAP(t), we apply the method to two models trained on the real-world heart_failure dataset. The analyzed cohort includes records of 299 heart failure patients collected at the Faisalabad Institute of Cardiology and the Allied Hospital in Faisalabad (Punjab, Pakistan) [12]. We use eight variables selected based on previous results (the most important according to accuracy decrease). In this case, we also use two algorithms: Cox Proportional Hazards and Random Survival Forest models. The performance of the models measured with the Brier score is presented in Figure 10. The integrated Brier score for the RSF model is 0.093, while the CPH model has a score of 0.152.
+
+Model performance
+0.25
+
+0.20
+
+Brier score
+
+0.15
+
+0.10
+
+0.05
+0.00 0
+
+CPH RSF
+
+50
+
+100
+
+150
+
+200
+
+250
+
+Time
+
+Figure 10: Time-dependent performance of the RSF and CPH models measured by Brier score (lower is better; Brier score of 0.25 indicates random predictions).
+
+SurvSHAP(t) value
+
+SurvSHAP(t)
+0.05
+
+0.00
+
+−0.05
+
+−0.10
+
+0
+
+50
+
+100
+
+150
+
+Time
+
+age creatinine phosphokinase
+
+Variable
+ejection fraction platelets
+
+200
+
+250
+
+serum creatinine serum sodium
+
+sex smoking
+
+Variable
+
+Aggregated SurvSHAP(t)
+
+ejection fraction
+
+platelets
+
+age
+
+creatinine phosphokinase
+
+serum creatinine
+
+sex
+
+smoking
+
+serum sodium
+
+0
+
+5
+
+10
+
+15
+
+20
+
+Aggregated SurvSHAP(t) ψ
+
+Figure 11: Explanation results for the selected observation and RSF model trained on the heart_failure dataset: SurvSHAP(t) values (left) and aggregated SurvSHAP(t) values – variable importance measure (right).
+
+SurvSHAP(t) value
+
+Random Survival Forest Model
+
+Cox Proportional Hazards Model
+
+0.1
+
+0.1
+
+0.0
+
+0.0
+
+−0.1 0
+
+−0.1
+
+50
+
+100
+
+150
+
+200
+
+250
+
+Time
+
+0
+
+50
+
+100
+
+150
+
+200
+
+250
+
+Time
+
+age creatinine phosphokinase
+
+Variable
+ejection fraction platelets
+
+serum creatinine serum sodium
+
+sex smoking
+
+Figure 12: SurvSHAP(t) for the selected observation and two models trained on the heart_failure dataset.
+
+12
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+An exemplary single prediction explanation for the RSF model is presented in Figure 11. It shows that the importance of ejection fraction for the model increases over time which is indicated by the decrease in SurvSHAP(t) value for this particular variable. We also see which other variables impact the obtained prediction most. With domain knowledge, it allows for assessing whether a given model output is reliable.
+In Figure 12, explanations of the decisions of both models for the same patient are presented. They show some inconsistencies between the models (e.g., for the platelets variable). In-depth analysis enables the physician to decide which prediction is more adequate, helping to develop personalized medicine.
+It is challenging to obtain ground-truth Shapley values for such a small sample and real complex data. Moreover, due to the presence of binary variables in the data, it becomes impossible to use the importance of variables in the Cox model as deﬁned in Section 3.2. Therefore, we imitate both models’ global variable importance ranking by calculating the permutational variable importance again. Further, we compare the importance rankings of the variables obtained by aggregating SurvSHAP(t) with those from the Cox model found by SurvLIME.
+The results are presented in Figure 13, where the variables within one bar are sorted by the global importance. Again, one can observe the superiority of SurvSHAP(t) aggregation over the coefﬁcients derived from the SurvLIME method. For the Cox model, SurvLIME most often indicates the serum sodium as the most important variable, the third least important variable globally. SurvSHAP(t) indicates age as the most important variable for the biggest percentage of the CPH predictions, which is consistent with the global ranking. Our method coped even better in the context of assessing the importance of variables in the RSF model. It identiﬁed ejection fraction and serum creatinine as the most important variables 260 times in total. These two variables have comparable importance globally (the mean increase of the integrated Brier score after a permutation is 0.0456 and 0.0454, respectively).
+
+Importance ranking
+
+Cox Proportional Hazards Model SurvLIME
+
+SurvSHAP(t)
+
+1st
+
+147
+
+150
+
+2nd
+
+99
+
+3rd 52
+
+4th 7
+
+5th 51
+
+41
+
+6th 8
+
+116
+
+7th
+
+88
+
+8th 41 5
+
+111 180 225
+125 27 34 108
+225
+
+86
+
+11 55
+
+11 34 6 13
+
+5
+
+76
+
+113
+
+33
+
+69
+
+28
+
+0 25 50 75 100 125 150 175 200 225 250 275 300
+
+1st
+
+130
+
+122
+
+28 8 8
+
+2nd
+
+94
+
+67
+
+3rd 24 31
+
+92
+
+4th 20 21
+
+55
+
+40
+
+5th 13 36 29
+
+85
+
+6th 11 20 10
+
+78
+
+16
+
+7th 6 7 29 38
+
+8th 36 13 24
+
+76
+
+13
+
+69
+
+107
+
+79
+
+52
+
+168
+
+223
+
+10 25 27
+
+69
+
+52
+
+40 116
+
+92
+
+20
+
+49
+
+0 25 50 75 100 125 150 175 200 225 250 275 300
+
+Global ranking of variable importance
+
+age ejection fraction
+
+serum creatinine creatinine phosphokinase
+
+sex serum sodium
+
+smoking platelets
+
+Random Survival Forest Model SurvLIME
+
+SurvSHAP(t)
+
+1st
+
+91
+
+11
+
+119
+
+78
+
+2nd
+
+56
+
+47
+
+72
+
+120
+
+3rd
+
+60
+
+141
+
+44
+
+41 85
+
+4th
+
+54
+
+96
+
+40
+
+43
+
+48 9 5
+
+5th 27 16 14
+
+157
+
+24 45 13
+
+6th 7
+
+55
+
+109
+
+79
+
+42
+
+7th 25
+
+87
+
+156
+
+23
+
+8th
+
+64
+
+14
+
+217
+
+0 25 50 75 100 125 150 175 200 225 250 275 300
+
+1st
+
+157
+
+2nd
+
+76
+
+80
+
+3rd 32
+
+56
+
+110
+
+4th 14 26 36
+
+61
+
+5th 9 15 17
+
+109
+
+6th 8 1212 45
+
+54
+
+7th 6 26 30
+
+51
+
+8th 107 46
+
+103
+
+27 6
+
+96
+
+19 10 17
+
+31 39 28
+
+101
+
+46 12
+
+53
+
+62
+
+25 9
+
+84
+
+67
+
+17
+
+145
+
+37
+
+233
+
+0 25 50 75 100 125 150 175 200 225 250 275 300
+
+Global ranking of variable importance
+
+ejection fraction serum creatinine
+
+age serum sodium
+
+platelets creatinine phosphokinase
+
+sex smoking
+
+Importance ranking
+
+Figure 13: Juxtaposition of local and global importance rankings for predictions of the CPH model (top) and RSF (bottom). The colors are speciﬁcally sorted from purple to blue showing the global ranking of variables in each model.
+
+13
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+7 Discussion
+SurvSHAP(t) extends the idea of SHAP to a broad class of models working on survival data. It is a subsequent method designed to explain survival functions, but the ﬁrst one based on the concept of Shapley values and the ﬁrst that provides time-dependent explanations.
+On the differences to SurvLIME. SHAP has been chosen as the basis of this method because it is one of the most widely used approaches for explaining black-box models [25]. It was also suggested as an area of possible further research in [36]. It is important to notice that the approach to explanation is different from the one proposed in SurvLIME. For the calculation, the entire output function is considered in both methods, but SurvLIME ﬁnds the closest possible CHF among the outputs of a Cox model, whereas SurvSHAP(t) does not have this limitation. The authors of SurvLIME state that the independence of the Cox model’s variable effect on time is an advantage, as it makes the optimization problem signiﬁcantly simpler. However, it has one drawback – SurvLIME cannot properly explain variables whose effect changes in time. SurvSHAP(t) does not make use of the Cox model, so it is able to explain variables that have a time-dependent effect. The change is also visible in the context of the ﬁnal explanation form. SurvLIME outputs the found coefﬁcients of a Cox model (each variable’s attribution described by a single value), while SurvSHAP(t) produces functions of time-dependent importance for each variable. Moreover, coefﬁcients of the SurvLIME explanation do not directly indicate the importance of variables, i.e., the magnitude of the variable is also a contributing factor. The proposed method presents importance at all time points explicitly.
+Software implementation. The inclusion of code implementing both SurvSHAP(t) and SurvLIME in Python is another key point of the conducted research, as it allows for the application of explanations to existing models. The code is tailored to work with the models implemented in the scikit-survival Python package [49]. The produced plots give the user an intuitive visualization of the SurvSHAP(t) explanations – one can see what the inﬂuence of a particular variable is at any chosen time, even if they do not have previous experience with XAI.
+Limitations. Another thing worth noting is the fact that SurvSHAP(t), as an extension of SHAP, inherits many of its drawbacks. One of them is that reported values might be misleading if the model is not additive [9]. Another practical limitation is the fact that the computation of Shapley values is time-consuming, which is ampliﬁed even more by the fact that the calculation needs to be done for many time points.
+8 Conclusion
+This paper introduces a new local variable attribution method for survival models with sound theoretical guarantees like local accuracy. It has been illustrated and validated using synthetically generated data and compared with the SurvLIME method. Moreover, an example of the developed method in a real-life use case is presented. The method’s source code, the experiments carried out in this study, and a source code of the so far not implemented SurvLIME method are contributed.
+SurvSHAP(t) is the ﬁrst explanation that presents its ﬁnal results as time-dependent functions. We believe this sets a new direction for research at the intersection of survival analysis and XAI. It is worth pointing out that the approach could be generalized for any model producing functional output. Future works should consider the possibility of aggregating the SurvSHAP(t) function across data distribution to introduce global explanations of machine learning survival models.
+We anticipate that an accessible visualization of SurvSHAP(t) can popularize explainability methods in domains where survival analysis is applied. Our contribution beneﬁts various stakeholders, e.g., physicians and bioinformaticians, in extracting knowledge from data and model analysis. We recommend applying SurvSHAP(t) to explain RSF and deep learning models in scenarios where only the CPH model was previously considered in practice.
+Acknowledgments
+We would like to thank Mai P. Hoang, MD, from Harvard Medical School, Boston, MA, USA, and Piotr Donizy, MD, from Department of Clinical and Experimental Pathology, Wroclaw Medical University, Wroclaw, Poland, for valuable discussions on the presented method. We also thank Anna Kozak and Katarzyna Woz´nica for their valuable comments about the study. This work was ﬁnancially supported by the NCBiR grant INFOSTRATEG-I/0022/2021-00 and NCN Sonata Bis-9 grant 2019/34/E/ST6/00052.
+14
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+References
+[1] Odd Aalen. Nonparametric Inference for a Family of Counting Processes. The Annals of Statistics, 6(4):701–726, 1978. doi:10.1214/aos/1176344247.
+[2] Kjersti Aas, Martin Jullum, and Anders Løland. Explaining individual predictions when features are dependent: More accurate approximations to Shapley values. Artiﬁcial Intelligence, 298:103502, 2021. doi:10.1016/j.artint.2021.103502.
+[3] Anna Markella Antoniadi, Yuhan Du, Yasmine Guendouz, Lan Wei, Claudia Mazo, Brett A. Becker, and Catherine Mooney. Current Challenges and Future Opportunities for XAI in Machine Learning-Based Clinical Decision Support Systems: A Systematic Review. Applied Sciences, 11(11), 2021. ISSN 2076–3417. doi:10.3390/app11115088.
+[4] Hubert Baniecki, Wojciech Kretowicz, Piotr Piatyszek, Jakub Wisniewski, and Przemyslaw Biecek. dalex: Responsible Machine Learning with Interactive Explainability and Fairness in Python. Journal of Machine Learning Research, 22(214):1–7, 2021.
+[5] Falco J Bargagli Stofﬁ, Gustavo Cevolani, and Giorgio Gnecco. Simple models in complex worlds: Occam’s razor and statistical learning theory. Minds and Machines, 32(1):13–42, 2022. doi:10.1007/s11023-022-09592-z.
+[6] Ralf Bender, Thomas Augustin, and Maria Blettner. Generating survival times to simulate Cox proportional hazards models. Statistics in Medicine, 24(11):1713–1723, 2005. doi:10.1002/sim.2059.
+[7] João Bento, Pedro Saleiro, André F. Cruz, Mário A.T. Figueiredo, and Pedro Bizarro. TimeSHAP: Explaining Recurrent Models through Sequence Perturbations. In ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD), pages 2565–2573, 2021. doi:10.1145/3447548.3467166.
+[8] Przemyslaw Biecek. DALEX: Explainers for Complex Predictive Models in R. Journal of Machine Learning Research, 19(84):1–5, 2018.
+[9] Przemyslaw Biecek and Tomasz Burzykowski. Explanatory Model Analysis. Chapman and Hall/CRC, New York, 2021. ISBN 9780367135591. doi:10.1201/9780429027192.
+[10] Pavle Boškoski, Matija Perne, Martina Rameša, and Biljana Mileva Boshkoska. Variational Bayes survival analysis for unemployment modelling. Knowledge-Based Systems, 229:107335, 2021. doi:10.1016/j.knosys.2021.107335.
+[11] Yifei Chen, Zhenyu Jia, Dan Mercola, and Xiaohui Xie. A Gradient Boosting Algorithm for Survival Analysis via Direct Optimization of Concordance Index. Computational and Mathematical Methods in Medicine, 2013. doi:10.1155/2013/873595.
+[12] Davide Chicco and Giuseppe Jurman. Machine learning can predict survival of patients with heart failure from serum creatinine and ejection fraction alone. BMC medical informatics and decision making, 20(1):1–16, 2020. doi:10.1186/s12911-020-1023-5.
+[13] Travers Ching, Xun Zhu, and Lana X. Garmire. Cox-nnet: An artiﬁcial neural network method for prognosis prediction of high-throughput omics data. PLOS Computational Biology, 14(4):1–18, 2018. doi:10.1371/journal.pcbi.1006076.
+[14] David Cox. Regression Models and Life-Tables. Journal of the Royal Statistical Society. Series B (Methodological), 34(2):187–220, 1972.
+[15] Michael J. Crowther and Paul C. Lambert. Simulating biologically plausible complex survival data. Statistics in Medicine, 32(23):4118–4134, 2013. doi:10.1002/sim.5823.
+[16] Piotr Donizy, Grazyna Pietrzyk, Agnieszka Halon, Cyprian Kozyra, Tserenchunt Gansukh, Hermann Lage, Pawel Surowiak, and Rafal Matkowski. Nuclear-cytoplasmic PARP-1 expression as an unfavorable prognostic marker in lymph node-negative early breast cancer: 15-year follow-up. Oncology Reports, 31(4):1777–1787, 2014. doi:10.3892/or.2014.3024.
+[17] Piotr Donizy, Mateusz Krzyzinski, Anna Markiewicz, Pawel Karpinski, Krzysztof Kotowski, Artur Kowalik, Jolanta Orlowska-Heitzman, Bozena Romanowska-Dixon, Przemyslaw Biecek, and Mai P. Hoang. Machine learning models demonstrate that clinicopathologic variables are comparable to gene expression prognostic signature in predicting survival in uveal melanoma. European Journal of Cancer, 174:251–260, 2022. ISSN 0959-8049. doi:https://doi.org/10.1016/j.ejca.2022.07.031.
+[18] David Faraggi and Richard Simon. A neural network model for survival data. Statistics in Medicine, 14(1):73–82, 1995. doi:https://doi.org/10.1002/sim.4780140108.
+[19] Julian J Faraway. Regression analysis for a functional response. Technometrics, 39(3):254–261, 1997. doi:10.2307/1271130.
+15
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+[20] Aaron Fisher, Cynthia Rudin, and Francesca Dominici. All models are wrong, but many are useful: Learning a variable’s importance by studying an entire class of prediction models simultaneously. Journal of Machine Learning Research, 20(177):1–81, 2019.
+[21] Eleonora Giunchiglia, Anton Nemchenko, and Mihaela van der Schaar. RNN-SURV: A Deep Recurrent Model for Survival Analysis. In International Conference on Artiﬁcial Neural Networks (ICANN), pages 23–32, 2018. doi:10.1007/978-3-030-01424-7_3.
+[22] Randy Goebel, Ajay Chander, Katharina Holzinger, Freddy Lécué, Zeynep Akata, Simone Stumpf, Peter Kieseberg, and Andreas Holzinger. Explainable AI: the new 42? In International Cross-Domain Conference for Machine Learning and Knowledge Extraction (CD-MAKE), volume 11015 of Lecture Notes in Computer Science, pages 295–303. Springer, 2018. doi:10.1007/978-3-319-99740-7_21.
+[23] Erika Graf, Claudia Schmoor, Willi Sauerbrei, and Martin Schumacher. Assessment and comparison of prognostic classiﬁcation schemes for survival data. Statistics in Medicine, 18(17-18):2529–2545, 1999. doi:10.1002/(sici)1097-0258(19990915/30)18:17/18<2529::aid-sim274>3.0.co;2-5.
+[24] Brandon Greenwell, Bradley Boehmke, Jay Cunningham, and GBM Developers. gbm: Generalized Boosted Regression Models, 2020. URL https://CRAN.R-project.org/package=gbm. R package version 2.1.8.
+[25] Andreas Holzinger, Anna Saranti, Christoph Molnar, Przemyslaw Biecek, and Wojciech Samek. Explainable AI Methods – A Brief Overview. In Workshop on Extending Explainable AI Beyond Deep Models and Classiﬁers (ICML XXAI), pages 13–38, 2022. doi:10.1007/978-3-031-04083-2_2.
+[26] Farhad Imani, Ruimin Chen, Conrad Tucker, and Hui Yang. Random forest modeling for survival analysis of cancer recurrences. In IEEE International Conference on Automation Science and Engineering (CASE), pages 399–404, 2019. doi:10.1109/COASE.2019.8843271.
+[27] Hemant Ishwaran and Udaya B. Kogalur. randomForestSRC, 2022. URL https://cran.r-project.org/ package=randomForestSRC. R package version 3.1.1.
+[28] Hemant Ishwaran, Udaya B. Kogalur, Eugene H. Blackstone, and Michael S. Lauer. Random survival forests. The Annals of Applied Statistics, 2(3):841–860, 2008. doi:10.1214/08-AOAS169.
+[29] Ismail Jatoi, William F Anderson, Jong-Hyeon Jeong, and Carol K Redmond. Breast cancer adjuvant therapy: time to consider its time-dependent effects. Journal of clinical oncology, 29(17):2301, 2011. doi:10.1200/JCO.2010.32.3550.
+[30] Neil Jethani, Mukund Sudarshan, Ian Connick Covert, Su-In Lee, and Rajesh Ranganath. FastSHAP: Real-Time Shapley Value Estimation. In International Conference on Learning Representations (ICLR), 2022.
+[31] Yunzhe Jia, Eibe Frank, Bernhard Pfahringer, Albert Bifet, and Nick Lim. Studying and Exploiting the Relationship Between Model Accuracy and Explanation Quality. In European Conference on Machine Learning and Principles and Practice of Knowledge Discovery in Databases (ECML PKDD), pages 699–714, 2021. doi:10.1007/978-3030-86520-7_43.
+[32] Jared L Katzman, Uri Shaham, Alexander Cloninger, Jonathan Bates, Tingting Jiang, and Yuval Kluger. DeepSurv: personalized treatment recommender system using a Cox proportional hazards deep neural network. BMC Medical Research Methodology, 18(1):1–12, 2018. doi:10.1186/s12874-018-0482-1.
+[33] Been Kim, Rajiv Khanna, and Oluwasanmi O Koyejo. Examples are not enough, learn to criticize! criticism for interpretability. In Neural Information Processing Systems (NeurIPS), pages 2280–2288, 2016.
+[34] Maxim Kovalev, Lev Utkin, Frank Coolen, and Andrei Konstantinov. Counterfactual Explanation of Machine Learning Survival Models. Informatica, 32(4):817–847, 2021. doi:10.15388/21-INFOR468.
+[35] Maxim S. Kovalev and Lev V. Utkin. A robust algorithm for explaining unreliable machine learning survival models using the Kolmogorov–Smirnov bounds. Neural Networks, 132:1–18, 2020. doi:10.1016/j.neunet.2020.08.007.
+[36] Maxim S. Kovalev, Lev V. Utkin, and Ernest M. Kasimov. SurvLIME: A method for explaining machine learning survival models. Knowledge-Based Systems, 203:106164, 2020. doi:10.1016/j.knosys.2020.106164.
+[37] Håvard Kvamme, Ørnulf Borgan, and Ida Scheel. Time-to-Event Prediction with Neural Networks and Cox Regression. Journal of Machine Learning Research, 20(129):1–30, 2019.
+[38] Changhee Lee, William R. Zame, Jinsung Yoon, and Mihaela van der Schaar. DeepHit: A Deep Learning Approach to Survival Analysis With Competing Risks. In AAAI Conference on Artiﬁcial Intelligence (AAAI), pages 2314–2321. AAAI Press, 2018. doi:10.1609/aaai.v32i1.11842.
+[39] Seungyeoun Lee and Heeju Lim. Review of statistical methods for survival analysis using genomic data. Genomics & Informatics, 17(4), 2019. doi:10.5808/GI.2019.17.4.e41.
+16
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+[40] Yang Liu, Sujay Khandagale, Colin White, and Willie Neiswanger. Synthetic Benchmarks for Scientiﬁc Research in Explainable Machine Learning. In Neural Information Processing Systems (NeurIPS Datasets and Benchmarks Track), 2021.
+
+[41] Scott M Lundberg and Su-In Lee. A Uniﬁed Approach to Interpreting Model Predictions. In Neural Information Processing Systems (NeurIPS), pages 4768–4777, 2017.
+
+[42] Scott M Lundberg, Gabriel Erion, Hugh Chen, Alex DeGrave, Jordan M Prutkin, Bala Nair, Ronit Katz, Jonathan Himmelfarb, Nisha Bansal, and Su-In Lee. From local explanations to global understanding with explainable AI for trees. Nature Machine Intelligence, 2(1):56–67, 2020. doi:10.1038/s42256-019-0138-9.
+
+[43] Susan Mallett, Patrick Royston, Rachel Waters, Susan Dutton, and Douglas G Altman. Reporting performance of prognostic models in cancer: a review. BMC medicine, 8(1):1–11, 2010. doi:10.1186/1741-7015-8-21.
+
+[44] Tony S Mok, Yi-Long Wu, Sumitra Thongprasert, Chih-Hsin Yang, Da-Tong Chu, Nagahiro Saijo, Patrapim Sunpaweravong, Baohui Han, Benjamin Margono, Yukito Ichinose, et al. Geﬁtinib or carboplatin– paclitaxel in pulmonary adenocarcinoma. New England Journal of Medicine, 361(10):947–957, 2009. doi:10.1056/NEJMoa0810699.
+
+[45] Arturo Moncada-Torres, Marissa C van Maaren, Mathijs P Hendriks, Sabine Siesling, and Gijs Geleijnse. Explainable machine learning can outperform Cox regression predictions and provide insights in breast cancer survival. Scientiﬁc Reports, 11(1):1–13, 2021. doi:10.1038/s41598-021-86327-7.
+
+[46] Chirag Nagpal, Willa Potosnak, and Artur Dubrawski. auton-survival: an Open-Source Package for Regression, Counterfactual Estimation, Evaluation and Phenotyping with Censored Time-to-Event Data. arXiv preprint arXiv:2204.07276, 2022.
+
+[47] Wayne Nelson. Theory and Applications of Hazard Plotting for Censored Failure Data. Technometrics, 14(4): 945–966, 1972. doi:10.2307/1267144.
+
+[48] Lars H. B. Olsen, Ingrid K. Glad, Martin Jullum, and Kjersti Aas. Using shapley values and variational autoencoders to explain predictive models with dependent mixed features. Journal of Machine Learning Research, 23(213):1–51, 2022. URL http://jmlr.org/papers/v23/21-1413.html.
+
+[49] Sebastian Pölsterl. scikit-survival: A Library for Time-to-Event Analysis Built on Top of scikit-learn. Journal of Machine Learning Research, 21(212):1–6, 2020.
+
+[50] Marco Tulio Ribeiro, Sameer Singh, and Carlos Guestrin. “Why Should I Trust You?”: Explaining the Predictions of Any Classiﬁer. In International Conference on Knowledge Discovery and Data Mining (KDD), pages 1135– 1144. ACM, 2016. doi:10.1145/2939672.2939778.
+
+[51] Greg Ridgeway. The state of boosting. Computing Science and Statistics, pages 172–181, 1999.
+
+[52] Eliana Rulli, Francesca Ghilotti, Elena Biagioli, Luca Porcu, Mirko Marabese, Maurizio D’Incalci, Rino Bellocco, and Valter Torri. Assessment of proportional hazard assumption in aggregate data: a systematic review on statistical methodology in clinical trials using time-to-event endpoint. British Journal of Cancer, 119(12):1456–1463, 2018. doi:10.1038/s41416-018-0302-8.
+
+[53] Mark Robert Segal. Regression Trees for Censored Data. Biometrics, 44(1):35–47, 1988. doi:10.2307/2531894.
+
+[54] Nikolai Sellereite, Martin Jullum, and Annabelle Redelmeier. shapr: Prediction Explana-
+
+tion with Dependence-Aware Shapley Values, 2022.
+
+https://norskregnesentral.github.io/shapr/,
+
+https://github.com/NorskRegnesentral/shapr.
+
+[55] Lloyd Stowell Shapley. A Value for n-Person Games, pages 307–318. Princeton University Press, 2016. doi:10.1515/9781400881970-018.
+
+[56] Brett Snider and Edward A McBean. Improving urban water security through pipe-break prediction models: Machine learning or survival analysis. Journal of Environmental Engineering, 146(3):04019129, 2020. doi:10.1061/(ASCE)EE.1943-7870.0001657.
+
+[57] Raphael Sonabend. A Theoretical and Methodological Framework for Machine Learning in Survival Analysis. Enabling Transparent and Accessible Predictive Modelling on Right-Censored Time-to-Event Data. Ph. D. Thesis, University College London, 2021. URL https://discovery.ucl.ac.uk/id/eprint/10072700.
+
+[58] Raphael Sonabend. survivalmodels: Models for Survival Analysis, 2022. URL https://CRAN.R-project. org/package=survivalmodels. R package version 0.1.13.
+
+[59] Annette Spooner, Emily Chen, Arcot Sowmya, Perminder Sachdev, Nicole A Kochan, Julian Trollor, and Henry Brodaty. A comparison of machine learning methods for survival analysis of high-dimensional clinical data for dementia prediction. Scientiﬁc reports, 10(1):1–10, 2020. doi:10.1038/s41598-020-77220-w.
+
+17
+
+SURVSHAP(T)
+
+KRZYZIN´ SKI ET AL.
+
+[60] Eric J Topol. High-performance medicine: the convergence of human and artiﬁcial intelligence. Nature Medicine, 25(1):44–56, 2019. doi:10.1038/s41591-018-0300-7.
+[61] Lev V. Utkin, Egor D. Satyukov, and Andrei V. Konstantinov. SurvNAM: The machine learning survival model explanation. Neural Networks, 147:81–102, 2022. doi:10.1016/j.neunet.2021.12.015.
+[62] Sebastiano Vigna. A Weighted Correlation Index for Rankings with Ties. In International Conference on World Wide Web (WWW), pages 1166–1176, 2015. ISBN 9781450334693. doi:10.1145/2736277.2741088.
+[63] Giulia Vilone and Luca Longo. Notions of explainability and evaluation approaches for explainable artiﬁcial intelligence. Information Fusion, 76:89–106, 2021. doi:10.1016/j.inffus.2021.05.009.
+[64] Erik Štrumbelj and Igor Kononenko. An Efﬁcient Explanation of Individual Classiﬁcations using Game Theory. Journal of Machine Learning Research, 11(1):1–18, 2010. doi:10.5555/1756006.1756007.
+[65] Erik Štrumbelj and Igor Kononenko. Explaining Prediction Models and Individual Predictions with Feature Contributions. Knowledge and Information Systems, 41(3):647–665, 2014. doi:10.1007/s10115-013-0679-x.
+[66] Fei Wan. Simulating survival data with predeﬁned censoring rates under a mixture of non-informative right censoring schemes. Communications in Statistics - Simulation and Computation, 51(7):3851–3867, 2022. doi:10.1080/03610918.2020.1722838.
+[67] Ping Wang, Yan Li, and Chandan K Reddy. Machine learning for survival analysis: A survey. ACM Computing Surveys, 51(6):1–36, 2019. doi:10.1145/3214306.
+[68] Lianhe Zhao, Qiongye Dong, Chunlong Luo, Yang Wu, Dechao Bu, Xiaoning Qi, Yufan Luo, and Yi Zhao. DeepOmix: A scalable and interpretable multi-omics deep learning framework and application in cancer survival analysis. Computational and Structural Biotechnology Journal, 19:2719–2725, 2021. doi:10.1016/j.csbj.2021.04.067.
+[69] Lili Zhao and Dai Feng. Deep Neural Networks for Survival Analysis Using Pseudo Values. IEEE Journal of Biomedical and Health Informatics, 24(11):3308–3314, 2020. doi:10.1109/JBHI.2020.2980204.
+
+18
+
