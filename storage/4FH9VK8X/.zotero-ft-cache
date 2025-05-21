@@ -1,0 +1,608 @@
+STS MICCAI 2023 Challenge: Grand challenge on 2D and 3D semi-supervised tooth segmentation
+Yaqi Wanga,∗, Yifan Zhangb,c, Xiaodiao Chena,d, Shuai Wange,f, Dahong Qiang, Fan Yed, Feng Xud, Hongyuan Zhangh, Qianni Zhangi, Chengyu Wuj, Yunxiang Lid, Weiwei Cuii, Shan Luoa, Chengkai Wangk, Tianhao Lia, Yi Liul, Xiang Fengd, Huiyu Zhoum, Dongyun Liun, Qixuan Wango, Zhouhao Linp, Wei Songq, Yuanlin Lir, Bing Wangs, Chunshi Wangt, Qiupu Chenu,v and Mingqian Liw
+aCollege of Media Engineering, Communication University of Zhejiang, Hangzhou, China bState Key Laboratory of Oral Diseases, National Clinical Research Center for Oral Diseases, West China Hospital of Stomatology, Sichuan University, Chengdu, China cLishui University, School of Medicine, Hangzhou Geriatric Stomatology Hospital, Hangzhou Dental Hospital Group, Hangzhou, China dSchool of Computer Science and Technology, Hangzhou Dianzi University, Hangzhou, China eSchool of Cyberspace, Hangzhou Dianzi University, Hangzhou, China fSuzhou Research Institute of Shandong University, Suzhou, China gSchool of Biomedical Engineering, Shanghai Jiao Tong University, Shanghai, China hSchool of Biomedical Engineering, Medical School, Shenzhen University, Shenzhen, China iSchool of Electronic Engineering and Computer Science, Queen Mary University of London, London, United Kingdom jDepartment of Mechanical, Electrical and Information Engineering, Shandong University, Weihai, China kSchool of Management, Hangzhou Dianzi University, Hangzhou, China lDepartment of Stomatology, Sichuan Provincial People’s Hospital, University of Electronic Science and Technology of China, Chengdu, China mSchool of Computing and Mathematical Sciences, University of Leicester, Leicester, United Kingdom nZeta Technology Co., Ltd. , No. 1158, Zhangdong Road, Pudong New Area, Shanghai, China oChina Academy of Information and Communications Technology, Beijing, China pHangZhou Dianzi University, Xiasha Higher Education Zone, Hangzhou, China qSoutheast University, Sipailou, Xuanwu District, Nanjing, China rShanghai Ninth People’s Hospital, Shanghai Jiao Tong University School of Medicine,Shanghai Jiao Tong University, Shanghai, China sSchool of Computer Science and Technology, Changchun University of Science and Technology, Changchun, China tSchool of Artificial Intelligence, Guilin University of Electronic Technology, Guilin, China uUniversity of Science and Technology of China, Hefei, China vHefei Institutes of Physical Science, Chinese Academy of Sciences, No. 350, Shushanhu Road, Hefei, China wSchool of Information and Optoelectronic Science and Engineering, South China Normal University, Guangzhou, China
+ARTICLE INFO
+Keywords:
+Tooth Segmentation Semi-supervised Learning CBCT Panoramic X-ray
+ABSTRACT
+Computer-aided design (CAD) tools are increasingly popular in modern dental practice, particularly for treatment planning or comprehensive prognosis evaluation. In particular, the 2D panoramic Xray image efficiently detects invisible caries, impacted teeth and supernumerary teeth in children, while the 3D dental cone beam computed tomography (CBCT) is widely used in orthodontics and endodontics due to its low radiation dose. However, there is no open-access 2D public dataset for children’s teeth and no open 3D dental CBCT dataset, which limits the development of automatic algorithms for segmenting teeth and analyzing diseases. The Semi-supervised Teeth Segmentation (STS) Challenge, a pioneering event in tooth segmentation, was held as a part of the MICCAI 2023 ToothFairy Workshop on the Alibaba Tianchi platform. This challenge aims to investigate effective semi-supervised tooth segmentation algorithms to advance the field of dentistry. In this challenge, we provide two modalities including the 2D panoramic X-ray images and the 3D CBCT tooth volumes. In Task 1, the goal was to segment tooth regions in panoramic X-ray images of both adult and pediatric teeth. Task 2 involved segmenting tooth sections using CBCT volumes. Limited labelled images with mostly unlabelled ones were provided in this challenge prompt using semi-supervised algorithms for training. In the preliminary round, the challenge received registration and result submission by 434 teams, with 64 advancing to the final round. This paper summarizes the diverse methods employed by the top-ranking teams in the STS MICCAI 2023 Challenge.
+∗Corresponding author
+wangyaqi@cuz.edu.cn (Y. Wang) ORCID(s):
+1. Introduction
+In recent years, an increasing number of studies have demonstrated the close association between oral health and numerous systemic illnesses, such as cardiovascular disease Batty, Jung, Mok, Lee, Back, Lee and Jee (2018),
+Y. Wang et al.: Preprint submitted to Elsevier Page 1 of 22
+arXiv:2407.13246v1 [cs.CV] 18 Jul 2024
+
+
+STS MICCAI 2023 Challenge
+diabetes Sanz, Ceriello, Buysschaert, Chapple, Demmer, Graziani, Herrera, Jepsen, Lione, Madianos et al. (2018), and even Alzheimer’s disease Dominy, Lynch, Ermini, Benedyk, Marczyk, Konradi, Nguyen, Haditsch, Raha, Griffin et al. (2019). The prevalence of oral diseases in different age groups has also led to other adverse health effects, including body-image issues, sleeplessness, social isolation, pain, discomfort, fear, anxiety, and functional limitations Jain, Dutt, Radenkov and Jain (2023); Fleming and Afful (2018). Therefore, oral and dental diseases encompass more than just the facio-maxillary region; they also directly impact an individual’s overall health and well-being. The worldwide prevalence of oral disease imposes significant challenges and burdens on health care systems. The World Health Organization reports that 358 million people experience severe periodontal conditions, while two-thirds of the global population suffer from dental caries Jain et al. (2023). Such conditions negatively impact the quality of life and exert substantial stress on healthcare systems. As a result, the efficient prevention and treatment of oral diseases, predominantly dental diseases, has emerged as an imperative subject in the public health sector. Fortunately, the development of Panoramic X-ray Imaging (PXI) and Cone Beam Computed Tomography (CBCT) has changed the way dentists diagnose oral disease, leading to improved diagnostic accuracy, treatment effectiveness, and patient outcomes. PXI has long been a staple in dental practices, offering a comprehensive overview of a patient’s oral cavity Różyło-Kalinowska (2021). It provides dentists with a broad view that encompasses all teeth, the jaws, and other important structures in a single image. This wideranging perspective is invaluable for initial evaluations, enabling the identification of various dental issues such as impacted teeth, bone abnormalities, and the overall alignment of the teeth and jaw. PXI’s ability to quickly and efficiently provide a general overview of dental health makes it an essential tool for routine check-ups and preliminary assessments. On the other hand, Cone Beam Computed Tomography (CBCT) brings a different set of advantages, primarily its capacity to deliver three-dimensional images. This depth of detail offers clarity regarding the anatomy of the teeth, bones, and soft tissues, allowing for a more precise diagnosis and treatment planning Ezhov, Gusarev, Golitsyna, Yates, Kushnerev, Tamimi, Aksoy, Shumilov, Sanders and Orhan (2021); Li, Zeng, Zhang, Wang, Jin, Sun, Zhang, Lian, Qian, Xia et al. (2021c); Li, Wang, Wang, Zeng, Liu, Zhang, Jin and Wang (2021b). CBCT is particularly beneficial in complex cases where spatial relationships and detailed anatomy need to be understood, such as in implantology, orthodontics, and endodontics Gupta and Ali (2013); Shukla, Chug and Afrashtehfar (2017); Uraba, Ebihara, Komatsu, Ohbayashi and Okiji (2016). Both PXI and CBCT play pivotal roles in dental diagnostics, where PXI is unmatched in providing a quick, comprehensive overview of the dental and maxillofacial region, making it an indispensable tool for general dental assessments. Meanwhile, CBCT excels in cases where three-dimensional detail is crucial for
+the diagnosis and treatment planning, offering insights that are not possible with two-dimensional imaging alone. Despite the great advances in tooth image technology, the visual analysis of such images requires significant time and the expertise of dental experts. It is not only a timeconsuming and tedious task, but it also suffers from being prone to errors and subjectivity. These issues limit the potential of tooth imaging technology in clinical research and practice. In this context, deep learning-based image analysis methods have been developed and demonstrated outstanding capability to perform dental structure segmentation, classification, and identification of several common dental diseases with high accuracy Singh and Raza (2022). By automatically extracting and learning complex features from dental images, deep learning models provide reliable and reproducible predictions as evidence in various forms to support experts in diagnosis and treatment. Although deep learning has achieved remarkable results in the field, tooth segmentation in 2D panoramic tooth images and 3D CBCT images remains an open problem due to several challenging aspects. Among these, a primary challenge is the lack of publicly available datasets based on PXI and CBCT to train and validate algorithms and provide benchmarks. To tackle this challenge, we have collected PXI and CBCT datasets from Hangzhou Dental Hospital and Hangzhou QianTang Dental Hospital. These datasets are organized, processed, and then manually annotated with tooth masks that are suitable for training and evaluation. Based on these datasets, we proposed a tooth image segmentation competition in the 26th International Conference on Medical Image Computing and Computer Assisted Intervention (MICCAI 2023), namely, the Semi-supervised Teeth Segmentation (STS) Challenge, hosted on the Alibaba Cloud Tianchi platform. The STS Challenge entails two subtasks, i.e., tooth segmentation in the 2d Panoramic X-ray Image (2D-PXI) dataset and in the 3d dental Cone Beam Computed Tomography (3D-CBCT) dataset. Another major disadvantage common to all deep learning based computer vision techniques is the dependence on a large quantity of training data, which is hard to obtain, as well as the heavy load on computing resources due to the data scale. The acquisition of 2D-PXI and 3D-CBCT datasets cost a considerable amount of work for professionals in annotation, which is an expensive and time-consuming endeavor. To alleviate the demand for data annotation in the future, we would like to take advantage of this challenge to stimulate the development of semi-supervised learning strategies Lee et al. (2013); Li, Dong, Dou, Lin, Zhang, Feng, Si, Deng, Deng and Heng (2021a); Yao, Hu and Li (2022a); Wang, Yuan, Guo, Huang, Cui, Xia, Wang, Bai and Chen (2022b); Shi, Zhang, Ling, Lu, Zheng, Yu, Qi and Gao (2022); Zhang, Tian, Bai, Jiao and Tian (2022); Han, Liu, Song, Liu, Qiu, Tang, Teng and Liu (2022); Wang, Wu, Chen, Wang and Meng (2021), which can train models with a comparatively small amount of labelled data alongside a majority of unlabelled data. Such strategies can provide
+Y. Wang et al.: Preprint submitted to Elsevier Page 2 of 22
+
+
+STS MICCAI 2023 Challenge
+an effective solution to tasks involving few annotated data, thereby allowing deep learning models to achieve excellent performance with less dependence on training data annotation. Therefore, in comparison with the fully supervised approaches, STS Challenge prioritizes the semi-supervised deep learning approaches, which hold greater potential for application in real clinical research tasks. In conclusion, the STS Challenge offers a platform for participants to explore tooth segmentation algorithms and models based on 2DPXI and 3D-CBCT datasets using semi-supervised deep learning. In this paper, Section 2 gives a review on the recent research related to semi-supervised medical image segmentation, tooth panoramic image segmentation, and CBCT image segmentation. Section 3 provides a detailed description of the challenge, including the dataset information and evaluation indicators. Section 4 presents the results submitted by the participating teams. Section 5 provides a statistical analysis and evaluation of the Dice, mIoU, and HD metrics of the top ten teams. The Discussion Section offers some further insights into the challenge results, and the paper concludes with a final remark in Conclusion.
+2. Related Works
+2.1. Semi-supervised Medical Image Segmentation The development of deep learning technology brings a new era for various tasks in medical image processing. Specifically, medical image segmentation is one of the main beneficiaries of deep learning. It refers to the allocation of all pixels in the image into a certain category so as to accurately depict the required structures in the original image, such as designated organs or lesions. Based on the success of the U-Net network in 2015 Ronneberger, Fischer and Brox (2015), several enhanced networks, such as UNet++ Zhou, Rahman Siddiquee, Tajbakhsh and Liang (2018) and UNet 3+ Huang, Lin, Tong, Hu, Zhang, Iwamoto, Han, Chen and Wu (2020), have been proposed for image segmentation. Further, Isensee et al. Isensee, Jaeger, Kohl, Petersen and Maier-Hein (2021) introduced nnU-net, an adaptive neural network architecture that can automatically adjust network structure and training strategies to adapt to different 3D and 2D medical image segmentation tasks. This approach eliminates the need for manual hyperparameter tuning and network structure modifications and, in many cases, outperforms manually optimized networks. With the emergence of ViT Dosovitskiy, Beyer, Kolesnikov, Weissenborn, Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, Uszkoreit and Houlsby (2021), researchers combine the transformer structure with the CNN structure, resulting in MT-UNet Wang, Xie, Lin, Iwamoto, Han, Chen and Tong (2022a), which has good segmentation performance in abdominal organ segmentation, and UNETR Hatamizadeh, Tang, Nath, Yang, Myronenko, Landman, Roth and Xu (2022b), which is targeted at brain segmentation. Although the medical image segmentation task has witnessed great successes with these network structures, their
+excellent performance is highly dependent on high-quality, large-scale labelled data. Unfortunately, procuring satisfactory training data remains a challenge, thanks to the difficulty and high expense of such processes, especially considering that medical image annotation can only be provided by trained professionals with adequate experience. In particular, Computed Tomography (CT) and Magnetic Resonance Imaging (MRI) obtain three-dimensional volume data, which requires experts to label each twodimensional slice image, making manual labeling even more challenging. To tackle these issues, additional algorithms are introduced, including label generation Yao, Xiao, Liu and Zhou (2021), data enhancement Zhang, Wang, Yang, Sanford, Harmon, Turkbey, Wood, Roth, Myronenko, Xu and Xu (2020), and semi-supervised learning schemes that leverage unlabelled data to augment the training data Huang, Shen, Yu, Han and Liu (2024). Semi-supervised learning proves to be the more practical approach for various medical image segmentation tasks, where segmentation models are trained with limited labelled data while at the same time benefiting from the abundance of readily available unlabelled data. In general, semi-supervised algorithms utilize two strategies, namely, the pseudo-label generation method and the consistent regularization hypothesis. Lee et al. Lee et al. (2013) propose a semi-supervised learning method that uses both labelled and unlabelled data for training. For unlabelled data, the category with the greatest prediction probability is selected as its pseudolabel for supervised training. Li et al. Li et al. (2021a) propose a self-integrating collaborative training framework to automatically extract COVID-19 lesions from CT scans by using limited labelled data and large-scale unlabelled data. The conservative-aggressive module proposed by Shi et al. Shi et al. (2022) improves pseudo-label quality by predicting inconsistencies between different misclassification costs and indicating masks for certain and uncertain regions. Han et al. Han et al. (2022) combine the output features of the labelled images of the pre-trained network with corresponding pixel-level annotations to generate class representations according to the mean value operation. Then pseudo-labels are generated for the unlabelled images by calculating the distance between the unlabelled feature vectors and each class representation, followed by a series of morphological operations. Wang et al. Wang et al. (2021) propose a neighbor matching method, defining a mapping function that predicts its pseudo-label based on itself and its local manifold. The consistency assumption is a vital concept in semisupervised learning. It posits that if two data points are in close proximity in the input space, their corresponding labels should also be closely related. In essence, this assumption suggests that similar inputs should produce similar outputs. To this end, Berthelot et al. Berthelot, Carlini, Goodfellow, Papernot, Oliver and Raffel (2019) introduce MixMatch, a framework for semi-supervised algorithms. The algorithm generates various transformations by enhancing unlabelled data and then mandates the model to provide
+Y. Wang et al.: Preprint submitted to Elsevier Page 3 of 22
+
+
+STS MICCAI 2023 Challenge
+consistent label predictions for these transformations. Sohn et al. Sohn, Berthelot, Carlini, Zhang, Zhang, Raffel, Cubuk, Kurakin and Li (2020) propose FixMatch, which simplifies MixMatch. For every unlabelled sample, FixMatch conducts powerful and gentle image enhancement, produces unlabelled instances of both powerful and gentle enhanced versions, filters out the generated weak enhanced results using the model’s high-confidence threshold, and eventually prompts the model to provide the same forecast for both versions. The Mutual consistency learning approach proposed by Wu et al. Wu, Ge, Zhang, Xu, Zhang, Xia and Cai (2022) compels the model to produce consistent and low-entropy predictions in arduous regions. It efficiently employs unlabelled data, leverages consistency optimally, and minimizes entropy constraints for model training, ultimately enhancing the efficacy of semi-supervised image segmentation.
+2.2. Tooth Segmentation
+Tooth segmentation involves separating various tooth components, including the crown, root, and pulp, from an oral image. This critical task is necessary for the diagnosis, treatment, and evaluation of teeth in oral medicine. However, due to shape discrepancies, unusual appearance, irregular gum tissue, and insufficient labelling data, tooth segmentation presents a challenging problem. In recent times, tooth segmentation has progressed significantly through the implementation of deep learning methods, predominantly using PXI-produced 2D images or CBCT-produced 3D volumes. For 2D images, Zhao et al. Zhao, Li, Gao, Liu, Chen, Yang and Meng (2020) propose a new two-stage attention segmentation network. This network is not only the first two-stage model for tooth localization and segmentation in panoramic dental X-ray images, but it can also automatically encode rich information and extract more discriminating representations through hierarchical architecture, effectively alleviating the problem of uneven intensity distribution. The real tooth area can be captured independently of user intervention, while the tooth structure and root topology can be obtained. Besides, Chen et al. Chen, Zhao, Liu, Sun, Yang, Li, Zhang and Gao (2021a) propose a novel multiscale position awareness network that combines multi-scale structural similarity loss, a position awareness module, and an aggregation module to clearly and accurately segment and locate teeth from panoramic X-ray images, thus effectively solving the problem of blurred tooth boundaries. Cui et al. Cui, Zeng, Chong and Zhang (2021a) propose a deep learning network that integrates adversarial networks, wide residual blocks, and encoder-decoder structures to learn and extract grayscale and boundary features of teeth under the guidance of a full convolutional network discriminator. Meanwhile, its loss mechanism effectively avoids network overfitting and enhances feature extraction. In addition, for 3D images, Cui et al. Cui, Li and Wang (2019) propose a two-level network that first extracts edge maps from CBCT images to enhance image boundary contrast and combines them with original images. Then, a
+3D Region Proposal Network (RPN) is constructed with a learning similarity matrix and spatial relationship coding of teeth. This is the first method to segment teeth from CBCT images using a deep learning-based network. Following that, Rao et al. Rao, Wang, Meng, Pu, Sun and Wang (2020) propose a full-convolutional network that combines residual blocks and Dense Conditional Random Field (DCRF) to reduce noise and achieve high-precision segmentation of tooth CBCT images. Li et al. Li, Liu, Cui, Yang, Zhao, Lian and Gao (2022) design an attention mechanism to explicitly model semantic graphs of tooth anatomical topological relationships in each quadrant to overcome the segmentation inaccuracies caused by ignoring tooth anatomical topology. Cui et al. Cui, Zhang, Lian, Li, Yang, Wang, Zhu and Shen (2021b) propose a two-stage learning framework in which the center of mass and bone marrow are extracted in the first step to determine the approximate position of each tooth, and then a multi-task learning mechanism is used based on the output of the previous step to obtain tooth segmentation results with the help of boundary and root tip information. It can be seen that most tooth segmentation methods are committed to improving segmentation accuracy and robustness, and the use of neural network technology has achieved impressive results. Nevertheless, these approaches still have limitations, particularly in terms of the dependence on data annotation, since tooth segmentation necessitates careful manual annotation. This process is not only timeconsuming and labor-intensive but also prone to errors and subjectivity. Hence, effective learning mechanisms requiring a small quantity of annotated data is highly demanded for tooth segmentation. As apparent from the preceding discussion, semi-supervised learning is a well established approach that can leverage a significant proportion of unlabelled data in conjunction with a limited amount of labelled data to facilitate network training. Therefore, we organise this competition, aiming to stimulate new ideas and development of methodologies and solutions that incorporate the semisupervised learning in tooth segmentation. The goal of the participating runs is to achieve tooth segmentation results that is equivalent or comparative to those of the fully supervised methods, but by learning from a significantly smaller number of labelled data together with a large quantity of unlabelled data.
+3. Challenge Description
+3.1. Organization
+The objective of the STS challenge is to evaluate the applicability of deep learning image segmentation algorithms on the dental image segmentation tasks, with the special focus on exploring new and robust tooth segmentation methods based on semi-supervision. The STS challenge was conducted as part of the MICCAI 2023 ToothFairy Workshop 1. The challenge proposal went through multiple rounds of public review between December 2022 and May 2023. On May 21, 2023, the challenge started with a broad
+1https://toothfairychallenges.github.io/
+Y. Wang et al.: Preprint submitted to Elsevier Page 4 of 22
+
+
+STS MICCAI 2023 Challenge
+1. PXI & CBCT collection
+3. Participants ranking
+Preparation Progressing Conclusion
+PXI
+CBCT
+2. PXI & CBCT annotation
+3. Training and test sets split
+4. Dataset storage and upload
+Dataset
+🔒 Unzip
+1. Download training data
+2. Participants use methods for implementation
+3. Test set download and prediction
+4. Participants submission
+Paper
+Code
+Prediction
+1. Score computing
+2. Code review
+Dice
+IoU
+HD
+0.4
+0.3
+0.3
+Score
+...
+Challenge Timeline
+🥈
+🥉
+🥇
+Figure 1: The workflow of the Semi-supervised Teeth Segmentation Challenge (STS) challenge consists of three stages: Preparation, Progression, and Conclusion.
+call for participants from all walks of life. Interested participants can sign up in teams and participate in the challenge through the Alibaba Cloud Tianchi platform. Members of the organising institutes could participate but are not eligible for awards. Additionally, the challenge consists of two rounds: the preliminary and the final. The preliminary round officially began on June 6, and a total of 2,000 dental PXI and 212 CBCT volumes were provided as training data. For evaluation, a total of 500 dental PXI and 10 CBCT volumes were provided as the test set. Moreover, the evaluation code was made available to the public before the system was open for submissions 2. The preliminary round ended on August 27, with the top 100 teams selected for the final round. The final round started on September 4 and ended on September 15. A total of 3,000 dental PXI and 312 CBCT volumes were provided as training data. For evaluation, a total of 1,000 dental PXI and 50 CBCT volumes were provided as the test set. The top seven teams were selected, their codes were collected for review, and the top three teams were selected as the winning teams. The winners of the first place, the second and third places, were offered $1,000, $500, and $300 monetary prizes, respectively. In the final competition, the players were required to containerize their methods through Docker and submit their Docker containers for evaluation on the test set. Only consistent results were considered as valid submissions and kept for ranking. Incomplete submissions that did not include all results were rejected by the evaluation system. An example submission was provided to assist participants in verifying
+2https://github.com/yefan222/MICCAI-2023-STS
+the validity of their submissions to the Tianchi platform. Once a submission was successful, the platform automatically updated the players’ scores in real time. Each team was allowed to submit three times a day in the preliminary round and two times in the final round to effectively avoid cheating. The workflow of the challenge is shown in Fig. 1. In this paper, we summarize the main findings and analysis based on the results of the outstanding participants in this challenge; all participants are listed as authors. Following a six-month embargo period, the participating teams can independently publish their own results. The STS challenge aims to segment the main structure of teeth using two types of dental images: PXI and CBCT. To accomplish this, the challenge is divided into two tasks: semi-supervised tooth segmentation on panoramic X-ray images (Task 1) and semi-supervised tooth segmentation on cone beam computed tomography volumes (Task 2) For Task 1, the primary goal is to choose proper training methods to develop a semi-supervised deep learning network model suitable for tooth segmentation, taking as input the panoramic image and the mask corresponding to a part of the original image. For Task 2, the primary goal is to employ a limited quantity of labelled 3D volume data alongside a substantial amount of unlabelled 3D volume data as inputs for training a 3D network model. This approach would allow for the successful execution of the task of tooth segmentation within 3D CBCT images utilizing pertinent semi-supervised training techniques and methodologies, despite the minimal amount of labelled data. The target cohort of this challenge include patients who need treatment for common dental
+Y. Wang et al.: Preprint submitted to Elsevier Page 5 of 22
+
+
+STS MICCAI 2023 Challenge
+Table 1
+The dataset information for the PXI semi-supervised segmentation task in the STS challenge, including the training and testing splits, and the proportion of labelled and unlabelled data.
+Stage Class Train Test Total unlabelled labelled unlabelled labelled
+Preliminary round
+Children —– 150 —– 300 450
+Adult —– 1850 —– 200 2050
+Total —– 2000 —– 500 2500
+Final round
+Children 100 50 —– 350 500
+Adult 2000 850 —– 650 3500
+Total 2100 900 —– 1000 4000
+diseases (caries, periapical periodontitis, and pulpitis) and orthodontic and endodontic restorative treatment. The treatment of orthodontic and endodontic prosthetic rely on using 3D Cone Beam Computed Tomography scans, while the processes of pinpointing dental disease foci, tooth overall structure captions, and accurate segmentation are often carried out on Panoramic X-rays.
+3.2. Dataset
+Both the two types of data in this challenge were acquired from the intraoral cavity. For a given patient, one 2D/3D scan was acquired, covering the full or part of the upper and lower jaws areas with teeth. The data was collected for patients requiring either preoperative examination or prosthetic treatment. The proposed computational methods were expected to segment all visible teeth in a given 2D or 3D scan. All dental scans were categorized into four classes, including missing teeth with appliance, missing teeth without appliance, teeth with appliance and teeth without appliance. The dataset was built with an even distribution among all cases. The scans were captured by orthodontists with more than five years of professional experience. Then, they were annotated by fifteen dentists. Twelve junior dentists with at least two years of experience first delineated tooth regions slice-by-slice in the axial view, and modified the annotations in the coronal view and sagittal view. Then, the senior dental experts assessed the annotation quality, and marked a quality level (in excellent, good, fail and poor) on each tooth annotation. “Excellent” annotations were stored in the dataset directly. “Good” annotations were fine-tuning according to the experts’ feedback. “Fair” and “Poor” annotations and their feedback were put back into the unlabelled data pool and were marked again, until the annotation quality achieves the required level. Ethical approval of the data used in this challenge was obtained from the Medical Ethics Committee of Sichuan Provincial People’s Hospital and the University of Electronic Science and Technology Hospital Research Ethics Committee (No. 2022YR014). The data usage agreement license is under CC BY-NC-ND.
+3.2.1. 2D-PXI Dataset
+The 2D-PXI dataset was mainly obtained from Hangzhou Dental Hospital and Hangzhou QianTang Dental Hospital, followed by the dental image dataset that has been published by Zhang, Ye, Chen, Xu, Chen, Wu, Cao, Li, Wang and Huang (2023). According to the age of the patient and the tooth morphology presented, all the panoramic tooth images are divided into: adult panoramic tooth images (AD-PXI) and child panoramic tooth images (CD-PXI). During the pre-processing phase, we converted the image format from DICOM to PNG. Dental experts from the hospital annotated the data using EISeg Liu, Chu, Chen, Wu, Chen, Lai and Hao (2021), LableMe Russell, Torralba, Murphy and Freeman (2008) and other tools. We then obtained a three-channel 24bit grayscale images with a pixel value of 640 × 320 and the corresponding binary masks. Some statistical information of the 2D-PXI dataset can be seen in Table 1. When conducting dataset partitioning, we uniformly allocated the training, validation, and test sets according to the real ratio of adult to pediatric patients in the clinic to avoid any bias in data distribution in both preliminary and final round.
+3.2.2. 3D-CBCT Dataset
+The 3D-CBCT dataset was mainly provided by Hangzhou Qiantang Dental Hospital, followed by a publicly available dataset CTooth Cui, Wang, Zhang, Zhou, Song, Zuo, Jia and Zeng (2022b); Cui, Wang, Li, Song, Zuo, Wang, Zhang, Zhou, Chong, Zeng and Zhang (2022a). For the annotation work of each volume, dentists in the hospital first marked the tooth area layer by layer in the axial direction with the help of ITK-SNAP Yushkevich, Piven, Hazlett, Smith, Ho, Gee and Gerig (2006) software, and then corrected and annotated the tooth area with the help of coronal and sagittal perspectives. Additional dentists were invited to evaluate the above annotation work and correct the poor evaluation results. These dental CBCT images were taken using an OP300 manufactured with the Instrumentarium OrthopantomographR. All dental CBCT slices were scanned before dental surgery, with an axial resolution of 640 × 640 pixels, a slice thickness of 0.25mm, and a total thickness of 99.75mm. Some statistical information of the 3D-CBCT dataset can be seen in Table 2.
+Y. Wang et al.: Preprint submitted to Elsevier Page 6 of 22
+
+
+STS MICCAI 2023 Challenge
+Table 2
+The dataset information for the CBCT semi-supervised segmentation task in the STS challenge, including the training and testing splits, and the proportion of labelled and unlabelled data.
+Stage Train Test Total unlabelled labelled unlabelled labelled
+Preliminary round 200 12 —– 10 222
+Final round 300 12 —– 50 362
+3.3. Performance Evaluation
+In the competition, all participants submit the predicted segmentation masks on the provided original test images, packaged and uploaded in .png (2D PXI segmentation task) or .nii.gz (3D CBCT segmentation task) formats. In the competition, three indicators are applied for quantitative measurement of the segmentation performance: Dice coefficient, Mean Intersection over Union (mIoU) and Hausdorff Distance (HD). The three indicators are described in detail below. The Dice coefficient is a set similarity measure function that evaluates the similarity of two sets and can be formalized as follows:
+Dice = 2 ∗ |A ∩ B|
+|A| + |B|
+. (1)
+where A represents the mask predicted by the proposed model, and B represents the actual mask of Ground Truth (GT). The Mean Intersection over Union (mIoU) is used to measure the ratio of the intersection over the concatenation of two sets, namely, the GT and predicted masks. It can be defined as follows:
+mIoU = 1
+k
+k
+∑
+i=1
+TP
+F N + F P + T P . (2)
+where k is the number of classes (including empty classes, i.e. background), T P , F N, and F P indicate true positive, false negative, and false positive, respectively. Hausdorff distance (HD) is the minimum distance between two shapes or curves obtained by the Hausdorff transformation. In the 2D PXI segmentation task, the 2D HD formula is defined as follows:
+HD2d = min (
+|x1 − x2| + |y1 − y2|
+). (3)
+where (x1, y1) and (x2, y2) represent the coordinates of the two pixels; |x1 − x2| and |y1 − y2| represent the distances on the corresponding axes. This formula represents the sum of the absolute distances between two pixels in a twodimensional medical image on the horizontal and vertical axes, which is the HD at the pixel level. In the 3D CBCT segmentation task, the 3D HD formula is as follows:
+HD3d = min (
+|x1 − x2| + |y1 − y2| + |z1 − z2|
+).
+(4)
+where (x1, y1, z1) and (x2, y2, z2) represent the coordinates of the two voxels; |x1 − x2|, |y1 − y2|, and |z1 − z2| represent the distances on the corresponding axes. This formula is a voxel-level measure of distance. It is worth noting that after calculating the above two HDs, both of them are normalized so that the final score can be calculated. Finally, each competitor’s overall score is calculated as the weighted average of the three evaluation criteria presented above, using the following:
+Score = 0.4 ∗ Dice + 0.3 ∗ mIoU + 0.3 ∗ (1 − HD). (5)
+We consider these evaluation metrics of similar importance. Therefore, this simple weighting scheme is determined empirically and is expected to lead to a fair ranking overall. In addition, we provide intermediate rankings based on each metric, in order to highlight the outstanding performances in the specific aspects. Ranking variability is characterized using the bootstrap method.
+4. Challenge Submissions
+In the preliminary round, Task 1 and Task 2 received the submissions from 373 and 61 teams, respectively. Among these, 44 and 20 teams qualified for the final round for the respective tasks.
+4.1. Submitted methods in Task 1: STS on 2D-PXI dataset
+The overall benchmark of the top teams can be seen in Table 4. In the following, we provide a concise description of the methods that led to the top scores, highlighting the technical key points. Rank 1: Zhuang proposed an adaptive fusion network for tooth region segmentation that trains two groups of teacher-student models simultaneously based on the MeanTeacher model Tarvainen and Valpola (2017). First, the method used 900 PXI with masks, increases the amount of data by reducing the slide step size (adjusted from 32 to 16), and trained two teacher models based on different network architectures, the backbone networks being SegResNet_64 Cardoso, Li, Brown, Ma, Kerfoot, Wang, Murrey, Myronenko, Zhao, Yang et al. (2022) and DynUNet Cardoso et al. (2022). The two teacher models then fused to make predictions on 2,100 unlabelled images, generating 3,000 soft labels. These soft labels took full advantage of both
+Y. Wang et al.: Preprint submitted to Elsevier Page 7 of 22
+
+
+STS MICCAI 2023 Challenge
+Table 3
+Quantitative evaluation results of the top 10 qualified teams in terms of (mean ± standard deviation) Dice Similarity Coefficient (Dice), mean Inter over Union (mIoU) and Hausdorff Distance (HD). The top three scores in each metric are highlighted in bold.
+PXI Teams Dice mIoU HD CBCT Teams Dice mIoU HD
+T1 93.92±4.99 98.30±0.94 0.0272±0.0439 T1 84.42±5.41 86.61±3.84 0.1595±0.1104
+T2 93.71±3.93 98.23±0.91 0.0239±0.0351 T2 83.43±4.93 85.83±3.49 0.1615±0.1121
+T3 93.57±5.02 98.19±1.19 0.0224±0.0346 T3 80.58±5.02 83.76±3.36 0.1599±0.1115
+T4 93.65±2.52 98.16±0.79 0.0232±0.0168 T4 80.70±4.95 83.85±3.37 0.1689±0.1052
+T5 93.41±5.07 98.14±1.04 0.0244±0.0455 T5 79.31±5.67 82.90±3.75 0.1708±0.0959
+T6 93.34±5.00 98.12±0.87 0.0239±0.0451 T6 81.23±6.49 84.31±4.17 0.2344±0.0456
+T7 93.28±3.90 98.09±0.80 0.0243±0.0342 T7 77.49±4.82 81.61±3.09 0.1580±0.1080
+T8 93.16±4.64 98.09±0.83 0.0245±0.0352 T8 78.65±5.59 82.43±3.62 0.1844±0.0917
+T9 93.00±2.85 97.97±1.01 0.0234±0.0159 T9 76.64±6.47 81.11±3.96 0.1870±0.0933
+T10 92.99±4.05 98.00±0.95 0.0243±0.0367 T10 78.82±6.36 82.60±4.05 0.2413±0.0477
+teacher models. Next, using these 3000 newly generated soft labelled images as training data, two student models with a similar structure were trained separately. Finally, all the teacher and student models were fused into one powerful model that predicts the results. For the loss function, the teacher model was trained with BCEWithLogitsLoss. Besides, MSELoss was used when the student model was trained with soft labels. The prediction by the student model was made as close as possible to the soft label by the teacher model, with the aim to learn the ability mastered by the teacher model. AdamW was used in the optimizer section, with step size set to 3e-3 and weight decay set to 1e-5. For the trained models, data enhancement was added. Each image was rotated clockwise and features were obtained on the rotated versions, and then these features were reversely rotated and merged, obtaining a final feature map by taking the mean in the channel dimension. In summary, Zhuang’s submission achieved the highest segmentation performance with an overall score of 0.9624, Dice of 0.9392, mIoU of 0.9830, and HD of 0.0272. Rank 3: Liu et al. performed data cleaning on the training set in the pre-processing stage to screen out data with more accurate labelling and used the 5-fold division method to re-divide the new training data into training and validation sets (training :validation = 4:1). In addition, they used data enhancement strategies such as flipping, rotating, mixing, and coarse dropout. Two types of segmentation networks were used in the training process: a U-Net Ronneberger et al. (2015) like model with EfficientNetv2 Tan and Le (2021a) as the backbone feature extraction network and a model with SAM Kirillov, Mintun, Ravi, Mao, Rolland, Gustafson, Xiao, Whitehead, Berg, Lo et al. (2023a) as the baseline feature extraction network. The UNet-like EfficientNetv2 model was fine-tuned based on the pre-training weights from ImageNet, and the SAM model was fine-tuned based on the pre-training weights on the SA1B dataset. For the specific training process, the model was first trained with labelled data, and then the model was used to predict unlabelled data
+to get the corresponding pseudo-masks. 900 pairs of images and masks were randomly selected and added to the training set for the next round of training. In terms of data, two different image resolutions were used: one is 1024 × 1024 and the other is 640 × 1280. In addition, three loss functions were used in the optimization process: Cross-entropy loss, Dice loss, and Lovasz loss. The optimizer used AdamW, and the cosine learning rate strategy was chosen for the learning rate strategy. Rank 5: Wang et al. proposed an improved model based on UperNet Contributors (2020). The backbone network was replaced with ConvNeXt Liu, Mao, Wu, Feichtenhofer, Darrell and Xie (2022). They also introduced a class imbalance loss, where the foreground has a larger weight and suffers a greater penalty when the model forecasts incorrectly. Additionally, online hard sample mining was implemented, meaning that only pixel value points with confidence scores of 0.9 or higher will be used for training, with a minimum of 100,000 pixel value points retained during the process. To enhance the diversity of the datasets, mosaic data augmentation and multi-scale scaling training techniques were employed. Furthermore, The test time augmentation method was used for inference and a post-processing method was proposed. The post-processing method involved generating an inference result probability matrix for each image during inference, with dimensions of (2, 320, 640). Each pixel point within the matrix was assigned two probabilities: one for the tooth region and one for the non-tooth region, respectively. This matrix was obtained by traversing all the pixel points in the image. If the maximum value between the two predicted probabilities for a pixel point was less than 0.6, it indicated that the model was unable to accurately distinguish the category to which the pixel belongs. In such cases, the pixel value of the point was changed to represent the background, while the rest of the points were assigned to the tooth region. Rank 7: Lin et al. proposed an optional retrained, semisupervised tooth segmentation model. The training of the model is divided into three phases, which are the easy label
+Y. Wang et al.: Preprint submitted to Elsevier Page 8 of 22
+
+
+STS MICCAI 2023 Challenge
+prediction phase, the hard label re-generation phase, and the final model training phase. Specifically, they first designed a segmentation model with a denoiser; both denoiser and segmentation models are U-Net-based architectures Ronneberger et al. (2015), and the denoiser and segmentation model were connected in series. The denoiser accepted the segmentation figures generated by the segmentation model as an input, outputted the noise in the segmentation label. Finally, the segmentation label will be subtracted from the noise to get the segmentation result after noise reduction. This strategy improved the quality of the segmentation results and reduced the noise of the pseudo-labels at the same time. Their training phase was divided into three stages. The first stage used only labelled data for fully supervised training and saved checkpoints at three training nodes to generate three sets of pseudo-labels for unlabelled data, respectively. The mean Dice scores of the three sets of pseudolabels were then calculated and sorted from high to low, and the top 75% of pseudo-labels were selected to join the second stage of training. Strong data augmentation and hard data augmentation (Mixup and CutMix) were performed for unlabelled data, and only weak data augmentation was used for labelled data. Then pseudo-labels were generated for the remaining 25% of unlabelled data using the model trained in the second phase. Finally, the third stage used labelled data with all unlabelled data for training. Rank 8: Song et al. chose FCBformer Fitzgerald and Matuszewski (2023) as the main model architecture. FCBformer skillfully combined two key techniques, Fully Convolutional Networks (FCNs) and Transformers, by starting the processing of downsampled images through two parallel branches and then concatenating the output tensors of these two branches and the output tensors of FCNs in the channel dimension. Finally, the prediction head processed the concatenated tensor to generate a full-size segmentation map of the input image. In terms of training strategy, they adopted the Exponential Moving Average (EMA) strategy for smoothing the model parameters to stabilize the training process and enhance the generalization ability of the model. At the same time, the learning rate and decay factor were adjusted to reduce the model error on the validation set while maintaining the training speed. The loss function was a combination of cross-entropy loss and dice loss, which was designed to balance the accuracy of pixel-level classification and the consistency of segmentation regions as a way to improve the model’s performance on tooth segmentation tasks. In addition to this, they used the Lion optimizer Cardoso et al. (2022) for model optimization. In the final round of the challenge, they used the model obtained from the training in the preliminary phase as a pre-training model to accelerate the convergence of the final model and to improve the performance of the final model by leveraging the knowledge that the preliminary model has already learned. The application of the pre-training model not only shortened the model training time but also improved the accuracy of the model on the rematch task. This series of innovative strategies enabled their model to achieve excellent results
+on the tooth segmentation task, demonstrating the strong potential of deep learning in the field of medical image analysis. Rank 11: Xue et al. used automatic generation alongside conventional data augmentation to expand the dataset and enhancing model generalization. Specifically, for each tooth in the image, they randomly used two generation methods, i.e., removing all of the individual teeth and randomly scaling the morphology of individual teeth. This generation method was well suited to characterize the data in this task domain while solving the problem of significant differences in the distribution of samples with small data volumes. The network part used DecoupledSegNets Li, Li, Zhang, Cheng, Shi, Lin, Tan and Tong (2020) as the backbone. The model architecture was characterized by splitting the foreground into the edge part (high frequency) and the body part (low frequency), which were supervised to learn separately and then merged, aligning with the data characteristics. They also extracted branches at different depths of the model and utilized dynamic mutual loss for additional supervision. Besides, they divided the prediction process into coarse and fine segmentation. Both segmentation processes used the same network structure as described above. The input image is initially segmented by the coarse model. Next, the maximum outer join matrix was applied to remove excess background information. Subsequently, the fine model executes the fine segmentation process. The data from the training process was processed in the same way as above.
+4.2. Methods of Task2: STS on 3D-CBCT dataset The overall benchmark of the top teams can be seen in Table 5. Similarly, we list the key points of the participating teams who provided their key strategies in the 3D CBCT dental semi-supervised segmentation. The details are presented as below. Rank 1: Li et al. proposed a multi-stage training strategy to address the challenges of CBCT image segmentation. The key to this strategy is to decompose the task into three sub-tasks and train the model step by step to better capture the contextual information of the image. They extended the properties of nnUNet Isensee et al. (2021) by introducing additional layers into the decoder of nnUNet to increase the depth of the model and increase the number of channels in the neural network. Based on these modifications, they adapted the nnUNet served as the backbone of the entire algorithm. In the three-stage model training strategy, the first stage consisted of constructing a basic dental model using the given labelled data. It is observed that bone segmentation can be achieved by combining the basic tooth model through a simple thresholding method. In order to accurately distinguish teeth, maxilla, and mandibles, a second stage of processing was introduced to specialize in a subnetwork of jaw segmentation. Finally, a third stage is combined with jaw information to segment teeth. In the first stage, a preprocessed dataset was used to train the nnUNet, and pseudolabels were generated for a large amount of unlabelled data. The generated pseudo-labels Wang, Wang, Shen, Fei, Li, Jin,
+Y. Wang et al.: Preprint submitted to Elsevier Page 9 of 22
+
+
+STS MICCAI 2023 Challenge
+T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Botplot for Dice
+(a)
+T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
+0.93
+0.94
+0.95
+0.96
+0.97
+0.98
+0.99
+1.00
+Botplot for mIoU
+(b)
+T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Botplot for HD
+(c)
+T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
+T1
+T2
+T3
+T4
+T5
+T6
+T7
+T8
+T9
+T10
+Statistical significance maps for Dice
+(d)
+T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
+T1
+T2
+T3
+T4
+T5
+T6
+T7
+T8
+T9
+T10
+Statistical significance maps for mIoU
+(e)
+T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
+T1
+T2
+T3
+T4
+T5
+T6
+T7
+T8
+T9
+T10
+Statistical significance maps for mIoU
+(f)
+Figure 2: Boxplot visualization (the first row) and statistical significance maps (the second row) for 2D tooth segmentation track. (a) and (d), (b) and (e), and (c) and (f) are the results for the Dice, mIoU and HD, respectively.
+Wu, Zhao and Le (2022c) were automatically and manually selected, optimized and filtered, and then incorporated into the training iterations to form a high-quality training dataset. Rank 2: Wang et al. proposed a semi-supervised algorithm based on the nnUNet network Isensee et al. (2021) and pseudo-labeling strategy Chen, Yuan, Zeng and Wang (2021b). Firstly, the labelled 3D data were preprocessed by morphological opening and closing operations and connectivity domain analysis, and then fed into the nnUNet network for segmentation. The unlabelled 3D data were also pre-processed as described above and fed into the network for prediction, and the resulting segmentation results were filtered and used as pseudo-labels for subsequent training, while pseudo-labels were screened for uncertainty detection. After each training epoch, the training dataset was continuously expanded to train the subsequent network. The loss function combined dice loss and cross-entropy loss, and the initial learning rate was set to 0.01, and the number of training rounds was set to 1000. Rank 3: Wang et al. proposed a framework for a semisupervised multi-stage training algorithm based on a Fourier Transform Augmentation (FTA) data augmentation module and an improved UniMatch Yang, Qi, Feng, Zhang and Shi (2023). The FTA data augmentation module was developed by Fourier transforming randomly selected piece of labelled data and a piece of unlabelled data, merging them in the frequency domain space Yao, Hu and Li (2022b), and then performing Fourier inverse transformed to obtain the respective augmented images. The improved UniMatch framework
+introduced the adaptive adjustment of the confidence threshold in FreeMatch Wang, Chen, Heng, Hou, Fan, Wu, Wang, Savvides, Shinozaki, Raj, Schiele and Xie (2023) on the basis of the UniMatch algorithm framework. In the multistage training framework, Wang et al. first used a 2D nnUNet model for supervised learning to generate pixel-level pseudo-labels for a small number of randomly sampled unlabelled samples in the training set. Then, the data processed in the first stage was subjected to data enhancement by the FTA module, which enables the model to learn information on the target domain, and then the improved UniMatch model was used for feature learning. Rank 4: Liu et al. proposed a semi-supervised noiseresistant segmentation network and a three-stage training framework. The noise-resistant semi-supervised framework mainly used two parallel networks so that they can learn from each other. In addition, Liu et al. divided the dataset into two mutually exclusive subsets, and these different subsets were fed into two different networks to ensure that the networks learn more diverse features. Both networks used noisy labels for initial supervision, and their respective predictions were fused as further pseudo-labels, and the weight of these pseudo-labels was gradually increased. They also used the noise transfer matrix Shu, Zhao, Xu and Meng (2020); Guo, Yang, Li and Yuan (2021) to correct the loss of noisily labelled tooth edge regions. In a three-stage training framework, the first stage used the traditional semi-supervised segmentation method Mean-Teacher Tarvainen and Valpola (2017) to obtain preliminary full-field segmentation results.
+Y. Wang et al.: Preprint submitted to Elsevier Page 10 of 22
+
+
+STS MICCAI 2023 Challenge
+T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
+0.5
+0.6
+0.7
+0.8
+0.9
+Botplot for Dice
+(a)
+T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
+0.7
+0.8
+0.9
+Botplot for mIoU
+(b)
+T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
+0.0
+0.1
+0.2
+0.3
+Botplot for HD
+(c)
+T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
+T1
+T2
+T3
+T4
+T5
+T6
+T7
+T8
+T9
+T10
+Statistical significance maps for Dice
+(d)
+T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
+T1
+T2
+T3
+T4
+T5
+T6
+T7
+T8
+T9
+T10
+Statistical significance maps for mIoU
+(e)
+T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
+T1
+T2
+T3
+T4
+T5
+T6
+T7
+T8
+T9
+T10
+Statistical significance maps for HD
+(f)
+Figure 3: Boxplot visualization (the first row) and statistical significance maps (the second row) for 3D tooth segmentation track. (a) and (d), (b) and (e), and (c) and (f) are the results for the Dice, mIoU and HD, respectively.
+All Metrics Dice mIoU HD
+2
+4
+6
+8
+10
+Ranking for PXI 2D
+111
+10
+222
+5
+3
+4
+3
+1
+4
+3
+4
+2
+555
+8
+666
+4
+7777
+888
+99 9
+10
+3
+10 10
+9
+6
+T1 T2 T3 T4 T5 T6 T7 T8 T9 T10
+All Metrics Dice mIoU HD
+2
+4
+6
+8
+10
+Ranking for CBCT 3D
+111
+2222
+4
+3
+55
+3
+444
+55
+6666
+33
+9
+7
+99
+1
+888
+7
+9
+10 10
+8
+10
+77
+10
+Figure 4: Ranking stability analysis for the top 10 teams with individual and weighted metrics. (a) 2D tooth segmentation track, (b) 3DCBCT tooth segmentation track. "All Metric" is the weighted ranking of three metrics (Dice, mIoU and HD).
+The second stage merged the unlabelled data from the first stage with the generated pseudo-labels into the labelled dataset and then feeded the above data into the constructed noise-resistant semi-supervised framework to obtain more accurate background region segmentation results. In the third stage, only the regions of interest were cropped and fed into the noise-resistant semi-supervised network to achieve finer segmentation. Rank 5: Chen et al. proposed an improved network and pseudo-label generation method based on nnUNet Isensee et al. (2021), an axial attention mechanism Luu and Park
+(2022), and a positional correction module. The axial attention mechanism decomposed the 3D space into multiple independent dimensions and calculated the attention weights for each dimension separately. It then combined them to better handle irregular shapes and localized structures, improving the ability to capture tiny structures by focusing on both horizontal and vertical structures in the image and thus enhances the accuracy of segmentation. The position correction module was designed to accurately mark the boundaries of the teeth and exclude segmentation errors. This module first determined the width range of the tooth. Then, it performed the following four key steps:
+Y. Wang et al.: Preprint submitted to Elsevier Page 11 of 22
+
+
+STS MICCAI 2023 Challenge
+(a) Adult Tooth (b) Children Tooth
+(c) CTooth (d) STS-3DTooth
+Figure 5: The illustration of examples in the dataset.
+determining the upper left and lower right corner points of the tooth, calculating an exact position point to correct the tooth position, constructing a region box that accurately defines the extent of the tooth, and finally filtering the data to ensure that only the true tooth structure data is retained. This process eliminated the possibility of segmentation errors. The method leveraged unlabelled data through 5-fold crossvalidation and high-quality pseudo-label generation. Subsequently, the pseudo-labels were continuously optimized through iterative training, screening for stable pseudo-labels, and finally used the nnUNet model with axial attention to ensure that the model could perform well in the final tooth structure segmentation task. Rank 7: Li et al. proposed a weak mutual consistency network (Weak MC-Net) and an entropy-based meanteacher network Tarvainen and Valpola (2017). The overall framework of the weak MC-Net referenced MC-Net+ Wu et al. (2022) with modifications based on VNet Milletari, Navab and Ahmadi (2016). The weak MC-Net focused on the last layer in the decoder, using different up-sampling methods to better learn the features of different regions of the tooth. In order to better distinguish between teeth and
+background at the macro level, Li et al. used the CBAM module Woo, Park, Lee and Kweon (2018) instead of the first skip connection operation. Then, they calculated the entropy of the student model prediction results based on Mixed Transformer Wang et al. (2022a) and used it as the weight of the consistency loss function to guide the network to learn towards targets with low entropy Xu, Wang, Lu, Luo, Yan, Zheng and yu Tong (2023). Since the outputs obtained from the two different up-sampling methods of Weak MC-Net were different perspectives on tooth learning and thus had discrepancies, calculating the MSE loss of the two outputs of the model from each other can help the outputs of the two branches converge and thus help the model better learn tooth information from unlabelled data.
+5. Evaluation Results and Ranking Analysis
+Table 3 shows the DSC, mIoU, and HD for the 2D PXI semi-supervised segmentation and the 3D CBCT image tooth semi-supervised segmentation tasks. In the next subsections, we analyze the DSC, mIoU, and HD for both tasks in the STS Challenge via box plots, as well as the statistical analysis of significance. The statistical analyses
+Y. Wang et al.: Preprint submitted to Elsevier Page 12 of 22
+
+
+STS MICCAI 2023 Challenge
+were performed using a one-sided Wilcoxon signed rank test with a significance level of 5%, which is used in many analyses of challenge results. For concise and unambiguous characterization, we focus on the top 10 teams. Fig. 2 and Fig. 3 show box plots and statistical significance plots for the Dice, mIoU, and HD indicators of the top 10 teams for 2D and 3D tooth segmentation. The results for Dice, mIoU, and HD are presented in subfigures (a) and (d), (b) and (e), and (c) and (f), respectively. The teams are ranked from left to right in each subfigure. The statistical maps show the statistically significant differences between diverse metrics for the top 10 teams (p < 0.05). Orange indicates that the performance of teams on the X-axis is significantly different from that of the teams on the Y-axis, while blue indicates the opposite.
+5.1. Dice metric analysis of Task1
+The Dice metric of all the top 10 teams is above 92%, as demonstrated in Table 3 and Fig. 2 (a). The T1 achieves the highest Dice score of 93.92 ± 4.99, while the T10 obtains the lowest score of 92.99 ± 4.05. Table 3 reveals that T1, T2, and T4 rank among the top three in terms of Dice performance. Considering the substantial weight assigned to the Dice metric during final scoring, teams excelling in this evaluation metric also tend to achieve higher rankings, and vice versa. Statistical significance analysis (Fig. 2 (d)) demonstrates significant differences between the Dice scores of the top three teams (T1, T2, and T4). Although there is no notable distinction between the highest score obtained by T1 and the Dice score achieved by T3, both teams outperform all others significantly. Teams belonging to the second-ranked (T2) and third-ranked (T4) positions exhibit considerably higher Dice scores compared to other participating teams. These results underscore the necessity of employing a Dice evaluation metric for tooth segmentation assessment.
+5.2. mIoU metric analysis of Task1
+The Dice metric only analyzes the foreground region of the segmentation result. In contrast, mIoU evaluates both the foreground and background of the segmentation result. Table 3 shows that the ranking trend of the team’s score in mIoU is similar to that of Dice. Most teams achieve high Dice scores and, correspondingly, better performance on the mIoU metric. However, the mIoU value is higher and the variance is lower, as shown in Fig. 2 (b). This may be because the mIoU indicator considers background segmentation, and the background occupies a relatively large proportion of the image, resulting in a relatively high average mIoU. The top three teams in the mIoU score were T1, T2, and T3, with the highest score of 98.30±0.94 achieved by the T1 team. As shown in Fig. 2 (e), there is also a significant difference between teams with higher scores. Therefore, when evaluating the performance of a segmentation model, it is necessary to consider background segmentation and introduce the mIoU metric to evaluate the algorithm. Moreover, there was no statistical difference between the highest-scoring mIoU team T1 and the third-ranked team
+T3, nor between the second-ranked team T2 and the thirdranked team T3. It is worth noting that although the absolute difference in mIoU scores is small (less than 0.5%), most of the top-ranked teams have significantly improved compared to the bottom-ranked teams. These results demonstrate that both the Dice and mIoU metrics are suitable for evaluating segmentation results simultaneously. It is reasonable to assign more weight to the Dice metric.
+5.3. HD metric analysis of Task1
+The normalized HD metric is utilized to assess the edge effect of the segmentation outcomes. Table 3 displays that the T3, T4, and T9 teams have the top three HD scores, respectively, and their scores have low dispersion. However, it is worth noting that the teams with the highest Dice and mIoU scores do not always have the highest HD scores. For instance, the team ranked third in the HD metric, T9, and achieved a score of 0.0234 ± 0.0159. However, its Dice and mIoU scores were not satisfactory. As a result, T9 has fewer segmentation errors in the tooth region but relatively more edge-fitting errors in the boundary segmentation, as shown in Fig. 6. Notably, even if the difference in HD scores is not significant, it can still affect the ranking when the Dice and mIoU scores are similar. Dice, mIoU, and HD are complementary metrics that should be used together to comprehensively evaluate the performance of segmentation algorithms. Table 1 (f) shows that T3 with the highest HD score is significantly better than that of most teams, and the score has been significantly improved. However, most of the other teams did not make significant improvements. These results demonstrate that the segmentation evaluation method that considers the edge effect is more robust and reliable.
+5.4. Dice metric analysis of Task2
+Table 3 demonstrates that T1, T2, and T6 achieved the highest Dice scores for the tooth 3D segmentation task. The top 10 teams achieved Dice scores ranging from 76.64 ± 6.47 to 84.42 ± 5.41, with a significant gap between the highest and lowest scores. The shortage of labelled training data for 3D tasks may be the reason for this. There are only a limited number of cases available. Furthermore, semisupervised segmentation is more challenging, resulting in significant differences in optimization results among different teams. Table 3 shows that similar results can be achieved with 2D tooth segmentation; teams with higher Dice scores are ranked higher in the final weighted scores. Based on the statistical significance analysis as shown in Figure 3 (d), it is evident that there is no significant difference between T1 and T2 with Dice scores. However, there is a statistical difference between T1 and T6. The results indicate that the teams at the top of the rankings are significantly better than those at the bottom. This demonstrates that the Dice metric is an effective evaluation tool for 3D tooth segmentation and can accurately assess the quality of segmentation results.
+Y. Wang et al.: Preprint submitted to Elsevier Page 13 of 22
+
+
+STS MICCAI 2023 Challenge
+Table 4
+Summary of the benchmark methods of top seven teams for 2D tooth segmentation.
+Rank Framework Network Semi-supervised Strategy Highlight Methods
+1 One-stage SegResNet, U-Net Consistency learning
+Slide window strategy;
+MSE loss for traing student model;
+Models ensemble;
+Test-time augmentation;
+2 One-stage SwinUNTER ——————
+Deep supervision;
+Suitable data augmentations;
+Models ensemble;
+Test-teme augmentation;
+Removing edge segmentation label;
+3 One-stage U-Net, SAM Pseudo-label generation
+Models ensemble;
+Hard example mining strategy;
+Test-time augmentation;
+4 One-stage SegFormer Pseudo-label generation
+Suitable data augmentations;
+Test-time augmentation;
+Choosing high-quality pseudo-labels;
+5 One-stage UperNet ——————
+Deep supervision;
+Hard example mining strategy;
+Test-time augmentation.
+7 Two-stage U-Net Pseudo-label generation
+Hard example mining strategy;
+A trained U-Net denoises label result;
+Test-time augmentation;
+8 One-stage FCBformer ——————– Parameter averaging;
+Lion optimizer;
+11 One-stage DecoupledSegNet Pseudo-label generation
+Customized data augmentation;
+Deep supervision;
+Dynamic mutual loss function;
+5.5. mIoU metric analysis of Task2
+Table 3 shows that the trend of the area-based mIoU metric is consistent with that of the Dice metric score. The top three teams are T1, T2, and T6, respectively, but there is little difference in mIoU scores among the top ten teams, where the highest mIoU score is 86.61±3.84, and the lowest is 81.11±3.96. Additionally, when combined with Fig. 3 (b), it is evident that there are fewer outliers in mIoU scores across different cases. Background segmentation is considered in the mIoU metric, which explains why the tooth foreground area in 3D CBCT, being more sparse, does not significantly affect the mIoU score. Fig. 3 (e) shows that the top three teams have significantly higher mIoU scores than most other teams. There was no significant difference between the highest score of T1 and the score of T2, both of which outperformed all other teams. The third-placed team, T6, scored significantly higher than all the other teams in terms of mIoU. The visualization of segmentation results (Fig. 7) shows that the overall weighted ranking T6 team had fewer segmentation errors than T10.
+Therefore, it is reasonable to adopt the mIoU metric to evaluate segmentation results, as it considers the background and can effectively assess both over-segmentation and undersegmentation.
+5.6. HD metric analysis of Task2
+Table 3 shows that the normalized HD scores of the top ten are mostly close and relatively stable, with no outliers. The team with the lowest HD error was T7, with a score of 0.1580 ± 0.1080. It is worth noting that only two teams in the top 10, T6 and T10, have HD errors greater than 0.2. This causes the top three T6 scores in the Dice and mIoU indicators to be pulled down in the ranking due to the HD scores in the evaluation of the split edge. Fig. 7 illustrates that there are some discrete label regions in the predicted segmentation results of both teams, resulting in low HD scores for the predicted results. Fig. 3 (f) shows that with the exception of T6 and T10 teams, there is no significant difference in HD scores between the remaining teams, but they are all significantly
+Y. Wang et al.: Preprint submitted to Elsevier Page 14 of 22
+
+
+STS MICCAI 2023 Challenge
+Table 5
+Summary of the benchmark methods of top seven teams for 3D tooth segmentation.
+Rank Framework Network Semi-supervised Strategy Highlight Methods
+1 Two-stage nnUNet Pseudo-label generation
+Maxilla and Mandible extracted by trained network;
+Label noise tackling;
+Suitable data augmentation;
+2 One-stage nnUNet Pseudo-label generation
+Customized nnUNet configure;
+Label noise tackling;
+Selecting reliable pseudo labels;
+3 Two-stage U-Net Pseudo-label generation
+and consistency learning
+Adaptive confidence level;
+Split Coordinate Attention;
+Frequency transform data augmentation;
+4 Two-stage U-Net 3D Pseudo-label generation
+and consistency learning
+Anti-noise segmentation framework;
+Test-time augmentation;
+Designed post-processing operation;
+5 One-stage nnUNet Pseudo-label generation Attention mechanism;
+Position correction post-processing;
+6 One-stage U-Net ——————
+Deep supervision;
+Suitable data augmentation;
+Test-time augmentation;
+7 One-stage V-Net Consistency learning
+Sliding window strategy;
+Soft shapen pseudo method;
+Designed post-processing operation;
+Table 6
+Summary of the experimental setup of top seven teams for 2D tooth segmentation. Abbreviations: a) Data-Augmentation: Slidingwindow (S), RandomRotate (R), RandomFlip (RF), CutMix (CM), Mixup (M), ColorJitter (C), ElasticTransform (E), GaussianBlur (GB), GaussianNoise (GN), IntensityTransformations (I), RandomCropping (RC), CoarseDropout (CD), ShiftScaleRotate (SR), Random Mosaic (RM), Grid Distortion (GD), Random Occlusion (RO), PhotoMetricDistortion (PM), Remove (RE), Scaling (SC); b) Pre-processing: Normalization (N), Duplicate Image Detection (DI), Multi-Label Sample Filtering (MS), Image Rotation Augmentation (IR), Resize (RS), Cropping (CR), Padding (PA); c) Post-processing: voting averaging (V), Probability Threshold Filtering (PF), Filling Holes (F), Bilinear Interpolation (BI), Masking (M); Loss:Dice Loss (D), Lovasz Loss (L), Class Balanced Loss (CB), DynamicMutual Loss (DM); d) Optimizer:AdamW (AW).
+Rank
+Data Augmentation Pre-processing Post-processing Loss
+S RF R CM M C E GB GN I CD SR RC RM GD RO PM RE SC N DI MS IR RS CR PA V PF F BI M BCE D L CB IoU HD DM MSE CE
+1 ✓✓ ✓ ✓ ✓ ✓ ✓ ✓ ✓
+2 ✓ ✓ ✓ ✓ ✓ ✓ ✓✓ ✓
+3 ✓ ✓ ✓ ✓ ✓ ✓ ✓ ✓✓ ✓
+4 ✓ ✓✓✓ ✓ ✓ ✓ ✓ ✓ ✓
+5 ✓ ✓✓✓ ✓ ✓ ✓ ✓
+6 ✓ ✓ ✓ ✓✓ ✓ ✓ ✓ ✓ ✓ ✓ ✓ ✓ ✓
+7 ✓ ✓ ✓ ✓✓✓ ✓ ✓ ✓ ✓ ✓
+8 ✓ ✓ ✓ ✓ ✓ ✓✓ ✓ ✓
+11 ✓ ✓ ✓ ✓ ✓ ✓
+Y. Wang et al.: Preprint submitted to Elsevier Page 15 of 22
+
+
+STS MICCAI 2023 Challenge
+Table 7
+Summary of the experimental setup of top seven teams for 3D tooth segmentation. Abbreviations: a) Data Augmentation: FTA Module (F), RandomRotate (R), RandomFlip (RF), CutMix (CM), Mixup (M), ColorJitter (C), ElasticTransform (E), GaussianBlur (GB), Gaussian Noise (GN), Intensity Transformations (I), Random Cropping (RC); b) Pre-processing: boundary smoothing (BS), Normalization (N), Thresholding (T), Resampling (R), Random Cropping (RC); c) Post-processing: boundary smoothing (BS), Connected Component Analysis (CC), Morphological Operations (MO), Filling Holes (F); Loss: Dice (D), Focal (F).
+Rank Data Augmentation Pre-processing Post-processing Loss
+RC F R RF CM M C E GB GN I BS N T R RC BS CC MO F D CE F MSE
+1 ✓ ✓✓ ✓✓ ✓ ✓✓ ✓ ✓✓
+2 ✓ ✓✓ ✓✓ ✓ ✓ ✓ ✓✓ ✓ ✓ ✓✓
+3 ✓✓ ✓ ✓ ✓ ✓✓ ✓✓
+4 ✓✓ ✓ ✓ ✓✓✓
+5 ✓ ✓✓ ✓✓ ✓ ✓ ✓ ✓✓ ✓✓
+6 ✓ ✓ ✓ ✓✓ ✓ ✓ ✓✓ ✓ ✓
+7 ✓ ✓ ✓✓✓✓ ✓ ✓ ✓ ✓
+T1 T9
+Image T2 T5
+Figure 6: Visualization of 2D PXI segmentation results representing the team and segmentation results for different tooth types. Left to right: original images and results form teams T1, T2, T5, T9. The first row depicts cases of tooth loss, the second row illustrates a combination of caries and permanent teeth, and the third row represents normal dental conditions. The red color indicates the region where the ground truth and prediction results coincide, blue represents the under-segmentation area, and green corresponds to the over-segmentation area.
+better than T6 and T10. The results demonstrate that the HD evaluation metric is a crucial indicator for evaluating segmentation methods. Its inclusion can enhance the comprehensiveness of the evaluation of segmentation results.
+6. Discussion
+6.1. Organization
+The STS Challenge provides services for both tracks on the Alibaba Tianchi platform. The organizers employ an online evaluation method to prevent cheating without disclosing the test set labels. Consequently, all participants must submit their predictions to the Alibaba Tianchi system. The Alibaba Tianchi system automatically calculates evaluation metrics against the ground truth to determine participants’ scores. In the end, 434 teams participated in
+the preliminary stage across both tracks, with 64 teams advancing to the finals. Notably, there were a higher number of teams participating in the 2D task.
+6.2. Ranking stability analysis
+In order to more accurately evaluate the algorithmic strengths of different participating teams, the three evaluation metrics (Dice, mIoU, and HD) were assigned varying weights in the final ranking. Specifically, a weight of 40% was assigned to the Dice metric, while the mIoU metric, which accounts for both background and foreground, received a weight of 30%, and the final HD metric score was set at 30%. To assess how individual metrics influence the final rankings, the ranking stability of the top 10 teams for the tasks of 2D panoramic tooth segmentation and 3D CBCT tooth segmentation is illustrated in Fig. 4. There are
+Y. Wang et al.: Preprint submitted to Elsevier Page 16 of 22
+
+
+STS MICCAI 2023 Challenge
+Image T1
+Axial plane Coronal plane Sagittal plane 3D visualization
+T2 T6 T10
+Figure 7: 3D visualization of CBCT segmentation results (the first row), and three-view segmentation results (the last three rows) for representative teams. Left to right: original images and segmentation results from teams T1, T2, T6, and T10. The red color indicates the region where the ground truth and prediction results coincide, blue represents the under-segmentation area, and green corresponds to the over-segmentation area.
+noticeable fluctuations in their HD metrics for both 2D and 3D tasks. These variations could be attributed to differing priorities among teams. For instance, the top-ranking team in the 2D task focused on the Dice and mIoU metrics, achieving first place in both, yet had the poorest HD score among the top 10. Similarly, in the 3D task, the team ranked 7th overall was 9th in the Dice and mIoU metrics but secured the 1st position in the HD metrics. Moreover, based on the results in Fig. 7, it appears that this situation may be due to the presence of discrete outliers in the segmentation results. Such outliers can typically be addressed through post-processing methods that preserve the maximum connectivity domain. For instance, Li, ranked 7th, initially conducted hyperparameter selection for subsequent connectivity domain analysis and morphological operations based on a priori knowledge. Then, for the prediction result, Li used connectivity domain analysis and morphological operations, including erosion, expansion, and filling of voids, to handle small pixel points outside the main region of the tooth, ultimately obtaining the processed prediction result. This post-processing scheme effectively
+addresses the discrete points outside the main region of the tooth produced by the segmentation network, significantly improving the HD metrics. Therefore, a more comprehensive consideration of various metrics to evaluate the stability and consistency of segmentation algorithms is a suitable direction for future algorithm evaluation development.
+6.3. Analysis of the top-ranked methods on 2D Task
+Table 6 illustrates that certain participants utilized a network architecture approach employing two segmentation networks for segmenting the same image, yielding commendable results. The first-place participant, Zhuang et. al, employed both SegResNet_64 and DynUNet segmentation networks, leveraging the powerful feature extraction capabilities of SegResNet_64 and the dynamic convolution kernel adjustment ability of DynUNet to aid in tooth segmentation. This approach does improve performance when processing large numbers of oral x-ray images by fusing multiple teacher and student models into a single robust model. However, this complex model structure may lead to
+Y. Wang et al.: Preprint submitted to Elsevier Page 17 of 22
+
+
+STS MICCAI 2023 Challenge
+computational inefficiency and greatly consume hardware resources. Similarly, the third-place team, Liu et al., utilized an EfficientNetv2-based UNet Tan and Le (2021b) in conjunction with the SAM Kirillov, Mintun, Ravi, Mao, Rolland, Gustafson, Xiao, Whitehead, Berg, Lo et al. (2023b) model. Both networks were fine-tuned after pre-training, resulting in faster and more accurate tooth area segmentation. However, Liu et al. may have filtered out some anomalous but practically useful samples during the process in data preprocessing. In addition, SAM was trained on 11 million image datasets to obtain the pre-training weights, and whether Liu et al.’s fine-tuning of them on a much smaller dataset than the pre-training is effective in learning new knowledge deserves deeper consideration. Wang et al. who received the fifth ranking used large and complex models that may lead to higher computational costs and low tolerance for misclassified backgrounds, while the loss of category imbalance in the enhancement prospect and online hard sample mining may introduce noise that affects the model generalization ability. In addition, the data enhancement techniques and post-processing strategies employed, while improving performance, also increase processing time and tuning complexity, especially when setting effective thresholds to distinguish between teeth and background. Notably, some participants combined Transformer structures with traditional CNNs, utilizing the Transformer’s ability to capture global dependencies in the input data and the CNN’s capability to extract local features. The second-place team, Yang et al., expanded the backbone scale and embedded sub-models into SwinUNETRHatamizadeh, Nath, Tang, Yang, Roth and Xu (2022a), incorporating deep supervision, channel attention mechanisms, and a feature extraction module inspired by PointRend to construct their SwinUNETR_HS network. It is apparent from Table 6 that among the top seven teams, only one participant employed a multi-stage training approach. Specifically, the seventh-place team, Lin et al., divided the tooth segmentation task into stages of easy label prediction, challenging label regeneration, and final model training, enhancing the quality of segmentation maps while reducing pseudo-label noise. Although this multi-stage task strategy is commendable, the choice of the simplest Unet structure as the backbone network may explain why the segmentation results were not particularly outstanding. Moreover, the method proposed by Lin et al. is expected to improve the model performance with staged training and the use of denoisers, there are two possible problems with this approach: first, the model relies on high-quality pseudolabels to guide the learning of unlabeled data, and incorrect pseudo-labels may lead to error accumulation; second, the three-stage training process increases the complexity of the training, and is very sensitive to the selection of hyperparameters and enhancement strategies which makes it difficult to ensure that the final model presents high accuracy and robustness.
+The eighth-ranked FCBformer model proposed by Song et al. Although it skillfully fuses FCNs and Transformers, as well as accelerates model convergence through pre-training to improve performance, it may suffer from two problems: firstly, the complex architecture and training strategy may lead to high computational cost and sensitivity to hyperparameter tuning; and secondly, although pre-training the model helps to improve the accuracy, an over-reliance on pre-training the model may limit the model’s ability to adapt to new data. The eleventh-ranked Xue et al. used an automatically generated data augmentation and DecoupledSegNets model architecture. The automatically generated data augmentation may result in unrealistic samples that affect the actual efficacy of the model and the special structure makes the network potentially lack robustness in dealing with uncommon tooth morphology; furthermore, the multi-step segmentation process increases the complexity of the model and may result in performance degradation in some specific cases. In Table 4, it can be observed that only four participants employed semi-supervised learning to utilize more than half of the unlabelled data fully, yet three of the top four utilized semi-supervised algorithms. It is worth mentioning that most participants used pseudo-label generation; notably, only the first-place participant employed the classical teacher-student network framework for semi-supervised learning. It is noticeable from Table 6 that almost all top seven participants adopted a combination of various loss functions as their final loss function, indicating that using a mix of loss functions is a common strategy.
+6.4. Analysis of the top-ranked methods on 3D Task
+According to Table 7, it can be observed that four of the top seven teams have adopted nnUnet Isensee et al. (2021) as their backbone network architecture, remarkably including the top three. nnUNet is a powerful image segmentation framework that utilizes both 2D and 3D UNet structures. It adaptively tunes all hyperparameters, in addition to covering aspects such as data augmentation. Some of these teams also made some modifications to the nnUnet network. The third-place team, Wang et al., proposed the FTA data augmentation module, which utilizes the Fourier transform for data enhancement. Li et al. constructed a larger and deeper nnUnet by increasing the number of layers and channels in the nnUnet. In fifth place, Chen et al. added the Axial Attention Mechanism (AAM) and the Ositional Correction Module (OCM). It is clear that the above four teams using nnUNet primarily adopted the framework’s data augmentation strategies, with one team proposing its data augmentation module. The third-place team, Wang et al., proposed the FTA data augmentation module, which utilizes the Fourier transform for data enhancement. As can be seen in Table 7, compared to the 2D track, where only one of the top seven players adopted multistage training and achieved less satisfactory results, in the 3D track, three of the top four teams adopted a multi-stage
+Y. Wang et al.: Preprint submitted to Elsevier Page 18 of 22
+
+
+STS MICCAI 2023 Challenge
+training strategy by dividing the tooth segmentation task into multiple stages to achieve it. Among them, the first-place Li et al. effectively improved the segmentation accuracy by first segmenting the maxilla and mandible strategies. The strategy first segments the maxilla and mandible, on the basis of which the tooth region is segmented. However, the position of the maxilla and mandible inferred first largely determines the accuracy of tooth segmentation. Therefore, its accuracy needs to be further improved. In third place, Wang et al. used a fully supervised approach to generate and screen out a small number of pseudolabels in the first stage of training and then used a semisupervised algorithm to train in the second stage. An innovative FTA data enhancement module was proposed. However, Wang et al. converted the 3D image into a 2D picture for training and feature learning, thus potentially ignoring latent features in 3D space. In fourth place, Liu et al. applied the Mean-Teacher method for initial full-field-of-view segmentation, then strengthened the dataset with pseudo-labels for noise-resistant segmentation to improve background differentiation accuracy, and finally focused on the region of interest to achieve more detailed segmentation. Semi-supervised and anti-noise strategies are used to achieve fine-grained segmentation through three stages of training. However, the above training process is more time-consuming and the speed of the inference process is slow. In addition, too many human operations such as data selection may also affect the accuracy of its training process. Finally, as can be seen from Table 5, six of the top seven finishers used semi-supervised algorithms to make the most of those unlabelled data. The fifth-place winner Chen et al. designed an nnUNet-based framework to utilize unlabeled data by modifying the second layer decoder of nnUNet and introducing 3D axial attention mechanism and pseudo-labeling mechanism. However, they only used a simple uncertainty-based pseudolabel screening method, which may generate large pseudolabel noise and thus interfere with the training process and its result accuracy. The seventh-place winner Lin et al. proposed a Weak MC-Net, which manually identifies the ROI regions present in the dental region during the training process and crops them for training, but the above preprocessing operation leads to the inadequacy of the trained model in reasoning in the face of uncropped data. It is noteworthy that the third-place winner, Wang et al., achieved two key milestones in their training process. In the first stage, they obtained a small number of high-quality pseudo-labels, which increased the volume of labelled data for the second stage. Then, in the second stage, they utilized an enhanced version of the Unimatch semi-supervised algorithm to effectively leverage the unlabelled data twice, fully harnessing the embedded information within it. Similarly, Liu et al. in the fourth place also utilized unlabelled data repeatedly during the multi-stage training process.
+In Table 7, we can see that the top five teams all adopted the strategy of the weighted average of dice loss and crossentropy loss function, which is a common combination in the field of image segmentation. Dice loss can help to deal with the problem of category imbalance, but the gradient may be unstable during the training process, while cross entropy loss is more concerned about the accuracy of the prediction results and can stabilize the gradient changes during training, so the two are combined to serve as a comprehensive loss function.
+6.5. Limitation
+The STS 2023 Challenge presents two tasks to segment out teeth on the PXI and CBCT. Automatically segmenting out tooth regions can help dentists with dental diagnosis, treatment, and evaluation, and participants were asked to automatically segment tooth regions in PXI or CBCT with the help of a small amount of labelled data and a large amount of unlabelled data. Overall, for the PXI task, the top seven participants achieved a high total prediction score. This was because we created a PXI dataset containing teeth. However, the dataset still has some limitations. Firstly, patient confidentiality is a major obstacle to obtaining a valuable dataset. The data in the STS-2DTooth dataset consists mainly of anonymized PXI data provided by patients in dental hospitals who have signed consent and waiver forms. This is because, even if the PXI data is processed in a way that conceals personal privacy, the public sharing of PXI data without patient consent violates privacy laws. Therefore, the unlabelled dataset for this study is also limited. Second, the percentage of children’s teeth in STS-2DTooth is not high, but the fact that children’s teeth are more complex in structure and thus more difficult to segment than adults’ teeth should be focused on. However, in addition to the difficulty of obtaining data, the task of labeling children’s teeth is also more challenging. In addition, for the CBCT task, there is still some room for improvement in the prediction scores of the top seven participants. On the one hand, the contestants’ algorithms still need to be improved, especially the metal artifacts in CBCT, which will largely affect the accuracy of segmentation, so the solution to the artifacts is an urgent problem for the contestants to focus on. On the other hand, the relatively small number of trainable labelled CBCTs also contributes to the generally low performance of the players. This is due to the inherent difficulty of CBCT annotation; a patient’s CBCT data has 400 slices, which requires several annotating doctors to spend a lot of time on annotation. Finally, none of the AI algorithms presented in this challenge can provide testing for clinical use. We hope that these algorithms will be further evaluated and tested, especially by providing them for use by physicians to compare their predictive effects. Therefore, these AI algorithms still have a long way to go before they are mature enough to be used in software development.
+Y. Wang et al.: Preprint submitted to Elsevier Page 19 of 22
+
+
+STS MICCAI 2023 Challenge
+7. Conclusion
+The challenge, named STS 2023, aims to explore the application of tooth segmentation from two image types. All participants were required to choose between 2D PXI-based or 3D CBCT-based tooth segmentation. They faced problems such as low-labelled data, which called for the use of semi-supervised algorithms to utilize the large amount of unlabelled data provided. In both the 2D and 3D tasks, the topranked teams used the semi-supervised algorithm system. Their scores were only affected by their backbone network selection and the specific details of the implementation of the semi-supervised algorithms. It is worth mentioning that the multi-stage training strategy showed excellent performance in the 3D segmentation task. However, many teams did not employ any semi-supervised strategies. Therefore, future STS Challenges may focus on enabling players to adopt semi-supervised algorithms and increase their usage to cope with the existing problems related to the lack of annotation and difficulty in the annotation of dental medical images.
+CRediT authorship contribution statement
+Yaqi Wang: Conceptualization, Investigation, Funding acquisition Yifan Zhang: Data Curation, Resources Xiaodiao Chen: Investigation, Methodology Shuai Wang: Software, Validation Dahong Qian: Supervision, Project administration Fan Ye: Writing-Original Draft, Visualization Feng Xu: Writing-Original Draft, Visualization Hongyuan Zhang: Writing-Review & Editing,Visualization Qianni Zhang: Investigation, Formal analysis Chengyu Wu: WritingReview & Editing, Validation Yunxiang Li: Investigation, Project administration Weiwei Cui: Methodology Shan Luo: Data Curation Chengkai Wang: Investigation Tianhao Li: Data Curation Yi Liu: Funding acquisition Xiang Feng: Investigation Huiyu Zhou: Supervision Yundong Liu: Competitor Qixuan Wang: Competitor Zhouhao Lin: Competitor Wei Song: Competitor Yuanlin Li: Competitor Bing Wang: Competitor Chunshi Wang: Competitor Qiupu Chen: Competitor Mingqian Li: Competitor
+Acknowledgements
+This work was supported by the National Natural Science Foundation of China (No.62206242) and China Science and Technology Foundation of Sichuan Province (No.2022YFS0116). There are no conflicts of interest between authors. Yifan Zhang is the principal sponsor of the challenge by collecting and providing clinical data. Only the organizers and members of their immediate team have access to test case labels.
+References
+Batty, G.D., Jung, K.J., Mok, Y., Lee, S.J., Back, J.H., Lee, S., Jee, S.H., 2018. Oral health and later coronary heart disease: cohort study of one million people. European journal of preventive cardiology 25, 598–605. Berthelot, D., Carlini, N., Goodfellow, I., Papernot, N., Oliver, A., Raffel, C.A., 2019. Mixmatch: A holistic approach to semisupervised learning, in: Wallach, H., Larochelle, H., Beygelzimer,
+A., d'Alché-Buc, F., Fox, E., Garnett, R. (Eds.), Advances in Neural Information Processing Systems, Curran Associates, Inc.
+URL: https://proceedings.neurips.cc/paper_files/paper/2019/file/ 1cd138d0499a68f4bb72bee04bbec2d7- Paper.pdf.
+Cardoso, M.J., Li, W., Brown, R., Ma, N., Kerfoot, E., Wang, Y., Murrey, B., Myronenko, A., Zhao, C., Yang, D., et al., 2022. Monai: An open-source framework for deep learning in healthcare. arXiv preprint arXiv:2211.02701 . Chen, Q., Zhao, Y., Liu, Y., Sun, Y., Yang, C., Li, P., Zhang, L., Gao, C., 2021a. Mslpnet: multi-scale location perception network for dental panoramic x-ray image segmentation. Neural Computing and Applications 33, 10277–10291. Chen, X., Yuan, Y., Zeng, G., Wang, J., 2021b. Semi-supervised semantic segmentation with cross pseudo supervision, in: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pp. 2613–2622. Contributors, M., 2020. MMSegmentation: Openmmlab semantic seg
+mentation toolbox and benchmark. https://github.com/open-mmlab/ mmsegmentation.
+Cui, W., Wang, Y., Li, Y., Song, D., Zuo, X., Wang, J., Zhang, Y., Zhou, H., Chong, B.s., Zeng, L., Zhang, Q., 2022a. Ctooth+: A largescale dental cone beam computed tomography dataset and?benchmark for?tooth volume segmentation, in: Nguyen, H.V., Huang, S.X., Xue, Y. (Eds.), Data Augmentation, Labelling, and Imperfections, Springer Nature Switzerland, Cham. pp. 64–73. Cui, W., Wang, Y., Zhang, Q., Zhou, H., Song, D., Zuo, X., Jia, G., Zeng, L., 2022b. Ctooth: A fully annotated 3d dataset and?benchmark for?tooth volume segmentation on?cone beam computed tomography images, in: Liu, H., Yin, Z., Liu, L., Jiang, L., Gu, G., Wu, X., Ren, W. (Eds.), Intelligent Robotics and Applications, Springer International Publishing, Cham. pp. 191–200. Cui, W., Zeng, L., Chong, B., Zhang, Q., 2021a. Toothpix: Pixel-level tooth segmentation in panoramic x-ray images based on generative adversarial networks, in: 2021 IEEE 18th International Symposium on Biomedical Imaging (ISBI), pp. 1346–1350. doi:10.1109/ISBI48211.2021.9433807. Cui, Z., Li, C., Wang, W., 2019. Toothnet: Automatic tooth instance segmentation and identification from cone beam ct images, in: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR). Cui, Z., Zhang, B., Lian, C., Li, C., Yang, L., Wang, W., Zhu, M., Shen, D., 2021b. Hierarchical morphology-guided tooth instance segmentation from cbct images, in: Feragen, A., Sommer, S., Schnabel, J., Nielsen, M. (Eds.), Information Processing in Medical Imaging, Springer International Publishing, Cham. pp. 150–162. Dominy, S.S., Lynch, C., Ermini, F., Benedyk, M., Marczyk, A., Konradi, A., Nguyen, M., Haditsch, U., Raha, D., Griffin, C., et al., 2019. Porphyromonas gingivalis in alzheimer’s disease brains: Evidence for disease causation and treatment with small-molecule inhibitors. Science advances 5, eaau3333. Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., Dehghani, M., Minderer, M., Heigold, G., Gelly, S., Uszkoreit, J., Houlsby, N., 2021. An image is worth 16x16 words: Transformers for image recognition at scale. arXiv:2010.11929. Ezhov, M., Gusarev, M., Golitsyna, M., Yates, J.M., Kushnerev, E., Tamimi, D., Aksoy, S., Shumilov, E., Sanders, A., Orhan, K., 2021. Clinically applicable artificial intelligence system for dental diagnosis with cbct. Scientific Reports 11, 15006. URL: https://doi.org/10.1038/
+s41598-021-94093-9, doi:10.1038/s41598-021-94093-9.
+Fitzgerald, K., Matuszewski, B., 2023. Fcb-swinv2 transformer for polyp segmentation. arXiv preprint arXiv:2302.01027 . Fleming, E., Afful, J., 2018. Prevalence of total and untreated dental caries among youth: United states, 2015–2016 . Guo, X., Yang, C., Li, B., Yuan, Y., 2021. Metacorrection: Domain-aware meta loss correction for unsupervised domain adaptation in semantic segmentation, in: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pp. 3927–3936. Gupta, J., Ali, S.P., 2013. Cone beam computed tomography in oral implants. National journal of maxillofacial surgery 4, 2.
+Y. Wang et al.: Preprint submitted to Elsevier Page 20 of 22
+
+
+STS MICCAI 2023 Challenge
+Han, K., Liu, L., Song, Y., Liu, Y., Qiu, C., Tang, Y., Teng, Q., Liu, Z., 2022. An effective semi-supervised approach for liver ct image segmentation. IEEE Journal of Biomedical and Health Informatics 26, 3999–4007.
+doi:10.1109/JBHI.2022.3167384.
+Hatamizadeh, A., Nath, V., Tang, Y., Yang, D., Roth, H.R., Xu, D., 2022a. Swin unetr: Swin transformers for?semantic segmentation of?brain tumors in?mri images, in: Crimi, A., Bakas, S. (Eds.), Brainlesion: Glioma, Multiple Sclerosis, Stroke and Traumatic Brain Injuries, Springer International Publishing, Cham. pp. 272–284. Hatamizadeh, A., Tang, Y., Nath, V., Yang, D., Myronenko, A., Landman, B., Roth, H.R., Xu, D., 2022b. Unetr: Transformers for 3d medical image segmentation, in: Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV), pp. 574–584. Huang, H., Lin, L., Tong, R., Hu, H., Zhang, Q., Iwamoto, Y., Han, X., Chen, Y.W., Wu, J., 2020. Unet 3+: A full-scale connected unet for medical image segmentation, in: ICASSP 2020 - 2020 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), pp.
+1055–1059. doi:10.1109/ICASSP40776.2020.9053405.
+Huang, Z., Shen, L., Yu, J., Han, B., Liu, T., 2024. Flatmatch: Bridging labeled data and unlabeled data with cross-sharpness for semi-supervised learning. Advances in Neural Information Processing Systems 36. Isensee, F., Jaeger, P.F., Kohl, S.A., Petersen, J., Maier-Hein, K.H., 2021. nnu-net: a self-configuring method for deep learning-based biomedical image segmentation. Nature methods 18, 203–211. Jain, N., Dutt, U., Radenkov, I., Jain, S., 2023. Who’s global oral health status report 2022: Actions, discussion and implementation. Kirillov, A., Mintun, E., Ravi, N., Mao, H., Rolland, C., Gustafson, L., Xiao, T., Whitehead, S., Berg, A.C., Lo, W.Y., et al., 2023a. Segment anything. arXiv preprint arXiv:2304.02643 . Kirillov, A., Mintun, E., Ravi, N., Mao, H., Rolland, C., Gustafson, L., Xiao, T., Whitehead, S., Berg, A.C., Lo, W.Y., et al., 2023b. Segment anything. arXiv preprint arXiv:2304.02643 . Lee, D.H., et al., 2013. Pseudo-label: The simple and efficient semisupervised learning method for deep neural networks, in: Workshop on challenges in representation learning, ICML, Atlanta. p. 896. Li, C., Dong, L., Dou, Q., Lin, F., Zhang, K., Feng, Z., Si, W., Deng, X., Deng, Z., Heng, P.A., 2021a. Self-ensembling co-training framework for semi-supervised covid-19 ct segmentation. IEEE Journal of Biomedical and Health Informatics 25, 4140–4151. doi:10.1109/JBHI.2021.3103646. Li, P., Liu, Y., Cui, Z., Yang, F., Zhao, Y., Lian, C., Gao, C., 2022. Semantic graph attention with explicit anatomical association modeling for tooth segmentation from cbct images. IEEE Transactions on Medical Imaging
+41, 3116–3127. doi:10.1109/TMI.2022.3179128.
+Li, X., Li, X., Zhang, L., Cheng, G., Shi, J., Lin, Z., Tan, S., Tong, Y., 2020. Improving semantic segmentation via decoupled body and edge supervision, in: Computer Vision–ECCV 2020: 16th European Conference, Glasgow, UK, August 23–28, 2020, Proceedings, Part XVII 16, Springer. pp. 435–452. Li, Y., Wang, S., Wang, J., Zeng, G., Liu, W., Zhang, Q., Jin, Q., Wang, Y., 2021b. Gt u-net: A u-net like group transformer network for tooth root segmentation, in: Machine Learning in Medical Imaging: 12th International Workshop, MLMI 2021, Held in Conjunction with MICCAI 2021, Strasbourg, France, September 27, 2021, Proceedings 12, Springer. pp. 386–395. Li, Y., Zeng, G., Zhang, Y., Wang, J., Jin, Q., Sun, L., Zhang, Q., Lian, Q., Qian, G., Xia, N., et al., 2021c. Agmb-transformer: Anatomy-guided multi-branch transformer network for automated evaluation of root canal therapy. IEEE Journal of Biomedical and Health Informatics 26, 16841695. Liu, Y., Chu, L., Chen, G., Wu, Z., Chen, Z., Lai, B., Hao, Y., 2021. Paddleseg: A high-efficient development toolkit for image segmentation.
+arXiv:2101.06175.
+Liu, Z., Mao, H., Wu, C.Y., Feichtenhofer, C., Darrell, T., Xie, S., 2022. A convnet for the 2020s. arXiv:2201.03545. Luu, H.M., Park, S.H., 2022. Extending nn-unet for?brain tumor segmentation, in: Crimi, A., Bakas, S. (Eds.), Brainlesion: Glioma, Multiple Sclerosis, Stroke and Traumatic Brain Injuries, Springer International Publishing, Cham. pp. 173–186.
+Milletari, F., Navab, N., Ahmadi, S.A., 2016. V-net: Fully convolutional neural networks for volumetric medical image segmentation, in: 2016 Fourth International Conference on 3D Vision (3DV), pp. 565–571.
+doi:10.1109/3DV.2016.79.
+Rao, Y., Wang, Y., Meng, F., Pu, J., Sun, J., Wang, Q., 2020. A symmetric fully convolutional residual network with dcrf for accurate tooth segmentation. IEEE Access 8, 92028–92038. doi:10.1109/ACCESS.2020.2994592. Ronneberger, O., Fischer, P., Brox, T., 2015. U-net: Convolutional networks for biomedical image segmentation, in: Navab, N., Hornegger, J., Wells, W.M., Frangi, A.F. (Eds.), Medical Image Computing and ComputerAssisted Intervention – MICCAI 2015, Springer International Publishing, Cham. pp. 234–241. Różyło-Kalinowska, I., 2021. Panoramic radiography in dentistry. Clinical Dentistry Reviewed 5, 26. URL: https://doi.org/10.1007/
+s41894-021-00111-4, doi:10.1007/s41894-021-00111-4.
+Russell, B.C., Torralba, A., Murphy, K.P., Freeman, W.T., 2008. Labelme: a database and web-based tool for image annotation. International journal of computer vision 77, 157–173. Sanz, M., Ceriello, A., Buysschaert, M., Chapple, I., Demmer, R.T., Graziani, F., Herrera, D., Jepsen, S., Lione, L., Madianos, P., et al., 2018. Scientific evidence on the links between periodontal diseases and diabetes: Consensus report and guidelines of the joint workshop on periodontal diseases and diabetes by the international diabetes federation and the european federation of periodontology. Diabetes research and clinical practice 137, 231–241. Shi, Y., Zhang, J., Ling, T., Lu, J., Zheng, Y., Yu, Q., Qi, L., Gao, Y., 2022. Inconsistency-aware uncertainty estimation for semi-supervised medical image segmentation. IEEE Transactions on Medical Imaging 41, 608
+620. doi:10.1109/TMI.2021.3117888.
+Shu, J., Zhao, Q., Xu, Z., Meng, D., 2020. Meta transition adaptation for robust deep learning with noisy labels. arXiv:2006.05697. Shukla, S., Chug, A., Afrashtehfar, K.I., 2017. Role of cone beam computed tomography in diagnosis and treatment planning in dentistry: an update. Journal of International Society of Preventive & Community Dentistry 7, S125. Singh, N.K., Raza, K., 2022. Progress in deep learning-based dental and maxillofacial image analysis: A systematic review. Expert Systems with Applications 199, 116968. Sohn, K., Berthelot, D., Carlini, N., Zhang, Z., Zhang, H., Raffel, C.A., Cubuk, E.D., Kurakin, A., Li, C.L., 2020. Fixmatch: Simplifying semisupervised learning with consistency and confidence, in: Larochelle, H., Ranzato, M., Hadsell, R., Balcan, M., Lin, H. (Eds.), Advances in Neural Information Processing Systems, Curran Associates, Inc.. pp.
+596–608. URL: https://proceedings.neurips.cc/paper_files/paper/ 2020/file/06964dce9addb1c5cb5d6e3d9838f733- Paper.pdf.
+Tan, M., Le, Q., 2021a. Efficientnetv2: Smaller models and faster training, in: International conference on machine learning, PMLR. pp. 1009610106. Tan, M., Le, Q., 2021b. Efficientnetv2: Smaller models and faster training, in: International conference on machine learning, PMLR. pp. 1009610106. Tarvainen, A., Valpola, H., 2017. Mean teachers are better role models: Weight-averaged consistency targets improve semi-supervised deep learning results, in: Guyon, I., Luxburg, U.V., Bengio, S., Wallach, H., Fergus, R., Vishwanathan, S., Garnett, R. (Eds.), Advances in Neural Information Processing Systems, Curran Associates,
+Inc. URL: https://proceedings.neurips.cc/paper_files/paper/2017/ file/68053af2923e00204c3ca7c6a3150cf7- Paper.pdf.
+Uraba, S., Ebihara, A., Komatsu, K., Ohbayashi, N., Okiji, T., 2016. Ability of cone-beam computed tomography to detect periapical lesions that were not detected by periapical radiography: a retrospective assessment according to tooth group. Journal of Endodontics 42, 1186–1190. Wang, H., Xie, S., Lin, L., Iwamoto, Y., Han, X.H., Chen, Y.W., Tong, R., 2022a. Mixed transformer u-net for medical image segmentation, in: ICASSP 2022 - 2022 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), pp. 2390–2394. doi:10.1109/
+ICASSP43922.2022.9746172.
+Y. Wang et al.: Preprint submitted to Elsevier Page 21 of 22
+
+
+STS MICCAI 2023 Challenge
+Wang, R., Wu, Y., Chen, H., Wang, L., Meng, D., 2021. Neighbor matching for semi-supervised learning, in: de Bruijne, M., Cattin, P.C., Cotin, S., Padoy, N., Speidel, S., Zheng, Y., Essert, C. (Eds.), Medical Image Computing and Computer Assisted Intervention – MICCAI 2021, Springer International Publishing, Cham. pp. 439–449. Wang, X., Yuan, Y., Guo, D., Huang, X., Cui, Y., Xia, M., Wang, Z., Bai, C., Chen, S., 2022b. Ssa-net: Spatial self-attention network for covid-19 pneumonia infection segmentation with semi-supervised few-shot learning. Medical Image Analysis 79, 102459. URL: https:
+//www.sciencedirect.com/science/article/pii/S1361841522001062, doi:https://doi.org/10.1016/j.media.2022.102459.
+Wang, Y., Chen, H., Heng, Q., Hou, W., Fan, Y., Wu, Z., Wang, J., Savvides, M., Shinozaki, T., Raj, B., Schiele, B., Xie, X., 2023. Freematch: Selfadaptive thresholding for semi-supervised learning. arXiv:2205.07246. Wang, Y., Wang, H., Shen, Y., Fei, J., Li, W., Jin, G., Wu, L., Zhao, R., Le, X., 2022c. Semi-supervised semantic segmentation using unreliable pseudo-labels, in: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 4248–4257. Woo, S., Park, J., Lee, J.Y., Kweon, I.S., 2018. Cbam: Convolutional block attention module, in: Proceedings of the European Conference on Computer Vision (ECCV). Wu, Y., Ge, Z., Zhang, D., Xu, M., Zhang, L., Xia, Y., Cai, J., 2022. Mutual consistency learning for semi-supervised medical image segmentation. Medical Image Analysis 81, 102530. URL: https:
+//www.sciencedirect.com/science/article/pii/S1361841522001773, doi:https://doi.org/10.1016/j.media.2022.102530.
+Xu, Z., Wang, Y., Lu, D., Luo, X., Yan, J., Zheng, Y., yu Tong, R.K., 2023. Ambiguity-selective consistency regularization for mean-teacher semisupervised medical image segmentation. Medical Image Analysis 88,
+102880. URL: https://www.sciencedirect.com/science/article/pii/ S1361841523001408, doi:https://doi.org/10.1016/j.media.2023.102880.
+Yang, L., Qi, L., Feng, L., Zhang, W., Shi, Y., 2023. Revisiting weakto-strong consistency in semi-supervised semantic segmentation, in: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pp. 7236–7246. Yao, H., Hu, X., Li, X., 2022a. Enhancing pseudo label quality for semi-supervised domain-generalized medical image segmentation, in: Proceedings of the AAAI Conference on Artificial Intelligence, pp. 3099–3107. Yao, H., Hu, X., Li, X., 2022b. Enhancing pseudo label quality for semi-supervised domain-generalized medical image segmentation. Proceedings of the AAAI Conference on Artificial Intelligence 36, 3099
+3107. URL: https://ojs.aaai.org/index.php/AAAI/article/view/20217, doi:10.1609/aaai.v36i3.20217.
+Yao, Q., Xiao, L., Liu, P., Zhou, S.K., 2021. Label-free segmentation of covid-19 lesions in lung ct. IEEE Transactions on Medical Imaging 40,
+2808–2819. doi:10.1109/TMI.2021.3066161.
+Yushkevich, P.A., Piven, J., Hazlett, H.C., Smith, R.G., Ho, S., Gee, J.C., Gerig, G., 2006. User-guided 3d active contour segmentation of anatomical structures: significantly improved efficiency and reliability. Neuroimage 31, 1116–1128. Zhang, L., Wang, X., Yang, D., Sanford, T., Harmon, S., Turkbey, B., Wood, B.J., Roth, H., Myronenko, A., Xu, D., Xu, Z., 2020. Generalizing deep learning for medical image segmentation to unseen domains via deep stacked transformation. IEEE Transactions on Medical Imaging 39,
+2531–2540. doi:10.1109/TMI.2020.2973595.
+Zhang, Y., Ye, F., Chen, L., Xu, F., Chen, X., Wu, H., Cao, M., Li, Y., Wang, Y., Huang, X., 2023. Children’s dental panoramic radiographs dataset for caries segmentation and dental disease detection. Scientific Data 10,
+380. URL: https://doi.org/10.1038/s41597-023-02237-5, doi:10.1038/ s41597- 023- 02237- 5.
+Zhang, Z., Tian, C., Bai, H.X., Jiao, Z., Tian, X., 2022. Discriminative error prediction network for semi-supervised colon gland segmentation. Medical Image Analysis 79, 102458. URL: https:
+//www.sciencedirect.com/science/article/pii/S1361841522001050, doi:https://doi.org/10.1016/j.media.2022.102458.
+Zhao, Y., Li, P., Gao, C., Liu, Y., Chen, Q., Yang, F., Meng, D., 2020. Tsasnet: Tooth segmentation on dental panoramic x-ray images by twostage attention segmentation network. Knowledge-Based Systems 206,
+106338. URL: https://www.sciencedirect.com/science/article/pii/ S0950705120304950, doi:https://doi.org/10.1016/j.knosys.2020.106338.
+Zhou, Z., Rahman Siddiquee, M.M., Tajbakhsh, N., Liang, J., 2018. Unet++: A nested u-net architecture for medical image segmentation, in: Stoyanov, D., Taylor, Z., Carneiro, G., Syeda-Mahmood, T., Martel, A., Maier-Hein, L., Tavares, J.M.R., Bradley, A., Papa, J.P., Belagiannis, V., Nascimento, J.C., Lu, Z., Conjeti, S., Moradi, M., Greenspan, H., Madabhushi, A. (Eds.), Deep Learning in Medical Image Analysis and Multimodal Learning for Clinical Decision Support, Springer International Publishing, Cham. pp. 3–11.
+Y. Wang et al.: Preprint submitted to Elsevier Page 22 of 22
