@@ -1,0 +1,4291 @@
+Journal of Machine Learning Research 1 (2000) 1-48
+
+Submitted 4/00; Published 10/00
+
+arXiv:1806.06270v2 [cs.LG] 10 Jul 2018
+
+Stable Prediction across Unknown Environments∗
+
+Kun Kuang† Department of Computer Science Tsinghua University
+Ruoxuan Xiong† Department of Management Science & Engineering Stanford University
+Peng Cui Department of Computer Science Tsinghua University
+Susan Athey Graduate School of Business Stanford University
+Bo Li School of Economics and Management Tsinghua University
+
+kkun2010@gmail.com rxiong@stanford.edu cuip@tsinghua.edu.cn athey@stanford.edu libo@sem.tsinghua.edu.cn
+
+Editor: XXX
+
+Abstract
+In many machine learning applications, the training distribution used to learn a probabilistic classiﬁer diﬀers from the testing distribution on which the classiﬁer will be used to make predictions. Traditional methods correct the distribution shift by reweighting the training data with the ratio of the density between test and training data. But in many applications training takes place without prior knowledge of the testing. Recently, methods have been proposed to address the shift by learning causal structure, but they rely on the diversity of multiple training data to a good performance, and have complexity limitations in high dimensions. In this paper, we propose a novel Deep Global Balancing Regression algorithm to jointly optimize a deep auto-encoder model and a global balancing model for stable prediction across unknown environments. The global balancing model constructs balancing weights that facilitate estimating of partial eﬀects of features, a problem that is challenging in high dimensions, and thus helps to identify stable, causal relationships between features and outcomes. The deep auto-encoder model is designed to reduce the dimensionality of the feature space, thus making global balancing easier. We show, both theoretically and with empirical experiments, that our algorithm can make stable predictions across unknown environments.
+Keywords: Stability, Stable Prediction, Unknown Environments, Confounder Balancing, Causal Relationship.
+
+∗. We are grateful for helpful comments from Vitor Hadad. †. Equal Contribution
+c 2000 Kuang, Xiong, Cui, Athey and Li.
+
+Kuang, Xiong, Cui, Athey and Li
+1. Introduction
+Predicting unknown outcome values based on their observed features using a model estimated on a training data set is a common statistical problem. Many machine learning and data mining methods have been proposed and shown to be successful when the test data and training data come from the same distribution. However, the best-performing models for a given distribution of training data typically exploit subtle statistical relationships among features, making them potentially more prone to prediction error when applied to test data sets where, for example, the joint distribution of features diﬀers from that in the training data. Therefore, it can be useful to develop predictive algorithms that are robust to shifts in the environment, particularly in application areas where models can not be retrained as quickly as the environment changes, i.e., online prediction.
+Recently, many methods (Shimodaira (2000); Bickel et al. (2009); Sugiyama et al. (2008); Huang et al. (2007); Dud´ık et al. (2006); Liu and Ziebart (2014)) have been proposed to address this problem. The main idea of these methods is to reweight training data with a density ratio, so that its distribution can become more closely aligned with the distribution of test data. The methods have achieved good performance for correcting for distribution shift, but they require prior knowledge of the test distribution when estimating the density ratio.
+For the case of unknown test data, some researchers have proposed learning methods where training takes place across multiple training datasets. By exploring the invariance across multiple datasets, Peters et al. (Peters et al. (2016)) proposed an algorithm to identify causal features, and Rojas-Carulla et al. (Rojas-Carulla et al. (2015)) proposed a causal transform framework to learn invariant structure. Similarly, domain generalization methods (Muandet et al. (2013)) try to learn an invariant representation of data. The performance of these methods relies on the diversity of their multiple training data, and they cannot address distribution shifts which do not appear in their training data. Moreover, most of these methods are highly complex, with training complexity growing exponentially with the dimension of the feature space in the worst case, which is not acceptable in high dimensional settings.
+In this paper, we focus on an environment where the expected value of the outcome conditional on all covariates is stable across enrivonments. Further, covariates fall into one of two categories: for the ﬁrst category, the conditional expectation has a non-zero dependence on the covariates; we call these “causal” variables, although in some applications they might better be described as variables that have a structural relationship with the outcome. For example, ears, noses, and whiskers are structural features of cats that are stable across diﬀerent environments where images of animals may be taken. A second category of variable are termed “noisy variables,” which are variables that are correlated with either the causal variables, the outcome, or both, but do not themselves have a causal eﬀect on the outcome; conditional on the full set of causal variables, they do not aﬀect expected outcomes. Further, we consider a setting where the analyst may not know a prior which variables fall into each category. Finally, we assume that there are no unobserved confounders, so that it is possible to estimate the causal eﬀect of each causal variable with a very large dataset when all covariates are adequately controlled for. We focus on settings when there are many features and perhaps limited data.
+2
+
+Stable Prediction across Unknown Environments
+One way to improve the stability of prediction algorithms in such a setting is to isolate the impact of each individual feature. If the expectation of the outcome conditional on covariates is stable across environments, and variability in the joint distribution of features is the source of instability, then the stable prediction problem can be solved by estimating the conditional expectation function accurately. With a small number of discrete features and a large enough dataset, simple estimation methods such as ordinary least squares can accomplish this goal. If there is a larger number of features but only a few matter for the conditional expectation (that is, the true outcome model is sparse), regularized regression can be applied to consistently estimate the conditional expectation function. However, with a larger set of causal features relative to the number of observations, regularized regression will no longer consistently estimate partial eﬀects. For example, LASSO will omit many variables from the regression, while the coeﬃcients on included variables depend on the covariance of the outcome with the omitted variables as well as on the covariance between the omitted and included variables. This results in instability: if the covariance among features diﬀers across environments, then prediction based on such a model will be unstable across environments. In such high-dimensional cases, alternative approaches are required.
+Here, we use an approach motivated by the literature on causal inference, where variable balancing strategies are used for estimating the average eﬀect of changing a single binary covariate (the treatment). Causal inference methods optimize a diﬀerent objective than prediction-based methods; they prioritize consistent estimation of treatment eﬀects over prediction in a given training data set. The methods are designed for a scenario where the analyst has domain knowledge about which variable has a causal eﬀect, so that the focus of the analysis is on estimating the eﬀect of the treatment in the presence of other features which are known to be confounders (variables that aﬀect both treatment assignment and potential outcomes). Indeed, only after controlling for confounders can the diﬀerence in the expectation of the outcome between treatment and control groups be interpreted as a treatment eﬀect. One approach to estimating treatment eﬀects in the presence of confounders is to use variable balancing methods, which attempt to construct weights that balance the distribution of covariates between a treatment and a control group. They either employ propensity scores (Rosenbaum and Rubin (1983); Lunceford and Davidian (2004); Austin (2011); Kuang et al. (2017b, 2016)), or optimize balancing weights directly (Hainmueller (2012); Zubizarreta (2015); Athey et al. (2016); Kuang et al. (2017a)). These methods provide an eﬃcient approach to estimate causal eﬀects with a small number of treatment variables in observational studies, but most of them can not handle well settings where there may be many causal variables and the analyst does not know which ones are causal; as such, existing covariate balancing methods do not immediately extend to the general stable prediction problem.
+Inspired by balancing methods from the causal inference literature, we propose a Deep Global Balancing Regression (DGBR) algorithm for stable prediction. The framework is illustrated in Figure 2, which consists of three (jointly optimized) sub-models: (i) a deep auto-encoder to reduce the dimensionality of the features, (ii) construction of balancing weights that enable the eﬀect of each covariate to be isolated, and (iii) estimation of a predictive model using the encoded features and balancing weights. As this algorithm explicitly prioritizes covariate balancing (at the expense of a singular focus on predictive accuracy in a given training dataset), it is able to achieve greater stability than a purely predictive model.
+3
+
+Kuang, Xiong, Cui, Athey and Li
+Using both empirical experiments and theoretical analysis, we establish that our algorithm achieves stability in prediction across unknown environments. The experimental results on both synthetic and real world datasets demonstrate that our algorithm outperforms all the baselines for the stable prediction problem.
+In summary, the contributions of this paper are listed as follows:
+• We investigate the problem of stable prediction across unknown environments, where the distribution of agnostic test data might be very diﬀerent with the training data.
+• We propose a novel DGBR algorithm to jointly optimize deep auto-encoder for dimension reduction and global balancing for estimation of causal eﬀects, and simultaneously address the stable prediction problem.
+• We give theoretical analysis on our proposed algorithm and prove that our algorithm can make a stable prediction across unknown environments by global balancing.
+• The advantages of our DGBR algorithm are demonstrated on both synthetic and real world datasets.
+The rest of the paper is organized as follows. Section 2 reviews the related work. In Section 3, we give problem formulation and introduce our DGBR algorithm. Section 4 gives the optimization and discussion on our algorithm. Section 5 gives the theoretical analysis on our algorithm. Section 6 gives the experimental results. Finally, Section 7 concludes.
+2. Related Work
+In this section, we investigate the previous related work, including literatures on covariate shift, variable balancing, and invariant learning.
+The covariate shift literature (Shimodaira (2000)) focuses on settings where the data distribution for training is diﬀerent than the data distribution for testing. To correct for the diﬀerences, (Shimodaira (2000)) introduced the idea of reweighting samples in training data by the ratio of the density in the testing data to the density in the training data. A variety of techniques have been proposed to estimate the density ratio, including discriminative estimation (Bickel et al. (2009)), Kullaback-Leibler importance estimation (Sugiyama et al. (2008)), kernel mean matching (Huang et al. (2007) Yu and Szepesv´ari (2012)), maximum entropy methods (Dud´ık et al. (2006)), minimax optimization (Wen et al. (2014)), and robust bias-aware approach (Liu and Ziebart (2014)). These methods achieved good performance for correcting for covariate shifts, but most of them require prior knowledge of testing distribution to estimate the density ratio. In contrast, we focus on the stable prediction across unknown environments in this paper.
+Adjusting for confounders is a key challenge for estimating causal eﬀects in observational studies. To precisely estimate causal eﬀects in the presence of many confounders, covariate balancing methods have been proposed (Kuang et al. (2017a,c,b); Athey et al. (2016); Zubizarreta (2015); Hainmueller (2012); Rosenbaum and Rubin (1983)). In a seminal paper, Rosenbaum and Rubin (Rosenbaum and Rubin (1983)) proposed to achieve variable balancing by reweighting observations by the inverse of propensity score. Kuang et al. (Kuang
+4
+
+Stable Prediction across Unknown Environments
+et al. (2017b)) proposed a data-driven variable decomposition method for variable balancing. Li et al. (Li and Fu (2017)) bal- anced the variables by matching on their nonlinear representation. Hainmueller (Hainmueller (2012)) introduced entropy balancing method for variable balancing across a range of statistical tasks. Athey et al. (Athey et al. (2016)) proposed approximate residual balancing algorithm, which, motivated by doubly robust approaches, combines outcome modeling using the LASSO with balancing weights constructed to approximately balance covariates between treatment and control groups. Kuang et al. (Kuang et al. (2017a)) proposed a diﬀerentiated variable balancing algorithm by jointly optimizing sample weights and variable weights. These methods provide an eﬀective way to estimate causal eﬀects in observational studies, but they are limited to estimate causal eﬀect of one variable, and are not designed for the case with many causal variables; further, the methods assume that the analyst has prior knowledge of which covariates have a causal eﬀect and which do not.
+Recently, some methods have been proposed to make prediction on agnostic test data using the method of invariant learning. Peters et al. (Peters et al. (2016)) proposed an algorithm to identify causal predictors by exploring the invariance of the conditional distribution of the outcome across multiple training datasets. Rojas-Carulla et al. (Rojas-Carulla et al. (2015)) proposed a causal transfer framework to identify invariant predictors across multiple datasets and then use them for prediction. Similarly, domain generalization (Muandet et al. (2013)) methods estimate an invariant representation of data by minimizing the dissimilarity across training domains. Invariant learning methods can be used to estimate a model that will in principle perform well for an unknown test dataset, but the performance of these methods relies on the diversity of their multiple training data, and they cannot address the distribution shift which does not appear in their training data.
+3. Problem and Our Algorithm
+In this section, we ﬁrst give problem formulation, then introduce the details of our deep global balancing regression algorithm. Finally, we give theoretical analysis about our proposed algorithm.
+3.1 Problem Formulation
+Let X denote the space of observed features and Y denote the outcome space. For simplicity, we consider the case where the features have ﬁnite support, which without loss of generality can be represented as a set of binary features: X = {0, 1}p. We also focus on the case where the outcome space is binary: Y = {0, 1}. We deﬁne an environment to be a joint distribution PXY on X × Y, and let E denote the set of all environments. In each environment e ∈ E, we have dataset De = (Xe, Y e), where Xe ∈ X are predictor variables and Y e ∈ Y is a response variable. The joint distribution of features and outcomes on (X, Y ) can vary across environments: PXe Y = PXe Y for e, e ∈ E, and e = e .
+In this paper, our goal is to learn a predictive model, which can make a stable prediction across unknown environments. Before giving problem formulation, we ﬁrst deﬁne
+5
+
+Kuang, Xiong, Cui, Athey and Li
+
+Table 1: Symbols and deﬁnitions.
+
+Symbols
+n p X = {S, V} ∈ {0, 1}p S ∈ {0, 1}ps V ∈ {0, 1}pv Y ∈ {0, 1} W ∈ R+n×1 φ(·)
+
+Deﬁnitions
+Sample size Dimension of features Features Stable features Noisy features Outcome Global sample weights Embedding function
+
+Average Error and Stability Error across environments of a predictive model as:
+
+Average Error=|E1| e∈E Error(De),
+
+(1)
+
+Stability Error=
+
+1 |E |−1
+
+e∈E (Error(De) − Average Error)2,
+
+(2)
+
+where |E| refers to the number of environments, and Error(De) represents the predictive error on dataset De from environment e.
+In this paper, we deﬁne Stability (Yu et al. (2013)) by Stability Error. The smaller Stability Error, the better a model is ranked in terms of Stability. Then, we deﬁne the stable prediction problem as follow:
+
+Problem 1 (Stable Prediction) Given one training environment e ∈ E with dataset De = (Xe, Y e), the task is to learn a predictive model to predict across unknown environ-
+ment E with not only small Average Error but also small Stability Error.
+
+Suppose X = {S, V}. We deﬁne S as stable features, and refer to the other features V = X\S as noisy features, where the following assumption gives their deﬁning properties:
+
+Assumption 1 There exists a probability mass function P (y|s) such that for all environments e ∈ E, P r(Y e = y|Se = s, Ve = v) = P r(Y e = y|Se = s) = P (y|s).
+
+With Assumption 1, we can address the stable prediction problem by building a model that learns the stable function P (y|s). To understand the content of Assumption 1, without loss of generality we can write a generative model for the outcome unit i in environment e with stable features s, where h(·) is a known function to account for discreteness of Y :
+
+Yie(s) = h(g(s) +
+
+es,i),
+
+and Yie = Yie(Si) = h(g(Si) +
+
+e Si
+
+,i
+
+).
+
+Yie(s) is the outcome that would occur for unit i in environment e if the input is equal to
+
+s. If we allow
+
+e s,i
+
+to
+
+be
+
+correlated
+
+with
+
+the
+
+unit’s
+
+features
+
+Xi
+
+in
+
+arbitrary
+
+ways,
+
+Assump-
+
+tion 1 may fail, for example if Vie is positively correlated with
+
+e s,i
+
+then
+
+units
+
+with
+
+higher
+
+values of Vie would have higher than average values of Yie, so that Vie would be a useful
+
+predictor in a given environment, but that relationship might vary across environments,
+
+6
+
+Stable Prediction across Unknown Environments
+
+S
+
+S
+
+S
+
+Y
+
+VY
+
+VY
+
+V
+
+(a) S ⊥ V
+
+(b) S → V
+
+(c) V → S
+
+Figure 1: Three diagrams for stable features S, noisy features V, and response variable Y .
+
+Unsupervised Component (Deep Auto-Encoder)
+
+Unsupervised Component (Global Balancing)
+
+…
+
+…
+
+…
+
+Supervised Component
+
+(Stable Prediction)
+
+…
+
+Figure 2: The framework of our proposed DGBR model.
+
+leading to instability. If we ﬁrst impose the condition that for each s,
+
+e s,i
+
+is
+
+independent
+
+of Vie conditional on Sei , then given the model speciﬁcation, Vie is no longer needed as a
+
+predictor for outcomes conditional on Sei . If we second impose the condition that for each s,
+
+e s,i
+
+is
+
+independent
+
+of
+
+Sei
+
+conditional
+
+on
+
+Vie,
+
+then
+
+instability
+
+in
+
+the
+
+distribution
+
+of
+
+e s,i
+
+across
+
+environments will not aﬀect P r(Y e = y|Se = s, Ve = v). Maintaining the ﬁrst condition,
+
+the second condition is suﬃcient not only for Assumption 1 but also to enable consistent
+
+estimation of g(·) using techniques from the causal inference literature in a setting with
+
+suﬃcient sample size and when the analyst has prior knowledge of the set of stable features;
+
+we propose a method that will estimate g without prior knowledge of which features are
+
+stable. We also observe that a stronger but simpler condition can replace the second con-
+
+dition to guarantee Assumption 1, namely that the distribution of
+
+e s,i
+
+does
+
+not
+
+vary
+
+with
+
+{e, s}. Fig. 1 illustrates three relationships between predictor variables Xe = {Se, Ve} and
+
+response variable Y e consistent with the conditions, including S ⊥ V, S → V, and V → S.
+
+3.2 The Model
+3.2.1 Framework
+We propose a Deep Global Balancing Regression (DGBR) algorithm to identify stable features and capture non-linear structure for stable prediction. Its framework is shown in Figure 2. To identify the stable features, we propose a global balancing model, where we learn global sample weights which can be used to estimate the eﬀect of each feature while controlling for the other features and thus identify stable features. To capture the
+
+7
+
+Kuang, Xiong, Cui, Athey and Li
+
+non-linear structure between stable features and response variable, we employ a deep autoencoder model, which is composed of multiple non-linear mapping functions to map the input data to a non-linear and low dimensional space. Balancing in a low dimensional space simpliﬁes the problem of global balancing, since for each covariate j, the weights balance the constructed covariates from the dimension reduction φ(X·,−j) across realizations of X·,j. Finally, weighting observations with the global sample weights, we learn a predictive model for outcomes as a function of the low-dimensional representation of covariates using regularized regression. All three components of the model are jointly optimized in the algorithm.
+
+3.2.2 Global Balancing Regression Algorithm
+
+In this section, we develop the construction of global balancing weights. To be self-contained, we brieﬂy revisit the key idea of variable balancing technique. Variable balancing techniques are often used for causal eﬀect estimation in observational studies, where the distributions of covariates are diﬀerent between treated and control groups because of non-random treatment assignment, but treatment assignment is independent of potential outcomes conditional on covariates. To consistently estimate causal eﬀects in such a setting, one has to balance the distribution of covariates between treatment and control. Most variables balancing approaches exploit moments to characterize distributions, and balance them between treated and control groups by adjusting sample weights W as following:
+
+W = arg min
+W
+
+− i:Ti=1 Wi·Xi
+i:Ti=1 Wi
+
+i:Ti=0 Wi·Xi i:Ti=0 Wi
+
+2
+.
+2
+
+(3)
+
+Given a treatment variable T , the
+
+and i:Ti=1 Wi·Xi
+i:Ti=1 Wi
+
+i:Ti=0 Wi·Xi i:Ti=0 Wi
+
+represent the ﬁrst-order
+
+moments of variables X on treated (T = 1) and control (T = 0) groups, respectively.
+
+By sample reweighting with W learnt from Eq. (3), one can estimate the causal eﬀect of
+
+treatment variable on response variable by comparing the average diﬀerence of Y between
+
+treated and control groups. In high-dimensional problems, approximate balancing can be
+
+used for consistent estimation under some additional assumptions (Athey et al. (2016)),
+
+where to control variance of estimates the sum of squared weights is also penalized in the
+
+minimization.
+
+In low dimensions, the same approach could be employed to estimate P r(Y = y|X = x)
+
+for diﬀerent values of x. However, when p is large, there may not be suﬃcient data to do
+
+so, and so approximate balancing techniques generalized to the case where X is a vector
+
+of indicator variables may perform well in practice, and also help identify stable features
+
+from the larger vector X. We propose a global balancing regularizer, where we successively
+
+regard each variable as treatment variable and balance all of them together via learning
+
+global sample weights by minimizing:
+
+− , p
+
+XT·,−j ·(W X·,j )
+
+j=1
+
+W T ·X·,j
+
+XT·,−j ·(W (1−X·,j )) 2 W T ·(1−X·,j )
+
+(4)
+
+2
+
+where W is global sample weights, X·,j is the jth variable in X, and X·,−j = X\{X·,j} means all the remaining variables by removing the jth variable in X 1. The summand represents
+
+1. We obtain X·,−j in experiment by setting the value of jth variable in X as zero.
+
+8
+
+Stable Prediction across Unknown Environments
+
+the loss from covariate imbalance when setting variable X·,j as the treatment variable, and refers to Hadamard product. Note that only ﬁrst-order moment is considered in Eq. (4),
+but higher order moments can be easily incorporated by including interaction features of X.
+By sample reweighting with W learnt from Eq. (4), we can identify stable features S by checking if there is any correlation between Y and X covariate by covariate, because, as we show below, only stable features are correlated with Y after sample reweighting by W .
+With the global balancing regularizer in Eq. (4), we propose a Global Balancing Regression (GBR) algorithm to jointly optimize global sample weights W and regression coeﬃcients β for stable prediction based on traditional logistical regression as:
+
+min
+
+n i=1
+
+Wi
+
+·
+
+log(1
+
++
+
+exp((1
+
+−
+
+2Yi)
+
+·
+
+(Xiβ))),
+
+(5)
+
+s.t.
+
+p j=1
+
+− XT·,−j ·(W X·,j )
+W T ·X·,j
+
+XT·,−j ·(W (1−X·,j )) W T ·(1−X·,j )
+
+2
+≤ λ1,
+
+W
+
+0,
+
+2
+
+W
+
+2 2
+
+≤
+
+λ2,
+
+β
+
+2 2
+
+≤
+
+λ3,
+
+β 1 ≤ λ4,
+
+(
+
+n k=1
+
+Wk
+
+−
+
+1)2
+
+≤
+
+λ5
+
+where Xi is the ith row / sample in X, and
+
+n i=1
+
+Wi
+
+·
+
+log(1
+
++
+
+exp((1
+
+−
+
+2Yi)
+
+·
+
+(Xiβ)))
+
+is
+
+the
+
+weighted loss of logistic regression and the loss is deﬁned as the minus log likelihood. The
+
+terms W
+
+0 constrain each of sample weights to be non-negative. With norm
+
+W
+
+2 2
+
+≤
+
+λ2,
+
+we can reduce the variance of the sample weights. Elastic net constraints
+
+β
+
+2 2
+
+≤ λ3
+
+and
+
+β 1 ≤ λ4 help to avoid overﬁtting. The formula (
+
+n k=1
+
+Wk
+
+− 1)2
+
+≤
+
+λ5
+
+avoids
+
+all
+
+the
+
+sample
+
+weights to be zero.
+
+3.2.3 Deep Global Balancing Regression Algorithm
+The proposed GBR algorithm in Eq. (5) can help to identify stable features and make a stable prediction, but with many features relative to observations, it may be diﬃcult to estimate the eﬀects of all the features as well as their interactions, and it might also be challenging for GBR to learn global sample weights.
+To address these challenges, we propose a Deep Global Balancing Regression (DGBR) algorithm by jointly optimizing Deep auto-encoder and Global Balancing Regression. Following standard approaches (Bengio et al. (2007)), the deep auto-encoder consists of multiple non-linear mapping functions to map the input data to a low dimensional space while capturing the underlying features interactions. Deep auto-encoder is an unsupervised model which is composed of two parts, the encoder and decoder. The encoder maps the input data to low-dimensional representations, while the decoder reconstructs the original input space from the representations. Given the input Xi, the hidden representations for each layer are shown as follows:
+
+φ(Xi)(1) = σ(A(1)Xi + b(1)) φ(Xi)(k) = σ(A(k)φ(Xi)(k−1) + b(k)), k = 2, · · · , K
+
+where K is the number of layer. A(k) and b(k) are weight matrix and bias on kth layer. σ(·) represents non-linear activation function.2
+
+2.
+
+We
+
+use
+
+sigmoid
+
+function
+
+σ(x)
+
+=
+
+1 1+exp(−x)
+
+as
+
+non-linear
+
+activation
+
+function.
+
+9
+
+Kuang, Xiong, Cui, Athey and Li
+
+After obtaining the representation φ(Xi)(K), we can obtain the reconstruction Xˆ i by reversing the calculation process of encoder with parameters Aˆ (k) and ˆb(k). The goal of
+deep auto-encoder is to minimize the reconstruction error between the input Xi and the reconstruction Xˆ i with the following loss function.
+
+L=
+
+n i=1
+
+(Xi − Xˆ i) 22.
+
+(6)
+
+By combining the loss functions of deep auto-encoder in Eq. (6) and GBR algorithm in Eq. (5), we give the objective function of our Deep Global Balancing Regression algorithm as:
+
+min
+
+n i=1
+
+Wi
+
+·
+
+log(1
+
++
+
+exp((1
+
+−
+
+2Yi)
+
+·
+
+(φ(Xi)β
+
+))),
+
+(7)
+
+s.t.
+
+, p
+j=1
+
+− φ(X·,−j )T ·(W X·,j )
+W T ·X·,j
+
+φ(X·,−j )T ·(W (1−X·,j )) W T ·(1−X·,j )
+
+2
+≤ λ1
+2
+
+(W · 1)
+
+(X − Xˆ )
+
+2 F
+
+≤ λ2,
+
+W
+
+0,
+
+W
+
+2 2
+
+≤
+
+λ3,
+
+β
+
+2 2
+
+≤
+
+λ4,
+
+β 1 ≤ λ5, (
+
+n k=1
+
+Wk
+
+−
+
+1)2
+
+≤
+
+λ6
+
+Kk=1(
+
+A(k)
+
+2 F
+
++
+
+Aˆ(k)
+
+2 F
+
+)
+
+≤
+
+λ7,
+
+where φ(·) = φ(·)(K) for brevity.
+
+(W · 1)
+
+(X − Xˆ )
+
+2 F
+
+represents
+
+the
+
+reconstruction
+
+error between input X and reconstruction Xˆ with global sample weights W . The term
+
+Kk=1( A(k)
+
+2 F
+
++
+
+Aˆ (k)
+
+2 F
+
+)
+
+≤
+
+λ7
+
+regularizes
+
+the
+
+coeﬃcients
+
+of
+
+the
+
+deep
+
+auto-encoder
+
+model.
+
+4. Theoretical Analysis
+In this section, we give theoretical analysis about our algorithm. We prove it can make a stable prediction across unknown environments with suﬃcient data, and analyze the upper bound about our proposed algorithm.
+
+4.1 Analysis on Stable Prediction
+A key requirement for the method to work is the overlap assumption, which is a common assumption in the literature of treatment eﬀect estimation Athey et al. (2016). We suppress the notation for the enviornment e in the ﬁrst part of this section.
+
+Assumption 2 (Overlap) For any variable X·,j when setting it as the treatment variable, it has ∀j, 0 < P (X·,j = 1|X·,−j) < 1.
+Then, we have following Lemma and Theorem:
+Lemma 1 If ∀j, 0 < P (X·,j = 1|X·,−j) < 1, and X are binary, then ∀i, 0 < P (Xi = x) < 1, where Xi is ith row in X.
+Proof See Appendix A.
+
+10
+
+Stable Prediction across Unknown Environments
+
+Theorem 2 Let X ∈ Rn×p. Under Lemma 1, if number of covariates p is ﬁnite, then ∃W such that
+
+lim
+n→∞
+
+p j=1
+
+− XT−j (W X·,j )
+W T X·,j
+
+XT−j (W (1−X·,j )) W T (1−X·,j )
+
+2
+=0
+2
+
+(8)
+
+with
+
+probability
+
+1.
+
+In
+
+particular,
+
+a
+
+W
+
+that
+
+satisﬁes
+
+(8)
+
+is
+
+Wi∗ =
+
+P
+
+1 (Xi
+
+=x)
+
+.
+
+Proof Since · ≥ 0, Eq. (8) can be simpliﬁed to ∀j, ∀k = j
+
+lim
+n→∞
+
+− i:Xi,k=1,Xi,j =1 Wi
+i:Xi,j =1 Wi
+
+i:Xi,k =1,Xi,j =0 Wi i:Xi,j =0 Wi
+
+=0
+
+with probability 1. For W ∗, from Lemma 1, 0 < P (Xi = x) < 1, ∀x, ∀i, t = 1 or 0,
+
+lim
+n→∞
+
+1 n
+
+i:Xi,j =t Wi∗
+
+=
+
+lim
+n→∞
+
+1 n
+
+x:xj =t
+
+i:Xi=x Wi∗
+
+= lim
+n→∞
+
+1 x:xj =t n
+
+1 i:Xi=x P (Xi=x)
+
+= lim
+n→∞
+
+x:xj=t P (Xi
+
+=
+
+x) ·
+
+1 P (Xi=x)
+
+=
+
+2p−1
+
+with probability 1 from Law of Large Number. Since features are binary,
+
+lim
+n→∞
+
+1 n
+
+lim
+n→∞
+
+1 n
+
+lim
+n→∞
+
+1 n
+
+i:Xi,k=1,Xi,j =1 Wi∗ = 2p−2 i:Xi,j =0 Wi∗ = 2p−1, i:Xi,k=1,Xi,j =0 Wi∗ = 2p−2
+
+and therefore, we have following equation with probability 1:
+
+lim
+n→∞
+
+− XT·,k(W ∗ X·,j )
+W ∗T X·,j
+
+XT·,k(W ∗ (1−X·,j )) W ∗T (1−X·,j )
+
+=
+
+2p−2 2p−1
+
+−
+
+2p−2 2p−1
+
+= 0.
+
+The following result shows that if there is suﬃcient data such that all realizations of x appear in the data, exact balancing weights can be derived. Subsequently, we show that in this case, the components of X are mutually independent in the reweighted data. This highlights that overlap is a strong assumption. In real-world data sets, when p is large the cardinality of X is large, and so exactly balancing weights are not available, but the results still highlight that balancing weights will reduce the covariance among features.
+Then, based on Lemma 1 and Theorem 8, we have following propositions for stable prediction.
+
+Proposition
+
+3
+
+If
+
+0 < Pˆ(Xi
+
+= x) < 1
+
+for
+
+all
+
+x,
+
+where
+
+Pˆ(Xi
+
+= x) =
+
+1 n
+
+i 1(Xi = x), there
+
+exists a solution W ∗ satisﬁes equation (4) equals 0 and variables in X are independent after
+
+balancing by W ∗.
+
+Proof See Appendix B.
+
+11
+
+Kuang, Xiong, Cui, Athey and Li
+Proposition 4 If 0 < Pˆ(Xei = x) < 1 for all x in environment e, Y e and Ve are independent when the joint probability mass function of (Xe , Y e ) is given by reweighting the distribution from environment e using weights W ∗, so that pe (x, y) = pe(y|x) · (1/|X |).
+Proof It is immediate that P r(Y e = y|Xe = x) = P r(Y e = y|Xe = x). Putting this together with Assumption 1, P r(Y e = y|Xe = x) = P r(Y e = y|Se = s). From Proposition 3, (Se , Ve ) are mutually independent. Thus, we have
+P r(Y e = y|Ve = v) =ESe [P r(Y e = y|Se , Ve = v)|Ve = v] =ESe [P r(Y e = y|Se )|Ve = v] =P r(Y e = y).
+Thus, Y e and Ve are independent.
+Propositions 3 and 4 suggest that the GBR algorithm can make a stable prediction across environments that satisfy Assumption 1, since after reweighting, only the stable features are correlated with outcomes, and p(y|s) is unchanged in the reweighted dataset. The objective function of GBR algorithm is to equivalent to maximize log-likelihood of logistic regression, which is known to be consistent. Even though the regularization constraints will cause some bias to the estimated p(y|s), but the bias reduces with sample size n. Thus, with suﬃcient data, the GBR algorithm should learn p(y|s).
+Now consider the properties of the DGBR algorithm:
+1. Preserves the above properties of the GBR algorithm while making the overlap property easier to satisfy and reducing the variance of balancing weights. The Johnson-Lindenstrauss (JL) lemma (Johnson and Lindenstrauss (1984)) implies that for any 0 < < 1/2 and x1, · · · , xn ∈ Rp, there exists a mapping f : Rp → Rk, with k = O( −2 log n), such that ∀i, j (1 − ) xi − xj 2 ≤ f (xi) − f (xj) 2 ≤ (1 + ) xi − xj 2, we can transform highdimensional data into a lower suitable dimensional space while approximately preserving the original distances between points. Our DGBR algorithm reduces the feature dimension, so that the population overlap assumption is more likely to be satisﬁed and we are less likely to see extreme values of balancing weights, so that better balance can be attained while maintaining low variance of the weights.
+2. Enables more accurate estimation of p(y|s), because with multiple non-linear mapping functions in our DGBR algorithm, it can more easily capture the underlying non-linear relationship between stable features and response variables even with many stable features.
+4.2 Analysis on Upper Bound
+4.2.1 Notation Theorem 2 states that if Wi∗ = 1/P (Xi = x), the global balancing regularizer in Eq. (4) converges to 0 as number of observations n goes to inﬁnity. Nevertheless, in ﬁnite samples,
+12
+
+Stable Prediction across Unknown Environments
+
+Eq. (4) may not be equal to 0 for any W . We deﬁne the maximum covariate imbalance as
+
+α = maxj
+
+− i:Xi,k=1,Xi,j =1 Wˆ i
+i:Xi,j =1 Wˆ i
+
+i:Xi,k =1,Xi,j =0 Wˆ i i:Xi,j =0 Wˆ i
+
+,
+∞
+
+=maxj maxk=j
+
+− i:Xi,k=1,Xi,j =1 Wˆ i
+i:Xi,j =1 Wˆ i
+
+. i:Xi,k=1,Xi,j =0 Wˆ i i:Xi,j =0 Wˆ i
+
+We deﬁne m as the number of values in X that do not appear in X,
+
+(9) (10)
+
+m = |X | − |XX| = 2p − |XX|,
+
+where XX = {x|Xi = x, for some i}, |X | and |XX| are the cardinalities of X and XX. m is random, where the variation of m comes from sampling a ﬁnite sample X from the population distribution PX on X .
+We deﬁne E[α] as the expectation of α over the random sample X.
+
+4.2.2 Upper Bound of Global Balancing Regularizer
+The maximum covariate imbalance α is diﬀerent under diﬀerent random ﬁnite sample X. The following Lemma states that α is determined by X through m, the number of values in X that do not appear in X, as well as the number of covariates p.
+
+Lemma 5 Given X ∈ Rn×p, p ≥ 2, if m diﬀerent values in X do not appear in X, then we have
+
+1. if m = 0, then α = 0
+
+2.
+
+if
+
+0 < m ≤ 2p−2,
+
+then
+
+α=
+
+2p−2 2p−1 −m
+
+−
+
+1 2
+
+3.
+
+if
+
+2p−2
+
+< m < 2p−1,
+
+then
+
+α=1−
+
+2p−1 −m 3×2p−2−m
+
+4. if 2p−1 ≤ m ≤ 2p − 2 3, then α = 1
+
+Proof See Appendix C.
+
+m measures how severe the overlap assumption is violated in the empirical distribution of X. α increases with m for a ﬁxed p. If m is ﬁxed, when 0 < m ≤ 2p−2, α is decreasing in p; when 2p−2 < m < 2p−1, α is increasing in p; 4 when 2p−1 ≤ m ≤ 2p − 1, α does not depend on p. A more realistic scenario is that the number of observations n is ﬁxed, if p increases, the overlap assumption is harder to be satisﬁed in the empirical distribution, so m will also increase, which might result in an increase of α. Although n is not explicitly expressed in α, n aﬀects m in that m converges to 0 as n goes to inﬁnity, and therefore α may decrease with n through m.
+
+3. Given p, 0 ≤ m ≤ 2p − 1. When m = 2p − 1, either
+
+or i:Xi,k =1,Xi,j =1 Wˆ i i:Xi,j =1 Wˆ i
+
+is , which i:Xi,k=1,Xi,j =0 Wˆ i
+
+0
+
+i:Xi,j =0 Wˆ i
+
+0
+
+is
+
+undeﬁned.
+
+For
+
+simplicity
+
+and
+
+completeness,
+
+we
+
+deﬁne
+
+0 0
+
+=
+
+1,
+
+and
+
+therefore
+
+α
+
+= 1.
+
+4. This scenario can never happen, because given m and p, if 2p−2 < m < 2p−1, when p increases, it will
+
+have m < 2p−2.
+
+13
+
+Kuang, Xiong, Cui, Athey and Li
+
+mean alpha
+
+1.0
+
+p=3
+
+0.8
+
+p=4 p=5
+
+0.6
+
+p=6 p=7
+
+0.4
+
+p=8 p=9
+
+0.2
+
+p=10
+
+0.0 0 2000 4000N6000 8000 10000
+
+Figure 3: E[α] with diﬀerent N and p
+
+Theorem 6 extends Lemma 5 and states E[α], the expected value of α over the random sample X. We show that E[α] also equals to the expected value of α over m that is determined by X.
+
+Theorem 6 Let α = maxj
+
+− i:Xi,k=1,Xi,j =1 Wˆ i
+i:Xi,j =1 Wˆ i
+
+, we have i:Xi,k=1,Xi,j =0 Wˆ i
+
+i:Xi,j =0 Wˆ i
+
+∞
+
+E [α]
+
+=
+
+1
+( ) n+2p−1 2p −1
+
+2p−1 2p m=0 m
+
+n−1 2p−1−m
+
+g(p, m)
+
+(11)
+
+where g(p, m) is
+
+g(p, m) = 12p−2−p1−−32×2mp2−p−−1−2−21m,m 1
+
+if 0 ≤ m ≤ 2p−2 if 2p−2 < m < 2p−1 if 2p−1 ≤ m ≤ 2p − 1
+
+(12)
+
+Proof See Appendix D.
+
+E[α] depends on n and p. In particular, E[α] is decreasing in n, but increasing in p, see Fig. 3.
+
+4.2.3 Upper Bound of the Risk in Approximate Balancing
+It is possible that our DGBR algorithm may not perfectly balance all covariates in X. That is, the minimum value zero may not be attained by any W in Eq. (4). Denote W ∗ as an approximate solution to the global balancing problem if W ∗ is the optimal solution to our DGBR algorithm and Eq. (4) evaluated at W ∗ is not zero. Deﬁne the imbalance at x in X balanced by W ∗ as the diﬀerence between the joint weighted probability and the product of weighted marginal probabilities, that is,
+
+x = p˜x −
+
+p j
+
+p˜xj
+
+=
+
+p˜x
+
+− px
+
+(13)
+
+where px =
+
+p˜x =
+
+p j
+
+p˜xj
+
+.
+
+1 n˜
+If
+
+n i=1
+
+Wi∗1(Xi
+
+=
+
+x),
+
+n˜
+
+=
+
+n i=1
+
+Wi∗
+
+,
+
+Eq. (4) evaluated at W ∗ is not zero,
+
+p˜xj
+
+=
+
+1 n˜
+
+x must be
+
+n i=1
+
+Wi∗1(Xij
+
+=
+
+xj )
+
+and
+
+nonzero at some x and x
+
+measures how far covariates in weighted X are from independence.
+
+14
+
+Stable Prediction across Unknown Environments
+
+In this subsection, we would like to evaluate our DGBR algorithm if optimal W ∗ in our
+DGBR algorithm is an approximate solution. That is, we would like to upper bound the expected risk of the optimal fˆ learned from our DGBR algorithm, where f (·) is a function
+to predict the response variable Yi from covariates Xi. The expected risk between f (X) and Y is deﬁned as LP (f ) = EP (l(f (Xi), Yi)). In LP (f ), the loss function l(f (Xi), Yi) = log(1+exp((1−2Yi)·(φ(Xi)β))) is the same as the objective function in our DGBR algorithm; the probability mass function P (Xi, Yi) = P (Xi)P (Yi|Xi) has P (Yi = y|Xi = x) = P (Yi = y|Si = s, Vi = v) = P (y|s) to be the same as that in Assumption 1 and P (Xi = x) = px, where px is deﬁned in Eq. (13). In Empirical Risk Minimization (ERM), the population probability mass function is assumed to be ﬁxed (but unknown). However, px is not ﬁxed because it is determined by W ∗ and W ∗ is learned from our DGBR algorithm. To avoid
+the identiﬁcation problem, we set W as ﬁxed after we sequentially update β, W and θ for some steps; we denote this W as W ∗ and only update β and θ afterwards. This W ∗ is
+used to calculate px. We analyze the empirical risk of the following ﬁxed weight DGBR (FWDGBR) algorithm
+
+min s.t.
+
+1
+
+n i=1
+
+Wi∗
+
+n i=1
+
+Wi∗
+
+·
+
+log(1
+
++
+
+exp((1
+
+−
+
+2Yi)
+
+·
+
+(φ(Xi)β))),
+
+(W ∗ · 1)
+
+(X − Xˆ )
+
+2 F
+
+≤ λ2,
+
+β
+
+2 2
+
+≤
+
+λ4,
+
+β
+
+1 ≤ λ5,
+
+Kk=1(
+
+A(k)
+
+2 F
+
++
+
+Aˆ(k)
+
+2 F
+
+)
+
+≤
+
+λ7,
+
+b(k) 2 ≤ M (k),
+
+for k = 1, 2, · · · , K.
+
+The
+
+empirical
+
+risk
+
+is
+
+deﬁned
+
+as
+
+Lˆ(f )
+
+=
+
+1 n˜
+
+n i=1
+
+Wi∗
+
+l(f
+
+(Xi),
+
+Yi)
+
+and
+
+n˜
+
+=
+
+n i=1
+
+Wi∗.
+
+In
+
+the FWDGBR algorithm, it does not have the constraints related to W and has an ad-
+
+ditional bias constraint b(k) 2 ≤ M (k). The additional bias constraint guarantees that
+
+f (·) is bounded for any f (·) that satisﬁes the constraints. All the other constraints in the
+
+FWDGBR algorithm are the same as those in the DGBR algorithm.
+
+In ERM, if empirical average converges to the expectation (equivalent to exact balanc-
+
+ing), the diﬀerence between the expectation of each function and the empirical average of the function (|LP (f ) − Lˆ(f )|) can be bounded in terms of the Rademacher complexity
+of the model class and an error term depending on the conﬁdence parameter and sample
+
+size. Note that the Rademacher complexity of the FWDGBR algorithm is determined by
+
+its constraints. In other words, the Rademacher complexity decreases with λ2, λ4, λ5 and λ7. Furthermore, if empirical average converges to the expectation, |LP (fˆ) − Lˆ(f ∗)| can
+also be bounded in terms of the Rademacher complexity of the model class and an error term depending on the conﬁdence parameter and sample size, where fˆ minimizes Lˆ(·), f ∗ minimizes LP (·) and both fˆ and f ∗ are in the model class. Note that f ∗ also needs to
+satisfy the constraints in the FWDGBR algorithm.
+However, in approximate balancing, the empirical average Lˆ(f ) for some f does not
+
+converge to expectation LP (f ) because the joint distribution does not equal to the product of the marginals. In this case, |LP (fˆ) − Lˆ(f ∗)| can still be bounded, but with an extra term measuring covariates’ imbalance, that is, x.
+
+15
+
+Kuang, Xiong, Cui, Athey and Li
+
+Theorem 7 Let Bk = λ7 + (M (k))2, lk be the size of [φ(Xi)(k); 1] for k = 1, 2, · · · , K and l0 = p + 1. With probability at least ≥ 1 − δ,
+
+LP (fˆ)≤LP (f ∗) + 2K+3
+
+2log(2p) n
+
+√ min( λ4lK ,
+
+λ5)
+
+K k=1
+
+Bk
+
+(lk−1)1/2
+
++3
+
+log(2/δ) 2n
+
++
+
+2
+
+maxx,f
+
+E[l(f (x),
+
+y)|x]
+
+x | x|,
+
+(14)
+
+where fˆ = arg minf Lˆ(f ) and f ∗ = arg minf LP (f ).
+
+Proof See Appendix E.
+
+Theorem 7 states that in approximate balancing, the upper bound for LP (fˆ) consists
+
+of four components: 1. The minimum expected risk LP (f ∗); 2. The Rademacher complex-
+
+ity, 2K+3
+
+2log(2p) n
+
+√ min( λ4lK
+
+,
+
+λ5)
+
+K k=1
+
+Bk (lk−1 )1/2 ,
+
+which
+
+depends
+
+on
+
+number
+
+of
+
+layers,
+
+number of hidden units and the constraints in the FWDGBR algorithm; 3. An error term
+
+depending on the conﬁdence parameter δ and sample size n, that is, 3
+
+log(2/δ) 2n
+
+;
+
+4.
+
+The
+
+risk
+
+from covariates’ imbalance in approximate balancing, 2 maxx,f E[l(f (x), y)|x] x | x|. Note
+
+that maxx,f E[l(f (x), y)|x] is bounded because x are y are binary and all weights in f (·)
+
+are bounded.
+
+The term related
+
+√ min( λ4lK , λ5)
+
+K k=1
+
+to Rademacher complexity in Bk(lk−1)1/2, is an upper bound
+
+Theorem 7, RC of the size of the
+
+= 2K+3
+
+2log(2p) n
+
+·
+
+model class in the
+
+FWDGBR algorithm. This is derived from the upper bound of the size of the model class
+
+in the reduced ﬁxed weight DGBR (RFWDGBR) algorithm
+
+min
+
+1
+
+n i=1
+
+Wi∗
+
+n i=1
+
+Wi∗
+
+·
+
+log(1
+
++
+
+exp((1
+
+−
+
+2Yi)
+
+·
+
+(φ(Xi)β))),
+
+s.t.
+
+β
+
+2 2
+
+≤
+
+λ4,
+
+β
+
+1 ≤ λ5
+
+A(k)
+
+2 F
+
+≤ λ7,
+
+for
+
+k = 1, 2, · · ·
+
+, K.
+
+This algorithm does not have the auto-encoder and -decoder constraint (W ∗ · 1) (X −
+
+Xˆ )
+
+2 F
+
+≤ λ2.
+
+The weight constraints of the auto-encoder and -decoder are relaxed.
+
+The
+
+model class described by the RFWDGBR algorithm is larger than the model class of the
+
+ﬁxed weight DGBR algorithm. Thus, the upper bound of the Rademacher complexity of
+
+the RFWDGBR algorithm is also an upper bound of the Rademacher complexity of the
+
+FWDGBR algorithm.
+
+The derivation of the term RC is closely related to deriving the Rademacher complexity
+
+with dropouts in Neural Networks in (Wan et al. (2013)) and (Zhai and Wang (2018)).
+
+Compare with (Wan et al. (2013)) and (Zhai and Wang (2018)), the RFWDGBR algorithm
+
+does not have dropouts, but it has both 1 and 2 constraints. The model class with both
+
+1 and 2 constraints is no larger than the minim√um of the model class with either 1 or 2 constraint, which explains the component, min( λ4lK, λ5), in the term RC.
+Moreover, the upper bound for LP (fˆ) depends on how close the approximate balancing
+
+is to the exact balancing, measured by x. If the approximate balancing gets very close
+
+to the exact balancing, the term 2 maxx,f E[l(f (x), y)|x] x | x| approaches 0. The upper bound for LP (fˆ) will mainly depend on three other terms in the right-hand side of Inequality
+
+(14).
+
+16
+
+Stable Prediction across Unknown Environments
+
+From this upper bound of LP (fˆ), we have two main conclusions: 1. If the feasible set
+of the auto-encoder and the weights in the logistic regression is smaller, implying simpler models, the upper bound for LP (fˆ) is smaller; 2. If covariates’ imbalance is smaller, the upper bound for LP (fˆ) is smaller.
+
+5. Optimization and Discussion
+5.1 Optimization
+To optimize the aforementioned DGBR model in Eq. (7), we need to minimize following Lmix as a function of parameter W , β, and θ = {A(k), Aˆ (k), b(k), ˆb(k)}.
+
+Lmix = LP re + λ1LBal + λ2LAE + LReg, s.t. W 0,
+
+(15)
+
+where
+
+LP re =
+
+n i=1
+
+Wi
+
+·
+
+log(1
+
++
+
+exp((1
+
+−
+
+2Yi)
+
+·
+
+(φ(Xi
+
+)β))),
+
+LBal =
+
+, − p
+
+φ(X·,−j )T ·(W X·,j )
+
+j=1
+
+W T ·X·,j
+
+φ(X·,−j )T ·(W (1−X·,j )) 2
+
+W T ·(1−X·,j )
+
+2
+
+LAE = (W · 1)
+
+(X
+
+− Xˆ )
+
+2 F
+
+,
+
+LReg = λ3
+
+W
+
+2 2
+
++
+
+λ4
+
+β
+
+2 2
+
++
+
+λ5
+
+β
+
+1 + λ6(
+
+n i=1
+
+Wi
+
+−
+
+1)2
+
++ λ7
+
+K k=1
+
+(
+
+A(k)
+
+2 F
+
++
+
+Aˆ (k)
+
+2 F
+
+).
+
+(16) (17) (18) (19)
+
+Here, we propose an iterative method to minimize the above objective function in Eq. (15). Starting from some random initialization on parameters W , β and θ, we update each of them alternatively with the other two parameters as ﬁxed at each iteration until convergence. These steps are described below:
+Update β: When ﬁxing W and θ, the problem (15) is equivalent to optimize following objective function:
+
+Lmix(β) =
+
+n i=1
+
+Wi
+
+·
+
+log(1
+
++
+
+exp((1
+
+−
+
+2Yi)
+
+·
+
+(φ(Xi)β)))
+
++ λ4
+
+β
+
+2 2
+
++
+
+λ5
+
+β
+
+1,
+
+(20)
+
+which is a standard 1 norm regularized least squares problem and can be easily solved by any LASSO (or elastic net) solver.
+
+Update W : By ﬁxing β and θ, the key step for updating W is to calculate the partial
+
+derivative of
+
+∂
+
+Lmix ∂W
+
+.
+
+The
+
+detailed mathematical
+
+form
+
+of
+
+the
+
+partial derivative
+
+is shown as
+
+following:
+
+∂Lmix = ∂LP re + ∂LBal + ∂LAE + ∂LReg ,
+
+(21)
+
+∂W
+
+∂W
+
+∂W
+
+∂W
+
+∂W
+
+17
+
+Kuang, Xiong, Cui, Athey and Li
+
+where
+
+∂LP re = log(1 + exp((1 − 2Y ) · (φ(X) · β))), ∂W
+
+∂LBal ∂W
+
+=2
+
+p j=1
+
+LBalj
+
+·
+
+∂ LB alj ∂W
+
+,
+
+∂LAE = 2((W · 1) (X − Xˆ )) (X − Xˆ ) · 1T , ∂W
+
+∂LReg ∂W
+
+=
+
+2λ3W.
+
+where
+
+LBalj
+
+=
+
+φ(X·,−j )T ·(W W T ·X·,j
+
+X·,j )
+
+−
+
+φ(X·,−j )T ·(W (1−X·,j )) W T ·(1−X·,j )
+
+and
+
+(22) (23) (24) (25)
+
+∂ LB alj ∂W
+
+= φ(X·,−j )T (X·,j ·1T )T ·(W T ·X·,j )
+(W T ·X·,j )2
+
+− φ(X·,−j )T
+
+((1−X·,j )·1T )T ·(W (W T ·(1−X·,j ))2
+
+T
+
+·(1−X·,j
+
+))
+
+.
+
+For ensuring the non-negative of W with constraint W 0, we let W = ω ω, where ω ∈ Rn×1.Then we update W by updating ω with following partial derivative.
+
+∂Lmix = ∂Lmix · ∂W
+
+(26)
+
+∂ω
+
+∂W ∂ω
+
+Update θ: By ﬁxing W and β, the key step for updating θ is to calculate the partial
+
+derivative
+
+of
+
+∂Lmix ∂A(k)
+
+and
+
+. ∂Lmix
+∂Aˆ(k)
+
+The
+
+detailed
+
+mathematical
+
+form
+
+of
+
+the
+
+partial
+
+derivative
+
+is
+
+shown as following:
+
+∂Lmix ∂A(k)
+
+=
+
+∂LP re ∂A(k)
+
++
+
+λ1
+
+∂LBal ∂A(k)
+
++
+
+λ2
+
+∂LAE ∂A(k)
+
++
+
+∂LReg , ∂A(k)
+
+∂Lmix ∂Aˆ(k)
+
+=
+
+λ2
+
+∂LAE ∂Aˆ(k)
+
++
+
+∂LReg ∂Aˆ(k)
+
+,
+
+k = 1, · · · , K
+
+First
+
+we
+
+look
+
+at
+
+the
+
+ﬁrst
+
+term
+
+∂LP re ∂A(K)
+
+in
+
+, ∂Lmix
+∂A(K)
+
+which
+
+can
+
+be
+
+rephrased
+
+as
+
+follows:
+
+∂LP re
+
+=
+
+∂LP re
+
+·
+
+∂ φ(X ) ,
+
+∂A(K) ∂φ(X) ∂A(K)
+
+(27) (28)
+(29)
+
+According
+
+to
+
+Eq.
+
+16,
+
+we
+
+can
+
+obtain
+
+∂LP re ∂ φ(X )
+
+.
+
+The
+
+calculation
+
+of
+
+the
+
+second
+
+term
+
+∂ φ(X ) ∂A(k)
+
+is
+
+easy since φ(X) = σ(φ(X)(K−1)A(K) + b(K)).
+
+Then
+
+∂LP re ∂A(K)
+
+is
+
+accessible.
+
+Based on the
+
+back-
+
+propagation,
+
+we
+
+can
+
+iteratively
+
+obtain
+
+∂LP re ∂A(k)
+
+,
+
+k
+
+=
+
+1, · · ·
+
+,K
+
+− 1.
+
+Now
+
+the
+
+calculation
+
+of
+
+the
+
+partial derivative of LP re is ﬁnished.
+
+Similarly, by using back-propagation we can ﬁnish the calculation of LBal and LAE.
+
+Finally
+
+we
+
+can
+
+obtain
+
+the
+
+∂Lmix ∂A(k)
+
+and
+
+∂Lmix ∂Aˆ(k)
+
+for
+
+k = 1, · · ·
+
+, K,
+
+and
+
+update
+
+our
+
+parameter
+
+θ.
+
+We update W , β and θ = {A(k), Aˆ(k), b(k), ˆb(k)} iteratively until the objective function
+
+converges. The whole algorithm is summarized in Algorithm 1.
+
+Finally, with the optimized regression coeﬃcient β and deep auto-encoder parameters θ
+
+by our DGBR algorithm, we can make a stable prediction on various agnostic test datasets.
+
+18
+
+Stable Prediction across Unknown Environments
+
+Algorithm 1 Deep Global Balancing Regression algorithm
+
+Require: Observed Variables Matrix X and Response Variable Y .
+
+Ensure: Updated Parameters W , β, θ.
+1: Initialize parameters W (0), β(0) and θ(0), 2: Calculate the current value of L(m0i)x = J (W (0), β(0), θ(0)) with Equation (15), 3: Initialize the iteration variable t ← 0,
+
+4: repeat
+
+5: t ← t + 1,
+
+6: Update W (t) based on Eq. (21),
+
+7: Update β(t) by solving Lmix(β(t−1)) in Equation (20),
+
+8:
+
+Based
+
+on
+
+Eq.
+
+(27)
+
+and
+
+(28),
+
+use
+
+∂Lmix ∂θ
+
+to
+
+back-propagate
+
+through
+
+the
+
+entire
+
+deep
+
+network to get updated parameters θ,
+
+9:
+
+Calculate L(mt)ix = J (W (t), β(t), θ(t)),
+
+10: until L(mt)ix converges or max iteration is reached.
+
+11: return W , β, θ.
+
+5.2 Complexity Analysis
+During the procedure of optimization, the main time cost is to calculate the loss function, update parameters W , β and θ. For calculating the loss function, its complexity is O(npd), where n is the sample size, p is the dimension of observed variables and d is the maximum dimension of the hidden layer in deep auto-encoder model. For updating parameter W , its complexity is dominated by the step of calculating the partial gradients of loss function with respect to variable W . Its complexity is also O(npd). For updating parameter β, it is a standard LASSO problem and its complexity is O(nd). For updating θ, its complexity is O(npd).
+In total, the complexity of each iteration in Algorithm 1 is O(npd).
+5.3 Parameter Tuning
+To tune the parameters for our algorithm and baselines, we need multiple validation datasets whose distributions are diverse from each other and diﬀerent with the training data. In our experiments, we generate such validation datasets E by non-random data resampling on training data. We calculate the Average Error and Stability Error of all algorithms on validation datasets by choosing RM SE as Error metrics in Eq. (1) and (2). In this paper, we tune all the parameters for our algorithm and baselines by minimizing Average Error + λ · Stability Error on validation datasets with cross validation by grid searching. We set λ = 5 in our experiments. Construction of Validation Data. The key point in construction of validation data is to construct datasets where the joint distribution of the covariates changes across environments, particularly when this might create bias if we don’t control for all of the stable features. However, we do not have prior knowledge about which features are noisy features. Fortunately, our estimation approach can identify noisy features as those that do not have a large estimated eﬀect after balancing. Using the empirically identiﬁed noisy features, we
+19
+
+Kuang, Xiong, Cui, Athey and Li
+can generate validation datasets that change the distribution of noisy features and use these for parameter tuning.
+6. Experiments
+In this section, we evaluate our algorithm on both synthetic and real world dataset, comparing with the state-of-the-art methods.
+6.1 Baselines We implement following baselines for comparition.
+• Logistic Regression (LR) (Menard (2002))
+• Deep Logistic Regression (DLR) (Chen et al. (2014)): Combines a deep auto-encoder and logistic regression.
+• Global Balancing Regression (GBR): Combines a global balancing regularizer and logistic regression as shown in Eq (5).
+Since our proposed algorithm is based on logistic regression, so we compare our algorithm with only logistic regression methods. For other predictive methods, we can propose corresponding global balancing algorithm based on them, and compare with them.
+6.2 Experiments on Synthetic Data In this section, we describe the synthetic datasets and demonstrate the eﬀectiveness of our proposed algorithm.
+6.2.1 Dataset As shown in Fig. 1, there are three relationships between X = {S, V} and Y , including S ⊥ V, S → V, and V → S. S ⊥ V: In this setting, S and V are independent. Recalling Fig. 1, we generate predictor X = {S·,1, · · · , S·,ps, V·,1, · · · , V·,pv } with independent Gaussian distributions as:
+S˜·,1, · · · , S˜·,ps , V˜ ·,1, · · · , V˜ ·,pv i∼id N (0, 1), where ps = 0.4 ∗ p, and S·,j represents the jth variable in S. To make X binary, we let X·,j = 1 if X˜ ·,j ≥ 0, otherwise X·,j = 0. S → V: In this setting, the stable features S are the causes of noisy features V. We ﬁrst generate the stable features S˜ with independent Gaussian distributions, and let S·,j = 1 if S˜·,j ≥ 0, otherwise S·,j = 0. Then, we generate noisy features V˜ = {V˜ ·,1, · · · , V˜ ·,pv } based on S˜:
+V˜ ·,j = S˜·,j + S˜·,j+1 + N (0, 2), and let V·,j = 1 if V˜ ·,j > 1, otherwise V·,j = 0. V → S: In this setting, the noisy features V are the causes of stable features S. We ﬁrst generate the noisy features V˜ with independent Gaussian distribution, and let V·,j = 1 if
+20
+
+Stable Prediction across Unknown Environments
+V˜ ·,j ≥ 0, otherwise V·,j = 0. Then, we generate stable features S = {S·,1, · · · , S·,ps} based on V˜ :
+S˜·,j = V˜ ·,j + V˜ ·,j+1 + N (0, 2), and let S·,j = 1 if S˜·,j > 1, otherwise S·,j = 0.
+Finally, we generate the response variable Y for all above three settings with the same function g as following:
+Y = 1/(1 + exp(− X·,i∈Sl αi · X·,i − X·,j∈Sn βj · X·,j · X·,j+1)) +N (0, 0.2),
+where we separate the stable features S into two parts, linear part Sl and non-linear part Sn. And αi = (−1)i · (i%3 + 1) · p/3 and βj = p/2. To make Y binary, we set Y = 1 when Y ≥ 0.5, otherwise Y = 0.
+To test the stability of all algorithms, we need to generate a set environments e, each with a distinct joint distribution. Under Assumption 1, instability in prediction arises because P (Y |V) or P (V|S) varies across environments. Therefore, we generate diﬀerent environments in our experiments by varying P (Y |V) and P (V|S).
+6.2.2 Experiments by Varying P (Y |V) and Results
+Speciﬁcally, we vary P (Y |V) via biased sample selection with a bias rate r ∈ (0, 1). For each sample, we select it with probability r if its noisy features equal to response variable, that is V = Y ; otherwise we select it with probability 1 − r, where r > .5 corresponds to positive correlation between Y and V. From the generation of Y , we know that, given stable features S, noisy features V are independent of Y . But after biased sample selection, V could be correlated with response variable Y conditional on S due to selection bias. However, since S is an important factor in determining Y and thus whether a unit is selected when its noisy features are high, controlling for S when estimating the correlation between Y and V reduces that correlation. Note that this data-generating environment violates Assumption 1 after the sample selection is introduced. This creates an environment that is challenging for our algorithm, since we do not have strict guarantees that it will work, and also serves to illustrate that even when the strong assumptions of theory fail, the algorithm can still lead to substantial improvements.
+To comprehensively and systematically evaluate stability of predictive models, we generate diﬀerent synthetic data by varying sample size n = {1000, 2000, 4000}, dimensions of variables p = {20, 40, 80}, and bias rate r = {0.65, 0.75, 0.85}. We report the results of setting S ⊥ V in Figure 4 & 5, and report the results of setting S → V and V → S in Figure 6 and 7, respectively.
+From the results, we have following observations and analysis:
+• The methods LR and DLR can not address the stable prediction problem in all settings. Since they can not remove the spurious correlation between noisy features and the response variable during model training, they often predict large eﬀects of the noisy features, which leads to instability across environments.
+• Comparing with baselines, our method achieves a more stable prediction in diﬀerent settings. The GBR method is more stable than LR, and our DGBR algorithm is more
+21
+
+Kuang, Xiong, Cui, Athey and Li
+
+RMSE
+
+0.5
+
+0.7
+
+DGBR
+
+0.45
+
+GBR
+
+DLR
+
+0.6
+
+0.4
+
+LR
+
+0.5
+
+RMSE
+
+0.35
+
+0.4 0.3
+
+0.25
+
+0.3
+
+0.8
+
+DGBR
+
+GBR
+
+0.7
+
+DLR
+
+LR
+
+0.6
+
+RMSE
+
+0.5
+
+0.4
+
+0.3
+
+DGBR GBR DLR LR
+
+0.2
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0.2
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0.2
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+(a) Trained on n = 1000, p = 20, r = 0.65 (b) Trained on n = 1000, p = 20, r = 0.75 (c) Trained on n = 1000, p = 20, r = 0.85
+
+RMSE
+
+0.45
+
+0.7
+
+DGBR
+
+0.4
+
+GBR
+
+0.6
+
+DLR
+
+LR
+
+0.5
+
+0.35
+
+RMSE
+
+0.4
+
+0.3 0.3
+
+0.25
+
+0.2
+
+0.8
+
+DGBR
+
+GBR
+
+0.7
+
+DLR
+
+LR
+
+0.6
+
+RMSE
+
+0.5
+
+0.4
+
+0.3
+
+DGBR GBR DLR LR
+
+0.2
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0.1
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0.2
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+(d) Trained on n = 2000, p = 20, r = 0.65 (e) Trained on n = 2000, p = 20, r = 0.75 (f) Trained on n = 2000, p = 20, r = 0.85
+
+RMSE
+
+0.45
+
+0.7
+
+DGBR
+
+0.4
+
+GBR
+
+0.6
+
+DLR
+
+0.35
+
+LR
+
+0.5
+
+RMSE
+
+0.3
+
+0.4
+
+0.25
+
+0.3
+
+0.2
+
+0.2
+
+0.8
+
+DGBR
+
+GBR
+
+0.7
+
+DLR
+
+LR
+
+0.6
+
+0.5
+
+RMSE
+
+0.4
+
+0.3
+
+0.2
+
+DGBR GBR DLR LR
+
+0.15
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0.1
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0.1
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+(g) Trained on n = 4000, p = 20, r = 0.65 (h) Trained on n = 4000, p = 20, r = 0.75 (i) Trained on n = 4000, p = 20, r = 0.85
+
+Figure 4: Setting S ⊥ V: RMSE of outcome prediction on various test datasets by varying sample size n (vertical) and bias rate r (horizontal) on training dataset. The r of the X-axis in each ﬁgure represents the bias rate on test data.
+
+stable than DLR. The main reason is that the global balancing regularizer used in our models helps ensure accurate estimation of the eﬀect of the stable features, and reduces the estimates of the eﬀect of the noisy features.
+• Our DGBR model makes a more precise and stable prediction than GBR model across environments. The deep embedding model in DGBR algorithm makes global balancing weights less noisy and simpliﬁes estimates of the eﬀect of stable features.
+• By varying the sample size n, dimension of variables p and training bias rate r, the RMSE of our DGBR algorithm is consistently stable and small across environments.
+22
+
+Stable Prediction across Unknown Environments
+
+RMSE RMSE RMSE
+
+0.7
+
+0.7
+
+0.6
+
+DGBR
+
+DGBR
+
+DGBR
+
+0.6
+
+GBR
+
+DLR
+
+0.6
+
+GBR
+
+DLR
+
+0.5
+
+GBR DLR
+
+0.5
+
+LR
+
+LR
+
+LR
+
+0.5
+
+0.4
+
+0.4
+
+0.4 0.3
+
+0.3
+
+0.2
+
+0.3
+
+0.1
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0.2
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0.2
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+(a) Trained on n = 4000, p = 20, r = 0.75 (b) Trained on n = 4000, p = 40, r = 0.75 (c) Trained on n = 4000, p = 80, r = 0.75
+
+Figure 5: Setting S ⊥ V: RMSE of outcome prediction on various test datasets by varying variables’ dimension p on training dataset.
+
+RMSE RMSE RMSE
+
+0.7
+
+0.7
+
+0.7
+
+DGBR
+
+DGBR
+
+DGBR
+
+0.6
+
+GBR
+
+DLR
+
+0.6
+
+GBR
+
+0.6
+
+DLR
+
+GBR DLR
+
+LR
+
+LR
+
+0.5
+
+LR
+
+0.5
+
+0.5
+
+0.4
+
+0.4
+
+0.4
+
+0.3
+
+0.3
+
+0.3
+
+0.2
+
+0.2
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0.2
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0.1
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+(a) Trained on n = 1000, p = 20, r =(b) Trained on n = 2000, p = 20, r =(c) Trained on n = 4000, p = 20, r =
+
+0.75
+
+0.75
+
+0.75
+
+Figure 6: Setting S → V: RMSE of outcome prediction on various testing datasets by varying sample size n on training dataset.
+
+Another important observation is that comparing with baselines, our algorithm makes more and more signiﬁcantly improvement on prediction performance when n is small relative to p and r.
+
+6.2.3 Experiments by Varying P (V|S) and Results In this sub experiment, we generate the response variable Y with the function g as following:
+Y = 1/(1 + exp(− X·,i∈Sl αi · X·,i − X·,j∈Sn βj · X·,j · X·,j+1)),
+where αi = (−1)i and βj = p/2. And to make Y binary, we set Y = 1 when Y ≥ 0.5, otherwise Y = 0.
+Here, we vary P (V|S) also via biased sample selection with a bias rate r ∈ (0, 1). Speciﬁcally, for each sample, we select it with probability r if its noisy features equal to a mediate variable Z, that is Vi = Zi; otherwise we select it with probability 1 − r, where Zi = ij+=5i(−1)j ·Sj, and r > .5 corresponds to positive correlation between Zi and Vi. The same, from the generation of Y , we know that, given stable features S, noisy features V are
+23
+
+Kuang, Xiong, Cui, Athey and Li
+
+RMSE RMSE RMSE
+
+0.7
+
+0.7
+
+0.6
+
+DGBR
+
+DGBR
+
+DGBR
+
+GBR
+
+GBR
+
+GBR
+
+0.6
+
+DLR
+
+0.6
+
+DLR
+
+0.5
+
+DLR
+
+LR
+
+LR
+
+LR
+
+0.5
+
+0.5
+
+0.4
+
+0.4
+
+0.4
+
+0.3
+
+0.3
+
+0.3
+
+0.2
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0.2
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0.2
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+(a) Trained on n = 1000, p = 20, r =(b) Trained on n = 2000, p = 20, r =(c) Trained on n = 4000, p = 20, r =
+
+0.75
+
+0.75
+
+0.75
+
+Figure 7: Setting V → S: RMSE of outcome prediction on various testing datasets by varying sample size n on training dataset.
+
+0.6
+
+0.6
+
+0.6
+
+DGBR
+
+DGBR
+
+DGBR
+
+0.5
+
+GBR
+
+0.5
+
+GBR
+
+0.5
+
+GBR
+
+DLR
+
+DLR
+
+DLR
+
+0.4
+
+LR
+
+0.4
+
+LR
+
+0.4
+
+LR
+
+RMSE RMSE RMSE
+
+0.3
+
+0.3
+
+0.3
+
+0.2
+
+0.2
+
+0.2
+
+0.1
+
+0.1
+
+0.1
+
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+(a) Trained on n = 1000, p = 20, r =(b) Trained on n = 2000, p = 20, r =(c) Trained on n = 4000, p = 20, r =
+
+0.85
+
+0.85
+
+0.85
+
+Figure 8: Setting S ⊥ V: RMSE of outcome prediction on various testing datasets by varying sample size n on training dataset.
+
+independent of Y . After biased sample selection, V could be highly correlated with response variable Y , but it is still independent with Y conditional on stable features S. Thus, the Assumption 1 is valid under this setting. Therefore, with identifying stable features S, our algorithm can make a stable prediction across environments.
+In this part experiments, we generate diﬀerent synthetic data by varying sample size n = {1000, 2000, 4000}. We report the experimental results under settings S ⊥ V, S → V, and V → S in Figure 8, 9 & 10 , respectively. From these results, we can obtain the same observations that (i) The traditional classiﬁcation methods LR and DLR can not address the stable prediction problem in all settings, (ii) Comparing with baselines, our method achieves a more stable prediction in diﬀerent settings. The GBR method is more stable than LR, and our DGBR algorithm is more stable than DLR, and (iii) Our DGBR model makes a more precise and stable prediction than GBR model across environments.
+24
+
+Stable Prediction across Unknown Environments
+
+RMSE RMSE RMSE
+
+0.6
+
+0.5
+
+0.6
+
+DGBR
+
+DGBR
+
+DGBR
+
+0.5
+
+GBR
+
+DLR
+
+0.4
+
+GBR
+
+0.5
+
+DLR
+
+GBR DLR
+
+LR
+
+LR
+
+0.4
+
+LR
+
+0.4
+
+0.3
+
+0.3
+
+0.3
+
+0.2
+
+0.2
+
+0.2
+
+0.1
+
+0.1
+
+0.1
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+(a) Trained on n = 1000, p = 20, r =(b) Trained on n = 2000, p = 20, r =(c) Trained on n = 4000, p = 20, r =
+
+0.85
+
+0.85
+
+0.85
+
+Figure 9: Setting S → V: RMSE of outcome prediction on various testing datasets by varying sample size n on training dataset.
+
+RMSE RMSE RMSE
+
+0.5
+
+0.6
+
+0.5
+
+DGBR
+
+DGBR
+
+DGBR
+
+0.4
+
+GBR
+
+0.5
+
+DLR
+
+GBR
+
+DLR
+
+0.4
+
+GBR DLR
+
+LR
+
+0.4
+
+LR
+
+LR
+
+0.3
+
+0.3
+
+0.3
+
+0.2
+
+0.2
+
+0.2
+
+0.1
+
+0.1
+
+0.1
+
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+(a) Trained on n = 1000, p = 20, r =(b) Trained on n = 2000, p = 20, r =(c) Trained on n = 4000, p = 20, r =
+
+0.85
+
+0.85
+
+0.85
+
+Figure 10: Setting V → S: RMSE of outcome prediction on various testing datasets by varying sample size n on training dataset.
+
+6.2.4 Visualization of Embedded Features
+In Figure 11, we also show that the embedded features in our DGBR algorithm have few information of noisy features V from raw space. This demonstrates that our DGBR could approximately preserve the independence between Y and V of global balancing, thus can identify stable features and make a stable prediction across unknown environments.
+6.2.5 Parameter Analysis
+In our DGBR algorithm, we have some hyper-parameters, such as λ1 for constraining the error of global balancing, λ2 constraining the loss of auto-encoder term, λ3 constraining the variance of the global sample weights, and so on. In this section, we investigate how these hyper-parameters aﬀect the results. We tuned these parameters in our experiments with cross validation by grid searching, based on our constructed validation data. We report the Average Error, 5 ∗ Stability Error, and Average Error + 5 ∗ Stability Error on a synthetic dataset under setting S ⊥ V with n = 2000 and p = 20.
+25
+
+Kuang, Xiong, Cui, Athey and Li
+
+Figure 11: Embedding weights in our DGBR algorithm, where X·,1, · · · , X·,9 are stable features S and others are noisy features V. It illustrates that our DGBR can achieve Y and V are independent, since the features in embedding space have few information of noisy feature V in raw sapce.
+
+Error Error Error
+
+0.6
+
+Average_Error
+
+0.5
+
+5*Stability_Error
+
+Average_Error+5*Stability_Error
+
+0.4
+
+0.3
+
+0.2
+
+0.1
+
+0
+
+0
+
+5
+
+10
+
+15
+
+20
+
+λ
+1
+
+(a)
+
+0.6
+
+Average_Error
+
+0.5
+
+5*Stability_Error
+
+Average_Error+5*Stability_Error
+
+0.4
+
+0.3
+
+0.2
+
+0.1
+
+0
+
+0
+
+5
+
+10
+
+15
+
+20
+
+λ
+2
+
+(b)
+
+0.6 0.5 0.4 0.3 0.2 0.1
+0 10-4
+
+Average_Error 5*Stability_Error Average_Error+5*Stability_Error
+
+10-3
+
+10-2
+
+10-1
+
+1
+
+λ
+3
+
+(c)
+
+Figure 12: The eﬀect of hyper-parameters λ1, λ2, and λ3.
+
+Tradeoﬀs between prediction and covariate balancing: We ﬁrst show how the hyper-parameter λ1 aﬀects the performance in Figure 12a. The parameter of λ1 restrain the error of global balancing. We can see that initially the value of both Average Error and Stability Error decreases when the value of λ1 increases. This is intuitive as the data could be more balanced with the increased value of λ1, and balanced data could help to identify stable features and remove some noise for more precise prediction. However, when the value of λ1 increases further, the value of Stability Error decreases, but the value of Average Error starts to increase slowly. Large value of λ1 makes the algorithm concentrate on global balancing component at the expense of the prediction component. Both prediction and global balancing components are essential for stable prediction.
+Feature representation: Here, we show how the hyper-parameter λ2 aﬀects the results in Figure 12b. The value of Average Error decreases with λ2, since a high value of λ2 leads to more accurate prediction. Initially, Stability Error decreases with λ2, but it starts to increase when λ2 ≥ 5. It is important to choose an appropriate value of λ2 for learning feature representation, but our method is not very sensitive to this parameter.
+26
+
+Stable Prediction across Unknown Environments
+
+RMSE Average_Error & Stability_Error
+
+0.6
+
+DGBR
+
+0.55
+
+GBR
+
+DLR
+
+0.5
+
+LR
+
+0.45
+
+0.4
+
+0.35
+
+0.3
+
+0.25
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+(a) RMSE
+
+0.6 0.5 0.4 0.3 0.2 0.1
+0 LR DLR GBR DGBR
+(b) Average Error & Stability Error
+
+Figure 13: Our proposed DGBR algorithm makes the most stable prediction on whether user will like or dislike an advertisement.
+
+The variance of global sample weights: Figure 12c shows how the value of λ3 aﬀect performance. Both the value of Average Error and Stability Error decrease when the value of λ3 increases, since appropriate constraints on the variance of global sample weights could prevent some samples from becoming dominate in whole data, and thus help to improve the precision and robustness of prediction. However, when the value of λ3 grows too large, those errors increase. Too large value of λ3 could lead the learned global sample weight to fail to make appropriate tradeoﬀs between balancing and prediction.
+
+6.3 Experiments on Real World Data
+
+6.3.1 Online Advertising Dataset
+
+The real online advertising dataset we used is collected from Tencecnt WeChat App5 during
+
+September 2015. In WeChat, each user can share (receive) posts to (from) his/her friends
+
+as like the Twitter and Facebook. Then the advertisers could push their advertisements to
+
+users, by merging them into the list of the user’s wallposts. For each advertisement, there
+
+are two types of feedbacks: “Like” and “Dislike”. When the user clicks the “Like” button,
+
+his/her friends will receive the advertisements with this action.
+
+The online advertising campaign used in our paper is about the LONGCHAMP handbags for young women.6 This campaign contains 14,891 user feedbacks with Like and 93,108
+
+Dislikes. For each user, we have their features including (1) demographic attributes, such
+
+as age, gender, (2) number of friends, (3) device (iOS or Android), and (4) the user settings
+
+on WeChat, for example, whether allowing strangers to see his/her album and whether
+
+installing the online payment service.
+
+Experimental Settings. In our experiments, we set Yi = 1 when user i likes the ad,
+
+otherwise Yi = 0. For non-binary user features, we dichotomize them around their mean
+
+value. Considering the overlap assumption in assumption 2, we only preserve users’ features
+
+which
+
+satisﬁed
+
+0.2
+
+≤
+
+#{x=1} #{x=1}+#{x=0}
+
+≤
+
+0.8.
+
+All
+
+the
+
+predictors
+
+and
+
+response
+
+variable
+
+in
+
+our
+
+experiment are binary.
+
+5. http://www.wechat.com/en/ 6. http://en.longchamp.com/en/womens-bags
+
+27
+
+Kuang, Xiong, Cui, Athey and Li
+
+RMSE RMSE
+
+0.48 DGBR
+
+GBR
+
+0.46
+
+DLR
+
+LR
+
+0.44
+
+0.42
+
+0.4
+
+0.38
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+(a) Predictor mail plugin
+
+0.5
+
+DGBR
+
+0.48
+
+GBR
+
+DLR
+
+0.46
+
+LR
+
+0.44
+
+0.42
+
+0.4
+
+0.38
+
+0.36
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+r on test data
+
+(b) Predictor bottle plugin
+
+Figure 14: RMSE of outcome prediction by varying bias rate r between one predictor and outcome.
+
+0.45 0.4
+
+LR DLR GBR DGBR
+
+RMSE
+
+0.35
+
+0.3 [20,30) [30,40) [40,50) [50,100)
+Age
+Figure 15: Prediction across environments separated by age. The models are trained on dataset where uses’ Age ∈ [20, 30), but tested on various datasets with diﬀerent users’ age range.
+
+In order to test the performance of our proposed model, we execute the experiments with two diﬀerent settings. The ﬁrst experimental setting is similar with the setting on synthetic dataset. We generate diﬀerent environments by biased sample selection via bias rate r. In this setting, we choose those features which have no associations with outcome as noisy features for biased sample selection. In second experimental setting, we generate the various environments by dataset separation with users’ feature. Speciﬁcally, we separate the whole dataset into 4 parts by users’ age, including Age ∈ [20, 30), Age ∈ [30, 40), Age ∈ [40, 50) and Age ∈ [50, 100).
+Results on Setting 1. Based on the ﬁrst experimental setting, we plot the results in Figure 13 and Figure 14. Under this setting, we trained all algorithms on a dataset with bias rate r = 0.6 for four noisy features. Then we test the performance of our proposed algorithm and baselines on various test data with diﬀerent bias rate on these four noisy features, and report the RM SE in Fig. 13a. To explicitly demonstrate the advantage of our proposed algorithm, we plot the Average Error and Stability Error as deﬁned in Eq. (1) and (2) in Fig. 13b. We further generate additional test data by varying bias rate r on other features, with results in Fig. 14. Fig. 14a and 14b show that DGBR makes the most stable prediction across test data. Overall, the results and their interpretation are very similar to the simulation experiments.
+28
+
+Stable Prediction across Unknown Environments
+
+Average_Error & Stability_Error
+
+0.42 0.4
+0.38 0.36 0.34 0.32
+0.3 LR DLR GBR DGBR
+Figure 16: Average Error and Stability Error of all algorithms across environments after ﬁxing P (Y ) as the same with its value on global dataset.
+
+Results on Setting 2. Based on the second experimental setting, we plot the results
+
+in Figure 15, where we separate the dataset into four environments by users’ age, including
+
+Age ∈ [20, 30), Age ∈ [30, 40), Age ∈ [40, 50) and Age ∈ [50, 100). We trained all algorithms
+
+on dataset where users’ Age ∈ [20, 30), then we test them on all the four environments.
+
+From Figure 15, we could ﬁnd that our DGBR algorithm achieves comparable result to
+
+the baselines on test data with users’ Age ∈ [20, 30), where the distributions of variables
+
+are similar with the one on the training data. On such test data, the spurious correlation
+
+between noisy features and outcome could help baselines make a more precise prediction.
+
+While on the other three parts of test dataset, whose distributions are diﬀerent with training
+
+dataset, our DGBR algorithm obtains the best prediction performance. The main reason
+
+is that our algorithm can reduce or even remove the spurious eﬀect of noisy features on
+
+outcome and ﬁnd out the stable features for stable prediction.
+
+We can infer that the stability of DGBR algorithm is not as good as baselines in Fig. 15;
+
+this occurs because the distribution of outcome P (Y ) varied across these four environments.
+
+After we ﬁxed P (Y ) by data sampling on the outcome with P (Y
+
+= 1) =
+
+14,891 14,891+93,108
+
+on the
+
+global dataset, we report the Average Error and Stability Error of all algorithms across
+
+four environments in Figure 16. And we ﬁnd that as the P (Y ) is stable, DGBR outperforms
+
+baselines.
+
+7. Conclusion
+In this paper, we focus on how to make a stable prediction across unknown environments, where the data distribution of unknown environments might be very diﬀerent with the distribution of training data. We argued that most previous methods for addressing stable prediction are deﬁcient because either they need the distribution of test data as prior knowledge or rely on diversity of training datasets from diﬀerent environments. Therefore, we propose a Deep Global Balancing Regression algorithm for stable prediction across environments by jointly optimizing the deep auto-encoder model and global balancing model. The global balancing model can identify the causal relationship between predictor variables and response variable, while the deep auto-encoder model is designed for capturing the non-linear structure among variables and making global balancing easier and less noisy.
+
+29
+
+Kuang, Xiong, Cui, Athey and Li
+
+We prove that our algorithm can make a stable prediction from both theoretical analysis and empirical experiments. The experimental results on both synthetic and real world datasets show that our DGBR algorithm outperforms the baselines for stable prediction across unknown environments.
+
+Acknowledgments
+This work is supported by the National Program on Key Basic Research Project (No. 2015CB352300), and the National Natural Science Foundation of China (No. 61772304, No. 61521002, No. 61531006, and No. U1611461). Thanks for the research fund of Tsinghua-Tencent Joint Laboratory for Internet Innovation Technology, and the Young Elite Scientist Sponsorship Program by CAST. Ruoxuan Xiong’s research was supported by Charles and Katharine Lin Graduate Fellowship. Bo Li’s research was supported by the Tsinghua University Initiative Scientiﬁc Research Grant, No. 20165080091; National Natural Science Foundation of China, No. 71490723 and No. 71432004; Science Foundation of Ministry of Education of China, No. 16JJD630006. Susan Athey’s research was supported by the Oﬃce of Naval Research under grant N00014-17-1-2131 and the Sloan foundation.
+
+Appendix A. Proof of Lemma 1
+Proof Assume treatment variable is T = Xi,j and Xi,−j are covariates. From the propensity score is bounded away from zero and one, and ∃(x01, · · · , x0j−1, x0j+1, · · · , x0p), P (Xi,−j = (x01, · · · , x0j−1, x0j+1, · · · , x0p)) > 0, from
+
+P (Xi = (x01, · · · , x0j−1, xj, x0j+1, · · · , x0p)) = P (Xi,−j = (x01, · · · , x0j−1, x0j+1, · · · , x0p)) ·
+P (Xi,j = xj|Xi,−j = (x01, · · · , x0j−1, x0j+1, · · · , x0p))
+
+we have
+
+0 < P (Xi = (x01, · · · , x0j−1, xj, x0j+1, · · · , x0p) < 1
+
+(30)
+
+for xj = 0 or xj = 1. Next is to proof ∀x (x is binary),
+
+0 < P (Xi = x) < 1
+
+from inequality (30). Let k = j, from
+
+P (Xi = (x01, · · · , x0j−1, xj, x0j+1, · · · , x0p)) = P (Xi,−k = (x01, · · · , x0k−1, x0k+1, · · · , x0p)) ·
+P (Xi,k = x0k|Xi,−k = (x01, · · · , x0k−1, x0k+1, · · · , x0p))
+and 0 < P (Xi = (x01, · · · , x0j−1, xj, x0j+1, · · · , x0p)) < 1, we have
+P (Xi,−k = (x01, · · · , x0k−1, x0k+1, · · · , x0p)) > 0
+
+30
+
+Stable Prediction across Unknown Environments
+Furthermore, Xi,k can also be viewed as the treatment variable, so 0 < P (Xi,k = x0k|Xi,−k = (x01, · · · , x0k−1, x0k+1, · · · , x0p)) < 1
+, and therefore,
+0 < P (Xi,k = 1 − x0k|Xi,−k = (x01, · · · , x0k−1, x0k+1, · · · , x0p)) < 1
+We have (without loss of generality, we assume k < j), ∀xk, xj 0 < P (Xi = (x01, · · · , x0k−1, xk, x0k+1, · · · , x0j−1, xj, x0j+1, · · · , x0p) < 1.
+We repeat the above for all other variables one by one, we have ∀x, 0 < P (Xi = x) < 1
+
+Appendix B. Proof of Proposition 3
+
+Proof
+
+If
+
+0
+
+<
+
+Pˆ(Xi
+
+=
+
+x)
+
+<
+
+1,
+
+from
+
+Theorem
+
+2,
+
+Wi∗
+
+=
+
+1 Pˆ(Xi=x)
+
+satisﬁes
+
+equation
+
+(4)
+
+equals
+
+0. Next is to show all variables in X are independent after balancing by this W ∗. Note that
+
+n i=1
+
+Wi∗
+
+=
+
+n
+
+1 xn
+
+i:Xi=xWi∗
+
+=
+
+n
+
+x
+
+Pˆ(Xi
+
+=
+
+x)
+
+·
+
+1 Pˆ(Xi =
+
+x)
+
+=
+
+n
+
+·
+
+2p
+
+Similarly, i:Xi,j=1 Wi∗ = n · 2p−1 and i:Xi,j=0 Wi∗ = n · 2p−1. Denote the probability mass function of X weighted by W ∗ as P˜. Thus, for x = (x1, · · · , xp),
+
+P˜(Xi = (x1, · · · , xp)) =
+
+i:Xi,j =x Wi∗ i Wi∗
+
+=
+
+1 2p
+
+and ∀j, P˜(Xi,j = xj) =
+
+i:Xi,j =j Wi∗ i Wi∗
+
+=
+
+1 2
+
+,
+
+so
+
+we
+
+have
+
+P˜(Xi = (x1, · · · , xp)) = P˜(Xi,1 = x1) · · · P˜(Xi,p = xp),
+
+which implies that covariates in X are independent after balanced by W ∗.
+
+31
+
+Kuang, Xiong, Cui, Athey and Li
+
+Appendix C. Proof of Lemma 5
+
+Proof ∀k, j, k = j, it has 0 ≤
+
+≤ 1 and 0 ≤ i:Xi,k=1,Xi,j =1 Wˆ i
+i:Xi,j =1 Wˆ i
+
+≤ 1. Thus, i:Xi,k=1,Xi,j =0 Wˆ i
+i:Xi,j =0 Wˆ i
+
+0 ≤ α ≤ 1, ∀m. Assume for k, j and k = j,
+
+1 x:xk=1,xj =1 (
+
+n i=1
+
+1(Xi
+
+=
+
+x)
+
+=
+
+0)
+
+=
+
+m1,
+
+1 x:xj=1 (
+
+n i=1
+
+1(Xi
+
+=
+
+x)
+
+=
+
+0)
+
+=
+
+m2,
+
+1 x:xk=1,xj =0 (
+
+n i=1
+
+1(Xi
+
+=
+
+x)
+
+=
+
+0)
+
+=
+
+m3
+
+and
+
+1 x:xj=0 (
+
+n i=1
+
+1(Xi
+
+=
+
+x)
+
+=
+
+0)
+
+=
+
+m4.
+
+1. If m = 0, α = 0 is a direct result from Theorem 2
+
+2. If 0 < m ≤ 2p−2, without loss of generality, assume m2 ≥ m4,
+
+αjk = = ≤
+
+− i:Xi,k=1,Xi,j =1 Wˆ i
+i:Xi,j =1 Wˆ i
+
+i:Xi,k =1,Xi,j =0 Wˆ i i:Xi,j =0 Wˆ i
+
+− 2p−2−m1
+2p−1 −m2
+
+2p−2 −m3 2p−1 −m4
+
+− 2p−2
+2p−1 −m2
+
+2p−2 −m4 2p−1 −m4
+
+Given m4 = m − m2,
+
+∂αjk = 2p−2 ∂m2
+
+1
+
+1
+
+(2p−1 − m2)2 − (2p−1 − m + m2)2
+
+which is positive when m2 ≤ m/2 (we assume m2 ≥ m4), and therefore
+
+2p−2
+
+1
+
+αjk ≤ 2p−1 − m − 2
+
+3. If 2p−2 < m < 2p−1, without loss of generality, assume m2 ≥ m4, when m2 ≤ 2p−2, from 2, we have
+
+2p−2 2p−1
+
+− −
+
+m1 m2
+
+−
+
+2p−2 2p−1
+
+− −
+
+m3 m4
+
+≤
+
+≤
+
+− 2p−2
+2p−2 −m2
+
+2p−2 −m4 2p−1 −m4
+
+1 − 2p−2−m+2p−2
+2p−1 −m+2p−2
+
+when m2 > 2p−1,
+
+2p−2 2p−1
+
+− −
+
+m1 m2
+
+−
+
+2p−2 2p−1
+
+− −
+
+m3 m4
+
+≤
+
+1
+
+−
+
+2p−2 −m4 2p−1 −m4
+
+<
+
+1 − 2p−2−m+2p−2
+2p−1 −m+2p−2
+
+because
+
+2p−2 −m3 2p−2 −m4
+
+is
+
+decreasing
+
+in
+
+m4.
+
+Thus
+
+2p−2 − m + 2p−2
+
+2p−1 − m
+
+α ≤ 1 − 2p−1 − m + 2p−2 = 1 − 3 × 2p−2 − m
+
+32
+
+Stable Prediction across Unknown Environments
+
+4. If 2p−1 ≤ m, let m1 =
+
+m 2
+
+− 2p−2, m2 =
+
+m 2
+
+, m3 = 2p−2, m4 =
+
+m 2
+
+, which satisfy
+
+m2 + m4 = 1, m1 ≤ m2, and m3 ≤ m4. Moreover,
+
+2p−2 2p−1
+
+− −
+
+m1 m2
+
+−
+
+2p−2 2p−1
+
+− −
+
+m3 m4
+
+=1
+
+together with α ≤ 1, we have α = 1
+
+Appendix D. Proof of Theorem 6
+
+Proof The probability that m diﬀerent values in X do not appear in X equals the ratio of the number of solutions to
+
+y1 + y2 + · · · y2p = n,
+
+(31)
+
+where m diﬀerent is have yi = 0, to the total number of solution to Eq. (31) without any
+
+constraint. The denominator is
+
+n+2p−1 2p−1
+
+.
+
+The numerator is the number of methods to select
+
+m diﬀerent is, such that yi = 0 multiplied by the number of solutions to y1 +y2 +· · · y2p−m =
+
+n without any constraint, which is
+
+2p m
+
+n−1 2p−1−m
+
+.
+
+Thus
+
+the
+
+probability
+
+that
+
+m
+
+diﬀerent
+
+xs
+
+do not appear in X is
+
+1
+n+2p−1 2p−1
+
+With lemma 5,
+
+E
+
+[α]
+
+=
+
+1
+( ) n+2p−1 2p −1
+
+where g(p, m) is deﬁned in (12).
+
+2p
+
+n−1
+
+m 2p − 1 − m
+
+2p−1 2p m=0 m
+
+n−1 2p−1−m
+
+g(p, m)
+
+,
+
+Appendix E. Proof of Theorem 7
+
+Proof Deﬁne LP˜(f ) = EP˜(l(f (X), Y )), where the probability mass function P˜(Xi, Yi) =
+
+P˜(Xi)P (Yi|Xi) has P (Yi = y|Xi = x) = P (Yi = y|Si = s, Vi = v) = P (y|s) to be the same
+
+as that in Assumption 1 and P˜(Xi = x) = p˜x, where p˜x is deﬁned in Eq. (13) and equals
+
+1 n˜
+
+n i=1
+
+Wi∗1(Xi
+
+=
+
+x).
+
+Let f˜∗ = arg minf LP˜(f ). For all f ,
+
+|LP˜(f ) − LP (f )| ≤ maxx E[l(f (x), y)|x] x | x|,
+
+(32)
+
+followed by
+
+|LP˜(f ) − LP (f )| = | x p˜xE[l(f ∗(x), y)|x] − x pxE[l(f (x), y)|x]| = | x p˜xE[l(f (x), y)|x] − x(p˜x − x)E[l(f (x), y)|x]|
+= | x xE[l(f (x), y)|x]| ≤ maxx E[l(f (x), y)|x] x | x|.
+
+33
+
+Kuang, Xiong, Cui, Athey and Li
+
+maxx E[l(fˆ(x), y)|x] is bounded because x are y are binary and all weights in f ∈ F are bounded, where F is the model class deﬁned by the constraints in FWDGBR algorithm. From Eq. (32), we have
+
+LP (fˆ) ≤ LP˜(fˆ) + maxx E[l(fˆ(x), y)|x] x | x|.
+
+(33)
+
+Next is to upper bound the diﬀerence between LP˜(fˆ) and LP˜(f ∗). Let A = {x → l(f (x), y) : f ∈ F} to be the loss class, where l(·) is the cross-entropy loss and y is binary. From Lemma 3 in Wan et al. (2013), the generalized bound of a 2-class classiﬁer with logistic cross-entropy loss function is related empirical Rademacher complexity, with probability at least 1 − δ,
+
+LP˜(fˆ) ≤ LP˜(f ∗) + 4Rn(A) + 3
+
+. log(2/δ) 2n
+
+(34)
+
+Note that the auto-encoder has K layers to construct φ(Xi) and another K layers
+
+to reconstruct Xi from φ(Xi). Yi is predicted by a logistic regression model on φ(Xi).
+
+The Rademacher complexity depends on weight constraints
+
+β
+
+2 2
+
+≤
+
+λ4,
+
+β 1 ≤ λ5 and
+
+Kk=1(
+
+A(k)
+
+2 F
+
++
+
+Aˆ(k)
+
+2 F
+
+)
+
+≤
+
+λ7
+
+in
+
+the
+
+FWDGBR
+
+algorithm.
+
+The decoder from φ(Xi) to
+
+Xi is not used to predict Yi, so the decoder does not aﬀect the complexity Rn(A).
+
+Our goal is to give an upper bound on Rn(A). Constraint
+
+Kk=1(
+
+A(k)
+
+2 F
+
++
+
+Aˆ(k)
+
+2 F
+
+)
+
+≤
+
+λ7
+
+implies that
+
+K k=1
+
+A(k)
+
+2 F
+
+≤ λ7, and together with
+
+b(k) 2 ≤ M (k), implies that
+
+A(jk) 2 ≤
+
+λ7 + (M (k))2. Let Bk =
+
+λ7 + (M (k))2. Constraints
+
+Kk=1(
+
+A(k)
+
+2 F
+
++
+
+Aˆ(k)
+
+2 F
+
+)
+
+≤
+
+λ7
+
+and b(k) 2 ≤ M (k) imply [A(jk), bkj ] 2 ≤ Bk.
+
+We can employ Theorem 3.1 in Zhai and Wang (2018) to obtain the empirical Rademacher
+
+complexity Rn(A). Since X is binary, X max = maxi,j |Xi,j| = 1. Theorem 3.1 in Zhai and
+
+Wang (2018) does not have bias term in each layer. We can add constant 1 to neurons in
+
+k-th layer φ(Xi)(k) to ﬁt in the framework of Theorem 3.1 in Zhai and Wang (2018). Thus,
+
+the dimension of the k-th layer is lk for k = 0, 1, 2, · · · , K. The retain vector is θk = [1]lk
+
+in our case (corresponding to the dropout rate in each layer is 0). If
+
+β
+
+2 2
+
+≤ λ4
+
+is
+
+tighter
+
+than β 1 ≤ λ5, that is, 1/p = 1/2 and 1/q = 1/2 for all layers, we have
+
+Rn(A) ≤ 2K+1
+
+2log(2p) n
+
+√ λ4lK
+
+K k=1
+
+Bk (lk−1 )1/2
+
+On the other hand, if
+
+β 1 ≤ λ5 is tighter than
+
+β
+
+2 2
+
+≤
+
+λ4,
+
+that
+
+is
+
+1/p
+
+=
+
+1
+
+and
+
+1/q
+
+=
+
+0
+
+for
+
+the K-th layer, so lK1/q = 1 and
+
+Rn(A) ≤ 2K+1
+
+2log(2p) n
+
+λ5
+
+K k=1
+
+Bk
+
+(lk−1)1/2
+
+We combine these two cases and have
+
+Rn(A) ≤ 2K+1
+
+2log(2p) n
+
+√ min( λ4lK ,
+
+λ5)
+
+K k=1
+
+Bk
+
+(lk−1)1/2
+
+(35)
+
+Plug Inequality (35) into Inequality (34), we have
+
+LP˜(fˆ) ≤ LP˜(f ∗)
+
++2K+3
+
+2log(2p) n
+
+√ min( λ4lK ,
+
+λ5)
+
++3
+
+log(2/δ) 2n
+
+.
+
+K k=1
+
+Bk
+
+(lk−1
+
+)1/2
+
+(36)
+
+34
+
+Stable Prediction across Unknown Environments
+
+The last step is to bound the diﬀerence between LP˜(f˜∗) and LP (f ∗). When LP˜(f˜∗) ≥ LP (f ∗),
+
+LP˜(f˜∗) − LP (f ∗) = x p˜xE[l(f˜∗(x), y)|x] − x pxE[l(f ∗(x), y)|x] = x p˜xE[l(f˜∗(x), y)|x] − x p˜xE[l(f ∗(x), y)|x] + x xE[l(f ∗(x), y)|x] ≤ x xE[l(f ∗(x), y)|x] ≤ maxx E[l(f ∗(x), y)|x] x: x>0 x
+Eq. (37) holds followed by f˜∗(x) minimizes LP˜(f˜), so LP˜(f˜∗) ≤ LP˜(f ∗), and then x p˜xE[l(f ∗(x), y)|x]. Thus,
+
+(37) x p˜xE[l(f˜∗(x), y)|x] ≤
+
+LP˜(f˜∗) ≤ LP (f ∗) + maxx E[l(f ∗(x), y)|x] x: x>0 x
+
+(38)
+
+always holds. From Eq. (33), (36), (38), we have
+
+LP (fˆ) ≤ LP (f ∗) + maxx E[l(fˆ(x), y)|x] x | x|
+
++2K+3
+
+2log(2p) n
+
+√ min( λ4lK ,
+
+λ5)
+
+K k=1
+
+Bk
+
+(lk−1
+
+)1/2
+
++3
+
+log(2/δ) 2n
+
++
+
+maxx
+
+E[l(f ∗(x),
+
+y)|x]
+
+x: x>0 x
+
+≤
+
+LP (f ∗) + 2K+3
+
+2log(2p) n
+
+√ min( λ4lK ,
+
+λ5)
+
+K k=1
+
+Bk
+
+(lk−1
+
+)1/2,
+
++3
+
+log(2/δ) 2n
+
++
+
+2
+
+maxx,f
+
+E[l(f (x), y)|x]
+
+x | x|
+
+with probability ≥ 1 − δ.
+
+References
+Susan Athey, Guido W Imbens, and Stefan Wager. Approximate residual balancing: De-biased inference of average treatment eﬀects in high dimensions. arXiv preprint arXiv:1604.07125, 2016.
+Peter C Austin. An introduction to propensity score methods for reducing the eﬀects of confounding in observational studies. Multivariate behavioral research, 46(3):399–424, 2011.
+Yoshua Bengio, Pascal Lamblin, Dan Popovici, and Hugo Larochelle. Greedy layer-wise training of deep networks. In Advances in neural information processing systems, pages 153–160, 2007.
+Steﬀen Bickel, Michael Bru¨ckner, and Tobias Scheﬀer. Discriminative learning under covariate shift. Journal of Machine Learning Research, 10(Sep):2137–2155, 2009.
+Yushi Chen, Zhouhan Lin, Xing Zhao, Gang Wang, and Yanfeng Gu. Deep learning-based classiﬁcation of hyperspectral data. IEEE Journal of Selected topics in applied earth observations and remote sensing, 7(6):2094–2107, 2014.
+35
+
+Kuang, Xiong, Cui, Athey and Li
+Miroslav Dud´ık, Steven J Phillips, and Robert E Schapire. Correcting sample selection bias in maximum entropy density estimation. In Advances in neural information processing systems, pages 323–330, 2006.
+Jens Hainmueller. Entropy balancing for causal eﬀects: A multivariate reweighting method to produce balanced samples in observational studies. Political Analysis, 20(1):25–46, 2012.
+Jiayuan Huang, Arthur Gretton, Karsten M Borgwardt, Bernhard Sch¨olkopf, and Alex J Smola. Correcting sample selection bias by unlabeled data. In Advances in neural information processing systems, pages 601–608, 2007.
+William B Johnson and Joram Lindenstrauss. Extensions of lipschitz mappings into a hilbert space. Contemporary mathematics, 26(189-206):1, 1984.
+Kun Kuang, Meng Jiang, Peng Cui, and Shiqiang Yang. Steering social media promotions with eﬀective strategies. In Data Mining (ICDM), 2016 IEEE 16th International Conference on, pages 985–990. IEEE, 2016.
+Kun Kuang, Peng Cui, Bo Li, Meng Jiang, and Shiqiang Yang. Estimating treatment eﬀect in the wild via diﬀerentiated confounder balancing. In Proceedings of the 23rd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, pages 265– 274. ACM, 2017a.
+Kun Kuang, Peng Cui, Bo Li, Meng Jiang, Shiqiang Yang, and Fei Wang. Treatment eﬀect estimation with data-driven variable decomposition. In AAAI, pages 140–146, 2017b.
+Kun Kuang, Meng Jiang, Peng Cui, Jiashen Sun, and Shiqiang Yang. Eﬀective promotional strategies selection in social media: A data-driven approach. IEEE Transactions on Big Data, 2017c.
+Sheng Li and Yun Fu. Matching on balanced nonlinear representations for treatment eﬀects estimation. In Advances in Neural Information Processing Systems, pages 930–940, 2017.
+Anqi Liu and Brian Ziebart. Robust classiﬁcation under sample selection bias. In Advances in neural information processing systems, pages 37–45, 2014.
+Jared K Lunceford and Marie Davidian. Stratiﬁcation and weighting via the propensity score in estimation of causal treatment eﬀects: a comparative study. Statistics in medicine, 23 (19):2937–2960, 2004.
+Scott Menard. Applied logistic regression analysis, volume 106. Sage, 2002.
+Krikamol Muandet, David Balduzzi, and Bernhard Sch¨olkopf. Domain generalization via invariant feature representation. In Proceedings of the 30th International Conference on Machine Learning (ICML-13), pages 10–18, 2013.
+Jonas Peters, Peter Bu¨hlmann, and Nicolai Meinshausen. Causal inference by using invariant prediction: identiﬁcation and conﬁdence intervals. Journal of the Royal Statistical Society: Series B (Statistical Methodology), 78(5):947–1012, 2016.
+36
+
+Stable Prediction across Unknown Environments
+Mateo Rojas-Carulla, Bernhard Sch¨olkopf, Richard Turner, and Jonas Peters. Causal transfer in machine learning. arXiv preprint arXiv:1507.05333, 2015.
+Paul R Rosenbaum and Donald B Rubin. The central role of the propensity score in observational studies for causal eﬀects. Biometrika, 70(1):41–55, 1983.
+Hidetoshi Shimodaira. Improving predictive inference under covariate shift by weighting the log-likelihood function. Journal of statistical planning and inference, 90(2):227–244, 2000.
+Masashi Sugiyama, Shinichi Nakajima, Hisashi Kashima, Paul V Buenau, and Motoaki Kawanabe. Direct importance estimation with model selection and its application to covariate shift adaptation. In Advances in neural information processing systems, pages 1433–1440, 2008.
+Li Wan, Matthew Zeiler, Sixin Zhang, Yann Le Cun, and Rob Fergus. Regularization of neural networks using dropconnect. In International Conference on Machine Learning, pages 1058–1066, 2013.
+Junfeng Wen, Chun-Nam Yu, and Russell Greiner. Robust learning under uncertain test distributions: Relating covariate shift to model misspeciﬁcation. In ICML, pages 631–639, 2014.
+Bin Yu et al. Stability. Bernoulli, 19(4):1484–1500, 2013. Yaoliang Yu and Csaba Szepesv´ari. Analysis of kernel mean matching under covariate shift.
+arXiv preprint arXiv:1206.4650, 2012. Ke Zhai and Huan Wang. Adaptive dropout with rademacher complexity regulariza-
+tion. In International Conference on Learning Representations, 2018. URL https: //openreview.net/forum?id=S1uxsye0Z. Jos´e R Zubizarreta. Stable weights that balance covariates for estimation with incomplete outcome data. Journal of the American Statistical Association, 110(511):910–922, 2015.
+37
+
