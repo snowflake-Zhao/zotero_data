@@ -1,0 +1,236 @@
+BREAST
+Characterization of breast cancer subtypes based on quantitative assessment of intratumoral heterogeneity using dynamic contrast-enhanced and diffusion-weighted magnetic resonance imaging
+Jin Joo Kim1 & Jin You Kim1 & Hie Bum Suh1 & Lee Hwangbo1 & Nam Kyung Lee1 & Suk Kim1 & Ji Won Lee1 & Ki Seok Choo2 & Kyung Jin Nam2 & Taewoo Kang3 & Heeseung Park3
+Received: 10 February 2021 / Revised: 18 May 2021 / Accepted: 19 June 2021 # European Society of Radiology 2021
+Abstract
+Objective To investigate whether intratumoral heterogeneity, assessed via dynamic contrast-enhanced magnetic resonance imaging (DCE-MRI) and diffusion-weighted imaging (DWI), reflects the molecular subtypes of invasive breast cancers. Material and methods We retrospectively evaluated data from 248 consecutive women (mean age ± standard deviation, 54.6 ± 12.2 years) with invasive breast cancer who underwent preoperative DCE-MRI and DWI between 2019 and 2020. To evaluate intratumoral heterogeneity, kinetic heterogeneity (a measure of heterogeneity in the proportions of tumor pixels with delayed washout, plateau, and persistent components within a tumor) was assessed with DCE-MRI using a commercially available computer-aided diagnosis system. Apparent diffusion coefficients (ADCs) were obtained using a region-of-interest technique, and ADC heterogeneity was calculated using the following formula: (ADCmax−ADCmin)/ADCmean. Possible associations between imaging-based heterogeneity values and breast cancer subtypes were analyzed. Results Of the 248 invasive breast cancers, 61 (24.6%) were classified as luminal A, 130 (52.4%) as luminal B, 25 (10.1%) as HER2-enriched, and 32 (12.9%) as triple-negative breast cancer (TNBC). There were significant differences in the kinetic and ADC heterogeneity values among tumor subtypes (p < 0.001 and p = 0.023, respectively). The TNBC showed higher kinetic and ADC heterogeneity values, whereas the HER2-enriched subtype showed higher kinetic heterogeneity values compared to the luminal subtypes. Multivariate linear analysis showed that the HER2-enriched (p < 0.001) and TNBC subtypes (p < 0.001) were significantly associated with higher kinetic heterogeneity values. The TNBC subtype (p = 0.042) was also significantly associated with higher ADC heterogeneity values. Conclusions Quantitative assessments of heterogeneity in enhancement kinetics and ADC values may provide biological clues regarding the molecular subtypes of breast cancer. Key Points
+• Higher kinetic heterogeneity was associated with HER2-enriched and triple-negative breast cancer. • Higher ADC heterogeneity was associated with triple-negative breast cancer. • Aggressive breast cancer subtypes exhibited higher intratumoral heterogeneity based on MRI.
+Keywords Breast neoplasms . Magnetic resonance imaging . Diffusion magnetic resonance imaging classification . Kinetics
+* Jin You Kim youdosa@naver.com
+1 Department of Radiology, Medical Research Institute, Pusan National University Hospital, Pusan National University School of Medicine and Medical Research Institute, 1-10, Ami-Dong, Seo-gu, Busan 602-739, Republic of Korea
+2 Department of Radiology, Pusan National University Yangsan Hospital, Yangsan, Republic of Korea
+3 Busan Cancer Center, Pusan National University Hospital, Busan, Republic of Korea
+European Radiology https://doi.org/10.1007/s00330-021-08166-4
+
+
+Abbreviations
+ADC Apparent diffusion coefficient AUC Area under the curve CAD Computer-aided diagnosis CI Confidence interval DCE Dynamic contrast-enhanced DWI Diffusion-weighted imaging ER Estrogen receptor HER2 Human epidermal growth factor receptor 2 MRI Magnetic resonance imaging PR Progesterone receptor ROI Region of interest TNBC Triple-negative breast cancer
+Introduction
+Breast cancer is highly heterogeneous in nature. Different cells of origin, as well as alterations in the genome and epigenome, likely contribute to the high intratumoral heterogeneity of breast cancer [1]. Analyses of gene expression arrays have revealed several subtypes of breast cancer that differ in terms of etiology, prognosis, and treatment response [2–4]. In clinical practice, immunohistochemical classification based on expression of the estrogen receptor (ER), progesterone receptor (PR), human epidermal growth factor receptor 2 (HER2), and Ki-67 is used as a surrogate for the molecular classification of breast cancer subtype [5]. Breast cancer subtyping provides essential guidance regarding systemic treatment and may allow for the optimization of individualized treatment for breast cancer patients [6]. High intratumoral heterogeneity has been associated with poor clinical outcomes, which may be due to intrinsic aggressive biology or treatment resistance [7, 8]. Recently, magnetic resonance imaging (MRI) texture analysis has been used to assess the intratumoral heterogeneity of breast cancer, enabling correlation with various tumor subtypes. Entropybased texture features were found to significantly differ between hormone receptor–positive and –negative cancers [9], and even between the luminal A and B subtypes [10]. These findings suggest that more aggressive breast cancer subtypes may exhibit a higher degree of textural heterogeneity via MRI. However, the implementation of texture analysis in routine clinical practice is challenged by poor standardization of this technique, the requirement of specialized software, and complicated post-processing procedures. A simple and more practical method is desirable for clinical application. In our previous works, we quantified the kinetic heterogeneity of breast cancer and calculated apparent diffusion coefficient (ADC) difference values to assess intratumoral heterogeneity using dynamic contrast-enhanced (DCE) MRI and diffusion-weighted imaging (DWI), together with routine
+clinical protocols [11, 12]. Furthermore, quantitative analysis of the kinetic heterogeneity was performed using a commercially available computer-aided diagnosis (CAD) system [11] that is easy to use and can improve consistency via semiautomatic process. The results showed that higher kinetic heterogeneity and ADC difference values were significantly associated with worse distant metastasis-free survival outcomes. Thus, imaging heterogeneity may reflect the intrinsic biological heterogeneity of breast cancer. Based on these findings, we hypothesized that quantitative assessment of the heterogeneity of enhancement kinetics and ADC values could provide information regarding the heterogeneous biology of breast cancer, which may be related to intrinsic subtypes. To address this in the present study, we examined whether intratumoral heterogeneity, assessed via DCE-MRI with CAD and DWI, could provide information regarding the molecular subtypes of invasive breast cancer.
+Materials and methods
+This retrospective study was approved by the institutional review board of Pusan National University Hospital. The requirement for informed consent was waived (IRB No. 2006004-091).
+Study population
+A retrospective review of medical records collected between July 2019 and March 2020 identified 273 consecutive women with invasive breast cancer who underwent preoperative MRI and DWI. Among these patients, we excluded those who (a) received neoadjuvant chemotherapy before surgery (n = 8), (b) had undergone vacuum-assisted or excisional biopsy for diagnosis (n = 3), (c) had inadequate CAD-generated images for analysis (i.e., pixel values below the threshold and failed segmentation) (n = 13), and (d) showed poor lesion visibility on DWI (n = 1). For 27 women with multifocal or multicentric breast tumors, only the largest tumors were included in the analysis. There were no cases of bilateral breast cancer. Finally, 248 women (mean age ± standard deviation; 54.6 ± 12.2 years; range, 27–86 years) with 248 invasive breast cancers were included in this study. The median interval between MRI acquisition and surgery was 15 days (range, 5–34 days).
+MRI acquisition
+All breast MRI examinations were performed using a 3.0-T system (MAGNETOM Skyra; Siemens Healthcare) with a dedicated 18-channel breast coil (Siemens Healthcare). Each patient was placed in the prone position. The breast MRI protocol started with a localizing sequence followed by axial fatsuppressed T2-weighted turbo spin-echo imaging (TR/TE,
+Eur Radiol
+
+
+4,700/81 ms; matrix, 384 × 461; field of view, 350 × 350 mm2; section thickness, 3.0 mm). DCE-MRI images were acquired using a three-dimensional T1-weighted fast lowangle shot sequence and included one pre-contrast and five post-contrast images. After acquisition of the pre-contrast images, an intravenous bolus injection of 0.1 mmol/kg gadobutrol (Gadovist; Bayer) was administered at a rate of 2 mL/s using a power injector, followed immediately by a 20-mL saline flush at the same flow rate. Five post-contrast images were obtained at 90, 170, 250, 330, and 410 s after the contrast injection. For the DCE-MRI, the acquisition parameters were as follows: TR/TE, 5.5/2.5 ms; matrix, 384 × 346; flip angle, 12°; field of view, 350 × 350 mm2; section thickness, 0.9 mm; no gap. Axial DWI was performed before DCE-MRI using singleshot echo-planar imaging with fat suppression. Diffusion gradients were applied sequentially along the three orthogonal directions. For DWI, the acquisition parameters were as follows: TR/TE, 8,880/69 ms; matrix, 256 × 154; field of view, 340 × 205 mm2; slice thickness, 3.0 mm; no gap. The acquisition time for DWI was 222 s. Images were obtained with b values of 0, 800, and 1,200 s/mm2.
+CAD analysis
+All T1-weighted MRI data were transferred to a commercially available CAD system (CADstream, version 6.0; Confirma). Pixel values were compared between the precontrast and first contrast-enhanced series. Pixels with values above the 50% threshold were marked in color on an overlay map. The pixels were colored according to changes in their values between the first contrastenhanced and delayed contrast-enhanced series. Pixels with a > 10% increase in signal intensity between the last vs. first post-contrast image were classified as “persistent” (colored blue). “Washout” pixels were those with a > 10% decrease in signal intensity (colored red), and “plateau” pixels were those with a change in either direction within a 10% range (colored yellow). Kinetic heterogeneity (a measure of heterogeneity in the proportions of tumor pixels with delayed washout, plateau, and persistent components within a tumor) was calculated based on delayed kinetics measured automatically using the CAD system, as described previously [11]. The degree of kinetic heterogeneity was determined using the following formula:
+Kinetic heterogeneity 1⁄4 −∑k
+i1⁄41Pilogk Pi
+[13], where Pi is the frequency of observations
+(0 ≤ Pi ≤ 1 and ∑k
+i1⁄41Pi 1⁄4 1Þ and k is the number of categorical variables.
+DWI analysis
+All DWI images were reviewed retrospectively by two radiologists (J.Y.K. and J.J.K., with 9 and 2 years of experience in breast MRI, respectively), and decisions were made using a consensus process. The reviewers were informed of the breast cancer diagnosis but blinded to the clinicopathological data. With reference to DCE-MRI data, the reviewers identified lesions with high signal intensity on DWI at a high b value. Next, a free-hand region of interest (ROI) was manually drawn on the ADC map that included the entire lesion in the largest cross-sectional slice. A consensus was reached between two radiologists regarding the selection of images suitable for ROI placement and the location and shape of the ROI. Necrotic, hemorrhagic, and cystic components, which could influence the ADC values, were carefully avoided with reference to T2-weighted and contrast-enhanced T1-weighted images. The same method was applied to both mass and nonmass lesions to standardize the image analysis process as much as possible. The ADC for each ROI was calculated on a pixel-by-pixel basis. The mean, minimum, and maximum ADC pixel values were measured for each ROI. To evaluate the reproducibility of ADC measurements, a second measurement was performed by one radiologist at an interval of 6 months without knowledge of the previous measurement. ADC heterogeneity, as a measure of intratumoral heterogeneity on the ADC map, was calculated using the following formula:
+ADC heterogeneity 1⁄4 ADCmaximum−ADCminimum
+ADCmean
+Histopathological analysis
+The tumor size, axillary lymph node metastasis status, histological type, histologic grade, and lymphovascular invasion status were determined from surgically excised specimens. The ER and PR expression levels were evaluated using the Allred score [14]. The HER2 score was given as 0, 1+, 2+, or 3+. Tumors with a score of 3+ and/or HER2 gene amplification, as confirmed by fluorescence in situ hybridization, were regarded as HER2-positive [15]. Regarding the Ki-67 index, nuclear staining of at least 20% was considered to reflect a high level of expression [16]. Based on the immunohistochemistry or fluorescence in situ hybridization results for ER, PR, HER2, and Ki-67 expression, tumors were classified into the following four subtypes: ER/PR+ HER2− tumors with < 20% expression of Ki-67, luminal A; ER/PR+ HER2+ tumors or ER/PR+ HER2− tumors with at least 20% expression of Ki-67, luminal B; ER/PR − HER2+ tumors, HER2-enriched; and ER/PR− HER2− tumors, triple-negative breast cancer (TNBC).
+Eur Radiol
+
+
+Statistical analysis
+Kinetic and ADC heterogeneity values were compared among the different tumor subtypes. Differences in kinetic and ADC heterogeneity values among the subtypes were evaluated using the Kruskal-Wallis test, followed by the Mann-Whitney U test for multiple comparisons with a Bonferroni correction. The receiver operating characteristic curve and the area under the curve (AUC) were used to assess the performance of kinetic and ADC heterogeneity values in discriminating breast cancer subtypes. Multivariate linear regression analysis was performed to identify variables that were independently associated with the imaging-based heterogeneity values. Using forward stepwise selection, variables with p < 0.1 in the univariate analysis were entered into the multivariate linear regression analysis. The intraclass correlation coefficient was used to assess the reliability of ADC measurements. All statistical analyses were performed using SPSS (version 18.0; SPSS Inc.) and MedCalc software (version 19.6; MedCalc Software). The level of significance was set at p < 0.05 for all statistical analyses, and subsequent post hoc tests were Bonferroni-corrected (p < 0.0125).
+Results
+Baseline characteristics
+The patients and tumor characteristics are summarized in Table 1. Of the 248 invasive breast cancers, 61 (24.6%) were classified as luminal A, 130 (52.4%) as luminal B, 25 (10.1%) as HER2-enriched, and 32 (12.9%) as TNBC. The mean tumor size of the invasive breast cancers was 2.42 ± 1.47 cm (range, 0.5–11.5 cm). The HER2-enriched and TNBC subtypes had higher proportions of larger tumors (> 2 cm) and were associated with higher histological grades (grade 3) compared to the luminal subtypes. There were no differences in the age, axillary nodal status, and the presence lymphovascular invasion among the breast cancer subtypes (Figs. 1 and 2).
+Kinetic heterogeneity and apparent diffusion coefficient heterogeneity according to breast cancer subtype
+Table 2 lists the CAD-generated delayed enhancement profiles (washout, plateau, and persistent components), various
+Table 1 Baseline characteristics Variable All (n = 248)
+Luminal A (n = 61)
+Luminal B (n = 130)
+HER2-enriched (n = 25)
+TNBC (n = 32)
+Mean age, years a 54.57 ± 12.24 56.21 ± 12.57 54.69 ± 12.09 54.68 ± 12.12 50.84 ± 12.06
+Age (years)
+≤ 45 61 (24.6) 12 (19.7) 34 (26.2) 4 (16.0) 11 (34.4)
+> 45 187 (75.4) 49 (80.3) 96 (73.8) 21 (84.0) 21 (65.6)
+Mean tumor size (cm) a
+2.42 ± 1.47 2.06 ± 1.28 2.43 ± 1.54 3.03 ± 1.58 2.62 ± 1.33
+Tumor size (cm)
+≤ 2 124 (50.0) 38 (62.3) 68 (52.3) 6 (24.0) 12 (37.5)
+> 2 124 (50.0) 23 (37.7) 62 (47.7) 19 (76.0) 20 (62.5)
+Axillary node metastasis
+Negative 165 (67.2) 41 (67.2) 90 (69.2) 13 (52.0) 21 (65.6)
+Positive 83 (32.8) 20 (32.8) 40 (30.8) 12 (48.8) 11 (34.4)
+Histologic type
+Ductal 227 (91.5) 53 (86.9) 119 (91.5) 24 (96.0) 31 (96.9)
+Other 21 (8.5) 8 (13.1) 11 (8.5) 1 (4.0) 1 (3.1)
+Histologic grade
+1 or 2 178 (71.8) 59 (96.7) 109 (83.8) 5 (20.0) 5 (15.6)
+3 70 (28.2) 2 (3.3) 21 (16.2) 20 (80.0) 27 (84.4)
+Lymphovascular invasion
+Negative 171 (69.0) 51 (83.6) 78 (60.0) 19 (76.0) 23 (71.9)
+Positive 77 (31.0) 10 (16.4) 52 (40.0) 6 (24.0) 9 (28.1)
+a Data are mean values ± standard deviations. Unless otherwise noted, numbers in parentheses are percentages
+HER2 human epidermal growth factor receptor 2, TNBC triple-negative breast cancer
+Eur Radiol
+
+
+ADC parameters, and their heterogeneity values according to breast cancer subtype. The mean values of kinetic heterogeneity and ADC heterogeneity for all breast cancers were
+0.69 and 0.82, respectively. There were significant differences in the kinetic and ADC heterogeneity values among the four tumor subtypes (p < 0.001 and p = 0.033,
+Fig. 1 Preoperative breast magnetic resonance images of the right breast in 52-year-old woman with invasive ductal carcinoma. a Axial contrastenhanced T1-weighted images shows an irregular heterogeneously enhancing mass in the right breast. b A computer-assisted diagnosis (CAD) color overlay map shows heterogeneous kinetics with the tumor. Red, yellow, and blue areas indicate washout, plateau, and persistent enhancement patterns, respectively. c The auto-portfolio from the CAD system shows the delayed enhancement profiles of the breast cancer. The kinetic heterogeneity value was 0.99. d Axial diffusion-weighted imaging
+(b value = 1,200 s/mm2) shows a mass with high signal intensity. e A region of interest (green) was manually drawn in the largest crosssectional area on the apparent diffusion coefficient (ADC) map. The minimum, maximum, and mean ADC values were 0.26 × 10−3, 0.98 × 10−3, and 0.61 × 10−3 mm2/s, respectively. The ADC heterogeneity value was 1.17. Surgical histopathology revealed a 1.5-cm invasive ductal carcinoma with a histological grade of 2 that was estrogen receptor negative, progesterone receptor negative, and human epidermal growth factor receptor 2 negative (triple-negative breast cancer)
+Eur Radiol
+
+
+respectively). In the post hoc multiple comparison test, kinetic heterogeneity values differed significantly not only between the luminal A and HER2-enriched subtypes (p = 0.001) but also between the luminal A and TNBC subtypes (p = 0.001). The kinetic heterogeneity values also differed significantly between the luminal B and HER2-enriched subtypes (p = 0.001) as well as between the luminal B and TNBC subtypes (p = 0.001). For ADC heterogeneity, we observed a significant difference between the TNBC and HER2-enriched subtypes (p = 0.008). Furthermore, the ADC heterogeneity value differed between the luminal A and TNBC subtypes (p = 0.05) as well as between the luminal B and TNBC subtypes (p = 0.036), although the differences were not significant (the Bonferroni-corrected p value threshold for significance was < 0.0125). There were no significant differences in the kinetic and ADC
+heterogeneity values between the luminal A and B subtypes (Table 2 and Fig. 3).
+Receiver operating characteristic curve analysis
+The results of the receiver operating characteristic curve analysis for kinetic heterogeneity and ADC heterogeneity are shown in Table 3 and Fig. 4. To distinguish the luminal A/B subtypes from the HER2-enriched and TNBC subtypes, the AUC values for kinetic heterogeneity were 0.711 (95% confidence interval [CI], 0.646, 0.771; p < 0.001) and 0.667 (95% CI, 0.604, 0.725; p = 0.001), respectively. For ADC heterogeneity, the AUC value for distinguishing the luminal A/B subtypes from the TNBC subtype was 0.610 (95% CI, 0.546, 0.671; p = 0.037), and that for distinguishing the HER2-enriched subtype from the
+Fig. 2 Preoperative breast magnetic resonance images of the left breast in 69-year-old woman with invasive ductal carcinoma. a Axial contrastenhanced T1-weighted images show an irregular heterogeneously enhancing mass in the left breast. b A computer-aided diagnosis (CAD) color overlay map shows the enhancement kinetics of the tumor. Red, yellow, and blue areas indicate washout, plateau, and persistent enhancement patterns, respectively. c The auto-portfolio from the CAD system shows the delayed enhancement profiles of the breast cancer. The kinetic heterogeneity was 0.65. d Axial diffusion-weighted imaging (b value =
+1,200 /mm2) shows a mass with a high signal intensity. e A region of interest (green) was manually drawn in the largest cross-sectional area on the apparent diffusion coefficient (ADC) map. The minimum, maximum, and mean ADC values were 0.46 × 10−3, 1.05 × 10−3, and 0.73 × 10−3 mm2/s, respectively. The ADC heterogeneity value was 0.75. Surgical histopathology revealed a 1.8-cm invasive ductal carcinoma with a histological grade of 2 that was estrogen receptor positive, progesterone receptor negative, human epidermal growth factor receptor 2 negative, and had a Ki-67 level of 15% (luminal A)
+Eur Radiol
+
+
+TNBC subtype was 0.705 (95% CI, 0.569, 0.818; p = 0.004) (Table 3 and Fig. 4).
+Univariate and multivariate linear regression analyses
+In the univariate linear regression analyses, the HER2enriched subtype (p = 0.002), TNBC subtype (p = 0.002), a younger age (< 45 years) (p = 0.013), larger tumor size (> 2 cm) (p = 0.005), the ductal histologic type (p = 0.022), and a high histologic grade (grade 3) (p = 0.003) were significantly associated with a higher kinetic heterogeneity value. The presence of lymphovascular invasion (p = 0.012) was also significantly associated with a higher ADC heterogeneity value, whereas the TNBC subtype (p = 0.052) exhibited a trend toward an association with a high ADC heterogeneity value (Tables 4 and 5). Variables with a p value < 0.1 were included in the multivariate analysis and forward stepwise selection was applied. Finally, multivariate linear regression analysis showed that the HER2-enriched subtype (p < 0.001), TNBC subtype (p < 0.001), a younger age (< 45 years) (p = 0.011), and the presence of lymphovascular invasion (p = 0.022) were significantly associated with a higher kinetic heterogeneity value. The TNBC subtype (p = 0.042) and the presence of lymphovascular invasion (p = 0.010) were also significantly associated with a higher ADC heterogeneity value (Tables 4 and 5).
+Reproducibility of ADC measurements
+The intraclass correlation coefficients for the mean, minimum, and maximum ADCs were 0.94 (95% CI: 0.92, 0.95), 0.93 (95% CI: 0.91, 0.95), and 0.89 (95% CI: 0.86, 0.91).
+Discussion
+In this study, we quantified the intratumoral heterogeneity of breast cancer based on CAD-generated kinetic features and ADC values, and performed characterization of breast cancer subtypes. We found that the kinetic and ADC heterogeneity values differed significantly among breast cancer subtypes. The TNBC subtype exhibited higher kinetic heterogeneity and ADC heterogeneity values, while the HER2-enriched subtype showed higher kinetic heterogeneity values compared to the luminal subtypes. Furthermore, our multivariate analysis indicated that a higher kinetic heterogeneity value was significantly associated with the TNBC and HER2-enriched subtypes, whereas a higher ADC heterogeneity value was significantly associated with the TNBC subtype. Our findings suggest that aggressive subtypes of breast cancer may exhibit higher intratumoral heterogeneity as assessed by DCE-MRI with CAD and DWI. The quantitative assessment of imagingbased heterogeneity may provide biological information related to the molecular subtypes of breast cancer that are important determinants of prognosis and management of breast cancer, and may potentially allow for more individualized treatment strategies. Furthermore, the advantages of the imagingbased heterogeneity assessment in this study are its noninvasive nature and the potential for easy application in routine clinical practice. Breast cancer subtypes exhibit distinct imaging features. Some characteristic features of TNBC can be found on breast MRI, such as a round or oval shape, smooth margin and rim enhancement, and high intratumoral signal intensity on T2weighted images [17–20]. Non-mass enhancement is rare in TNBC and is found in only 5% of cases [19]. In a recent study that quantitatively assessed breast tumor roundness on MRI, patients with TNBC had higher roundness scores than did
+Table 2 Kinetic heterogeneity and apparent diffusion coefficient heterogeneity according to breast cancer subtype
+Variable All (n = 248) Luminal A (n = 61) Luminal B (n = 130) HER2-enriched (n = 25) TNBC (n = 32)
+CAD-generated delayed kinetics
+Washout component (%) Plateau component (%) Persistent component (%)
+21.2 ± 20.6 25.3 ± 15.1 53.5 ± 29.3
+18.4 ± 21.1 23.1 ± 15.5 58.5 ± 31.6
+18.9 ± 20.4 24.7 ± 16.4 56.4 ± 30.5
+26.4 ± 17.4 30.8 ± 10.8 42.8 ± 16.7
+31.5 ± 20.1 27.6 ± 9.9 40.9 ± 21.9
+Kinetic heterogeneity 0.69 ± 0.32 0.61 ± 0.35 0.65 ± 0.34 0.88 ± 0.12 0.85 ± 0.18
+Quantitative ADC values
+ADC min (× 10−3 mm2/s) 0.53 ± 0.19 0.57 ± 0.20 0.51 ± 0.18 0.59 ± 0.19 0.48 ± 0.18
+ADC max (× 10−3 mm2/s) 1.19 ± 0.25 1.20 ± 0.23 1.18 ± 0.24 1.22 ± 0.32 1.19 ± 0.23
+ADC mean (× 10−3 mm2/s) 0.83 ± 0.16 0.86 ± 0.16 0.81 ± 0.16 0.88 ± 0.17 0.79 ± 0.13
+ADC heterogeneisy 0.82 ± 0.32 0.76 ± 0.30 0.84 ± 0.33 0.70 ± 0.31 0.92 ± 0.32
+Data are mean values ± standard deviations
+HER2 human epidermal growth factor receptor 2, TNBC triple-negative breast cancer, CAD computer-aided diagnosis ADC apparent diffusion coefficient
+Eur Radiol
+
+
+those with luminal and HER2-enriched subtypes [21]. By contrast, luminal breast cancers are more frequently characterized by irregularly shaped masses on MRI, with spiculated or irregular margins [18–20]. Phenotypes for MRI-based imaging of breast cancer could help to differentiate between the molecular subtypes. Beyond morphological differences among tumor subtypes, functional differences have been evaluated to characterize
+breast cancer subtypes using breast MRI. Previous studies have investigated the relationship between DCE-MRI enhancement kinetics and tumor subtypes, but the results were inconsistent. For instance, whereas Algazzar et al. showed that the HER2-enriched and TNBC subtypes were significantly associated with delayed washout kinetics [22], other studies reported that each subtype had a heterogeneous kinetic distribution, without clearly dominant delayed enhancement parameters [23–25]. According to our results, delayed enhancement curve types did not show differences among the subtypes. We presumed that the single curve type could not help to characterize breast cancer subtypes, and thus we quantified the degree of kinetic heterogeneity using delayed enhancement kinetics, which were automatically measured from a CAD system, to better evaluate this relationship. We found a significant relationship between aggressive subtypes, such as TNBC and HER2-enriched tumors, and higher kinetic heterogeneity values. DWI is commonly used as a component of multiparametric imaging for the evaluation of breast cancer, and the value of the ADC as a quantitative biomarker in clinical practice has been previously suggested [26–30]. Here, we referred to the heterogeneous diffusion signal within a tumor as “ADC heterogeneity” and calculated this using the ADC difference value (difference between the minimum and maximum ADC) and the mean ADC value. As with kinetic heterogeneity revealed by DCE-MRI, we hypothesized that ADC heterogeneity might also reflect intratumoral heterogeneity and that the degree might differ according to the different subtypes. We observed a higher ADC heterogeneity value for the TNBC subtype compared with the other subtypes, which is in line with a previous study showing that luminal A tumors had lower ADC entropy values compared to those for the other subtypes. In that study, ADC entropy was used as indicator of tumor heterogeneity and determined using a volumetric ADC histogram [31]. Therefore, we believe that MRI-based heterogeneity assessment using kinetic and ADC heterogeneity values could help identify aggressive phenotypes of breast cancer, which may have clinical implications for cancer treatment. In addition, lymphovascular invasion, which has been associated with breast cancer outcomes [32], found to have a significant relationship with both kinetic and ADC heterogeneity value at our multivariate analysis. Age also showed a significant relationship with ADC heterogeneity value. However, other established prognostic factors, such as tumor size, axillary node status, and histological grade, did not show significant associations with MRI-based heterogeneity. It is well known that TNBC is an aggressive cancer subtype with the worst prognosis [33]. TNBC is very heterogeneous and complex, at both the genetic and
+Fig. 3 Box-whisker plots showing (a) kinetic heterogeneity and (b) apparent diffusion coefficient (ADC) heterogeneity values for the different subtypes of breast cancer. The boxes represent the interquartile range, the horizontal line within each box indicates the median, and the whiskers for each box represent the range
+Eur Radiol
+
+
+molecular levels. It is highly associated with the presence of intratumoral necrosis and a fibrotic focus [34]. Vascular endothelial growth factor, which is a major stimulator of angiogenesis [35], is frequently overexpressed in TNBC [36]. Thus, the various histopathological components and spatial variations in TNBC angiogenesis may be reflected in the tumor enhancement kinetics and ADC value, which explains the higher kinetic and ADC heterogeneity values observed in the present study. The HER2-enriched tumor is another aggressive subtype of breast cancer with a poor prognosis [33]. In our study, the HER2-enriched subtype was associated with the highest kinetic heterogeneity among the tumor subtypes. Similar to TNBC, HER2 expression is also associated with overexpression of vascular endothelial growth factor [37]. The new capillaries formed via angiogenesis are typically immature and more permeable than the normal vasculature, which may cause spatial heterogeneity [38, 39]. This could explain the higher kinetic heterogeneity value for the HER2-enriched subtype. However, the
+HER2-enriched subtype was associated with the lowest ADC heterogeneity value among the tumor subtypes. Although the reason for this is not clear, the higher mean ADC value of the HER2-enriched subtype may contribute to the lower ADC heterogeneity value. In our study, the HER2-enriched subtype was associated with a higher mean ADC value (0.88 × 10−3 mm2/s) compared to the other subtypes, similar to previous reports [29, 40]. In HER2-eneriched tumors, increased neovascularity, higher vascular permeability, and a consecutive increase in extracellular fluid may contribute to an increased mean ADC value [30]. In addition, considering that mammographic calcification is more common in HER2-enriched tumors [41, 42], the presence of microcalcifications within the tumor decreases the cellular density and therefore leads to increased diffusion. Our study had some limitations. First, it used a retrospective design and was conducted at a single tertiary academic center. Therefore, there might have been patient selection bias. Second, all MRI scans were obtained using
+Table 3 Area under the receiver operating characteristic curve in the differentiation of subtypes of breast cancer
+Kinetic heterogeneity ADC heterogeneity
+Area under the curve
+95% confidence interval
+p value Area under the curve
+95% confidence interval
+p
+value
+Luminal A/B vs. HER2-enriched
+0.711 0.646, 0.771 < 0.001 0.616 0.548, 0.681 0.067
+Luminal A/B vs. TNBC
+0.667 0.604, 0.725 0.001 0.610 0.546, 0.671 0.037
+HER2-enriched vs. TNBC
+0.512 0.376, 0.647 0.880 0.705 0.569, 0.818 0.004
+Luminal A vs. Luminal B
+0.525 0.452, 0.598 0.576 0.551 0.477, 0.622 0.262
+ADC apparent diffusion coefficient, HER2 human epidermal growth factor receptor 2, TNBC triple-negative breast cancer
+Fig. 4 Receiver operating characteristic curves of kinetic heterogeneity and the apparent diffusion coefficient (ADC) heterogeneity value for discriminating between (a) the luminal and HER2-enriched subtypes,
+(b) the luminal and triple-negative breast cancer subtypes, and (c) the HER2-enriched and triple-negative breast cancer subtypes
+Eur Radiol
+
+
+a single MRI unit and analyzed using one CAD software package. As kinetic parameters can be influenced by the MRI protocol, coil equipment, and CAD software used [43], the generalizability of our findings may be limited. Furthermore, our results could only be implemented when using a CAD software. Third, ADC heterogeneity was calculated based on various ADC metrics obtained from a representative slice of the ADC map, which may not reflect the actual whole-tumor characteristics, especially in non-mass lesions. Whole-tumor histogram analysis of the ADC may better reflect the intratumoral heterogeneity of breast cancer. Finally, we only focused on differences in enhancement kinetics and ADC values based on DCEMRI and DWI according to breast cancer subtypes and did not perform any morphological analyses. Several distinct morphological features of tumor subtypes have been reported [17–20], and the incorporation of these morphological characteristics into functional features may be
+useful in building a model for predicting breast cancer subtypes. Further large-scale prospective studies are needed to validate our findings. In conclusion, MRI-based heterogeneity differed significantly among breast cancer subtypes. A higher kinetic heterogeneity value was significantly associated with the TNBC and HER2-enriched subtypes, and a higher ADC heterogeneity value was significantly associated with the TNBC subtype. Our findings suggest that imaging-based heterogeneity values can be used as imaging biomarkers to identify aggressive subtypes of breast cancer. Quantitative assessment of the heterogeneity in enhancement kinetics and ADC values may provide biological information related to the molecular subtypes of breast cancer.
+Funding This study was supported by Biomedical Research Institute Grant (20200268), Pusan National University Hospital.
+Table 4 Univariate and multivariate linear regression analysis of variables associated with kinetic heterogeneity
+Univariate analysis Multivariate analysis
+β coefficient a p value b β coefficient a p value
+Tumor subtypes
+Luminal A/B 0 0
+HER2-enriched 0.21 ± 0.07 0.002 0.26 ± 0.06 < 0.001
+TNBC 0.18 ± 0.06 0.002 0.21 ± 0.06 < 0.001
+Age
+≥ 45 years 0 0
+< 45 years 0.118 ± 0.047 0.013 0.116 ± 0.045 0.011
+Tumor size
+≤ 2 cm 0
+> 2 cm 0.11 ± 0.04 0.005
+Histologic type
+Non-ductal 0
+Ductal 0.17 ± 0.07 0.022
+Histologic grade
+Grade 1/2 0
+Grade 3 0.14 ± 0.04 0.003
+Lymphovascular invasion
+Negative 0 0
+Positive 0.08 ± 0.04 0.059 0.10 ± 0.04 0.022
+Axillary node metastasis
+Negative 0
+Positive 0.06 ± 0.04 0.165
+a Data are expressed as estimates ± standard error
+b Variables with p < 0.1 in the univariate analysis were entered into the multivariate analysis using forward stepwise selection
+HER2 human epidermal growth factor receptor 2, TNBC triple-negative breast cancer
+Table 5 Univariate and multivariate linear regression analysis of variables associated with ADC heterogeneity
+Univariate analysis Multivariate analysis
+β coefficient a p value b β coefficient a p value
+Tumor subtypes
+Luminal A/B 0 0
+HER2-enriched −0.12 ± 0.07 0.069
+TNBC 0.12 ± 0.06 0.052 0.12 ± 0.06 0.042
+Age
+≥ 45 years 0
+< 45 years 0.011 ± 0.048 0.815
+Tumor size
+≤ 2 cm 0
+> 2 cm 0.07 ± 0.04 0.082
+Histologic type
+Non-ductal 0
+Ductal 0.07 ± 0.07 0.323
+Histologic grade
+Grade 1/2 0
+Grade 3 −0.04 ± 0.05 0.377
+Lymphovascular invasion
+Negative 0 0
+Positive 0.11 ± 0.04 0.012 0.11 ± 0.04 0.010
+Axillary node metastasis
+Negative 0
+Positive 0.07 ± 0.04 0.100
+a Data are expressed as estimates ± standard error
+b Variables with p < 0.1 in the univariate analysis were entered into the multivariate analysis using forward stepwise selection.
+HER2 human epidermal growth factor receptor 2, TNBC triple-negative breast cancer
+Eur Radiol
+
+
+Declarations
+Guarantor The scientific guarantor of this publication is Jin You Kim.
+Conflict of interest The authors of this manuscript declare no relationships with any companies whose products or services may be related to the subject matter of the article.
+Statistics and biometry No complex statistical methods were necessary for this paper.
+Informed consent Written informed consent was waived by the Institutional Review Board.
+Ethical approval Institutional Review Board approval was obtained.
+Methodology • retrospective • observational • performed at one institution
+References
+1. Bertucci F, Birnbaum D (2008) Reasons for breast cancer heterogeneity. J Biol 7:6 2. Perou CM, Sørlie T, Eisen MB et al (2000) Molecular portraits of human breast tumours. Nature 406:747–752 3. Longo DL (2012) Tumor heterogeneity and personalized medicine. N Engl J Med 366:956–957 4. Nicholson RI, Johnston SR (2005) Endocrine therapy–current benefits and limitations. Breast Cancer Res Treat 93:3–10 5. Tang P, Skinner KA, Hicks DG (2009) Molecular classification of breast carcinomas by immunohistochemical analysis: are we ready? Diagn Mol Pathol 18:125–132 6. Trop I, LeBlanc SM, David J et al (2014) Molecular classification of infiltrating breast cancer: toward personalized therapy. Radiographics 34:1178–1195 7. Höckel M, Knoop C, Schlenger K et al (1993) Intratumoral pO2 predicts survival in advanced cancer of the uterine cervix. Radiother Oncol 26:45–50 8. Hockel M, Schlenger K, Aral B, Mitze M, Schaffer U, Vaupel P (1996) Association between tumor hypoxia and malignant progression in advanced cancer of the uterine cervix. Cancer Res 56:45094515 9. Waugh S, Purdie C, Jordan L et al (2016) Magnetic resonance imaging texture analysis classification of primary breast cancer. Eur Radiol 26:322–330 10. Holli-Helenius K, Salminen A, Rinta-Kiikka I et al (2017) MRI texture analysis in differentiating luminal A and luminal B breast cancer molecular subtypes-a feasibility study. BMC Med Imaging 17:69 11. Kim JY, Kim JJ, Hwangbo L et al (2020) Kinetic heterogeneity of breast cancer determined using computer-aided diagnosis of preoperative MRI scans: relationship to distant metastasis-free survival. Radiology 295:517–526 12. Kim JY, Kim JJ, Hwangbo L, Kang T, Park H (2019) Diffusionweighted imaging of invasive breast cancer: relationship to distant metastasis–free survival. Radiology 291:300–307 13. Fernandez G (2010) Statistical data mining using SAS applications. CRC press
+14. Allred D, Harvey JM, Berardo M, Clark GM (1998) Prognostic and predictive factors in breast cancer by immunohistochemical analysis. Mod Pathol 11:155–168 15. Moeder CB, Giltnane JM, Harigopal M et al (2007) Quantitative justification of the change from 10% to 30% for human epidermal growth factor receptor 2 scoring in the American Society of Clinical Oncology/College of American Pathologists guidelines: tumor heterogeneity in breast cancer and its implications for tissue microarray–based assessment of outcome. J Clin Oncol 25:54185425 16. Bustreo S, Osella-Abate S, Cassoni P et al (2016) Optimal Ki67 cutoff for luminal breast cancer prognostic evaluation: a large case series study with a long-term follow-up. Breast Cancer Res Treat 157:363–371 17. Bae MS, Park SY, Song SE et al (2015) Heterogeneity of triplenegative breast cancer: mammographic, US, and MR imaging features according to androgen receptor expression. Eur Radiol 25: 419–427 18. Navarro Vilar L, Alandete Germán SP, Medina García R, Blanc García E, Camarasa Lillo N, Vilar Samper J (2017) MR imaging findings in molecular subtypes of breast cancer according to BIRADS system. Breast J 23:421–428 19. Uematsu T, Kasami M, Yuen S (2009) Triple-negative breast cancer: correlation between MR imaging and pathologic findings. Radiology 250:638–647 20. Youk JH, Son EJ, Chung J, Kim J, Kim E (2012) Triple-negative invasive breast cancer on dynamic contrast-enhanced and diffusionweighted MR imaging: comparison with other breast cancer subtypes. Eur Radiol 22:1724–1734 21. Bae MS, Seo M, Kim KG, Park I, Moon WK (2015) Quantitative MRI morphology of invasive breast cancer: correlation with immunohistochemical biomarkers and subtypes. Acta Radiol 56:269275 22. Algazzar MAA, Elsayed EE, Alhanafy AM, Mousa WA (2020) Breast cancer imaging features as a predictor of the hormonal receptor status, HER2neu expression and molecular subtype. Egypt J Radiol Nucl Med 51:1–10 23. Yamaguchi K, Abe H, Newstead GM et al (2015) Intratumoral heterogeneity of the distribution of kinetic parameters in breast cancer: comparison based on the molecular subtypes of invasive breast cancer. Breast Cancer 22:496–502 24. Leong LCH, Gombos EC, Jagadeesan J, Fook-Chong SMC (2015) MRI kinetics with volumetric analysis in correlation with hormonal receptor subtypes and histologic grade of invasive breast cancers. AJR Am J Roentgenol 204:W348–W356 25. Blaschke E, Abe H (2015) MRI phenotype of breast cancer: kinetic assessment for molecular subtypes. J Magn Reson Imaging 42: 920–924 26. Xie T, Zhao Q, Fu C et al (2019) Differentiation of triple-negative breast cancer from other subtypes through whole-tumor histogram analysis on multiparametric MR imaging. Eur Radiol 29:25352544 27. Montemezzi S, Camera L, Giri MG et al (2018) Is there a correlation between 3T multiparametric MRI and molecular subtypes of breast cancer? Eur J Radiol 108:120–127 28. Suo S, Cheng F, Cao M et al (2017) Multiparametric diffusionweighted imaging in breast lesions: association with pathologic diagnosis and prognostic factors. J Magn Reson Imaging 46:740750 29. Martincich L, Deantoni V, Bertotto I et al (2012) Correlations between diffusion-weighted imaging and breast cancer biomarkers. Eur Radiol 22:1519–1528 30. Park SH, Choi H, Hahn SY (2015) Correlations between apparent diffusion coefficient values of invasive ductal carcinoma and pathologic factors on diffusion-weighted MRI at 3.0 tesla. J Magn Reson Imaging 41:175–182
+Eur Radiol
+
+
+31. Suo S, Zhang D, Cheng F et al (2019) Added value of mean and entropy of apparent diffusion coefficient values for evaluating histologic phenotypes of invasive ductal breast cancer with MR imaging. Eur Radiol 29:1425–1434 32. Rakha EA, Martin S, Lee AH et al (2012) The prognostic significance of lymphovascular invasion in invasive breast cancer. Cancer 118:3670–3680 33. Hennigs A, Riedel F, Gondos A et al (2016) Prognosis of breast cancer molecular subtypes in routine clinical care: a large prospective cohort study. BMC Cancer 16:1–9 34. Putti TC, Abd El-Rehim DM, Rakha EA et al (2005) Estrogen receptor-negative breast carcinomas: a review of morphology and immunophenotypical analysis. Mod Pathol 18:26–35 35. Ferrara N (2002) VEGF and the quest for tumour angiogenesis factors. Nat Rev Cancer 2:795–803 36. Mohammed RA, Ellis IO, Mahmmod AM et al (2011) Lymphatic and blood vessels in basal and triple-negative breast cancers: characteristics and prognostic significance. Mod Pathol 24:774–785 37. Kumar R, Yarmand-Bagheri R (2001) The role of HER2 in angiogenesis. Semin Oncol 28:27–32 38. Collins DJ, Padhani AR (2004) Dynamic magnetic resonance imaging of tumor perfusion. Approaches and biomedical challenges. IEEE Eng Med Biol Mag 23:65–83
+39. Siemann DW (2011) The unique characteristics of tumor vasculature and preclinical evidence for its selective disruption by tumorvascular disrupting agents. Cancer Treat Rev 37:63–74 40. Kim EJ, Kim SH, Park GE et al (2015) Histogram analysis of apparent diffusion coefficient at 3.0 t: correlation with prognostic factors and subtypes of invasive ductal carcinoma. J Magn Reson Imaging 42:1666–1678 41. Seo BK, Pisano ED, Kuzimak CM et al (2006) Correlation of HER2/neu overexpression with mammography and age distribution in primary breast carcinomas. Acad Radiol 13:1211–1218 42. Ko ES, Lee BH, Kim H, Noh W, Kim MS, Lee S (2010) Triplenegative breast cancer: correlation between imaging and pathological findings. Eur Radiol 20:1111–1117 43. Jansen SA, Shimauchi A, Zak L et al (2009) Kinetic curves of malignant lesions are not consistent across MRI systems: need for improved standardization of breast dynamic contrast-enhanced MRI acquisition. AJR Am J Roentgenol 193:832–839
+Publisher’s note Springer Nature remains neutral with regard to jurisdictional claims in published maps and institutional affiliations.
+Eur Radiol
