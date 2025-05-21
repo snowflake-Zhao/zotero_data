@@ -1,0 +1,452 @@
+TYPE Original Research PUBLISHED 23 September 2022 DOI 10.3389/fimmu.2022.1012247
+
+OPEN ACCESS
+EDITED BY
+Yang Su, Xuzhou Medical University, China
+REVIEWED BY
+Qingqing Zhu, The First Afﬁliated Hospital of Soochow University, China Linsong Chen, Tongji University, China
+*CORRESPONDENCE
+Weiping Xie wpxie@njmu.edu.cn Hui Kong konghui@njmu.edu.cn
+†These authors have contributed equally to this work and share ﬁrst authorship
+SPECIALTY SECTION
+This article was submitted to Cancer Immunity and Immunotherapy, a section of the journal Frontiers in Immunology
+RECEIVED 05 August 2022 ACCEPTED 02 September 2022 PUBLISHED 23 September 2022
+CITATION
+Zhang Q, Dai Y, Liu H, Sun W, Huang Y, Gong Z, Dai S, Kong H and Xie W (2022) Causes of death and conditional survival estimates of longterm lung cancer survivors. Front. Immunol. 13:1012247. doi: 10.3389/fimmu.2022.1012247
+COPYRIGHT
+© 2022 Zhang, Dai, Liu, Sun, Huang, Gong, Dai, Kong and Xie. This is an open-access article distributed under the terms of the Creative Commons Attribution License (CC BY). The use, distribution or reproduction in other forums is permitted, provided the original author(s) and the copyright owner(s) are credited and that the original publication in this journal is cited, in accordance with accepted academic practice. No use, distribution or reproduction is permitted which does not comply with these terms.
+
+Causes of death and conditional survival estimates of long-term lung cancer survivors
+Qun Zhang1†, Yuan Dai1†, Hongda Liu2, Wenkui Sun1, Yuming Huang3, Zheng Gong4, Shanlin Dai1, Hui Kong1* and Weiping Xie1*
+1Department of Respiratory and Critical Care Medicine, The First Afﬁliated Hospital of Nanjing Medical University, Nanjing, China, 2Department of General Surgery, The First Afﬁliated Hospital of Nanjing Medical University, Nanjing, China, 3Department of Thoracic Surgery, The First Afﬁliated Hospital of Nanjing Medical University, Nanjing, China, 4The Jackson Laboratory, Bar Harbor, ME, United States
+Introduction: Lung cancer ranks the leading cause of cancer-related death worldwide. This retrospective cohort study was designed to determine timedependent death hazards of diverse causes and conditional survival of lung cancer.
+Methods: We collected 816,436 lung cancer cases during 2000-2015 in the SEER database, after exclusion, 612,100 cases were enrolled for data analyses. Cancer-speciﬁc survival, overall survival and dynamic death hazard were assessed in this study. Additionally, based on the FDA approval time of Nivolumab in 2015, we evaluated the effect of immunotherapy on metastatic patients’ survival by comparing cases in 2016-2018 (immunotherapy era, n=7135) and those in 2013-2016 (non-immunotherapy era, n=42061).
+Results: Of the 612,100 patients, 285,705 were women, the mean (SD) age was 68.3 (11.0) years old. 252,558 patients were characterized as lung adenocarcinoma, 133,302 cases were lung squamous cell carcinoma, and only 78,700 cases were small cell lung carcinomas. TNM stage was I in 140,518 cases, II in 38,225 cases, III in 159,095 cases, and IV in 274,262 patients. 164,394 cases underwent surgical intervention. The 5-y overall survival and cancer-speciﬁc survival were 54.2% and 73.8%, respectively. The 5-y conditional survival rate of cancer-speciﬁc survival is improved in a timedependent pattern, while conditional overall survival tends to be steady after 5y follow-up. Except from age, hazard disparities of other risk factors (such as stage and surgery) diminished over time according to the conditional survival curves. After 8 years since diagnosis, mortality hazard from other causes became higher than that from lung cancer. This critical time point was earlier in elder patients while was postponed in patients with advanced stages. Moreover, both cancer-speciﬁc survival and overall survival of metastatic patients in immunotherapy era were signiﬁcantly better than those in non-
+
+Frontiers in Immunology
+
+01
+
+frontiersin.org
+
+Zhang et al.
+
+10.3389/ﬁmmu.2022.1012247
+immunotherapy era (P<0.001), indicating that immunotherapeutic intervention indeed bring remarkable beneﬁts to advanced lung cancer patients.
+Conclusions: Our ﬁndings expand on previous studies by demonstrating that non-lung-cancer related death risk becomes more and more predominant over the course of follow-up, and we establish a personalized web-based calculator to determine this critical time point for long-term survivors. We also conﬁrmed the survival beneﬁt of advanced lung cancer patients in immunotherapy era.
+KEYWORDS
+lung cancer, conditional survival, death hazard, causes of death, immunotherapy
+
+Introduction
+With an estimated number of 236,740 new cases and 130,180 deaths in 2022, lung cancer contributes to the leading cancerrelated death in United States (1). Non–small-cell lung cancer (NSCLC) and small-cell lung cancer (SCLC) are two predominant histological subtypes. Although subtype-speciﬁc incidence and mortality have been well described (2, 3), limited survival information exists for long-term survivors. With achievements in NSCLC treatment including targeted therapies and immunotherapies, lung cancer survival has been remarkably improved in the past decade (4).
+During clinical practice, oncologists are more frequently consulted with the question “how many extra years could I survive” instead of “how many years could I survive”. To answer this question, conditional survival is a better choice than accrued survival. Conditional survival (t|s) is deﬁned as the probability of surviving further t years, given that a patient has already survived s years after the diagnosis of a speciﬁc disease (5). There have been studies characterized conditional survival of speciﬁc lung cancer populations such as unresectable stage III NSCLCs (6) and elder patients with stage I to III SCLC (7) that received with chemo-radiation therapies. Nevertheless, systematical conditional survival assessment targeting the nationwide lung cancer population is lacking.
+In the present study, lung cancer patients in Surveillance, Epidemiology, and End Results (SEER) database during 20002015 were collected. The primary purpose of our study was to compare the conditional survival of lung cancer cases with different demographic and clinicopathological characteristics. In addition, during data analyses, we found that conditional CSS (cancer-speciﬁc survival) was improved time-dependently, while the conditional OS (overall survival) tend to be steady in long-term survivors. Therefore, we further determined the
+
+critical point when death hazard from lung cancer became lower than that from other risks. Considering the clinical signiﬁcance of immunotherapies in lung cancer treatment (8), especially for those who could not undergo surgery, we also investigated whether it brought survival beneﬁts to patients in SEER dataset.
+Methods
+Patients
+The SEER database is an annual-updated, population-based cancer data from 19 cancer registries encompassing 35% of the US population as of 2021. For relative long-term follow-up, the 2000-2015 SEER database was retrieved for patients with primary lung cancer (n=816,436). Patients with consistent SEER AYA site record of lung cancer and without other malignancies before lung cancer were included in this study. We excluded patients diagnosed only by death certiﬁcation or autopsy. Patients with unclear TNM stage or survival month less than 1 were also excluded. According to the criteria above, there were 612,100 cases enrolled in this retrospective cohort study.
+To compare the survival difference of metastatic patients in immunotherapy era with those in non-immunotherapy era, we enrolled another cohort from 2013 to 2018. Patients were divided with the median year, 2016, after which Nivolumab was approved by FDA for metastasic lung cancer patients treatment (9). Because of the shorter follow-up of patients in 2016-2018 compared with that in 2013-2015, we only included patients within 12 months survival. Finally 42061 metastatic lung cancer patients in nonimmunotherapy era 2013-2015 and another 7135 metastatic lung cancer patients in immunotherapy era 2016-2018 were collected in this analysis.
+
+Frontiers in Immunology
+
+02
+
+frontiersin.org
+
+Zhang et al.
+
+10.3389/ﬁmmu.2022.1012247
+
+Statistical analyses
+Deaths were classiﬁed as due to lung cancer or other causes. Smoothed annual hazards of death due to lung cancer, other causes, or any cause were evaluated respectively. Univariate logistic regression analyses and multivariate Cox proportional hazards regression analyses were used to determine prognostic risk factors for overall survival and cancer-speciﬁc survival, including age, sex, histology, TNM stage and surgery. Conditional survival analysis was conducted to evaluate time-dynamic survival for patients who have survived speciﬁc years (5). For example, conditional survival (5|4) was calculated as CS(5|4)=S(4 + 5)/S (4), indicating an additional 5year survival possibility of patients who have survived 4 years since lung cancer diagnosis. Kaplan-Meier method was employed to calculate survival rates for diverse subgroups. SPSS Version 23.0 and R Software were used for statistical analysis. Two-sided P value <.05 was considered statistically signiﬁcant.
+Ethics
+Institutional Review Board approval of this study was obtained from The Ethic Committee of Nanjing Medical University First Afﬁliated Hospital.
+
+Results
+Baseline characteristics
+After patients’ exclusion, 612,100 patients diagnosed with lung cancer during 2000-2015 were queried from SEER database (Figure 1A). As shown in Table 1, 146,122 patients (23.9%) aged ≤ 60 yrs, 294,539 patients (48.1%) aged 61-75 yrs, and the other 171,439 patients (28.0%) were elder than 75 yrs at the time of diagnosis. There were more male cases (n=326,395, 53.3%) than females (n=285,705, 46.7%). As for the histological type, 252,558 (41.3%) cases were lung adenocarcinoma (LUAD), 133,302 (21.8%) cases were lung squamous cell carcinoma (LSCC), 78,700 (12.9%) cases were small-cell lung cancer (SCLC), and 147,540 cases (24.1%) were classiﬁed as other non-small-cell lung cancers (NSCLC) including large cell carcinoma, adenosquamous carcinoma, etc. The percentages of each TNM stages were showed respectively in Table 1 (stage I for 23.0%, n=140,518; II for 6.2%, n=38,225; III for 26.0%, n=159,095; IV for 44.8%, n=274,262). Although surgical information was unclear for 0.6% patients (n=3,723), 26.9% patients (n=164,394) underwent surgical resection while the other 72.5% patients (n=443,983) did not receive surgical intervention.
+
+A
+
+C
+
+D
+B E
+
+FIGURE 1
+Patient inclusion and survival of lung cancer patients. Patients inclusion and exclusion ﬂow (A). Overall and cancer-speciﬁc survival of all included cases (B). Overall (C) and cancer-speciﬁc (D) conditional survival of lung cancer patients with Kaplan-Meier analysis. (E), The 5-year overall and cancer-speciﬁc conditional survival rate of enrolled patients.
+
+Frontiers in Immunology
+
+03
+
+frontiersin.org
+
+Zhang et al.
+
+10.3389/ﬁmmu.2022.1012247
+
+TABLE 1 Clinicopathologic characteristics and overall survival probabilities.
+
+Variables
+
+Patients, No. (%) OS, mean (SD), yr 5-Y OS rate (%) P valuea
+
+HR
+
+95% CI P valueb
+
+Age ≤ 60 yrs 61-75 yrs > 75 yrs
+Sex Female Male
+Histology LUAD LSCC Other NSCLC SCLC
+TNM stage Stage I Stage II Stage III Stage IV
+Surgery Yes No Unknown
+
+146,122 (23.9) 294,539 (48.1) 171,439 (28.0)
+326,395 (53.3) 285,705 (46.7)
+252,558 (41.3) 133,302 (21.8) 147,540 (24.1) 78,700 (12.9)
+140,518 (23.0) 38,225 (6.2) 159,095 (26.0) 274,262 (44.8)
+164,394 (26.9) 443,983 (72.5)
+3,723 (0.6)
+
+3.92 (0.02) 3.20 (0.01) 2.04 (0.01)
+2.59 (0.01) 3.60 (0.01)
+3.93 (0.01) 2.95 (0.01) 2.48 (0.01) 1.54 (0.01)
+6.87 (0.02) 4.95 (0.03) 2.58 (0.01) 1.11 (0.01)
+7.12 (0.02) 1.54 (0.01) 2.14 (0.06)
+
+21.97% 20.01% 12.33%
+15.03% 22.10%
+24.64% 18.45% 13.75% 6.49%
+47.89% 32.37% 13.97% 3.66%
+49.66% 6.68% 11.02%
+
+<.001* <.001* <.001* <.001* <.001*
+
+Reference 1.23 1.65
+
+1.22-1.24 1.64-1.66
+
+Reference 0.82
+
+0.82-0.83
+
+Reference 1.20 1.22 1.18
+
+1.19-1.21 1.21-1.23 1.17-1.19
+
+Reference 1.37 1.77 3.13
+
+1.35-1.38 1.75-1.78 3.10-3.16
+
+Reference 2.21 2.01
+
+2.20-2.23 1.98-2.11
+
+<.001* <.001*
+<.001*
+<.001* <.001* <.001*
+<.001* <.001* <.001*
+<.001* <.001*
+
+CI, conﬁdence interval; HR, hazard ratio; LSCC, lung squamous cell carcinoma; LUAD, lung adenocarcinoma; NSCLC, non–small-cell lung cancer; OS, overall survival; SCLC, small-cell
+lung cancer; SD, standard deviation; * indicates P<0.05. aData signiﬁcance was compared by log-rank test. bData signiﬁcance was compared by Cox-regression test.
+
+Survival and conditional survival
+The 5-y OS of entire cohort was 54.2%, and the 5-y CSS was 73.8% (Figure 1B). According to Kaplan-Meier survival analysis, univariate analysis and multivariate Cox proportional hazards regression analysis, all the retrieved characteristics exhibited statistical signiﬁcance (Tables 1, 2). In detail, patients aged 6175 yrs (HR, 1.23; 95% CI, 1.22-1.24) or aged elder than 75 yrs (HR, 1.65; 95% CI, 1.64-1.66) were exhibited with worse OS compared with younger patients. Compared with LUAD, LSCC (HR, 1.20; 95% CI, 1.19-1.21), other NSCLC (HR, 1.22; 95% CI, 1.21-1.23), and SCLC (HR, 1.18; 95% CI, 1.17-1.19) all showed worse OS. Compared with TNM stage I patients, the HR (95% CI) of stage II, stage III, and stage IV were 1.37 (1.35-1.38), 1.77 (1.75-1.78), and 3.13 (3.10-3.16), respectively. As expected, patients without surgical treatment showed worse OS (HR, 2.21; 95% CI, 2.20-2.23). Consistent with previous studies, female patients seemed to have better prognosis (HR, 0.82; 95% CI, 0.82-0.83). As for CSS, all the above variables showed consistent tendencies and signiﬁcances with OS (Table 2).
+Besides cumulative survival, conditional OS (Figure 1C) and conditional CSS (Figure 1D) were evaluated in our study.
+
+Compared with 5-y conditional survival curves, conditional survival rate of CSS was increased in a time-dependent manner, while conditional OS tended to be steady as approximately 50% after 5-y follow-up (Figure 1E). Stratiﬁcation analyses were next performed to ﬁgure out factors that might affect conditional survival (Figure 2). Considering age was perhaps the most nonnegligible factor affecting conditional survival time, it was reasonable that conditional OS of elder lung cancer patients exhibited as an inverted U-shaped curve, which peaked at conditional (5|4). This could also explain why age was the only factor that resulted in drifting apart curves (Figure 2A). Nevertheless, conditional CSS of patients with different ages were similar and increased time-dependently (Figure 2B).
+Compared with NSCLC, although SCLC patients exhibited poorer accrued OS, its conditional OS was equivalent to that of LSCC patients since 3-year postdiagnosis, while was still lower than that of LUAD and other NSCLC types (Figure 2C). As for conditional CSS, the disparity between SCLC and NSCLC was becoming smaller in a time-dependent manner (Figure 2D). Similarly, conditional survival disparities between patients in different TNM stages evaporated over time (Figures 2E, F),
+
+Frontiers in Immunology
+
+04
+
+frontiersin.org
+
+Zhang et al.
+
+10.3389/ﬁmmu.2022.1012247
+
+TABLE 2 Cancer-speciﬁc survival probabilities.
+
+Variables
+
+Patients, No. (%) CSS, mean (SD), yr 5-Y CSS rate (%) P valuea
+
+HR
+
+95% CI P valueb
+
+Age ≤ 60 yrs 61-75 yrs > 75 yrs
+Sex Male Female
+Histology LUAD LSCC Other NSCLC SCLC
+TNM stage Stage I Stage II Stage III Stage IV
+Surgery Yes No Unknown
+
+146,122 (23.9) 294,539 (48.1) 171,439 (28.0)
+326,395 (53.3) 285,705 (46.7)
+252,558 (41.3) 133,302 (21.8) 147,540 (24.1) 78,700 (12.9)
+140,518 (23.0) 38,225 (6.2) 159,095 (26.0) 274,262 (44.8)
+164,394 (26.9) 443,983 (72.5)
+3,723 (0.6)
+
+4.84 (0.02) 4.66 (0.02) 3.67 (0.02)
+3.92 (0.01) 5.10 (0.02)
+5.51 (0.02) 4.70 (0.02) 3.75 (0.02) 2.0 (0.02)
+10.49 (0.03) 7.15 (0.05) 3.57 (0.02) 1.40 (0.01)
+10.11 (0.02) 2.16 (0.01) 3.22 (0.11)
+
+25.69% 26.37% 20.52%
+21.21% 28.48%
+31.30% 26.73% 19.66% 8.72%
+62.74% 42.18% 18.82% 5.13%
+60.67% 10.15% 16.79%
+
+<.001* <.001* <.001* <.001* <.001*
+
+Reference 1.15 1.44
+
+1.14-1.16 1.43-1.45
+
+Reference 0.84
+
+0.83-0.84
+
+Reference 1.17 1.21 1.20
+
+1.16-1.18 1.21-1.22 1.18-1.21
+
+Reference 1.67 2.34 4.27
+
+1.65-1.70 2.32-2.37 4.22-4.31
+
+Reference 2.34 2.17
+
+2.32-2.36 2.09-2.26
+
+<.001* <.001*
+<.001*
+<.001* <.001* <.001*
+<.001* <.001* <.001*
+<.001* <.001*
+
+CI, conﬁdence interval; CSS, cancer-speciﬁc survival; HR, hazard ratio; LSCC, lung squamous cell carcinoma; LUAD, lung adenocarcinoma; NSCLC, non–small-cell lung cancer; OS, overall
+survival; SCLC, small-cell lung cancer; SD, standard deviation; * indicates P<0.05. aData signiﬁcance was compared by log-rank test. bData signiﬁcance was compared by Cox-regression test.
+
+indicating that stage may be no longer a risk factor for long-term survivors. On the other hand, we also compared the effects of stage on conditional survival rate of cases within the same age range (Figure 3), which obtained a consistent conclusion. The discrepancies of conditional OS and CSS in different TNM stages vanished over time for all patients of various age periods (Figures 3A-C).
+Of note, even conditional survival curves were becoming more and more approximating in patients with or without surgical treatment (Figures 2G, H), the differences were still remarkable even at conditional (5|13). For better understanding, we further conducted subgroup analyses of surgical treatment. Interestingly, except patients in stage III, conditional survival disparities between patients with or without surgical treatment evaporated over time in subgroups of stage I, II and IV (Figures 4A-D). Additionally, signiﬁcant differences of OS and CSS between surgery and no surgery patients were revealed in each stage subgroup (Figures 4E-H). This ﬁnding was also applicable when comparing the effect of surgery in patients within different age-subgroups, especially in patients over 75 years old (Figures 5A-C). Taken together, surgical resection was
+
+strongly recommended for patients when surgery is possible, which remarkably affect prognosis even for advanced stages.
+Time-dependent alteration of death risk
+Considering the distinct effects of age on conditional OS and CSS, the time-dynamic death hazard from lung cancer or other causes was analyzed (Figure 6A). Consistent with conditional survival data, death risk from lung cancer decreased dramatically in the ﬁrst 5 years (from 46.0% to 8.5%). Meanwhile, after 8 years, death hazard contributed by other causes became higher than that by lung cancer. The above ﬁndings engaged us to further investigate whether these time points were different in subgroups. As a result, the critical points were 13-year, 8-year, and 5-year in patients aged ≤ 60, 61-75, and > 75 yrs, respectively (Figure 6B). Interestingly, the time point of LSCC was the earliest one (6-year) among all lung cancer histological subtypes (Figure 6C), emphasizing the histological difference. Moreover, this critical point was delayed in patients with more advanced TNM stages (Figure 6D). Initial death hazard in patients without surgical treatment was signiﬁcantly higher
+
+Frontiers in Immunology
+
+05
+
+frontiersin.org
+
+Zhang et al. A C E G
+
+10.3389/ﬁmmu.2022.1012247 B D F H
+
+FIGURE 2
+Subgroup analyses of 5-year conditional survival of lung cancer patients. The 5-year conditional overall survival (OS) and conditional cancerspeciﬁc survival (CSS) analyses based on patients’ age (A, B), histological type (C, D), TNM stage (E, F), and surgical treatment (G, H).
+
+than that in cases received surgery (Figure 6E). Additionally, the critical point was postponed in those who did not receive surgery. Taken together, the death hazard from non-lung cancer causes in patients with elder age, LSCC subtype, early tumor stage, or received surgical intervention exceeded that from lung cancer at an earlier follow-up date.
+
+To provide better clinical instruction on follow-up focus, we combined all the confounding factors and established a webbased calculator targeting this critical time point (https://lccs. shinyapps.io/lungcancercauses/). For example, for male LSCC patients aged ≤ 60, with poor differentiation grade (grade III), T2N0M0, and received surgical treatment, the critical time point
+
+Frontiers in Immunology
+
+06
+
+frontiersin.org
+
+Zhang et al.
+A B C
+
+10.3389/ﬁmmu.2022.1012247
+
+FIGURE 3
+The 5-year conditional survival rate of lung cancer as per the TNM Stage and Age. Subgroup analyses of 5-year conditional survival rate based on patients’ TNM stage of those aging ≤ 60 yrs (A), 61-75 yrs (B), or > 75 yrs (C).
+
+A
+
+E
+
+B
+
+F
+
+C
+
+G
+
+D
+
+H
+
+FIGURE 4
+Subgroup analyses of survival based on surgical treatment in lung cancer patients with Different stages. Subgroup analyses of 5-year conditional survival rate based on surgical treatment or not of patients in stage I (A), stage II (B), stage III (C) and stage IV (D). Subgroup analyses of overall and cancer-speciﬁc survival with Kaplan-Meier analysis based on surgical treatment or not of patients in stage I (E), stage II (F), stage III (G) and stage IV (H).
+
+Frontiers in Immunology
+
+07
+
+frontiersin.org
+
+Zhang et al. A
+
+10.3389/ﬁmmu.2022.1012247
+
+B
+
+C
+
+FIGURE 5
+Subgroup analyses of 5-year conditional survival based on surgical treatment in lung cancer patients with different ages. Subgroup analyses of 5-year conditional survival rate based on surgical treatment or not of those aging ≤ 60 yrs (A), 61-75 yrs (B), or > 75 yrs (C).
+
+was 10-year (eFigure 1), indicating that for those speciﬁc patients, subsequent visit should be more focus on other death risk factors since then.
+To compare the survival difference of metastatic patients in immunotherapy era with those in non-immunotherapy era, we enrolled another cohort from 2013 to 2018 (Figure 7A). Among them, patients within 2016-2018 were deﬁned as immunotherapy era (n=7135), while those within 2013-2016 were deﬁned as nonimmunotherapy era (n=42061). Overall survival analysis indicated that the median OS time of metastatic lung patients in nonimmunotherapy era was 4 months, while increased to 9 months in immunotherapy era (Figure 7B, P<0.001). Consistently, the median CSS time of metastatic lung patients in nonimmunotherapy era was 4 months, while increased to 10 months
+
+in immunotherapy era (Figure 7C, P<0.001). Taken together, the immunotherapy bring signiﬁcant survival beneﬁts to metastatic lung cancer patients.
+Discussion
+Lung cancer ranks the leading cause of cancer-related death worldwide (10, 11). Currently, predominant focus is paid on short-term lung cancer survivors due to its highly malignant characteristics (12). However, due to the advance of novel diagnostic and therapeutic methods, the prognosis of lung cancer patients is improving as indicated by surveys targeting different populations. A previous study showed that 5-year
+
+Frontiers in Immunology
+
+08
+
+frontiersin.org
+
+Zhang et al.
+
+A
+
+B
+
+C D
+
+E
+
+10.3389/ﬁmmu.2022.1012247
+
+FIGURE 6
+Annual hazard rate of death due to any cause, lung cancer, and other causes. Annual hazard rate (AHR) of death due to different causes of the entire cohort (A), or based on patients’ age (B), histological type (C), TNM stage (D), and surgical treatment (E).
+
+survival of lung cancer in Japan population between 1970s and 2000s increased from 6.0% to 30.9% in females and from 7.2% to 19.6% in males (13). Similarly, 5-year survival of lung cancer in USA increased from 10.7% in 1973 to 19.8% in 2010 (2). A Hungarian study also measured a 5.3% increase in 5-year lung cancer survival from the period 2011–2012 to 2015–2016 (14). Additionally, an increased lung cancer incidence is associated with air pollution, especially in developing countries (15). Therefore, there will be increasing patients suffer from lung cancer in the near future.
+As a more dynamic and personalized survival evaluation method compared with cumulative survival, conditional survival is now valued in clinical consulting for long-term survivors. Studies had observed that lung cancer cases with worse prognostic characteristics at the time of diagnosis exhibited better improvements on conditional survival over time (16). In other words, the unfavorable effects of certain risk factors, such
+
+as advanced tumor stage, may gradually decline in patient population over the course of follow-up. However, many reports only focused on speciﬁc lung cancer patients such as those who were surgical treated (17, 18) or those who received prophylactic cranial irradiation (19). Therefore, conditional survival data seems distinct perhaps due to particular and limited cases.
+Here we initially estimated the nationwide population-based conditional survival of lung cancer in USA using SEER dataset, which could help physicians and patients better predict the following survival time. In this study, time debilitated the roles of all risk factors on affecting conditional cancer-speciﬁc survival of lung cancer patients. This would be an encouragement to patients who possessed unfavorable clinicopathological characteristics on that they might show comparable survival beneﬁts after several years. Consistently, annual death hazard from lung cancer decreased from 46.0% to 8.5% within the ﬁrst 5
+
+Frontiers in Immunology
+
+09
+
+frontiersin.org
+
+Zhang et al. A
+
+10.3389/ﬁmmu.2022.1012247
+
+B
+
+C
+
+FIGURE 7
+Survival beneﬁts of metastatic lung cancer patients in immunotherapeutic era. Patients inclusion and exclusion ﬂow (A). Overall survival (B) and cancer-speciﬁc survival (C) of metastatic lung cancer patients.
+
+years since diagnosis. Similar observations were reported in pancreatic ductal adenocarcinoma (PDAC) patients on that the PDAC-related mortality dramatically decreased within 6 years and then remained constant (20).
+One of the most important concerns of cancer survivors is their death hazard from the malignancy. On one hand, although cancer-speciﬁc mortality exceeds that of other diseases in the ﬁrst few years, this cancer-related death hazard is diminishing in a time-dependent pattern. On the other hand, effects of other survival determinants accumulate in different periods of life course, resulting in an increasing important risk of other causes such as heart disease in lung cancer patients over the course of follow-up. In that case, our doctors are highly attached importance to the medical comorbidities and speciﬁc health assessments for long-term survivors. Considering that the requirement for followup focuses and clinical instructions for long-term survivors are distinct from short-term survivors (21), determining examination balance is indispensable for long-term survivors.
+In the current study, we aim to evaluate conditional survival of lung cancers and to ascertain if there is a critical time point when the death hazard from other causes exceeds that from lung cancer. Accordingly, we demonstrate that this critical point is
+
+distinct in patients with different clinical characteristics. Firstly, the younger at the time of diagnosis, the later the critical point reaches. This is reasonable because death hazard from other causes, such as cardiovascular diseases, increases with ageing. Indeed, a previous study reported that the probability of dying of lung cancer is equal to that of cardiovascular diseases after 7-year survival in stage I NSCLC who accepted lobectomy aged 70-79 years, while this time point shortens to 5-year in cases aged 80 years or older (22).
+Secondly, intrinsic cancer phenotypes are also inﬂuential. For example, patients with LSCC reach this critical point at 6year, while other histological types are later. Besides, the number of years before reaching this critical point is positively correlated with TNM stage. This is due to the fact that the initial death risk from lung cancer is signiﬁcantly smaller in earlier-stage cases than that in advanced-stage cases. Thirdly, our ﬁndings emphasize the signiﬁcant beneﬁt of surgical treatment on controlling lung-cancer related death hazard. For those who didn’t receive surgical intervention, lung cancer-related death remains the leading hazard until 10-year after diagnosis. Therefore, we strongly recommend that surgical resection should be performed at the utmost effort.
+
+Frontiers in Immunology
+
+10
+
+frontiersin.org
+
+Zhang et al.
+
+10.3389/ﬁmmu.2022.1012247
+
+Currently, there are now several web-based calculators to estimate different prognostic aspects of lung cancers such as accrued survival (23), conditional survival (24), and conditional site-speciﬁc recurrence (25). Nonetheless, no public calculator is available on determining individual follow-up critical point for long-term lung cancer survivors. Therefore, we establish a webbased calculator to identify personalized critical point for lung cancer patients of various age, sex, histology, differentiation grade, TNM stage and surgical treatment, which can help provide statistical evidence of death hazard during clinical practice.
+Increasing evidence promoted the application of immunotherapies, such as PD-1/PD-L1 inhibitors, in advanced lung cancer treatment (26). Here we brieﬂy divided metastatic lung cancer patients from SEER dataset into nonimmunotherapeutic era (2015 and before) and immunotherapeutic era (after 2015) based on the FDA approval time of Nivolumab in 2015 (9, 27). As expected, our results conﬁrmed that metastatic lung cancer patients in immunotherapeutic era showed a 5-month longer OS time and 6-month longer CSS time than those in nonimmunotherapeutic era.
+Limitation
+According to the data issued by American Lung Association (www.lung.org), there is a large variance regarding lung cancer survivals in different states. For example, survival rate ranks highest in Connecticut as 28.8%, while Alabama ranked lowest as 18.4%. Meanwhile, African Americans with NSCLC were reported to have worse conditional survival compared with other ethnic groups, indicating that conditional survival vary by ethnicity (28, 29). These regional and racial variations deserve further investigations.
+
+Ethics statement
+The studies involving human participants were reviewed and approved by The Ethic Committee of Nanjing Medical University First Afﬁliated Hospital. Written informed consent to participate in this study was provided by the participants’ legal guardian/next of kin.
+Author contributions
+QZ: Data curation, Writing preparation. YD: Analysis, Methodology. HL and WS: Investigation, Resources, Software. YH: Supervision. ZG: Validation. SD: Conceptualization. HK: Project administration. WX: Project administration. All authors contributed to the article and approved the submitted version.
+Funding
+This study was supported by National Natural Science Foundation of China (82002438), Fellowship of China Postdoctoral Science Foundation (2020M671396), Fellowship of Jiangsu Postdoctoral Science Foundation (2020Z239).
+Conﬂict of interest
+The authors declare that the research was conducted in the absence of any commercial or ﬁnancial relationships that could be construed as a potential conﬂict of interest.
+
+Conclusions
+Conditional cancer-speciﬁc survival is continuously improved in long-term lung cancer survivors, especially for those accepted immunotherapeutic treatment. Lung cancer ceased to be the major cause of death for patients who have survived 8 years since diagnosis. For elder lung cancer patients or early staged patients, more attention should be paid on other death risks from an earlier time point.
+Data availability statement
+The raw data supporting the conclusions of this article will be made available by the authors, without undue reservation.
+
+Publisher’s note
+All claims expressed in this article are solely those of the authors and do not necessarily represent those of their afﬁliated organizations, or those of the publisher, the editors and the reviewers. Any product that may be evaluated in this article, or claim that may be made by its manufacturer, is not guaranteed or endorsed by the publisher.
+Supplementary material
+The Supplementary Material for this article can be found online at: https://www.frontiersin.org/articles/10.3389/ ﬁmmu.2022.1012247/full#supplementary-material
+
+Frontiers in Immunology
+
+11
+
+frontiersin.org
+
+Zhang et al.
+
+10.3389/ﬁmmu.2022.1012247
+
+References
+1. Siegel RL, Miller KD, Fuchs HE, Jemal A. Cancer statistics, 2022. CA: A Cancer J Clin (2022) 72(1):7–33. doi: 10.3322/caac.21708
+2. Lu T, Yang X, Huang Y, Zhao M, Li M, Ma K, et al. Trends in the incidence, treatment, and survival of patients with lung cancer in the last four decades. Cancer Manag Res (2019) 11:943–53. doi: 10.2147/cmar.s187317
+3. Yu M, Feuer EJ, Cronin KA, Caporaso NE. Use of multiple imputation to correct for bias in lung cancer incidence trends by histologic subtype. Cancer Epidemiol Biomarkers Prev (2014) 23(8):1546–58. doi: 10.1158/1055-9965.Epi-140130
+4. Howlader N, Forjaz G, Mooradian MJ, Meza R, Kong CY, Cronin KA, et al. The effect of advances in lung-cancer treatment on population mortality. New Engl J Med (2020) 383(7):640–9. doi: 10.1056/NEJMoa1916623
+5. Hieke S, Kleber M, König C, Engelhardt M, Schumacher M. Conditional survival: A useful concept to provide information on how prognosis evolves over time. Clin Cancer Res (2015) 21(7):1530–6. doi: 10.1158/1078-0432.ccr-14-2154
+6. Hansen RN, Zhang Y, Seal B, Ryan K, Yong C, Darilay A, et al. Long-term survival trends in patients with unresectable stage iii non-small cell lung cancer receiving chemotherapy and radiation therapy: A seer cancer registry analysis. BMC Cancer (2020) 20(1):276. doi: 10.1186/s12885-020-06734-3
+7. Corso CD, Rutter CE, Park HS, Lester-Coll NH, Kim AW, Wilson LD, et al. Role of chemoradiotherapy in elderly patients with limited-stage small-cell lung cancer. J Clin Oncol (2015) 33(36):4240–6. doi: 10.1200/JCO.2015.62.4270
+8. Saab S, Zalzale H, Rahal Z, Khalifeh Y, Sinjab A, Kadara H. Insights into lung cancer immune-based biology, prevention, and treatment. Front Immunol (2020) 11:159. doi: 10.3389/ﬁmmu.2020.00159
+9. Vaddepally RK, Kharel P, Pandey R, Garje R, Chandra AB. Review of indications of fda-approved immune checkpoint inhibitors per nccn guidelines with the level of evidence. Cancers (Basel) (2020) 12(3):738. doi: 10.3390/ cancers12030738
+10. Bray F, Ferlay J, Soerjomataram I, Siegel RL, Torre LA, Jemal A. Global cancer statistics 2018: Globocan estimates of incidence and mortality worldwide for 36 cancers in 185 countries. CA: A Cancer J Clin (2018) 68(6):394–424. doi: 10.3322/caac.21492
+11. Zhang Q, Fan H, Liu H, Jin J, Zhu S, Zhou L, et al. Wnt5b exerts oncogenic effects and is negatively regulated by mir-5587-3p in lung adenocarcinoma progression. Oncogene (2020) 39(7):1484–97. doi: 10.1038/s41388-019-1071-4
+12. Sabatino SA, Thompson TD, Smith JL, Rowland JH, Forsythe LP, Pollack L, et al. Receipt of cancer treatment summaries and follow-up instructions among adult cancer survivors: Results from a national survey. J Cancer Survivorship (2013) 7(1):32–43. doi: 10.1007/s11764-012-0242-x
+13. Kinoshita FL, Ito Y, Morishima T, Miyashiro I, Nakayama T. Sex differences in lung cancer survival: Long-term trends using population-based cancer registry data in Osaka, Japan. Jpn J Clin Oncol (2017) 47(9):863–9. doi: 10.1093/jjco/hyx094
+14. Bogos K, Kiss Z, Tamási L, Ostoros G, Müller V, Urbán L, et al. Improvement in lung cancer survival: 6-year trends of overall survival at Hungarian patients diagnosed in 2011-2016. Pathol Oncol Res (2021) 27:603937. doi: 10.3389/pore.2021.603937
+15. Guo Y, Zeng H, Zheng R, Li S, Barnett AG, Zhang S, et al. Lung cancer incidence and ambient air pollution in China: A spatial age–period cohort study 1990–2009. Lancet (2015) 386:S5. doi: 10.1016/S0140-6736(15)00583-8
+
+16. Janssen-Heijnen ML, van Steenbergen LN, Steyerberg E, Visser O, De Ruysscher DK, Groen HJ. Long-term excess mortality for survivors of non-small cell lung cancer in the Netherlands. J Thorac Oncol (2012) 7(3):496–502. doi: 10.1097/JTO.0b013e318241f80b
+17. Yoo JE, Han K, Shin DW, Park SH, Cho IY, Yoon DW, et al. Conditional relative survival and competing mortality in patients who underwent surgery for lung cancer: A nationwide cohort study. Int J Cancer (2021) 148(3):626–36. doi: 10.1002/ijc.33239
+18. Fukui T, Okasaka T, Kawaguchi K, Fukumoto K, Nakamura S, Hakiri S, et al. Conditional survival after surgical intervention in patients with non-small cell lung cancer. Ann Thorac Surg (2016) 101(5):1877–82. doi: 10.1016/ j.athoracsur.2015.11.067
+19. Xing Y, Mosalpuria K, Hu C-Y, Bhatt VR, Ganti AK. Conditional survival estimates for small cell lung cancer receiving prophylactic cranial irradiation in the U.S. (1988-1997). J Clin Oncol (2015) 33(Suppl 15):7577. doi: 10.1200/ jco.2015.33.15_suppl.7577
+20. Swords DS, Mulvihill SJ, Firpo MA, Scaife CL. Causes of death and conditional survival estimates of medium- and long-term survivors of pancreatic adenocarcinoma. JAMA Oncol (2018) 4(8):1129–30. doi: 10.1001/ jamaoncol.2018.2442
+21. Sugimura H, Yang P. Long-term survivorship in lung cancer: A review. Chest (2006) 129(4):1088–97. doi: 10.1378/chest.129.4.1088
+22. Groth SS, Rueth NM, Hodges JS, Habermann EB, Andrade RS, D'Cunha J, et al. Conditional cancer-speciﬁc versus cardiovascular-speciﬁc survival after lobectomy for stage I non-small cell lung cancer. Ann Thorac Surg (2010) 90 (2):375–82. doi: 10.1016/j.athoracsur.2010.04.100
+23. She Y, Jin Z, Wu J, Deng J, Zhang L, Su H, et al. Development and validation of a deep learning model for non-small cell lung cancer survival. JAMA Netw Open (2020) 3(6):e205842. doi: 10.1001/jamanetworkopen.2020.5842
+24. Zhang Y, Zheng D, Xie J, Li Y, Wang Y, Li C, et al. Development and validation of web-based nomograms to precisely predict conditional risk of sitespeciﬁc recurrence for patients with completely resected non-small cell lung cancer: A multiinstitutional study. Chest (2018) 154(3):501–11. doi: 10.1016/ j.chest.2018.04.040
+25. Deng C, Zhang Y, Fu F, Ma X, Wen Z, Ma Z, et al. Genetic-pathological prediction for timing and site-speciﬁc recurrence pattern in resected lung adenocarcinoma. Eur J Cardiothorac Surg (2021) 60(5):1223–31. doi: 10.1093/ ejcts/ezab288
+26. Xia L, Liu Y, Wang Y. Pd-1/Pd-L1 blockade therapy in advanced non-SmallCell lung cancer: Current status and future directions. Oncologist (2019) 24(Suppl 1):S31–s41. doi: 10.1634/theoncologist.2019-IO-S1-s05
+27. Saﬁ M, Al-Azab M, Jin C, Trapani D, Baldi S, Adlat S, et al. Age-based disparities in metastatic melanoma patients treated in the immune checkpoint inhibitors (Ici) versus non-ici era: A population-based study. Front Immunol (2021) 12:609728. doi: 10.3389/ﬁmmu.2021.609728
+28. Soneji S, Tanner NT, Silvestri GA, Lathan CS, Black W. Racial and ethnic disparities in early-stage lung cancer survival. Chest (2017) 152(3):587–97. doi: 10.1016/j.chest.2017.03.059
+29. Wang SJ, Fuller CD, Thomas CRJr. Ethnic disparities in conditional survival of patients with non-small cell lung cancer. J Thorac Oncol (2007) 2(3):180–90. doi: 10.1097/JTO.0b013e318031cd4e
+
+Frontiers in Immunology
+
+12
+
+frontiersin.org
+
