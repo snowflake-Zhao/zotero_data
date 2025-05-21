@@ -1,0 +1,719 @@
+Wang et al. Journal of Translational Medicine (2022) 20:90 https://doi.org/10.1186/s12967-022-03287-w
+
+Journal of Translational Medicine
+
+RESEARCH
+
+Open Access
+
+A web‑based prediction model for overall survival of elderly patients with early renal cell carcinoma: a population‑based study
+Jinkui Wang2, Jie Tang3, Tiaoyao Chen4, Song Yue5, Wanting Fu6, Zulong Xie1* and Xiaozhu Liu1*   
+
+Abstract 
+Background:  The number of elderly patients with early renal cell carcinoma (RCC) is on the rise. However, there is still a lack of accurate prediction models for the prognosis of early RCC in elderly patients. It is necessary to establish a new nomogram to predict the prognosis of elderly patients with early RCC.
+Methods:  The data of patients aged above 65 years old with TNM stage I and II RCC were downloaded from the SEER database between 2010 and 2018. The patients from 2010 to 2017 were randomly assigned to the training cohort (n = 7233) and validation cohort (n = 3024). Patient data in 2018(n = 1360) was used for external validation. We used univariable and multivariable Cox regression model to evaluate independent prognostic factors and constructed a nomogram to predict the 1-, 3-, and 5-year overall survival (OS) rates of patients with early-stage RCC. Multiple parameters were used to validate the nomogram, including the consistency index (C-index), the calibration plots, the area under the receiver operator characteristics (ROC) curve, and the decision curve analysis (DCA).
+Results:  The study included a total of 11,617 elderly patients with early RCC. univariable and multivariable Cox regression analysis based on predictive variables such as age, sex, histologic type, Fuhrman grade, T stage, surgery type, tumors number, tumor size, and marriage were included to establish a nomogram. The C-index of the training cohort and validation cohort were 0.748 (95% CI: 0.760–0.736) and 0.744 (95% CI: 0.762–0.726), respectively. In the external validation cohort, C-index was 0.893 (95% CI: 0.928–0.858). The calibration plots basically coincides with the diagonal, indicating that the observed OS was almost equal to the predicted OS. It was shown in DCA that the nomogram has more important clinical significance than the traditional TNM stage.
+Conclusion:  A novel nomogram was developed to assess the prognosis of an elderly patient with early RCC and to predict prognosis and formulate treatment and follow-up strategies.
+Keywords:  Nomogram, Elderly patients, Early RCC​, Overall survival, SEER, Online application
+
+Introduction Among all malignant tumors, kidney cancer is one of the most common tumors in the world, accounting for 3.7% of global cancers, and the incidence of kidney cancer is gradually increasing [1–4]. Renal cell carcinoma (RCC)
+*Correspondence: xiezulong1989@163.com; xiaozhuliu2021@163.com 1 Department of Cardiology, The Second Affiliated Hospital of Chongqing Medical University, Chongqing, China Full list of author information is available at the end of the article
+
+is a malignant tumor derived from renal tubular cells. It is the most common histopathological subtype of renal cancer, accounting for approximately 85% of renal cancers [2, 3]. Clear cell RCC is the most common type of RCC, accounting for 82–90% [5]. RCC is more common in men with a male to female incidence ratio of 1.7:1 [3, 6]. Some authors have investigated whether kidney cancer manifests differently in young and elderly patients. The results show that the cancer-specific survival rate of young patients is higher than that of elderly patients
+
+© The Author(s) 2022. Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article’s Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article’s Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://​creat​iveco​mmons.​org/​licen​ses/​by/4.​0/. The Creative Commons Public Domain Dedication waiver (http://​creat​iveco​ mmons.​org/​publi​cdoma​in/​zero/1.​0/) applies to the data made available in this article, unless otherwise stated in a credit line to the data.
+
+Wang et al. Journal of Translational Medicine (2022) 20:90
+
+Page 2 of 14
+
+[7–10]. In recent years, the number of patients with small renal masses has increase and compared with the young patients, the elderly (i.e., 65 years and older) patients have a higher diagnosis rate [11, 12]. Although the treatment of kidney cancer has been continuously improved, the mortality rate of elderly kidney cancer patients still remained high [13, 14]. Therefore, accurate prognostic prediction for elderly patients with early RCC is necessary, which may help clinicians make better decisions.
+The TNM staging system is the standard method for most clinicians and medical researchers to classify malignant tumors and is widely used in cancer treatment evaluation and prognosis evaluation [15]. However, the TNM system does not include clinicopathological factors that may have an important impact on the prognosis of RCC, such as age, sex, surgical methods, tumor grade, and lymphadenectomy [15, 16]. There is still a lack of survival prediction models for elderly patients with early RCC so that the need for constructing a reliable and accurate prognostic model is necessary.
+A nomogram is a user-friendly graphical mathematical model that predicts the occurrence of a given event by generating a single numerical estimate based on specific clinical and pathological variables [17–19]. As a visual scoring graph, the establishment of the nomogram is theoretically based on the traditional Cox proportional risk regression model, and the establishment of the nomogram does not sacrifice the accuracy of the regression model. With the predictive power of conventional regression models and the excellent performance of being user friendly and easy to use, we used nomograms to predict patient survival.
+In previous studies, the nomogram model was developed to improve clinical decision-making, such as liver cancer, lung cancer, breast cancer [20–22]. So far, the nomogram model for predicting the prognosis of elderly patients with early RCC has not been established using the Surveillance Epidemiology and End Results (SEER) database. Herein, we designed a nomogram combined with the clinicopathological parameters extracted from the SEER database to predict the prognosis of early RCC elderly patients, which may have potential clinical application value.
+Patients and methods
+Data source and data extraction The original clinical data was extracted from the National Cancer Institute’s Surveillance, Epidemiology, and End Results (SEER) Program to identify patients older than 65 years old and diagnosed with TNM stage I and II RCC in the United States from 2010 to 2018. The data analyzed in this study is available on the SEER database (http://​seer.​cancer.​gov/), which covers approximately
+
+28% of Americans and contains 18 population-based tumor registries [23]. The patient’s demographic information, tumor characteristics and survival status are all publicly available through the SEER database. Because we use publicly anonymous data, our research does not require ethical review or patient consent. Our research method complies with the rules and regulations of the SEER database.
+Excluding unknown or missing clinicopathological information, a total of 11,617 patients were included in this study. Demographic and clinical data include age at diagnosis, sex, race, tumor laterality, TNM stage, histological type, Fuhrman grade, type of surgery, chemotherapy, radiotherapy, life status, survival time, and marital status were collected. The selection criteria are: (1) age ≥ 65 years; (2) pathological diagnosis of renal cell carcinoma; (3) T1/T2, N0, M0; (4) Unilateral kidney cancer. The exclusion criteria are: (1) unknown surgery type; (2) unknown tumor size; (3) unknown race; (4) survival time < 1 month. The flowchart for selecting patients is shown in Fig. 1.
+The patient’s race includes white, black, and other races (American Indian/AK Native, Asian/Pacific Islander). Fuhrman grades I, II, III, and IV represent well-differentiated, moderately-differentiated, poorly-differentiated, and undifferentiated, respectively. The surgical methods are divided into four groups according to the SEER Kidney Surgery Codes 2018: non-surgical group (code 0), local tumor excision (code 10–27; includes cryosurgery, thermal ablation, laser excision), and partial nephrectomy (PN, code 30) and radical nephrectomy (RN, code 40–80).
+Statistical analysis We randomly subdivided 10,595 patients from 2010 to 2017 into a training cohort 70%(n = 7233) and a validation cohort 30%(n = 3024). Patients in 2018(n = 1360) were used for external validation. The Cox proportional-hazards risk model was used for univariable and multivariable analysis to evaluate independent risk factors for RCC, the hazard ratio (HR) and 95% confidence interval (CI) were recorded. Important parameters were identified in the multivariable analysis and included in the nomogram for predicting the prognosis of RCC of elderly patients. A new nomogram model was established to estimate the OS rates of elderly patients with RCC in 1-year, 3-year and 5-year. The predictive model is essentially the visualization of multivariable Cox regression. When constructing the multivariate Cox regression, we obtained the regression coefficient β (coef ) of each variable; we can also get a specific score for each variable in the constructed
+
+Wang et al. Journal of Translational Medicine (2022) 20:90
+
+Page 3 of 14
+
+Fig. 1  The flowchart of including and dividing patients
+
+Nomogram. Nomogram standardizes the regression coefficients and displays them as risk scores on a number line.
+The predictive reliability and accuracy of the nomograph were evaluated by the SEER internal validation cohort. We constructed the receiver operating characteristic (ROC) curve to obtain the area under the curve (AUC) and a corrected C-Index to reflect the discriminability and predictive accuracy of the nomogram. We constructed 1000 bootstrap resamples and used the calibration plots to validate the nomogram internally. At the same time, we performed analysis on patients’ cancer-specific survival (CSS).
+Decision curve analysis (DCA) was used to assess the clinical significance of our nomogram [24]. It is a new algorithm for evaluating the clinical utility value of nomogram by estimating the net benefit under each risk threshold. Patients were divided into low-risk, medium-risk, and high-risk groups according to nomogram total cut-off values. Kaplan–Meier curve and log-rank test were used to compare the survival rates of patients between different groups.
+All statistical analyses and charts were performed using R software version 4.1.0 and SPSS version 26.0. We used the "RMS", "DynNom", "survival" and "ggDCA" R packages to construct and validate the nomogram, formulate the ROC curve, and establish DCA. When the P value is less than 0.05, the result is considered statistically significant (two-side).
+
+Results
+Clinical features We included 11,617 elderly RCC patients from the SEER database who met our study criteria according to our inclusion and exclusion criteria. Among them, patients from 2010 to 2017(n = 10,257) were used for the establishment and internal validation of predictive models. The clinicopathologic features of RCC in elderly patients in the training and validation cohorts are shown in Table 1. Among these patients, 6406 (62.5%) patients were males, 8300 (80.9%) patients were the white race, 6231 (60.7%) patients were married, and 6309 (61.5%) patients were stage T1a. 993 (9.68%), 3923 (38.2%), 1846 (18.0%), and 177 (1.73%) patients whose Fuhrman grade were I, II, III, and IV, respectively. 1446 (14.1%), 2973 (29.0%), and 3798 (37.0%) patients who had undergone local tumor excision, partial nephrectomy (PN), and radical nephrectomy (RN), respectively. There were no significant differences in clinicopathologic characteristics between the training and the validation cohort.
+Univariable and multivariable Cox regression analysis We used univariable regression to identify eight significant risk factors, including age, sex, race, histologic type, Fuhrman grade, T stage, surgery type, tumors number, tumor size, and marriage (Table 2). Next, we used the selected factors to establish a multivariable Cox model to determine independent risk factors. The hazard ratio (HR) is presented to quantify its impact on OS. The
+
+Wang et al. Journal of Translational Medicine (2022) 20:90
+
+Table 1  Clinicopathological characteristics of patients with RCC​
+
+Total N = 10,595
+
+Training cohort N = 7233
+
+Age Race
+White Black  ­Othera Sex Male Female Marriage No Married Year of diagnosis 2010–2013 2014–2017 Histologictype Clear cell Papillary Chromophobe  ­Otherb Laterality Left Right T stage T1a T1b T2a T2b Grade I II III IV Unknown Surgery No Local ­excisionc Partial Nephrectomy Radical Nephrectomy Chemotherapy No/unknown Yes Radiation No/unknown Yes Total number of tumors Tumor size Survival months Cancer-specific survival Dead
+
+73.5 (6.73)
+8300 (80.9%) 1132 (11.0%) 825 (8.04%)
+6406 (62.5%) 3851 (37.5%)
+4026 (39.3%) 6231 (60.7%)
+4815 (46.9%) 5442 (53.1%)
+5539 (54.0%) 1658 (16.2%) 578 (5.64%) 2482 (24.2%)
+4996 (48.7%) 5261 (51.3%)
+6309 (61.5%) 2907 (28.3%) 764 (7.45%) 277 (2.70%)
+993 (9.68%) 3923 (38.2%) 1846 (18.0%) 177 (1.73%) 3318 (32.3%)
+2040 (19.9%) 1446 (14.1%) 2973 (29.0%) 3798 (37.0%)
+10,182 (99.3%) 75 (0.73%)
+10,223 (99.7%) 34 (0.33%)
+1.62 (0.84) 41.1 (27.2) 47.4 (28.1)
+786 (7.66%)
+
+73.5 (6.69)
+5847 (80.8%) 815 (11.3%) 571 (7.89%)
+4498 (62.2%) 2735 (37.8%)
+2856 (39.5%) 4377 (60.5%)
+3352 (46.3%) 3881 (53.7%)
+3932 (54.4%) 1173 (16.2%) 407 (5.63%) 1721 (23.8%)
+3523 (48.7%) 3710 (51.3%)
+4452 (61.6%) 2045 (28.3%) 538 (7.44%) 198 (2.74%)
+715 (9.89%) 2782 (38.5%) 1293 (17.9%) 123 (1.70%) 2320 (32.1%)
+1387 (19.2%) 1035 (14.3%) 2119 (29.3%) 2692 (37.2%)
+7179 (99.3%) 54 (0.75%)
+7210 (99.7%) 23 (0.32%)
+1.62 (0.84) 41.1 (26.9) 47.3 (28.2)
+558 (7.71%)
+
+Page 4 of 14
+
+Validation cohort N = 3024 73.5 (6.83)
+2453 (81.1%) 317 (10.5%) 254 (8.40%)
+1908 (63.1%) 1116 (36.9%)
+1170 (38.7%) 1854 (61.3%)
+1463 (48.4%) 1561 (51.6%)
+1607 (53.1%) 485 (16.0%) 171 (5.65%) 761 (25.2%)
+1473 (48.7%) 1551 (51.3%)
+1857 (61.4%) 862 (28.5%) 226 (7.47%) 79 (2.61%)
+278 (9.19%) 1141 (37.7%) 553 (18.3%)
+54 (1.79%) 998 (33.0%)
+653 (21.6%) 411 (13.6%) 854 (28.2%) 1106 (36.6%)
+3003 (99.3%) 21 (0.69%)
+3013 (99.6%) 11 (0.36%)
+1.61 (0.82) 41.0 (28.1) 47.8 (27.9)
+228 (7.54%)
+
+p 0.7 0.4
+0.4 0.5 0.06 0.5
+1 0.9
+0.7
+0.044
+0.9 0.9 0.7 0.9 0.4 0.8
+
+Wang et al. Journal of Translational Medicine (2022) 20:90
+
+Page 5 of 14
+
+Table 1  (continued)
+
+Total N = 10,595
+
+Training cohort
+
+Validation cohort
+
+p
+
+N = 7233
+
+N = 3024
+
+Alive
+
+9471 (92.3%)
+
+6675 (92.3%)
+
+2796 (92.5%)
+
+Overall survival
+
+0.5
+
+Dead
+
+2623 (25.6%)
+
+1836 (25.4%)
+
+787 (26.0%)
+
+Alive
+
+7634 (74.4%)
+
+5397 (74.6%)
+
+2237 (74.0%)
+
+a Other includes Asian/Pacific Islander, American Indian/Alaskan Native; b Others includes the pathological type of RCC is not known c Local excision includes cryosurgery, thermal ablation, laser excision
+
+results of multivariable analysis of the training cohort are shown in Table 2. Variables including age, sex, race, histologic type, Fuhrman grade, T stage, surgery type, tumors number, tumor size, and marriage. In general, ten parameters are considered to be significant independent risk factors and they may effectively predict OS in elderly RCC patients. At the same time, univariable and multivariable analysis suggested that age, histologic type, Fuhrman grade, T stage, surgery type, radiotherapy, and tumor number were independent risk factors for CSS in patients (Table 3).
+Nomogram construction for 1‑year, 3‑year, and 5‑year OS and CSS We constructed a nomogram model using the eight significant risk factors identified by multivariable Cox regression analysis of the training cohort and listed the corresponding score for each parameter (Fig. 2A). The nomogram can estimate the 1 -, 3 -, and 5-year OS of the training cohort. As we can see from the nomogram, surgery and age had the greatest impact on OS, followed by tumor size, Fuhrman grade, histological type, tumor number, T stage and marriage. Meanwhile, we established a nomogram to predict patients’ CSS (Fig. 2B).
+Validation of the nomogram The C-index of the training cohort and validation cohort were 0.748 (95% CI: 0.760–0.736) and 0.744 (95% CI: 0.762–0.726), respectively, indicating that the model had good discriminatory power. In the external validation cohort, C-index was 0.893 (95% CI: 0.928–0.858). The calibration plots for the training cohort and the validation cohort used to predict OS show good agreement between the actual observations and the model predictions (Fig. 3A, B). The calibration plots of the nomogram for predicting patients’ CSS still showed good accuracy (Fig. 3C, D). In the training cohort, the AUC of predicted nomogram for 1-year, 3-year and 5-year were 0.802, 0.737 and 0.757(Fig. 4A). In the validation cohort, the AUC of
+
+predicted nomogram for 1-year, 3-year and 5-year were 0.773, 0.764 and 0.738(Fig. 4B).
+Clinical application of the nomogram DCAs showed that the clinical application value of nomograms was superior to that of the TNM stage system in the training cohort and the validation cohort (Fig. 5A–D). The DCA of externally validation suggested that the predictive model has good clinical value (Fig. 6A, B). We developed a risk stratification system based on the overall score of patients on a nomogram. Patients were divided into three groups: low-risk group (total score ≤ 62.3), high-risk group (total score > 62.3). Indeed, in the training and validation cohort, RCC patients in the high-risk group showed a shorter OS than patients in the low-risk group. The Kaplan–Meier curve shows that in all cohorts, the 1-, 3-, and 5-year OS rates of the low-risk group were 97.8%, 92.4%, and 84.5%, respectively; the high-risk group were 88.8%, 73.5%, and 60.7%, respectively (Fig. 7A, B). In addition, the impact of different surgical methods on the survival probability of patients in the low-, and high-risk groups was summarized. In the low-risk group, almost everyone has undergone surgery, patients with PN have the highest survival probability, followed by patients with RN and patients with local resection (Fig. 8A). In the highrisk group, most patients did not receive surgery or RN (Fig. 8B).
+Online application for OS prediction Based on the nomogram, we have developed an easy-touse online application to predict the OS of elderly RCC patients, which can be accessed at https://​jinku​iwang.​shiny​ apps.​io/​DynNo​mapp/. Enter the patient characteristics, you can immediately get the estimated survival probability. In a word, this online prediction tool is convenient to use in the clinic.
+
+Wang et al. Journal of Translational Medicine (2022) 20:90
+
+Page 6 of 14
+
+Table 2  Univariable and multivariable Cox regression analysis of OS in training cohort
+
+Univariate
+
+Multivariable
+
+HR
+
+95%CI
+
+P
+
+HR
+
+Age
+
+1.09
+
+1.08–1.09
+
+Race
+
+White
+
+Reference
+
+Black  ­Othera
+
+1.1
+
+0.95–1.26
+
+0.82
+
+0.68–0.98
+
+Sex
+
+Male
+
+Reference
+
+Female
+
+0.9
+
+0.81–0.99
+
+Year of diagnosis 2010–2013
+
+Reference
+
+2014–2017
+
+1.01
+
+0.91–1.12
+
+Histologic type Clear cell
+
+Reference
+
+Papillary
+
+0.91
+
+0.78–1.06
+
+Chromophobe  ­Otherb
+
+0.74
+
+0.57–0.95
+
+2.59
+
+2.34–2.86
+
+Laterality Left
+
+Reference
+
+Right
+
+1.01
+
+0.92–1.11
+
+T stage Grade
+
+1.22
+
+1.15–1.29
+
+I
+
+Reference
+
+II
+
+1.04
+
+0.86–1.26
+
+III
+
+1.17
+
+0.95–1.43
+
+IV Unknown
+
+2.34
+
+1.68–3.27
+
+2.6
+
+2.17–3.12
+
+Surgery
+
+No Local ­excisionc
+
+Reference 0.28
+
+0.24–0.33
+
+Partial Nephrectomy
+
+0.14
+
+Radical Nephrectomy
+
+0.25
+
+0.12–0.16 0.22–0.28
+
+Radiotherapy
+
+No/unknown
+
+Reference
+
+Yes
+
+3.16
+
+1.86–5.34
+
+Chemotherapy No/Unknown
+
+Reference
+
+Yes
+
+3.48
+
+2.46–4.94
+
+Tumors number
+
+1.27
+
+1.21–1.33
+
+Marriage
+
+No
+
+Reference
+
+Married
+
+0.67
+
+0.61–0.73
+
+Tumor size
+
+1.001
+
+1.001–1.002
+
+a Other includes Asian/Pacific Islander, American Indian/Alaskan Native; b Others includes the pathological type of RCC is not known c Local excision includes cryosurgery, thermal ablation, laser excision
+
+ < 0.001
+0.2 0.031
+0.023
+
+1.048
+Reference 1.168 0.919
+Reference 0.783
+
+0.9
+0.2 0.017  < 0.001
+
+Reference 0.837 0.678 1.122
+
+0.9  < 0.001
+0.7 0.14  < 0.001  < 0.001
+ < 0.001  < 0.001  < 0.001
+
+1.23
+Reference 1.132 1.279 2.241 1.097
+Reference 0.408 0.227 0.311
+
+ < 0.001
+
+ < 0.001  < 0.001
+ < 0.001  < 0.001
+
+1.192
+Reference 0.807 1.002
+
+95%CI 1.041–1.056
+1.011–1.35 0.763–1.107
+0.707–0.868
+0.717–0.975 0.525–0.876 0.979–1.287
+1.134–1.335
+0.935–1.371 1.034–1.584 1.598–3.143 0.895–1.344
+0.348–0.48 0.189–0.272 0.264–0.366
+1.136–1.249
+0.731–0.891 1.001–1.004
+
+P  < 0.001
+0.035 0.4
+ < 0.001
+0.023 0.003 0.1
+ < 0.001
+0.2 0.024  < 0.001 0.375
+ < 0.001  < 0.001  < 0.001
+ < 0.001
+ < 0.001 0.003
+
+Wang et al. Journal of Translational Medicine (2022) 20:90
+
+Page 7 of 14
+
+Table 3  Univariable and multivariable Cox regression analysis of CSS in training cohort
+
+Univariate
+
+Multivariable
+
+HR
+
+95%CI
+
+P
+
+HR
+
+Age
+
+1.09
+
+1.08–1.1
+
+Race
+
+White
+
+Reference
+
+Black  ­Othera
+
+0.96
+
+0.73–1.26
+
+0.93
+
+0.68–1.27
+
+Sex
+
+Male
+
+Reference
+
+Female
+
+1
+
+0.84–1.18
+
+Year of diagnosis 2010–2013
+
+Reference
+
+2014–2017
+
+0.98
+
+0.81–1.18
+
+Histologic type Clear cell
+
+Reference
+
+Papillary
+
+0.89
+
+0.68–1.15
+
+Chromophobe  ­Otherb
+
+0.6
+
+0.36–0.97
+
+2.28
+
+1.9–2.73
+
+Laterality Left
+
+Reference
+
+Right
+
+1.13
+
+0.96–1.34
+
+T stage Grade
+
+1.69
+
+1.55–1.84
+
+I
+
+Reference
+
+II
+
+1.62
+
+1.07–2.45
+
+III
+
+2.07
+
+1.34–3.19
+
+IV Unknown
+
+5.64
+
+3.2–9.96
+
+3.99
+
+2.66–5.97
+
+Surgery
+
+No Local ­excisionc
+
+Reference 0.25
+
+0.19–0.33
+
+Partial Nephrectomy
+
+0.11
+
+Radical Nephrectomy
+
+0.3
+
+0.08–0.15 0.25–0.36
+
+Radiotherapy
+
+No/unknown
+
+Reference
+
+Yes
+
+5.9
+
+2.94–11.87
+
+Chemotherapy No/unknown
+
+Reference
+
+Yes
+
+5.29
+
+3.16–8.84
+
+Tumors number Marriage
+
+1.2
+
+1.11–1.31
+
+No
+
+Reference
+
+Married
+
+0.67
+
+0.56–0.79
+
+Tumor size
+
+1.01
+
+1–1.01
+
+a Other includes Asian/Pacific Islander, American Indian/Alaskan Native b Others includes the pathological type of RCC is not known c Local excision includes cryosurgery, thermal ablation, laser excision
+
+ < 0.001
+0.8 0.6
+0.9
+0.8
+0.4 0.038  < 0.001
+0.15  < 0.001
+0.022 0.001  < 0.001  < 0.001
+ < 0.001  < 0.001  < 0.001
+ < 0.001
+ < 0.001  < 0.001
+ < 0.001  < 0.001
+
+1.05
+Reference 0.852 0.517 0.921
+1.831 Reference 1.744 2.155 4.397 1.777 Reference 0.403 0.166 0.26 Reference 2.554
+Reference 1.166
+
+95%CI 1.038–1.063
+0.65–1.117 0.314–0.851 0.717–1.184
+1.661–2.018 1.148–2.65 1.379–3.368 2.462–7.852 1.15–2.746 0.297–0.547 0.117–0.236 0.194–0.349 1.254–5.2
+1.068–1.273
+
+P  < 0.001
+0.2 0.009 0.5
+ < 0.001 0.009 0.001
+ < 0.001 0.01
+ < 0.001  < 0.001  < 0.001
+0.01
+0.001
+
+Wang et al. Journal of Translational Medicine (2022) 20:90
+
+Page 8 of 14
+
+Fig. 2  Nomograms for 1-, 3-, and 5-year OS and CSS of patients with RCC​
+
+Fig. 3  Calibration curves of nomogram. A For OS in training cohort; B For OS in validation cohort; C For CSS in training cohort; D For CSS in validation cohort
+
+Wang et al. Journal of Translational Medicine (2022) 20:90
+
+Page 9 of 14
+
+Fig. 4  The ROC for OS of 1-, 3- and 5-year of training cohort (A) and validation cohort (B)
+
+Fig. 5  Decision curves of the nomogram predicting OS in training cohort (A) and validation cohort (B). Decision curves of the nomogram predicting CSS in training cohort (C) and validation cohort (D). The y-axis represents the net benefit, and the x-axis represents the threshold probability. The purple line indicates that no patients have died, and the blue line indicates that all patients have died. When the threshold probability is between 20 and 60%, the net benefit of the model exceeds all deaths or no deaths
+
+Wang et al. Journal of Translational Medicine (2022) 20:90
+
+Page 10 of 14
+
+Fig. 6  Decision curves of the nomogram predicting OS in external validation cohort (A), the nomogram predicting CSS in external validation cohort (B)
+
+Fig. 7  Kaplan–Meier curves of OS for patients in the low-, and high-risk groups in the training Cohort (A) and validation Cohort (B)
+
+Discussion This study used a large number of clinical samples to establish a nomogram to predict the mid-term to longterm prognosis of elderly patients with early RCC based on the data from the US Surveillance, Epidemiology, and Final Outcome (SEER) program. We build the nomogram model and validate the performance of the model by screening clinically significant variables. In clinical practice, TNM stage is a routine method for doctors and researchers to evaluate tumor prognosis and select treatment strategies [25]. The nomogram survival prognosis prediction method has higher accuracy than the traditional TNM tumor stage system [26, 27]. Clinicians can predict the survival of patients based on the nomogram to help the elderly patients
+
+with early RCC formulate treatment strategies and answer patients’ consultations. As far as we know, there is no nomogram on the prognosis of elderly patients with early RCC. Therefore, it is necessary to establish a reliable prognostic model. We used the latest data to extract data from 11,976 elderly RCC patients from 2010 to 2018 from the SEER database. Consistent with previous studies, most patients are male, white, and married, and have undergone surgery [4].
+RCC is the most common renal malignant tumor, accounting for about 85% of adult renal malignant tumors [28]. With the improvement of imaging technology, patients with small renal cell carcinoma have the opportunity to be detected early. Although the rate of new diagnoses in young patients is accelerating,
+
+Wang et al. Journal of Translational Medicine (2022) 20:90
+
+Page 11 of 14
+
+Fig. 8  OS prediction of patients with different surgery in low- (A) and high-risk (B) group
+
+elderly patients still have the highest overall risk of kidney cancer [12]. Overall, the 5-year relative survival rates of RCC were 81% (stage I) and 74% (stage II), but it dropped to 53% (stage III) and 10% (stage IV) [29, 30]. Therefore, it is of great significance to the care of the elderly patients with early RCC. Accurately predicting the outcome of elderly patients with early RCC can benefit from future treatment strategies and follow-up guidance.
+Multivariable analysis found that age, histologic type, Fuhrman grade, T stage, surgery type, tumors number, tumor size, and marriage have a significant impact on the OS of RCC patients. It is easy to imagine that the increase of age leads to the decline of the patient’s immune system, which will contribute to the deterioration of the tumor and reduce the survival time of the patient. Specifically, in this study, marriage is a factor that significantly affects OS. It may be that married patients get more emotional comfort and financial support from their family members, and thus have a better prognosis [31]. The effect of gender on patients may be related to hormone levels in the body [32]. There are more male RCC patients than females, and the prognosis is worse than that of females.
+Fuhrman grade, another independent factor of OS in elderly patients with RCC. Consistent with previous studies, tumor grade is a significant prognostic risk indicator [16]. The nomogram model suggests that undifferentiated pathological types predict worse clinical outcomes. Pathological classification shows that compared with clear cell RCC, papillary and chromophobe RCC have a higher OS, because non-clear cell RCC tends to have a slower course of disease and much lower metastatic potential [33]. In
+
+our study, most patients have clear cell RCC, so surgical treatment has better OS than non-surgical treatment. In most patients, for early RCC in the elderly, monitoring is recommended to be limited to patients with substantial comorbidities, who are too weak to tolerate surgery. Depending on the T stage, the OS of elderly patients with RCC also differs, because RCC may show different growth depending on its size. Studies have shown that small tumors tend to grow at a relatively slow rate [34]. In our study, the results showed that there was significant difference in OS between T stages. The results of tumors number show that it has a significant impact on the OS rate of patients. It is not difficult to speculate that the number of tumors is negatively correlated with the prognosis of patients.
+In this study, we found that for elderly patients with early RCC, PN can achieve the best OS, followed by local tumor excision, RN and non-surgical treatment. In the low-risk group, almost everyone has undergone surgery, although the difference between the various surgical methods is not obvious, the surgery seems to benefit the patient. In the medium-risk group, patients with PN have the highest survival probability. For medium-risk patients, the benefit of surgery is significantly higher than that of non-surgery. And it seems that PN can get a higher OS than RN in medium-risk patients. In high-risk patients, most patients have not undergone surgery, because these patients have a higher chance of comorbidities, and surgery may reduce the OS rate of patients.Although studies have suggested that age-related mortality from competitive causes may diminish the benefits of surgery for some
+
+Wang et al. Journal of Translational Medicine (2022) 20:90
+
+Page 12 of 14
+
+elderly patients with early RCC [35]. Our results indicate that surgery in elderly patients with early RCC can improve the 1-, 3-, and 5-year OS. Indeed, the OS of patients undergoing PN was higher than that of patients undergoing RN, which is consistent with some previous observational studies [36–38], which may be related to the morbidity and mortality associated with chronic kidney disease. There are also studies indicate that the treatment for early stage renal cancer, especially T1a RCC, PN and RN have the equivalent treatment results, but the risk of subsequent chronic kidney disease is reduced [39–41]. In addition, local tumor excision also seems to be beneficial to the patients OS than non-surgery, even slightly better than RN. Due to local excision can prevent the progression of the tumor, compared with non-surgical treatment, it can benefit elderly patients with early RCC.
+The parameters of the nomogram model constructed in this study include age, histologic type, Fuhrman grade, T stage, surgery type, tumors number, tumor size, and marriage, which can be easily collected in clinical practice. We used DCA to validate the accuracy and predictive ability of nomogram for elderly RCC patients. In short, nomogram had been proved to be able to accurately predict the OS of elderly RCC patients at 1-, 3- and 5-year, and has good clinical application potential. The risk stratification of our nomogram helps to identify highrisk groups, so as to provide accurate surgical intervention and monitoring for high-risk groups. In addition, we used the data of patients in 2018 as external validation. Short-term survival prediction showed that our prediction model has good accuracy and reliability. For elderly patients with early-stage renal cell carcinoma, 1-, 3-, 5-year survival rates can be obtained only by entering corresponding clinicopathological features according to the nomogram.
+Our research also has some limitations. Because SEER does not collect data on the comorbidity of patients, the comorbidity of patients must increase with age, which affects the survival of patients. However, we have carried out a detailed stratification of the patient’s age, which largely avoids the deviation of OS caused by aging and comorbidity. Also, since the data includes the years 2010–2018, with the growth of imaging technology and the improvement of surgery, the OS of patients may be different. However, we stratified according to the year of diagnosis and did not see obvious OS differences, indicating that our research is still applicable to the contemporary era. In addition, the SEER database is limited, we did not include some potentially important indicators, such as family history of hypertension, BMI, smoking and drinking, and genetic markers [42, 43]. Finally, although we have conducted external validation, large sample
+
+prospective clinical trials still needs to further validate the established prediction model.
+Conclusions In summary, we have established a new monogram to predict the prognosis of elderly patients with early RCC based on a large population cohort in the SEER database. This tool can help doctors and elderly patients with early RCC to predict prognosis and formulate treatment and follow-up strategies.
+Authors’ contributions XL, ZX, JW, JT, TC and SY contributed to the conception and design. XL and JW collected and analyzed the data. XL and JT drew the figures and tables. JW wrote the draft. XL, TC and WF contributed to manuscript writing and revision. All authors read and approved the final manuscript.
+Funding This study was sponsored by National Natural Science Foundation of China (No. 81801812).
+Data availability The data analyzed in this study is available at https://​seer.​Cancer.​gov/.
+Declarations
+Ethics approval and consent for participate The data of this study is obtained from the SEER database. The patients’ data is public and anonymous, so this study does not require ethical approval and informed consent.
+Consent for publication All authors have reviewed the final version of the manuscript and approved its submission.
+Competing interests All authors declare no conflicts of interest in this study.
+Author details 1 Department of Cardiology, The Second Affiliated Hospital of Chongqing Medical University, Chongqing, China. 2 Department of Urology, Chongqing Key Laboratory of Children Urogenital Development and Tissue Engineering, Chongqing Key Laboratory of Pediatrics, Ministry of Education Key Laboratory of Child Development and Disorders, National Clinical Research Center for Child Health and Disorders, China International Science and Technology Cooperation base of Child development and Critical Disorders, Children’s Hospital of Chongqing Medical University, Chongqing, China. 3 Department of Biostatistics and Epidemiology, Public Health School, Shenyang Medical College, Shenyang, China. 4 College of Medical Informatics, The Chongqing Medical University, Chongqing, China. 5 Department of Gynecology and Obstetrics, The Second Affiliated Hospital of Chongqing Medical University, Chongqing, China. 6 College of Traditional Chinese Medicine, Guangzhou University of Chinese Medicine, Guangzhou, China.
+Received: 31 October 2021 Accepted: 31 January 2022
+References 1. Ferlay J, Soerjomataram I, Dikshit R, et al. Cancer incidence and mortality
+worldwide: sources, methods and major patterns in GLOBOCAN 2012. Int J Cancer. 2015;136(5):E359–86. https://​doi.​org/​10.​1002/​ijc.​29210. 2. Zhang Z, Tang H, Chen P, Xie H, Tao Y. Demystifying the manipulation of host immunity, metabolism, and extraintestinal tumors by the gut
+
+Wang et al. Journal of Translational Medicine (2022) 20:90
+
+Page 13 of 14
+
+microbiome. Signal Transduct Target Ther. 2019;4:41. https://​doi.​org/​10.​ 1038/​s41392-​019-​0074-5. 3. Siegel RL, Miller KD, Jemal A. Cancer statistics, 2020. CA Cancer J Clin. 2020;70(1):7–30. https://​doi.​org/​10.​3322/​caac.​21590. 4. Chow WH, Devesa SS. Contemporary epidemiology of renal cell cancer. Cancer J. 2008;14(5):288–301. https://​doi.​org/​10.​1097/​PPO.​0b013​e3181​ 867628. 5. Rini BI, Campbell SC, Escudier B. Renal cell carcinoma. Lancet. 2009;373(9669):1119–32. https://​doi.​org/​10.​1016/​S0140-​6736(09)​ 60229-4. 6. Choueiri TK, Motzer RJ. Systemic therapy for metastatic renal-cell carcinoma. N Engl J Med. 2017;376(4):354–66. https://​doi.​org/​10.​1056/​NEJMr​ a1601​333. 7. Denzinger S, Otto W, Burger M, et al. Sporadic renal cell carcinoma in young and elderly patients: are there different clinicopathological features and disease specific survival rates? World J Surg Oncol. 2007;5:16. https://​doi.​org/​10.​1186/​1477-​7819-5-​16. 8. Taccoen X, Valeri A, Descotes JL, et al. Renal cell carcinoma in adults 40 years old or less: young age is an independent prognostic factor for cancer-specific survival. Eur Urol. 2007;51(4):980–7. https://​doi.​org/​10.​ 1016/j.​eururo.​2006.​10.​025. 9. Verhoest G, Veillard D, Guillé F, et al. Relationship between age at diagnosis and clinicopathologic features of renal cell carcinoma. Eur Urol. 2007;51(5):1298–305. https://​doi.​org/​10.​1016/j.​eururo.​2006.​11.​056. 10. Thoroddsen A, Einarsson GV, Hardarson S, et al. Renal cell carcinoma in young compared to older patients: comparison of clinicopathological risk factors and survival. Scand J Urol Nephrol. 2008;42(2):121–5. https://​doi.​ org/​10.​1080/​00365​59070​15715​55. 11. Hollingsworth JM, Miller DC, Daignault S, Hollenbeck BK. Rising incidence of small renal masses: a need to reassess treatment effect. J Natl Cancer Inst. 2006;98(18):1331–4. https://​doi.​org/​10.​1093/​jnci/​djj362. 12. King SC, Pollack LA, Li J, King JB, Master VA. Continued increase in incidence of renal cell carcinoma, especially in young patients and high grade disease: United States 2001 to 2010. J Urol. 2014;191(6):1665–70. https://​doi.​org/​10.​1016/j.​juro.​2013.​12.​046. 13. Lane BR, Abouassaly R, Gao T, et al. Active treatment of localized renal tumors may not impact overall survival in patients aged 75 years or older. Cancer. 2010;116(13):3119–26. https://​doi.​org/​10.​1002/​cncr.​25184. 14. Sun M, Becker A, Tian Z, et al. Management of localized kidney cancer: calculating cancer-specific mortality and competing risks of death for surgery and nonsurgical management. Eur Urol. 2014;65(1):235–41. https://​doi.​org/​10.​1016/j.​eururo.​2013.​03.​034. 15. Gettman MT, Blute ML, Spotts B, Bryant SC, Zincke H. Pathologic staging of renal cell carcinoma: significance of tumor classification with the 1997 TNM staging system. Cancer. 2001;91(2):354–61. https://​doi.​org/​10.​1002/​ 1097-​0142(20010​115)​91:2%​3c354::​aid-​cncr1​009%​3e3.0.​co;2-9. 16. Leibovich BC, Lohse CM, Crispen PL, et al. Histological subtype is an independent predictor of outcome for patients with renal cell carcinoma. J Urol. 2010;183(4):1309–15. https://​doi.​org/​10.​1016/j.​juro.​2009.​12.​035. 17. Yan Y, Liu H, Mao K, et al. Novel nomograms to predict lymph node metastasis and liver metastasis in patients with early colon carcinoma. J Transl Med. 2019;17(1):193. https://​doi.​org/​10.​1186/​s12967-​019-​1940-1. 18. Zhang Z, Xie H, Chen P, Cao P. Development and Identification of a nomogram prognostic model for patients with primary clear cell carcinoma of the liver. Med Sci Monit. 2020;26:e919789. https://​doi.​org/​10.​12659/​MSM.​ 919789. 19. Balachandran VP, Gonen M, Smith JJ, DeMatteo RP. Nomograms in oncology: more than meets the eye. Lancet Oncol. 2015;16(4):e173–80. https://​ doi.​org/​10.​1016/​S1470-​2045(14)​71116-7. 20. van den Hoven I, van Klaveren D, Verheuvel NC, et al. Predicting the extent of nodal involvement for node positive breast cancer patients: development and validation of a novel tool. J Surg Oncol. 2019;120(4):578–86. https://​doi.​org/​10.​1002/​jso.​25644. 21. Zhang Y, Zheng D, Xie J, et al. Development and validation of web-based nomograms to precisely predict conditional risk of site-specific recurrence for patients with completely resected non-small cell lung cancer: a multiinstitutional study. Chest. 2018;154(3):501–11. https://​doi.​org/​10.​ 1016/j.​chest.​2018.​04.​040. 22. Hu T, Wang S, Huang L, et al. A clinical-radiomics nomogram for the preoperative prediction of lung metastasis in colorectal cancer patients with
+
+indeterminate pulmonary nodules. Eur Radiol. 2019;29(1):439–49. https://​ doi.​org/​10.​1007/​s00330-​018-​5539-3. 23. Cronin KA, Ries LA, Edwards BK. The Surveillance, Epidemiology, and End Results (SEER) Program of the National Cancer Institute. Cancer. 2014;120(Suppl 23):3755–7. https://​doi.​org/​10.​1002/​cncr.​29049. 24. Vickers AJ, Cronin AM, Elkin EB, Gonen M. Extensions to decision curve analysis, a novel method for evaluating diagnostic tests, prediction models and molecular markers. BMC Med Inform Decis Mak. 2008;8:53. https://​doi.​org/​10.​1186/​1472-​6947-8-​53. 25. Motzer RJ, Escudier B, McDermott DF, et al. Nivolumab versus Everolimus in Advanced Renal-Cell Carcinoma. N Engl J Med. 2015;373(19):1803–13. https://​doi.​org/​10.​1056/​NEJMo​a1510​665. 26. Brateanu A, Yu C, Kattan MW, Olender J, Nielsen C. A nomogram to predict the probability of passing the American Board of Internal Medicine examination. Med Educ Online. 2012;17:18810. https://​doi.​org/​10.​3402/​ meo.​v17i0.​18810. 27. Cao J, Yuan P, Wang L, et al. Clinical Nomogram for Predicting Survival of Esophageal Cancer Patients after Esophagectomy. Sci Rep. 2016;6:26684. https://​doi.​org/​10.​1038/​srep2​6684. 28. Cairns P. Renal cell carcinoma. Cancer Biomark. 2010;9(1–6):461–73. https://​doi.​org/​10.​3233/​CBM-​2011-​0176. 29. Porta C, Cosmai L, Leibovich BC, Powles T, Gallieni M, Bex A. The adjuvant treatment of kidney cancer: a multidisciplinary outlook. Nat Rev Nephrol. 2019;15(7):423–33. https://​doi.​org/​10.​1038/​s41581-​019-​0131-x. 30. Yoshiyama A, Morii T, Susa M, et al. Preoperative evaluation of renal cell carcinoma patients with bone metastases on risks for blood loss, performance status and lethal event. J Orthop Sci. 2017;22(5):924–30. https://​ doi.​org/​10.​1016/j.​jos.​2017.​07.​006. 31. Zhou H, Zhang Y, Song Y, et al. Marital status is an independent prognostic factor for pancreatic neuroendocrine tumors patients: An analysis of the Surveillance, Epidemiology, and End Results (SEER) database. Clin Res Hepatol Gastroenterol. 2017;41(4):476–86. https://​doi.​org/​10.​1016/j.​clinre.​ 2017.​02.​008. 32. Huang X, Shu C, Chen L, Yao B. Impact of sex, body mass index and initial pathologic diagnosis age on the incidence and prognosis of different types of cancer. Oncol Rep. 2018;40(3):1359–69. https://​doi.​org/​10.​3892/​ or.​2018.​6529. 33. Kattan MW, Reuter V, Motzer RJ, Katz J, Russo P. A postoperative prognostic nomogram for renal cell carcinoma. J Urol. 2001;166(1):63–7. 34. Chawla SN, Crispen PL, Hanlon AL, Greenberg RE, Chen DY, Uzzo RG. The natural history of observed enhancing renal masses: meta-analysis and review of the world literature. J Urol. 2006;175(2):425–31. https://​doi.​org/​ 10.​1016/​S0022-​5347(05)​00148-5. 35. Taub DA, Miller DC, Cowan JA, Dimick JB, Montie JE, Wei JT. Impact of surgical volume on mortality and length of stay after nephrectomy. Urology. 2004;63(5):862–7. https://​doi.​org/​10.​1016/j.​urolo​gy.​2003.​11.​037. 36. Zini L, Perrotte P, Capitanio U, et al. Radical versus partial nephrectomy: effect on overall and noncancer mortality. Cancer. 2009;115(7):1465–71. https://​doi.​org/​10.​1002/​cncr.​24035. 37. Thompson RH, Boorjian SA, Lohse CM, et al. Radical nephrectomy for pT1a renal masses may be associated with decreased overall survival compared with partial nephrectomy. J Urol. 2008;179(2):468–73. https://​ doi.​org/​10.​1016/j.​juro.​2007.​09.​077. 38. Go AS, Chertow GM, Fan D, McCulloch CE, Hsu CY. Chronic kidney disease and the risks of death, cardiovascular events, and hospitalization [published correction appears in N Engl J Med. 2008;18(4):4]. N Engl J Med. 2004;351(13):1296–1305. doi: https://​doi.​org/​10.​1056/​NEJMo​a0410​31. 39. Huang WC, Levey AS, Serio AM, et al. Chronic kidney disease after nephrectomy in patients with renal cortical tumours: a retrospective cohort study. Lancet Oncol. 2006;7(9):735–40. https://​doi.​org/​10.​1016/​ S1470-​2045(06)​70803-8. 40. Lau WK, Blute ML, Weaver AL, Torres VE, Zincke H. Matched comparison of radical nephrectomy vs nephron-sparing surgery in patients with unilateral renal cell carcinoma and a normal contralateral kidney. Mayo Clin Proc. 2000;75(12):1236–42. https://​doi.​org/​10.​4065/​75.​12.​1236. 41. Miller DC, Schonlau M, Litwin MS, Lai J, Saigal CS; Urologic Diseases in America Project. Renal and cardiovascular morbidity after partial or radical nephrectomy. Cancer. 2008;112(3):511–520. doi: https://​doi.​org/​10.​ 1002/​cncr.​23218. 42. Crona DJ, Skol AD, Leppänen VM, et al. Genetic Variants of VEGFA and FLT4 are determinants of survival in renal cell carcinoma patients treated
+
+Wang et al. Journal of Translational Medicine (2022) 20:90
+with sorafenib. Cancer Res. 2019;79(1):231–41. https://​doi.​org/​10.​1158/​ 0008-​5472.​CAN-​18-​1089. 43. Sánchez-Gastaldo A, Kempf E, González Del Alba A, Duran I. Systemic treatment of renal cell cancer: a comprehensive review. Cancer Treat Rev. 2017;60:77–89. https://​doi.​org/​10.​1016/j.​ctrv.​2017.​08.​010.
+Publisher’s Note
+Springer Nature remains neutral with regard to jurisdictional claims in published maps and institutional affiliations.
+
+Page 14 of 14
+
+Ready to submit your research ? Choose BMC and benefit from:
+• fast, convenient online submission • thorough peer review by experienced researchers in your ﬁeld • rapid publication on acceptance • support for research data, including large and complex data types • gold Open Access which fosters wider collaboration and increased citations • maximum visibility for your research: over 100M website views per year
+At BMC, research is always in progress.
+Learn more biomedcentral.com/submissions
+
