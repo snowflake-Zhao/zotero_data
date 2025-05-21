@@ -1,0 +1,2736 @@
+Scott Meyers
+Effective
+Modern C++
+42 SPECIFIC WAYS TO IMPROVE YOUR USE OF C++11 AND C++14
+
+
+P R O G R A M M I N G /C+ +
+Effective Modern C++
+ISBN: 978-1-491-90399-5
+US $49.99 CAN $52.99
+“After I learned the C++
+basics, I then learned how to use C++ in production code from Meyers' series of
+Effective C++ books. Effective Modern C++ is the most important how-to book for advice on key guidelines, styles, and idioms to use modern C++ effectively and well. Don't own it yet? Buy this one. Now.”
+—Herb Sutter Chair of ISO C++ Standards Committee and C++ Software Architect at Microsoft
+Twitter: @oreillymedia facebook.com/oreilly
+Coming to grips with C++11 and C++14 is more than a matter of familiarizing yourself with the features they introduce (e.g., auto type declarations, move semantics, lambda expressions, and concurrency support). The challenge is learning to use those features effectively—so that your software is correct, efficient, maintainable, and portable. That’s where this practical book comes in. It describes how to write truly great software using C++11 and C++14—i.e., using modern C++.
+Topics include:
+■ The pros and cons of braced initialization, noexcept specifications, perfect forwarding, and smart pointer make functions
+■ The relationships among std::move, std::forward, rvalue references, and universal references
+■ Techniques for writing clear, correct, effective lambda expressions
+■ How std::atomic differs from volatile, how each should be used, and how they relate to C++'s concurrency API
+■ How best practices in "old" C++ programming (i.e., C++98) require revision for software development in modern C++
+Effective Modern C++ follows the proven guideline-based, example-driven format of Scott Meyers' earlier books, but covers entirely new material. It's essential reading for every modern C++ software developer.
+For more than 20 years, Scott Meyers' Effective C++ books (Effective C++, More Effective C++, and Effective STL) have set the bar for C++ programming guidance. His clear, engaging explanations of complex technical material have earned him a worldwide following, keeping him in demand as a trainer, consultant, and conference presenter. He has a Ph.D. in Computer Science from Brown University.
+
+
+So, still interested in C++? You should be! Modern C++ (i.e., C++11/C++14)
+is far more than just a facelift. Considering the new features, it seems that it’s
+more a reinvention. Looking for guidelines and assistance? Then this book
+is surely what you are looking for. Concerning C++, Scott Meyers was
+and still is a synonym for accuracy, quality, and delight.
+—Gerhard Kreuzer
+Research and Development Engineer, Siemens AG
+Finding utmost expertise is hard enough. Finding teaching perfectionism
+an author’s obsession with strategizing and streamlining explanations—is also difficult.
+You know you’re in for a treat when you get to find both embodied in the same person.
+Effective Modern C++ is a towering achievement from a consummate technical writer.
+It layers lucid, meaningful, and well-sequenced clarifications on top of complex and
+interconnected topics, all in crisp literary style. You’re equally unlikely to find a
+technical mistake, a dull moment, or a lazy sentence in Effective Modern C++.
+—Andrei Alexandrescu
+Ph.D., Research Scientist, Facebook, and author of Modern C++ Design
+As someone with over two decades of C++ experience, to get the most out of
+modern C++ (both best practices and pitfalls to avoid), I highly recommend
+getting this book, reading it thoroughly, and referring to it often!
+I’ve certainly learned new things going through it!
+—Nevin Liber
+Senior Software Engineer, DRW Trading Group
+Bjarne Stroustrup—the creator of C++—said, “C++11 feels like a new language.”
+Effective Modern C++ makes us share this same feeling by clearly explaining
+how everyday programmers can benefit from new features and idioms
+of C++11 and C++14. Another great Scott Meyers book.
+—Cassio Neri
+FX Quantitative Analyst, Lloyds Banking Group
+Praise for Effective Modern C++
+
+
+Scott has the knack of boiling technical complexity down to an understandable kernel.
+His Effective C++ books helped to raise the coding style of a previous generation of C++
+programmers; the new book seems positioned to do the same for those using modern C++.
+—Roger Orr
+OR/2 Limited, a member of the ISO C++ standards committee
+Effective Modern C++ is a great tool to improve your modern C++ skills. Not only does it
+teach you how, when and where to use modern C++ and be effective, it also explains why.
+Without doubt, Scott’s clear and insightful writing, spread over 42 well-thought items,
+gives programmers a much better understanding of the language.
+—Bart Vandewoestyne
+Research and Development Engineer and C++ enthusiast
+I love C++, it has been my work vehicle for many decades now. And with
+the latest raft of features it is even more powerful and expressive than I
+would have previously imagined. But with all this choice comes the question
+“when and how do I apply these features?” As has always been the case,
+Scott’s Effective C++ books are the definitive answer to this question.
+—Damien Watkins
+Computation Software Engineering Team Lead, CSIRO
+Great read for transitioning to modern C++—new C++11/14
+language features are described alongside C++98, subject items are
+easy to reference, and advice summarized at the end of each section.
+Entertaining and useful for both casual and advanced C++ developers.
+—Rachel Cheng
+F5 Networks
+If you’re migrating from C++98/03 to C++11/14, you need the eminently practical and
+clear information Scott provides in Effective Modern C++. If you’re already writing
+C++11 code, you’ll probably discover issues with the new features through Scott’s
+thorough discussion of the important new features of the language. Either way, this book
+is worth your time.
+—Rob Stewart
+Boost Steering Committee member (boost.org)
+
+
+Scott Meyers
+Effective Modern C++
+
+
+978-1-491-90399-5 [V]
+Effective Modern C++ by Scott Meyers Copyright © 2015 Scott Meyers. All rights reserved. Printed in Canada. Published by O’Reilly Media, Inc., 1005 Gravenstein Highway North, Sebastopol, CA 95472.
+O’Reilly books may be purchased for educational, business, or sales promotional use. Online editions are
+also available for most titles (http://safaribooksonline.com). For more information, contact our corporate/
+institutional sales department: 800-998-9938 or corporate@oreilly.com.
+Editor: Rachel Roumeliotis
+Production Editor: Melanie Yarbrough
+Copyeditor: Jasmine Kwityn
+Proofreader: Charles Roumeliotis
+Indexer: Scott Meyers
+Interior Designer: David Futato
+Cover Designer: Ellie Volkhausen
+Illustrator: Rebecca Demarest
+November 2014: First Edition
+Revision History for the First Edition 2014-11-07: First Release
+2014-12-12: Second Release
+2015-01-20: Third Release
+See http://oreilly.com/catalog/errata.csp?isbn=9781491903995 for release details.
+The O’Reilly logo is a registered trademark of O’Reilly Media, Inc. Effective Modern C++, the cover image
+of a Rose-crowned Fruit Dove, and related trade dress are trademarks of O’Reilly Media, Inc.
+While the publisher and the author have used good faith efforts to ensure that the information and
+instructions contained in this work are accurate, the publisher and the author disclaim all responsibility
+for errors or omissions, including without limitation responsibility for damages resulting from the use of
+or reliance on this work. Use of the information and instructions contained in this work is at your own
+risk. If any code samples or other technology this work contains or describes is subject to open source
+licenses or the intellectual property rights of others, it is your responsibility to ensure that your use
+thereof complies with such licenses and/or rights.
+
+
+For Darla,
+black Labrador Retriever extraordinaire
+
+
+
+
+Table of Contents
+From the Publisher. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . xi
+Acknowledgments. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . xiii
+Introduction. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1
+1. Deducing Types. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+Item 1: Understand template type deduction. 9
+Item 2: Understand auto type deduction. 18
+Item 3: Understand decltype. 23
+Item 4: Know how to view deduced types. 30
+2. auto. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37 Item 5: Prefer auto to explicit type declarations. 37
+Item 6: Use the explicitly typed initializer idiom when auto deduces
+undesired types. 43
+3. Moving to Modern C++. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49 Item 7: Distinguish between () and {} when creating objects. 49
+Item 8: Prefer nullptr to 0 and NULL. 58
+Item 9: Prefer alias declarations to typedefs. 63
+Item 10: Prefer scoped enums to unscoped enums. 67
+Item 11: Prefer deleted functions to private undefined ones. 74
+Item 12: Declare overriding functions override. 79
+Item 13: Prefer const_iterators to iterators. 86
+Item 14: Declare functions noexcept if they won’t emit exceptions. 90
+Item 15: Use constexpr whenever possible. 97
+vii
+
+
+Item 16: Make const member functions thread safe. 103
+Item 17: Understand special member function generation. 109
+4. Smart Pointers. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 117
+Item 18: Use std::unique_ptr for exclusive-ownership resource
+management. 118
+Item 19: Use std::shared_ptr for shared-ownership resource
+management. 125
+Item 20: Use std::weak_ptr for std::shared_ptr-like pointers that can
+dangle. 134
+Item 21: Prefer std::make_unique and std::make_shared to direct use of
+new. 139
+Item 22: When using the Pimpl Idiom, define special member functions in
+the implementation file. 147
+5. Rvalue References, Move Semantics, and Perfect Forwarding. . . . . . . . . . . . . . . . . . . . 157
+Item 23: Understand std::move and std::forward. 158
+Item 24: Distinguish universal references from rvalue references. 164
+Item 25: Use std::move on rvalue references, std::forward on universal
+references. 168
+Item 26: Avoid overloading on universal references. 177
+Item 27: Familiarize yourself with alternatives to overloading on universal
+references. 184
+Item 28: Understand reference collapsing. 197
+Item 29: Assume that move operations are not present, not cheap, and not
+used. 203
+Item 30: Familiarize yourself with perfect forwarding failure cases. 207
+6. Lambda Expressions. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 215
+Item 31: Avoid default capture modes. 216
+Item 32: Use init capture to move objects into closures. 224
+Item 33: Use decltype on auto&& parameters to std::forward them. 229
+Item 34: Prefer lambdas to std::bind. 232
+7. The Concurrency API. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 241
+Item 35: Prefer task-based programming to thread-based. 241
+Item 36: Specify std::launch::async if asynchronicity is essential. 245
+Item 37: Make std::threads unjoinable on all paths. 250
+Item 38: Be aware of varying thread handle destructor behavior. 258
+Item 39: Consider void futures for one-shot event communication. 262
+viii | Table of Contents
+
+
+Item 40: Use std::atomic for concurrency, volatile for special memory. 271
+8. Tweaks. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 281
+Item 41: Consider pass by value for copyable parameters that are cheap to
+move and always copied. 281
+Item 42: Consider emplacement instead of insertion. 292
+Index. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 303
+Table of Contents | ix
+
+
+
+
+From the Publisher
+Using Code Examples
+This book is here to help you get your job done. In general, if example code is offered
+with this book, you may use it in your programs and documentation. You do not
+need to contact us for permission unless you’re reproducing a significant portion of
+the code. For example, writing a program that uses several chunks of code from this
+book does not require permission. Selling or distributing a CD-ROM of examples
+from O’Reilly books does require permission. Answering a question by citing this
+book and quoting example code does not require permission. Incorporating a signifi
+cant amount of example code from this book into your product’s documentation
+does require permission.
+We appreciate, but do not require, attribution. An attribution usually includes the
+title, author, publisher, and ISBN. For example: “Effective Modern C++ by Scott Mey
+ers (O’Reilly). Copyright 2015 Scott Meyers, 978-1-491-90399-5.”
+If you feel your use of code examples falls outside fair use or the permission given
+above, feel free to contact us at permissions@oreilly.com.
+Safari® Books Online
+Safari Books Online is an on-demand digital library that
+delivers expert content in both book and video form
+from the world’s leading authors in technology and
+business.
+Technology professionals, software developers, web designers, and business and crea
+tive professionals use Safari Books Online as their primary resource for research,
+problem solving, learning, and certification training.
+Safari Books Online offers a range of plans and pricing for enterprise, government,
+education, and individuals.
+xi
+
+
+Members have access to thousands of books, training videos, and prepublication
+manuscripts in one fully searchable database from publishers like O’Reilly Media,
+Prentice Hall Professional, Addison-Wesley Professional, Microsoft Press, Sams,
+Que, Peachpit Press, Focal Press, Cisco Press, John Wiley & Sons, Syngress, Morgan
+Kaufmann, IBM Redbooks, Packt, Adobe Press, FT Press, Apress, Manning, New
+Riders, McGraw-Hill, Jones & Bartlett, Course Technology, and hundreds more. For
+more information about Safari Books Online, please visit us online.
+How to Contact Us
+Comments and questions concerning this book may be addressed to the publisher:
+O’Reilly Media, Inc.
+1005 Gravenstein Highway North
+Sebastopol, CA 95472
+800-998-9938 (in the United States or Canada)
+707-829-0515 (international or local)
+707-829-0104 (fax)
+To comment or ask technical questions about this book, send email to bookques
+tions@oreilly.com.
+For more information about our books, courses, conferences, and news, see our web
+site at http://www.oreilly.com.
+Find us on Facebook: http://facebook.com/oreilly
+Follow us on Twitter: http://twitter.com/oreillymedia
+Watch us on YouTube: http://www.youtube.com/oreillymedia
+xii | From the Publisher
+
+
+Acknowledgments
+I started investigating what was then known as C++0x (the nascent C++11) in 2009. I
+posted numerous questions to the Usenet newsgroup comp.std.c++, and I’m grate
+ful to the members of that community (especially Daniel Krügler) for their very help
+ful postings. In more recent years, I’ve turned to Stack Overflow when I had
+questions about C++11 and C++14, and I’m equally indebted to that community for
+its help in understanding the finer points of modern C++.
+In 2010, I prepared materials for a training course on C++0x (ultimately published as
+Overview of the New C++, Artima Publishing, 2010). Both those materials and my
+knowledge greatly benefited from the technical vetting performed by Stephan T. Lav
+avej, Bernhard Merkle, Stanley Friesen, Leor Zolman, Hendrik Schober, and Anthony
+Williams. Without their help, I would probably never have been in a position to
+undertake Effective Modern C++. That title, incidentally, was suggested or endorsed
+by several readers responding to my 18 February 2014 blog post, “Help me name my
+book,” and Andrei Alexandrescu (author of Modern C++ Design, Addison-Wesley,
+2001) was kind enough to bless the title as not poaching on his terminological turf.
+I’m unable to identify the origins of all the information in this book, but some sour
+ces had a relatively direct impact. Item 4’s use of an undefined template to coax type
+information out of compilers was suggested by Stephan T. Lavavej, and Matt P. Dziu
+binski brought Boost.TypeIndex to my attention. In Item 5, the unsigned
+std::vector<int>::size_type example is from Andrey Karpov’s 28 February
+2010 article, “In what way can C++0x standard help you eliminate 64-bit errors.” The
+std::pair<std::string, int>/std::pair<const std::string, int> example in
+the same Item is from Stephan T. Lavavej’s talk at Going Native 2012, “STL11: Magic
+&& Secrets.” Item 6 was inspired by Herb Sutter’s 12 August 2013 article, “GotW #94
+Solution: AAA Style (Almost Always Auto).” Item 9 was motivated by Martinho Fer
+nandes’ blog post of 27 May 2012, “Handling dependent names.” The Item 12 exam
+ple demonstrating overloading on reference qualifiers is based on Casey’s answer to
+the question, “What’s a use case for overloading member functions on reference
+xiii
+
+
+qualifiers?,” posted to Stack Overflow on 14 January 2014. My Item 15 treatment of
+C++14’s expanded support for constexpr functions incorporates information I
+received from Rein Halbersma. Item 16 is based on Herb Sutter’s C++ and Beyond
+2012 presentation, “You don’t know const and mutable.” Item 18’s advice to have
+factory functions return std::unique_ptrs is based on Herb Sutter’s 30 May 2013
+article, “GotW# 90 Solution: Factories.” In Item 19, fastLoadWidget is derived from
+Herb Sutter’s Going Native 2013 presentation, “My Favorite C++ 10-Liner.” My treat
+ment of std::unique_ptr and incomplete types in Item 22 draws on Herb Sutter’s
+27 November 2011 article, “GotW #100: Compilation Firewalls” as well as Howard
+Hinnant’s 22 May 2011 answer to the Stack Overflow question, “Is
+std::unique_ptr<T> required to know the full definition of T?” The Matrix addition
+example in Item 25 is based on writings by David Abrahams. JoeArgonne’s 8 Decem
+ber 2012 comment on the 30 November 2012 blog post, “Another alternative to
+lambda move capture,” was the source of Item 32’s std::bind-based approach to
+emulating init capture in C++11. Item 37’s explanation of the problem with an
+implicit detach in std::thread’s destructor is taken from Hans-J. Boehm’s 4
+December 2008 paper, “N2802: A plea to reconsider detach-on-destruction for thread
+objects.” Item 41 was originally motivated by discussions of David Abrahams’ 15
+August 2009 blog post, “Want speed? Pass by value.” The idea that move-only types
+deserve special treatment is due to Matthew Fioravante, while the analysis of
+assignment-based copying stems from comments by Howard Hinnant. In Item 42,
+Stephan T. Lavavej and Howard Hinnant helped me understand the relative perfor
+mance profiles of emplacement and insertion functions, and Michael Winterberg
+brought to my attention how emplacement can lead to resource leaks. (Michael cred
+its Sean Parent’s Going Native 2013 presentation, “C++ Seasoning,” as his source).
+Michael also pointed out how emplacement functions use direct initialization, while
+insertion functions use copy initialization.
+Reviewing drafts of a technical book is a demanding, time-consuming, and utterly
+critical task, and I’m fortunate that so many people were willing to do it for me. Full
+or partial drafts of Effective Modern C++ were officially reviewed by Cassio Neri,
+Nate Kohl, Gerhard Kreuzer, Leor Zolman, Bart Vandewoestyne, Stephan T. Lavavej,
+Nevin “:-)” Liber, Rachel Cheng, Rob Stewart, Bob Steagall, Damien Watkins, Bradley
+E. Needham, Rainer Grimm, Fredrik Winkler, Jonathan Wakely, Herb Sutter, Andrei
+Alexandrescu, Eric Niebler, Thomas Becker, Roger Orr, Anthony Williams, Michael
+Winterberg, Benjamin Huchley, Tom Kirby-Green, Alexey A Nikitin, William Deal
+try, Hubert Matthews, and Tomasz Kamiński. I also received feedback from several
+readers through O’Reilly’s Early Release EBooks and Safari Books Online’s Rough
+Cuts, comments on my blog (The View from Aristeia), and email. I’m grateful to each
+of these people. The book is much better than it would have been without their help.
+I’m particularly indebted to Stephan T. Lavavej and Rob Stewart, whose extraordi
+narily detailed and comprehensive remarks lead me to worry that they spent nearly as
+xiv | Acknowledgments
+
+
+much time on this book as I did. Special thanks also go to Leor Zolman, who, in addi
+tion to reviewing the manuscript, double-checked all the code examples.
+Dedicated reviews of digital versions of the book were performed by Gerhard
+Kreuzer, Emyr Williams, and Bradley E. Needham.
+My decision to limit the line length in code displays to 64 characters (the maximum
+likely to display properly in print as well as across a variety of digital devices, device
+orientations, and font configurations) was based on data provided by Michael Maher.
+Since initial publication, I’ve incorporated bug fixes and other improvements sug
+gested by Kostas Vlahavas, Daniel Alonso Alemany, Takatoshi Kondo, Bartek Szur
+got, Tyler Brock, Jay Zipnick, Barry Revzin, Robert McCabe, Oliver Bruns, Fabrice
+Ferino, Dainis Jonitis, Petr Valasek, and Bart Vandewoestyne. Many thanks to all
+these people for helping improve the accuracy and clarity of Effective Modern C++.
+Ashley Morgan Williams made dining at the Lake Oswego Pizzicato uniquely enter
+taining. When it comes to man-sized Caesars, she’s the go-to gal.
+More than 20 years after first living through my playing author, my wife, Nancy L.
+Urbano, once again tolerated many months of distracted conversations with a cock
+tail of resignation, exasperation, and timely splashes of understanding and support.
+During the same period, our dog, Darla, was largely content to doze away the hours I
+spent staring at computer screens, but she never let me forget that there’s life beyond
+the keyboard.
+Acknowledgments | xv
+
+
+
+
+Introduction
+If you’re an experienced C++ programmer and are anything like me, you initially
+approached C++11 thinking, “Yes, yes, I get it. It’s C++, only more so.” But as you
+learned more, you were surprised by the scope of the changes. auto declarations,
+range-based for loops, lambda expressions, and rvalue references change the face of
+C++, to say nothing of the new concurrency features. And then there are the
+idiomatic changes. 0 and typedefs are out, nullptr and alias declarations are in.
+Enums should now be scoped. Smart pointers are now preferable to built-in ones.
+Moving objects is normally better than copying them. There’s a lot to learn about C++11, not to mention C++14.
+More importantly, there’s a lot to learn about making effective use of the new capabil
+ities. If you need basic information about “modern” C++ features, resources abound,
+but if you’re looking for guidance on how to employ the features to create software
+that’s correct, efficient, maintainable, and portable, the search is more challenging.
+That’s where this book comes in. It’s devoted not to describing the features of C++11
+and C++14, but instead to their effective application.
+The information in the book is broken into guidelines called Items. Want to under
+stand the various forms of type deduction? Or know when (and when not) to use
+auto declarations? Are you interested in why const member functions should be
+thread safe, how to implement the Pimpl Idiom using std::unique_ptr, why you
+should avoid default capture modes in lambda expressions, or the differences
+between std::atomic and volatile? The answers are all here. Furthermore, they’re
+platform-independent, Standards-conformant answers. This is a book about portable
+C++.
+The Items in this book are guidelines, not rules, because guidelines have exceptions.
+The most important part of each Item is not the advice it offers, but the rationale
+behind the advice. Once you’ve read that, you’ll be in a position to determine whether
+the circumstances of your project justify a violation of the Item’s guidance. The true
+1
+
+
+goal of this book isn’t to tell you what to do or what to avoid doing, but to convey a
+deeper understanding of how things work in C++11 and C++14.
+Terminology and Conventions
+To make sure we understand one another, it’s important to agree on some terminol
+ogy, beginning, ironically, with “C++.” There have been four official versions of C++,
+each named after the year in which the corresponding ISO Standard was adopted:
+C++98, C++03, C++11, and C++14. C++98 and C++03 differ only in technical
+details, so in this book, I refer to both as C++98. When I refer to C++11, I mean both
+C++11 and C++14, because C++14 is effectively a superset of C++11. When I write
+C++14, I mean specifically C++14. And if I simply mention C++, I’m making a broad
+statement that pertains to all language versions.
+Term I Use Language Versions I Mean
+C++ All
+C++98 C++98 and C++03
+C++11 C++11 and C++14
+C++14 C++14
+As a result, I might say that C++ places a premium on efficiency (true for all ver
+sions), that C++98 lacks support for concurrency (true only for C++98 and C++03),
+that C++11 supports lambda expressions (true for C++11 and C++14), and that
+C++14 offers generalized function return type deduction (true for C++14 only).
+C++11’s most pervasive feature is probably move semantics, and the foundation of
+move semantics is distinguishing expressions that are rvalues from those that are lval
+ues. That’s because rvalues indicate objects eligible for move operations, while lvalues
+generally don’t. In concept (though not always in practice), rvalues correspond to
+temporary objects returned from functions, while lvalues correspond to objects you
+can refer to, either by name or by following a pointer or lvalue reference.
+A useful heuristic to determine whether an expression is an lvalue is to ask if you can
+take its address. If you can, it typically is. If you can’t, it’s usually an rvalue. A nice
+feature of this heuristic is that it helps you remember that the type of an expression is
+independent of whether the expression is an lvalue or an rvalue. That is, given a type
+T, you can have lvalues of type T as well as rvalues of type T. It’s especially important
+to remember this when dealing with a parameter of rvalue reference type, because the
+parameter itself is an lvalue:
+2|
+
+
+class Widget { public: Widget(Widget&& rhs); // rhs is an lvalue, though it has ... // an rvalue reference type };
+Here, it’d be perfectly valid to take rhs’s address inside Widget’s move constructor,
+so rhs is an lvalue, even though its type is an rvalue reference. (By similar reasoning,
+all parameters are lvalues.) That code snippet demonstrates several conventions I normally follow:
+• The class name is Widget. I use Widget whenever I want to refer to an arbitrary
+user-defined type. Unless I need to show specific details of the class, I use Widget
+without declaring it.
+• I use the parameter name rhs (“right-hand side”). It’s my preferred parameter
+name for the move operations (i.e., move constructor and move assignment oper
+ator) and the copy operations (i.e., copy constructor and copy assignment opera
+tor). I also employ it for the right-hand parameter of binary operators:
+Matrix operator+(const Matrix& lhs, const Matrix& rhs);
+It’s no surprise, I hope, that lhs stands for “left-hand side.”
+• I apply special formatting to parts of code or parts of comments to draw your
+attention to them. In the Widget move constructor above, I’ve highlighted the
+declaration of rhs and the part of the comment noting that rhs is an lvalue.
+Highlighted code is neither inherently good nor inherently bad. It’s simply code
+you should pay particular attention to.
+• I use “...” to indicate “other code could go here.” This narrow ellipsis is different
+from the wide ellipsis (“...”) that’s used in the source code for C++11’s variadic
+templates. That sounds confusing, but it’s not. For example:
+template<typename... Ts> // these are C++ void processVals(const Ts&... params) // source code { // ellipses
+... // this means "some // code goes here" }
+The declaration of processVals shows that I use typename when declaring type
+parameters in templates, but that’s merely a personal preference; the keyword
+class would work just as well. On those occasions where I show code excerpts
+|3
+
+
+from a C++ Standard, I declare type parameters using class, because that’s what
+the Standards do.
+When an object is initialized with another object of the same type, the new object is
+said to be a copy of the initializing object, even if the copy was created via the move
+constructor. Regrettably, there’s no terminology in C++ that distinguishes between
+an object that’s a copy-constructed copy and one that’s a move-constructed copy:
+void someFunc(Widget w); // someFunc's parameter w // is passed by value
+Widget wid; // wid is some Widget
+someFunc(wid); // in this call to someFunc, // w is a copy of wid that's
+// created via copy construction
+someFunc(std::move(wid)); // in this call to SomeFunc, // w is a copy of wid that's
+// created via move construction
+Copies of rvalues are generally move constructed, while copies of lvalues are usually
+copy constructed. An implication is that if you know only that an object is a copy of
+another object, it’s not possible to say how expensive it was to construct the copy. In
+the code above, for example, there’s no way to say how expensive it is to create the
+parameter w without knowing whether rvalues or lvalues are passed to someFunc.
+(You’d also have to know the cost of moving and copying Widgets.)
+In a function call, the expressions passed at the call site are the function’s arguments.
+The arguments are used to initialize the function’s parameters. In the first call to
+someFunc above, the argument is wid. In the second call, the argument is
+std::move(wid). In both calls, the parameter is w. The distinction between argu
+ments and parameters is important, because parameters are lvalues, but the argu
+ments with which they are initialized may be rvalues or lvalues. This is especially
+relevant during the process of perfect forwarding, whereby an argument passed to a
+function is passed to a second function such that the original argument’s rvalueness
+or lvalueness is preserved. (Perfect forwarding is discussed in detail in Item 30.)
+Well-designed functions are exception safe, meaning they offer at least the basic
+exception safety guarantee (i.e., the basic guarantee). Such functions assure callers
+that even if an exception is thrown, program invariants remain intact (i.e., no data
+structures are corrupted) and no resources are leaked. Functions offering the strong
+exception safety guarantee (i.e., the strong guarantee) assure callers that if an excep
+tion arises, the state of the program remains as it was prior to the call.
+4|
+
+
+When I refer to a function object, I usually mean an object of a type supporting an
+operator() member function. In other words, an object that acts like a function.
+Occasionally I use the term in a slightly more general sense to mean anything that
+can be invoked using the syntax of a non-member function call (i.e., “function
+Name(arguments)”). This broader definition covers not just objects supporting oper
+ator(), but also functions and C-like function pointers. (The narrower definition
+comes from C++98, the broader one from C++11.) Generalizing further by adding
+member function pointers yields what are known as callable objects. You can gener
+ally ignore the fine distinctions and simply think of function objects and callable
+objects as things in C++ that can be invoked using some kind of function-calling syn
+tax.
+Function objects created through lambda expressions are known as closures. It’s sel
+dom necessary to distinguish between lambda expressions and the closures they cre
+ate, so I often refer to both as lambdas. Similarly, I rarely distinguish between
+function templates (i.e., templates that generate functions) and template functions
+(i.e., the functions generated from function templates). Ditto for class templates and
+template classes.
+Many things in C++ can be both declared and defined. Declarations introduce names
+and types without giving details, such as where storage is located or how things are
+implemented:
+extern int x; // object declaration
+class Widget; // class declaration
+bool func(const Widget& w); // function declaration
+enum class Color; // scoped enum declaration // (see Item 10)
+Definitions provide the storage locations or implementation details:
+int x; // object definition
+class Widget { // class definition ... };
+bool func(const Widget& w) { return w.size() < 10; } // function definition
+enum class Color { Yellow, Red, Blue }; // scoped enum definition
+|5
+
+
+A definition also qualifies as a declaration, so unless it’s really important that some
+thing is a definition, I tend to refer to declarations.
+I define a function’s signature to be the part of its declaration that specifies parameter
+and return types. Function and parameter names are not part of the signature. In the
+example above, func’s signature is bool(const Widget&). Elements of a function’s
+declaration other than its parameter and return types (e.g., noexcept or constexpr,
+if present), are excluded. (noexcept and constexpr are described in Items 14 and
+15.) The official definition of “signature” is slightly different from mine, but for this
+book, my definition is more useful. (The official definition sometimes omits return
+types.)
+New C++ Standards generally preserve the validity of code written under older ones,
+but occasionally the Standardization Committee deprecates features. Such features
+are on standardization death row and may be removed from future Standards. Com
+pilers may or may not warn about the use of deprecated features, but you should do
+your best to avoid them. Not only can they lead to future porting headaches, they’re
+generally inferior to the features that replace them. For example, std::auto_ptr is
+deprecated in C++11, because std::unique_ptr does the same job, only better.
+Sometimes a Standard says that the result of an operation is undefined behavior. That
+means that runtime behavior is unpredictable, and it should go without saying that
+you want to steer clear of such uncertainty. Examples of actions with undefined
+behavior include using square brackets (“[]”) to index beyond the bounds of a
+std::vector, dereferencing an uninitialized iterator, or engaging in a data race (i.e.,
+having two or more threads, at least one of which is a writer, simultaneously access
+the same memory location).
+I call built-in pointers, such as those returned from new, raw pointers. The opposite of
+a raw pointer is a smart pointer. Smart pointers normally overload the pointer
+dereferencing operators (operator-> and operator*), though Item 20 explains that
+std::weak_ptr is an exception.
+In source code comments, I sometimes abbreviate “constructor” as ctor and
+“destructor” as dtor.
+Reporting Bugs and Suggesting Improvements
+I’ve done my best to fill this book with clear, accurate, useful information, but surely
+there are ways to make it better. If you find errors of any kind (technical, expository,
+grammatical, typographical, etc.), or if you have suggestions for how the book could
+be improved, please email me at emc++@aristeia.com. New printings give me the
+6|
+
+
+opportunity to revise Effective Modern C++, and I can’t address issues I don’t know
+about!
+To view the list of the issues I do know about, consult the book’s errata page, http://
+www.aristeia.com/BookErrata/emc++-errata.html.
+|7
+
+
+
+
+CHAPTER 1
+Deducing Types
+C++98 had a single set of rules for type deduction: the one for function templates.
+C++11 modifies that ruleset a bit and adds two more, one for auto and one for
+decltype. C++14 then extends the usage contexts in which auto and decltype may
+be employed. The increasingly widespread application of type deduction frees you
+from the tyranny of spelling out types that are obvious or redundant. It makes C++
+software more adaptable, because changing a type at one point in the source code
+automatically propagates through type deduction to other locations. However, it can
+render code more difficult to reason about, because the types deduced by compilers
+may not be as apparent as you’d like.
+Without a solid understanding of how type deduction operates, effective program
+ming in modern C++ is all but impossible. There are just too many contexts where
+type deduction takes place: in calls to function templates, in most situations where
+auto appears, in decltype expressions, and, as of C++14, where the enigmatic
+decltype(auto) construct is employed.
+This chapter provides the information about type deduction that every C++ devel
+oper requires. It explains how template type deduction works, how auto builds on
+that, and how decltype goes its own way. It even explains how you can force com
+pilers to make the results of their type deductions visible, thus enabling you to ensure
+that compilers are deducing the types you want them to.
+Item 1: Understand template type deduction.
+When users of a complex system are ignorant of how it works, yet happy with what it
+does, that says a lot about the design of the system. By this measure, template type
+deduction in C++ is a tremendous success. Millions of programmers have passed
+arguments to template functions with completely satisfactory results, even though
+9
+
+
+many of those programmers would be hard-pressed to give more than the haziest
+description of how the types used by those functions were deduced.
+If that group includes you, I have good news and bad news. The good news is that
+type deduction for templates is the basis for one of modern C++’s most compelling
+features: auto. If you were happy with how C++98 deduced types for templates,
+you’re set up to be happy with how C++11 deduces types for auto. The bad news is
+that when the template type deduction rules are applied in the context of auto, they
+sometimes seem less intuitive than when they’re applied to templates. For that rea
+son, it’s important to truly understand the aspects of template type deduction that
+auto builds on. This Item covers what you need to know.
+If you’re willing to overlook a pinch of pseudocode, we can think of a function tem
+plate as looking like this:
+template<typename T> void f(ParamType param);
+A call can look like this:
+f(expr); // call f with some expression
+During compilation, compilers use expr to deduce two types: one for T and one for
+ParamType. These types are frequently different, because ParamType often contains
+adornments, e.g., const or reference qualifiers. For example, if the template is
+declared like this,
+template<typename T> void f(const T& param); // ParamType is const T&
+and we have this call,
+int x = 0;
+f(x); // call f with an int
+T is deduced to be int, but ParamType is deduced to be const int&.
+It’s natural to expect that the type deduced for T is the same as the type of the argu
+ment passed to the function, i.e., that T is the type of expr. In the above example,
+that’s the case: x is an int, and T is deduced to be int. But it doesn’t always work that
+way. The type deduced for T is dependent not just on the type of expr, but also on the
+form of ParamType. There are three cases:
+10 | Item 1
+
+
+• ParamType is a pointer or reference type, but not a universal reference. (Univer
+sal references are described in Item 24. At this point, all you need to know is that
+they exist and that they’re not the same as lvalue references or rvalue references.) • ParamType is a universal reference. • ParamType is neither a pointer nor a reference.
+We therefore have three type deduction scenarios to examine. Each will be based on
+our general form for templates and calls to it:
+template<typename T> void f(ParamType param);
+f(expr); // deduce T and ParamType from expr
+Case 1: ParamType is a Reference or Pointer, but not a Universal
+Reference
+The simplest situation is when ParamType is a reference type or a pointer type, but
+not a universal reference. In that case, type deduction works like this:
+1. If expr’s type is a reference, ignore the reference part. 2. Then pattern-match expr’s type against ParamType to determine T.
+For example, if this is our template,
+template<typename T> void f(T& param); // param is a reference
+and we have these variable declarations,
+int x = 27; // x is an int const int cx = x; // cx is a const int const int& rx = x; // rx is a reference to x as a const int
+the deduced types for param and T in various calls are as follows:
+f(x); // T is int, param's type is int&
+f(cx); // T is const int, // param's type is const int&
+f(rx); // T is const int, // param's type is const int&
+Item 1 | 11
+
+
+In the second and third calls, notice that because cx and rx designate const values, T
+is deduced to be const int, thus yielding a parameter type of const int&. That’s
+important to callers. When they pass a const object to a reference parameter, they
+expect that object to remain unmodifiable, i.e., for the parameter to be a reference-to
+const. That’s why passing a const object to a template taking a T& parameter is safe:
+the constness of the object becomes part of the type deduced for T.
+In the third example, note that even though rx’s type is a reference, T is deduced to
+be a non-reference. That’s because rx’s reference-ness is ignored during type deduc
+tion.
+These examples all show lvalue reference parameters, but type deduction works
+exactly the same way for rvalue reference parameters. Of course, only rvalue argu
+ments may be passed to rvalue reference parameters, but that restriction has nothing
+to do with type deduction.
+If we change the type of f’s parameter from T& to const T&, things change a little, but
+not in any really surprising ways. The constness of cx and rx continues to be respec
+ted, but because we’re now assuming that param is a reference-to-const, there’s no
+longer a need for const to be deduced as part of T:
+template<typename T> void f(const T& param); // param is now a ref-to-const
+int x = 27; // as before const int cx = x; // as before const int& rx = x; // as before
+f(x); // T is int, param's type is const int&
+f(cx); // T is int, param's type is const int&
+f(rx); // T is int, param's type is const int&
+As before, rx’s reference-ness is ignored during type deduction.
+If param were a pointer (or a pointer to const) instead of a reference, things would
+work essentially the same way:
+template<typename T> void f(T* param); // param is now a pointer
+int x = 27; // as before const int *px = &x; // px is a ptr to x as a const int
+12 | Item 1
+
+
+f(&x); // T is int, param's type is int*
+f(px); // T is const int, // param's type is const int*
+By now, you may find yourself yawning and nodding off, because C++’s type deduc
+tion rules work so naturally for reference and pointer parameters, seeing them in
+written form is really dull. Everything’s just obvious! Which is exactly what you want
+in a type deduction system.
+Case 2: ParamType is a Universal Reference
+Things are less obvious for templates taking universal reference parameters. Such
+parameters are declared like rvalue references (i.e., in a function template taking a
+type parameter T, a universal reference’s declared type is T&&), but they behave differ
+ently when lvalue arguments are passed in. The complete story is told in Item 24, but
+here’s the headline version:
+• If expr is an lvalue, both T and ParamType are deduced to be lvalue references.
+That’s doubly unusual. First, it’s the only situation in template type deduction
+where T is deduced to be a reference. Second, although ParamType is declared
+using the syntax for an rvalue reference, its deduced type is an lvalue reference. • If expr is an rvalue, the “normal” (i.e., Case 1) rules apply.
+For example:
+template<typename T> void f(T&& param); // param is now a universal reference
+int x = 27; // as before const int cx = x; // as before const int& rx = x; // as before
+f(x); // x is lvalue, so T is int&, // param's type is also int&
+f(cx); // cx is lvalue, so T is const int&, // param's type is also const int&
+f(rx); // rx is lvalue, so T is const int&, // param's type is also const int&
+f(27); // 27 is rvalue, so T is int, // param's type is therefore int&&
+Item 1 | 13
+
+
+Item 24 explains exactly why these examples play out the way they do. The key point
+here is that the type deduction rules for universal reference parameters are different
+from those for parameters that are lvalue references or rvalue references. In particu
+lar, when universal references are in use, type deduction distinguishes between lvalue
+arguments and rvalue arguments. That never happens for non-universal references.
+Case 3: ParamType is Neither a Pointer nor a Reference
+When ParamType is neither a pointer nor a reference, we’re dealing with pass-by
+value:
+template<typename T> void f(T param); // param is now passed by value
+That means that param will be a copy of whatever is passed in—a completely new
+object. The fact that param will be a new object motivates the rules that govern how T
+is deduced from expr:
+1. As before, if expr’s type is a reference, ignore the reference part.
+2. If, after ignoring expr’s reference-ness, expr is const, ignore that, too. If it’s
+volatile, also ignore that. (volatile objects are uncommon. They’re generally
+used only for implementing device drivers. For details, see Item 40.)
+Hence:
+int x = 27; // as before const int cx = x; // as before const int& rx = x; // as before
+f(x); // T's and param's types are both int
+f(cx); // T's and param's types are again both int
+f(rx); // T's and param's types are still both int
+Note that even though cx and rx represent const values, param isn’t const. That
+makes sense. param is an object that’s completely independent of cx and rx—a copy
+of cx or rx. The fact that cx and rx can’t be modified says nothing about whether
+param can be. That’s why expr’s constness (and volatileness, if any) is ignored
+when deducing a type for param: just because expr can’t be modified doesn’t mean
+that a copy of it can’t be.
+It’s important to recognize that const (and volatile) is ignored only for by-value
+parameters. As we’ve seen, for parameters that are references-to- or pointers-to
+const, the constness of expr is preserved during type deduction. But consider the
+14 | Item 1
+
+
+case where expr is a const pointer to a const object, and expr is passed to a by
+value param:
+template<typename T> void f(T param); // param is still passed by value
+const char* const ptr = // ptr is const pointer to const object "Fun with pointers";
+f(ptr); // pass arg of type const char * const
+Here, the const to the right of the asterisk declares ptr to be const: ptr can’t be
+made to point to a different location, nor can it be set to null. (The const to the left
+of the asterisk says that what ptr points to—the character string—is const, hence
+can’t be modified.) When ptr is passed to f, the bits making up the pointer are
+copied into param. As such, the pointer itself (ptr) will be passed by value. In accord
+with the type deduction rule for by-value parameters, the constness of ptr will be
+ignored, and the type deduced for param will be const char*, i.e., a modifiable
+pointer to a const character string. The constness of what ptr points to is preserved
+during type deduction, but the constness of ptr itself is ignored when copying it to
+create the new pointer, param.
+Array Arguments
+That pretty much covers it for mainstream template type deduction, but there’s a
+niche case that’s worth knowing about. It’s that array types are different from pointer
+types, even though they sometimes seem to be interchangeable. A primary contribu
+tor to this illusion is that, in many contexts, an array decays into a pointer to its first
+element. This decay is what permits code like this to compile:
+const char name[] = "J. P. Briggs"; // name's type is // const char[13]
+const char * ptrToName = name; // array decays to pointer
+Here, the const char* pointer ptrToName is being initialized with name, which is a
+const char[13]. These types (const char* and const char[13]) are not the same,
+but because of the array-to-pointer decay rule, the code compiles.
+But what if an array is passed to a template taking a by-value parameter? What hap
+pens then?
+template<typename T> void f(T param); // template with by-value parameter
+Item 1 | 15
+
+
+f(name); // what types are deduced for T and param?
+We begin with the observation that there is no such thing as a function parameter
+that’s an array. Yes, yes, the syntax is legal,
+void myFunc(int param[]);
+but the array declaration is treated as a pointer declaration, meaning that myFunc
+could equivalently be declared like this:
+void myFunc(int* param); // same function as above
+This equivalence of array and pointer parameters is a bit of foliage springing from the
+C roots at the base of C++, and it fosters the illusion that array and pointer types are
+the same.
+Because array parameter declarations are treated as if they were pointer parameters,
+the type of an array that’s passed to a template function by value is deduced to be a
+pointer type. That means that in the call to the template f, its type parameter T is
+deduced to be const char*:
+f(name); // name is array, but T deduced as const char*
+But now comes a curve ball. Although functions can’t declare parameters that are
+truly arrays, they can declare parameters that are references to arrays! So if we modify
+the template f to take its argument by reference,
+template<typename T> void f(T& param); // template with by-reference parameter
+and we pass an array to it,
+f(name); // pass array to f
+the type deduced for T is the actual type of the array! That type includes the size of
+the array, so in this example, T is deduced to be const char [13], and the type of f’s
+parameter (a reference to this array) is const char (&)[13]. Yes, the syntax looks
+toxic, but knowing it will score you mondo points with those few souls who care.
+Interestingly, the ability to declare references to arrays enables creation of a template
+that deduces the number of elements that an array contains:
+// return size of an array as a compile-time constant. (The // array parameter has no name, because we care only about // the number of elements it contains.) template<typename T, std::size_t N> // see info constexpr std::size_t arraySize(T (&)[N]) noexcept // below on { // constexpr
+16 | Item 1
+
+
+return N; // and } // noexcept
+As Item 15 explains, declaring this function constexpr makes its result available
+during compilation. That makes it possible to declare, say, an array with the same
+number of elements as a second array whose size is computed from a braced initial
+izer:
+int keyVals[] = { 1, 3, 7, 9, 11, 22, 35 }; // keyVals has // 7 elements
+int mappedVals[arraySize(keyVals)]; // so does // mappedVals
+Of course, as a modern C++ developer, you’d naturally prefer a std::array to a
+built-in array:
+std::array<int, arraySize(keyVals)> mappedVals; // mappedVals' // size is 7
+As for arraySize being declared noexcept, that’s to help compilers generate better
+code. For details, see Item 14.
+Function Arguments
+Arrays aren’t the only things in C++ that can decay into pointers. Function types can
+decay into function pointers, and everything we’ve discussed regarding type deduc
+tion for arrays applies to type deduction for functions and their decay into function
+pointers. As a result:
+void someFunc(int, double); // someFunc is a function; // type is void(int, double)
+template<typename T> void f1(T param); // in f1, param passed by value
+template<typename T> void f2(T& param); // in f2, param passed by ref
+f1(someFunc); // param deduced as ptr-to-func; // type is void (*)(int, double)
+f2(someFunc); // param deduced as ref-to-func; // type is void (&)(int, double)
+This rarely makes any difference in practice, but if you’re going to know about array
+to-pointer decay, you might as well know about function-to-pointer decay, too.
+Item 1 | 17
+
+
+So there you have it: the auto-related rules for template type deduction. I remarked
+at the outset that they’re pretty straightforward, and for the most part, they are. The
+special treatment accorded lvalues when deducing types for universal references
+muddies the water a bit, however, and the decay-to-pointer rules for arrays and func
+tions stirs up even greater turbidity. Sometimes you simply want to grab your com
+pilers and demand, “Tell me what type you’re deducing!” When that happens, turn to
+Item 4, because it’s devoted to coaxing compilers into doing just that.
+Things to Remember
+• During template type deduction, arguments that are references are treated as
+non-references, i.e., their reference-ness is ignored.
+• When deducing types for universal reference parameters, lvalue arguments get
+special treatment.
+• When deducing types for by-value parameters, const and/or volatile argu
+ments are treated as non-const and non-volatile.
+• During template type deduction, arguments that are array or function names
+decay to pointers, unless they’re used to initialize references.
+Item 2: Understand auto type deduction.
+If you’ve read Item 1 on template type deduction, you already know almost every
+thing you need to know about auto type deduction, because, with only one curious
+exception, auto type deduction is template type deduction. But how can that be?
+Template type deduction involves templates and functions and parameters, but auto
+deals with none of those things.
+That’s true, but it doesn’t matter. There’s a direct mapping between template type
+deduction and auto type deduction. There is literally an algorithmic transformation
+from one to the other. In Item 1, template type deduction is explained using this general function template
+template<typename T> void f(ParamType param);
+and this general call:
+f(expr); // call f with some expression
+In the call to f, compilers use expr to deduce types for T and ParamType.
+18 | Item 1
+
+
+When a variable is declared using auto, auto plays the role of T in the template, and
+the type specifier for the variable acts as ParamType. This is easier to show than to
+describe, so consider this example:
+auto x = 27;
+Here, the type specifier for x is simply auto by itself. On the other hand, in this decla
+ration,
+const auto cx = x;
+the type specifier is const auto. And here,
+const auto& rx = x;
+the type specifier is const auto&. To deduce types for x, cx, and rx in these exam
+ples, compilers act as if there were a template for each declaration as well as a call to
+that template with the corresponding initializing expression:
+template<typename T> // conceptual template for void func_for_x(T param); // deducing x's type
+func_for_x(27); // conceptual call: param's // deduced type is x's type
+template<typename T> // conceptual template for void func_for_cx(const T param); // deducing cx's type
+func_for_cx(x); // conceptual call: param's // deduced type is cx's type
+template<typename T> // conceptual template for void func_for_rx(const T& param); // deducing rx's type
+func_for_rx(x); // conceptual call: param's // deduced type is rx's type
+As I said, deducing types for auto is, with only one exception (which we’ll discuss
+soon), the same as deducing types for templates.
+Item 1 divides template type deduction into three cases, based on the characteristics
+of ParamType, the type specifier for param in the general function template. In a vari
+able declaration using auto, the type specifier takes the place of ParamType, so there
+are three cases for that, too:
+• Case 1: The type specifier is a pointer or reference, but not a universal reference. • Case 2: The type specifier is a universal reference.
+Item 2 | 19
+
+
+• Case 3: The type specifier is neither a pointer nor a reference.
+We’ve already seen examples of cases 1 and 3:
+auto x = 27; // case 3 (x is neither ptr nor reference)
+const auto cx = x; // case 3 (cx isn't either)
+const auto& rx = x; // case 1 (rx is a non-universal ref.)
+Case 2 works as you’d expect:
+auto&& uref1 = x; // x is int and lvalue, // so uref1's type is int&
+auto&& uref2 = cx; // cx is const int and lvalue, // so uref2's type is const int&
+auto&& uref3 = 27; // 27 is int and rvalue, // so uref3's type is int&&
+Item 1 concludes with a discussion of how array and function names decay into
+pointers for non-reference type specifiers. That happens in auto type deduction, too:
+const char name[] = // name's type is const char[13] "R. N. Briggs";
+auto arr1 = name; // arr1's type is const char*
+auto& arr2 = name; // arr2's type is // const char (&)[13]
+void someFunc(int, double); // someFunc is a function; // type is void(int, double)
+auto func1 = someFunc; // func1's type is // void (*)(int, double)
+auto& func2 = someFunc; // func2's type is // void (&)(int, double)
+20 | Item 2
+
+
+As you can see, auto type deduction works like template type deduction. They’re
+essentially two sides of the same coin.
+Except for the one way they differ. We’ll start with the observation that if you want to
+declare an int with an initial value of 27, C++98 gives you two syntactic choices:
+int x1 = 27; int x2(27);
+C++11, through its support for uniform initialization, adds these:
+int x3 = { 27 }; int x4{ 27 };
+All in all, four syntaxes, but only one result: an int with value 27.
+But as Item 5 explains, there are advantages to declaring variables using auto instead
+of fixed types, so it’d be nice to replace int with auto in the above variable declara
+tions. Straightforward textual substitution yields this code:
+auto x1 = 27; auto x2(27); auto x3 = { 27 }; auto x4{ 27 };
+These declarations all compile, but they don’t have the same meaning as the ones
+they replace. The first two statements do, indeed, declare a variable of type int with
+value 27. The second two, however, declare a variable of type std::initial
+izer_list<int> containing a single element with value 27!
+auto x1 = 27; // type is int, value is 27
+auto x2(27); // ditto
+auto x3 = { 27 }; // type is std::initializer_list<int>, // value is { 27 }
+auto x4{ 27 }; // ditto
+This is due to a special type deduction rule for auto. When the initializer for an
+auto-declared variable is enclosed in braces, the deduced type is a std::initial
+izer_list. If such a type can’t be deduced (e.g., because the values in the braced ini
+tializer are of different types), the code will be rejected:
+auto x5 = { 1, 2, 3.0 }; // error! can't deduce T for // std::initializer_list<T>
+Item 2 | 21
+
+
+As the comment indicates, type deduction will fail in this case, but it’s important to
+recognize that there are actually two kinds of type deduction taking place. One kind
+stems from the use of auto: x5’s type has to be deduced. Because x5’s initializer is in
+braces, x5 must be deduced to be a std::initializer_list. But std::initial
+izer_list is a template. Instantiations are std::initializer_list<T> for some
+type T, and that means that T’s type must also be deduced. Such deduction falls under
+the purview of the second kind of type deduction occurring here: template type
+deduction. In this example, that deduction fails, because the values in the braced ini
+tializer don’t have a single type.
+The treatment of braced initializers is the only way in which auto type deduction and
+template type deduction differ. When an auto–declared variable is initialized with a
+braced initializer, the deduced type is an instantiation of std::initializer_list.
+But if the corresponding template is passed the same initializer, type deduction fails,
+and the code is rejected:
+auto x = { 11, 23, 9 }; // x's type is
+// std::initializer_list<int>
+template<typename T> // template with parameter void f(T param); // declaration equivalent to // x's declaration
+f({ 11, 23, 9 }); // error! can't deduce type for T
+However, if you specify in the template that param is a std::initializer_list<T>
+for some unknown T, template type deduction will deduce what T is:
+template<typename T>
+void f(std::initializer_list<T> initList);
+f({ 11, 23, 9 }); // T deduced as int, and initList's // type is std::initializer_list<int>
+So the only real difference between auto and template type deduction is that auto
+assumes that a braced initializer represents a std::initializer_list, but template
+type deduction doesn’t.
+You might wonder why auto type deduction has a special rule for braced initializers,
+but template type deduction does not. I wonder this myself. Alas, I have not been able
+to find a convincing explanation. But the rule is the rule, and this means you must
+remember that if you declare a variable using auto and you initialize it with a braced
+initializer, the deduced type will always be std::initializer_list. It’s especially
+important to bear this in mind if you embrace the philosophy of uniform initializa
+tion—of enclosing initializing values in braces as a matter of course. A classic mistake
+22 | Item 2
+
+
+in C++11 programming is accidentally declaring a std::initializer_list variable
+when you mean to declare something else. This pitfall is one of the reasons some
+developers put braces around their initializers only when they have to. (When you
+have to is discussed in Item 7.)
+For C++11, this is the full story, but for C++14, the tale continues. C++14 permits
+auto to indicate that a function’s return type should be deduced (see Item 3), and
+C++14 lambdas may use auto in parameter declarations. However, these uses of
+auto employ template type deduction, not auto type deduction. So a function with an
+auto return type that returns a braced initializer won’t compile:
+auto createInitList() {
+return { 1, 2, 3 }; // error: can't deduce type } // for { 1, 2, 3 }
+The same is true when auto is used in a parameter type specification in a C++14
+lambda:
+std::vector<int> v; ...
+auto resetV = [&v](const auto& newValue) { v = newValue; }; // C++14
+...
+resetV({ 1, 2, 3 }); // error! can't deduce type // for { 1, 2, 3 }
+Things to Remember
+• auto type deduction is usually the same as template type deduction, but auto
+type deduction assumes that a braced initializer represents a std::initial
+izer_list, and template type deduction doesn’t.
+• auto in a function return type or a lambda parameter implies template type
+deduction, not auto type deduction.
+Item 3: Understand decltype.
+decltype is an odd creature. Given a name or an expression, decltype tells you the
+name’s or the expression’s type. Typically, what it tells you is exactly what you’d
+Item 2 | 23
+
+
+predict. Occasionally however, it provides results that leave you scratching your head
+and turning to reference works or online Q&A sites for revelation.
+We’ll begin with the typical cases—the ones harboring no surprises. In contrast to
+what happens during type deduction for templates and auto (see Items 1 and 2),
+decltype typically parrots back the exact type of the name or expression you give it:
+const int i = 0; // decltype(i) is const int
+bool f(const Widget& w); // decltype(w) is const Widget&
+// decltype(f) is bool(const Widget&)
+struct Point { int x, y; // decltype(Point::x) is int }; // decltype(Point::y) is int
+Widget w; // decltype(w) is Widget
+if (f(w)) ... // decltype(f(w)) is bool
+template<typename T> // simplified version of std::vector class vector { public: ...
+T& operator[](std::size_t index); ... };
+vector<int> v; // decltype(v) is vector<int> ...
+if (v[0] == 0) ... // decltype(v[0]) is int&
+See? No surprises.
+In C++11, perhaps the primary use for decltype is declaring function templates
+where the function’s return type depends on its parameter types. For example, sup
+pose we’d like to write a function that takes a container that supports indexing via
+square brackets (i.e., the use of “[]”) plus an index, then authenticates the user before
+returning the result of the indexing operation. The return type of the function should
+be the same as the type returned by the indexing operation.
+operator[] on a container of objects of type T typically returns a T&. This is the case
+for std::deque, for example, and it’s almost always the case for std::vector. For
+std::vector<bool>, however, operator[] does not return a bool&. Instead, it
+returns a brand new object. The whys and hows of this situation are explored in
+24 | Item 3
+
+
+Item 6, but what’s important here is that the type returned by a container’s opera
+tor[] depends on the container.
+decltype makes it easy to express that. Here’s a first cut at the template we’d like to
+write, showing the use of decltype to compute the return type. The template needs a
+bit of refinement, but we’ll defer that for now:
+template<typename Container, typename Index> // works, but auto authAndAccess(Container& c, Index i) // requires -> decltype(c[i]) // refinement {
+authenticateUser(); return c[i]; }
+The use of auto before the function name has nothing to do with type deduction.
+Rather, it indicates that C++11’s trailing return type syntax is being used, i.e., that the
+function’s return type will be declared following the parameter list (after the “->”). A
+trailing return type has the advantage that the function’s parameters can be used in
+the specification of the return type. In authAndAccess, for example, we specify the
+return type using c and i. If we were to have the return type precede the function
+name in the conventional fashion, c and i would be unavailable, because they would
+not have been declared yet.
+With this declaration, authAndAccess returns whatever type operator[] returns
+when applied to the passed-in container, exactly as we desire.
+C++11 permits return types for single-statement lambdas to be deduced, and C++14
+extends this to both all lambdas and all functions, including those with multiple
+statements. In the case of authAndAccess, that means that in C++14 we can omit the
+trailing return type, leaving just the leading auto. With that form of declaration,
+auto does mean that type deduction will take place. In particular, it means that com
+pilers will deduce the function’s return type from the function’s implementation:
+template<typename Container, typename Index> // C++14; auto authAndAccess(Container& c, Index i) // not quite { // correct authenticateUser(); return c[i]; // return type deduced from c[i] }
+Item 2 explains that for functions with an auto return type specification, compilers
+employ template type deduction. In this case, that’s problematic. As we’ve discussed,
+operator[] for most containers-of-T returns a T&, but Item 1 explains that during
+Item 3 | 25
+
+
+template type deduction, the reference-ness of an initializing expression is ignored.
+Consider what that means for this client code:
+std::deque<int> d; ...
+authAndAccess(d, 5) = 10; // authenticate user, return d[5], // then assign 10 to it; // this won't compile!
+Here, d[5] returns an int&, but auto return type deduction for authAndAccess will
+strip off the reference, thus yielding a return type of int. That int, being the return
+value of a function, is an rvalue, and the code above thus attempts to assign 10 to an
+rvalue int. That’s forbidden in C++, so the code won’t compile.
+To get authAndAccess to work as we’d like, we need to use decltype type deduction
+for its return type, i.e., to specify that authAndAccess should return exactly the same
+type that the expression c[i] returns. The guardians of C++, anticipating the need to
+use decltype type deduction rules in some cases where types are inferred, make this
+possible in C++14 through the decltype(auto) specifier. What may initially seem
+contradictory (decltype and auto?) actually makes perfect sense: auto specifies that
+the type is to be deduced, and decltype says that decltype rules should be used
+during the deduction. We can thus write authAndAccess like this:
+template<typename Container, typename Index> // C++14; works, decltype(auto) // but still authAndAccess(Container& c, Index i) // requires { // refinement authenticateUser(); return c[i]; }
+Now authAndAccess will truly return whatever c[i] returns. In particular, for the
+common case where c[i] returns a T&, authAndAccess will also return a T&, and in
+the uncommon case where c[i] returns an object, authAndAccess will return an
+object, too.
+The use of decltype(auto) is not limited to function return types. It can also be
+convenient for declaring variables when you want to apply the decltype type deduc
+tion rules to the initializing expression:
+Widget w;
+const Widget& cw = w;
+auto myWidget1 = cw; // auto type deduction:
+26 | Item 3
+
+
+// myWidget1's type is Widget
+decltype(auto) myWidget2 = cw; // decltype type deduction: // myWidget2's type is // const Widget&
+But two things are bothering you, I know. One is the refinement to authAndAccess I
+mentioned, but have not yet described. Let’s address that now.
+Look again at the declaration for the C++14 version of authAndAccess:
+template<typename Container, typename Index> decltype(auto) authAndAccess(Container& c, Index i);
+The container is passed by lvalue-reference-to-non-const, because returning a refer
+ence to an element of the container permits clients to modify that container. But this
+means it’s not possible to pass rvalue containers to this function. Rvalues can’t bind
+to lvalue references (unless they’re lvalue-references-to-const, which is not the case
+here).
+Admittedly, passing an rvalue container to authAndAccess is an edge case. An rvalue
+container, being a temporary object, would typically be destroyed at the end of the
+statement containing the call to authAndAccess, and that means that a reference to
+an element in that container (which is typically what authAndAccess would return)
+would dangle at the end of the statement that created it. Still, it could make sense to
+pass a temporary object to authAndAccess. A client might simply want to make a
+copy of an element in the temporary container, for example:
+std::deque<std::string> makeStringDeque(); // factory function
+// make copy of 5th element of deque returned // from makeStringDeque auto s = authAndAccess(makeStringDeque(), 5);
+Supporting such use means we need to revise the declaration for authAndAccess to
+accept both lvalues and rvalues. Overloading would work (one overload would
+declare an lvalue reference parameter, the other an rvalue reference parameter), but
+then we’d have two functions to maintain. A way to avoid that is to have authAndAc
+cess employ a reference parameter that can bind to lvalues and rvalues, and Item 24
+explains that that’s exactly what universal references do. authAndAccess can there
+fore be declared like this:
+template<typename Container, typename Index> // c is now a decltype(auto) authAndAccess(Container&& c, // universal Index i); // reference
+Item 3 | 27
+
+
+In this template, we don’t know what type of container we’re operating on, and that
+means we’re equally ignorant of the type of index objects it uses. Employing pass-by
+value for objects of an unknown type generally risks the performance hit of unneces
+sary copying, the behavioral problems of object slicing (see Item 41), and the sting of
+our coworkers’ derision, but in the case of container indices, following the example of
+the Standard Library for index values (e.g., in operator[] for std::string,
+std::vector, and std::deque) seems reasonable, so we’ll stick with pass-by-value
+for them.
+However, we need to update the template’s implementation to bring it into accord
+with Item 25’s admonition to apply std::forward to universal references:
+template<typename Container, typename Index> // final decltype(auto) // C++14 authAndAccess(Container&& c, Index i) // version {
+authenticateUser();
+return std::forward<Container>(c)[i]; }
+This should do everything we want, but it requires a C++14 compiler. If you don’t
+have one, you’ll need to use the C++11 version of the template. It’s the same as its
+C++14 counterpart, except that you have to specify the return type yourself:
+template<typename Container, typename Index> // final auto // C++11 authAndAccess(Container&& c, Index i) // version -> decltype(std::forward<Container>(c)[i]) {
+authenticateUser(); return std::forward<Container>(c)[i]; }
+The other issue that’s likely to be nagging at you is my remark at the beginning of this
+Item that decltype almost always produces the type you expect, that it rarely sur
+prises. Truth be told, you’re unlikely to encounter these exceptions to the rule unless
+you’re a heavy-duty library implementer.
+To fully understand decltype’s behavior, you’ll have to familiarize yourself with a
+few special cases. Most of these are too obscure to warrant discussion in a book like
+this, but looking at one lends insight into decltype as well as its use.
+Applying decltype to a name yields the declared type for that name. Names are
+lvalue expressions, but that doesn’t affect decltype’s behavior. For lvalue expressions
+more complicated than names, however, decltype ensures that the type reported is
+28 | Item 3
+
+
+always an lvalue reference. That is, if an lvalue expression other than a name has type
+T, decltype reports that type as T&. This seldom has any impact, because the type of
+most lvalue expressions inherently includes an lvalue reference qualifier. Functions
+returning lvalues, for example, always return lvalue references. There is an implication of this behavior that is worth being aware of, however. In
+int x = 0;
+x is the name of a variable, so decltype(x) is int. But wrapping the name x in
+parentheses—“(x)”—yields an expression more complicated than a name. Being a
+name, x is an lvalue, and C++ defines the expression (x) to be an lvalue, too.
+decltype((x)) is therefore int&. Putting parentheses around a name can change
+the type that decltype reports for it!
+In C++11, this is little more than a curiosity, but in conjunction with C++14’s sup
+port for decltype(auto), it means that a seemingly trivial change in the way you
+write a return statement can affect the deduced type for a function:
+decltype(auto) f1() {
+int x = 0; ...
+return x; // decltype(x) is int, so f1 returns int }
+decltype(auto) f2() {
+int x = 0; ...
+return (x); // decltype((x)) is int&, so f2 returns int& }
+Note that not only does f2 have a different return type from f1, it’s also returning a
+reference to a local variable! That’s the kind of code that puts you on the express train
+to undefined behavior—a train you certainly don’t want to be on.
+The primary lesson is to pay very close attention when using decltype(auto).
+Seemingly insignificant details in the expression whose type is being deduced can
+affect the type that decltype(auto) reports. To ensure that the type being deduced
+is the type you expect, use the techniques described in Item 4.
+At the same time, don’t lose sight of the bigger picture. Sure, decltype (both alone
+and in conjunction with auto) may occasionally yield type-deduction surprises, but
+that’s not the normal situation. Normally, decltype produces the type you expect.
+Item 3 | 29
+
+
+This is especially true when decltype is applied to names, because in that case,
+decltype does just what it sounds like: it reports that name’s declared type.
+Things to Remember
+• decltype almost always yields the type of a variable or expression without
+any modifications.
+• For lvalue expressions of type T other than names, decltype always reports a
+type of T&.
+• C++14 supports decltype(auto), which, like auto, deduces a type from its
+initializer, but it performs the type deduction using the decltype rules.
+Item 4: Know how to view deduced types.
+The choice of tools for viewing the results of type deduction is dependent on the
+phase of the software development process where you want the information. We’ll
+explore three possibilities: getting type deduction information as you edit your code,
+getting it during compilation, and getting it at runtime.
+IDE Editors
+Code editors in IDEs often show the types of program entities (e.g., variables, param
+eters, functions, etc.) when you do something like hover your cursor over the entity.
+For example, given this code,
+const int theAnswer = 42;
+auto x = theAnswer; auto y = &theAnswer;
+an IDE editor would likely show that x’s deduced type was int and y’s was const
+int*.
+For this to work, your code must be in a more or less compilable state, because what
+makes it possible for the IDE to offer this kind of information is a C++ compiler (or
+at least the front end of one) running inside the IDE. If that compiler can’t make
+enough sense of your code to parse it and perform type deduction, it can’t show you
+what types it deduced.
+For simple types like int, information from IDEs is generally fine. As we’ll see soon,
+however, when more complicated types are involved, the information displayed by
+IDEs may not be particularly helpful.
+30 | Item 3
+
+
+Compiler Diagnostics
+An effective way to get a compiler to show a type it has deduced is to use that type in
+a way that leads to compilation problems. The error message reporting the problem
+is virtually sure to mention the type that’s causing it.
+Suppose, for example, we’d like to see the types that were deduced for x and y in the
+previous example. We first declare a class template that we don’t define. Something
+like this does nicely:
+template<typename T> // declaration only for TD; class TD; // TD == "Type Displayer"
+Attempts to instantiate this template will elicit an error message, because there’s no
+template definition to instantiate. To see the types for x and y, just try to instantiate
+TD with their types:
+TD<decltype(x)> xType; // elicit errors containing TD<decltype(y)> yType; // x's and y's types
+I use variable names of the form variableNameType, because they tend to yield error
+messages that help me find the information I’m looking for. For the code above, one
+of my compilers issues diagnostics reading, in part, as follows (I’ve highlighted the
+type information we’re after):
+error: aggregate 'TD<int> xType' has incomplete type and cannot be defined error: aggregate 'TD<const int *> yType' has incomplete type and cannot be defined
+A different compiler provides the same information, but in a different form:
+error: 'xType' uses undefined class 'TD<int>' error: 'yType' uses undefined class 'TD<const int *>'
+Formatting differences aside, all the compilers I’ve tested produce error messages
+with useful type information when this technique is employed.
+Runtime Output
+The printf approach to displaying type information (not that I’m recommending
+you use printf) can’t be employed until runtime, but it offers full control over the
+formatting of the output. The challenge is to create a textual representation of the
+type you care about that is suitable for display. “No sweat,” you’re thinking, “it’s
+typeid and std::type_info::name to the rescue.” In our continuing quest to see
+the types deduced for x and y, you may figure we can write this:
+Item 4 | 31
+
+
+std::cout << typeid(x).name() << '\n'; // display types for std::cout << typeid(y).name() << '\n'; // x and y
+This approach relies on the fact that invoking typeid on an object such as x or y
+yields a std::type_info object, and std::type_info has a member function, name,
+that produces a C-style string (i.e., a const char*) representation of the name of the
+type.
+Calls to std::type_info::name are not guaranteed to return anything sensible, but
+implementations try to be helpful. The level of helpfulness varies. The GNU and
+Clang compilers report that the type of x is “i”, and the type of y is “PKi”, for exam
+ple. These results make sense once you learn that, in output from these compilers, “i”
+means “int” and “PK” means “pointer to konst const.” (Both compilers support a
+tool, c++filt, that decodes such “mangled” types.) Microsoft’s compiler produces
+less cryptic output: “int” for x and “int const *” for y.
+Because these results are correct for the types of x and y, you might be tempted to
+view the type-reporting problem as solved, but let’s not be hasty. Consider a more
+complex example:
+template<typename T> // template function to void f(const T& param); // be called
+std::vector<Widget> createVec(); // factory function
+const auto vw = createVec(); // init vw w/factory return
+if (!vw.empty()) {
+f(&vw[0]); // call f ... }
+This code, which involves a user-defined type (Widget), an STL container (std::vec
+tor), and an auto variable (vw), is more representative of the situations where you
+might want some visibility into the types your compilers are deducing. For example,
+it’d be nice to know what types are inferred for the template type parameter T and the
+function parameter param in f.
+Loosing typeid on the problem is straightforward. Just add some code to f to display
+the types you’d like to see:
+template<typename T> void f(const T& param) {
+using std::cout;
+32 | Item 4
+
+
+cout << "T = " << typeid(T).name() << '\n'; // show T
+cout << "param = " << typeid(param).name() << '\n'; // show ... // param's } // type
+Executables produced by the GNU and Clang compilers produce this output:
+T = PK6Widget param = PK6Widget
+We already know that for these compilers, PK means “pointer to const,” so the only
+mystery is the number 6. That’s simply the number of characters in the class name
+that follows (Widget). So these compilers tell us that both T and param are of type
+const Widget*.
+Microsoft’s compiler concurs:
+T = class Widget const * param = class Widget const *
+Three independent compilers producing the same information suggests that the
+information is accurate. But look more closely. In the template f, param’s declared
+type is const T&. That being the case, doesn’t it seem odd that T and param have the
+same type? If T were int, for example, param’s type should be const int&—not the
+same type at all.
+Sadly, the results of std::type_info::name are not reliable. In this case, for exam
+ple, the type that all three compilers report for param is incorrect. Furthermore,
+they’re essentially required to be incorrect, because the specification for std::
+type_info::name mandates that the type be treated as if it had been passed to a tem
+plate function as a by-value parameter. As Item 1 explains, that means that if the type
+is a reference, its reference-ness is ignored, and if the type after reference removal is
+const (or volatile), its constness (or volatileness) is also ignored. That’s why
+param’s type—which is const Widget * const &—is reported as const Widget*.
+First the type’s reference-ness is removed, and then the constness of the resulting
+pointer is eliminated.
+Equally sadly, the type information displayed by IDE editors is also not reliable—or
+at least not reliably useful. For this same example, one IDE editor I know reports T’s
+type as (I am not making this up):
+const std::_Simple_types<std::_Wrap_alloc<std::_Vec_base_types<Widget, std::allocator<Widget> >::_Alloc>::value_type>::value_type *
+The same IDE editor shows param’s type as:
+Item 4 | 33
+
+
+const std::_Simple_types<...>::value_type *const &
+That’s less intimidating than the type for T, but the “...” in the middle is confusing
+until you realize that it’s the IDE editor’s way of saying “I’m omitting all that stuff
+that’s part of T’s type.” With any luck, your development environment does a better
+job on code like this.
+If you’re more inclined to rely on libraries than luck, you’ll be pleased to know that
+where std::type_info::name and IDEs may fail, the Boost TypeIndex library
+(often written as Boost.TypeIndex) is designed to succeed. The library isn’t part of
+Standard C++, but neither are IDEs nor templates like TD. Furthermore, the fact that
+Boost libraries (available at boost.org) are cross-platform, open source, and available
+under a license designed to be palatable to even the most paranoid corporate legal
+team means that code using Boost libraries is nearly as portable as code relying on the
+Standard Library.
+Here’s how our function f can produce accurate type information using Boost.Type
+Index:
+#include <boost/type_index.hpp>
+template<typename T> void f(const T& param) {
+using std::cout;
+using boost::typeindex::type_id_with_cvr;
+// show T cout << "T = "
+<< type_id_with_cvr<T>().pretty_name() << '\n';
+// show param's type cout << "param = "
+<< type_id_with_cvr<decltype(param)>().pretty_name() << '\n'; ... }
+The way this works is that the function template boost::typeindex::
+type_id_with_cvr takes a type argument (the type about which we want informa
+tion) and doesn’t remove const, volatile, or reference qualifiers (hence the
+“with_cvr” in the template name). The result is a boost::typeindex::type_index
+object, whose pretty_name member function produces a std::string containing a
+human-friendly representation of the type.
+34 | Item 4
+
+
+With this implementation for f, consider again the call that yields incorrect type
+information for param when typeid is used:
+std::vector<Widget> createVec(); // factory function
+const auto vw = createVec(); // init vw w/factory return
+if (!vw.empty()) {
+f(&vw[0]); // call f ... }
+Under compilers from GNU and Clang, Boost.TypeIndex produces this (accurate)
+output:
+T = Widget const* param = Widget const* const&
+Results under Microsoft’s compiler are essentially the same:
+T = class Widget const * param = class Widget const * const &
+Such near-uniformity is nice, but it’s important to remember that IDE editors, com
+piler error messages, and libraries like Boost.TypeIndex are merely tools you can use
+to help you figure out what types your compilers are deducing. All can be helpful, but
+at the end of the day, there’s no substitute for understanding the type deduction
+information in Items 1–3.
+Things to Remember
+• Deduced types can often be seen using IDE editors, compiler error messages,
+and the Boost TypeIndex library.
+• The results of some tools may be neither helpful nor accurate, so an under
+standing of C++’s type deduction rules remains essential.
+Item 4 | 35
+
+
+
+
+CHAPTER 2
+auto
+In concept, auto is as simple as simple can be, but it’s more subtle than it looks.
+Using it saves typing, sure, but it also prevents correctness and performance issues
+that can bedevil manual type declarations. Furthermore, some of auto’s type deduc
+tion results, while dutifully conforming to the prescribed algorithm, are, from the
+perspective of a programmer, just wrong. When that’s the case, it’s important to
+know how to guide auto to the right answer, because falling back on manual type
+declarations is an alternative that’s often best avoided.
+This brief chapter covers all of auto’s ins and outs.
+Item 5: Prefer auto to explicit type declarations.
+Ah, the simple joy of
+int x;
+Wait. Damn. I forgot to initialize x, so its value is indeterminate. Maybe. It might
+actually be initialized to zero. Depends on the context. Sigh.
+Never mind. Let’s move on to the simple joy of declaring a local variable to be initial
+ized by dereferencing an iterator:
+template<typename It> // algorithm to dwim ("do what I mean") void dwim(It b, It e) // for all elements in range from { // b to e while (b != e) {
+typename std::iterator_traits<It>::value_type currValue = *b; ...
+37
+
+
+} }
+Ugh. “typename std::iterator_traits<It>::value_type” to express the type of
+the value pointed to by an iterator? Really? I must have blocked out the memory of
+how much fun that is. Damn. Wait—didn’t I already say that?
+Okay, simple joy (take three): the delight of declaring a local variable whose type is
+that of a closure. Oh, right. The type of a closure is known only to the compiler,
+hence can’t be written out. Sigh. Damn. Damn, damn, damn! Programming in C++ is not the joyous experience it should be!
+Well, it didn’t used to be. But as of C++11, all these issues go away, courtesy of auto.
+auto variables have their type deduced from their initializer, so they must be initial
+ized. That means you can wave goodbye to a host of uninitialized variable problems
+as you speed by on the modern C++ superhighway:
+int x1; // potentially uninitialized
+auto x2; // error! initializer required
+auto x3 = 0; // fine, x's value is well-defined
+Said highway lacks the potholes associated with declaring a local variable whose value
+is that of a dereferenced iterator:
+template<typename It> // as before void dwim(It b, It e) {
+while (b != e) { auto currValue = *b; ... } }
+And because auto uses type deduction (see Item 2), it can represent types known
+only to compilers:
+auto derefUPLess = // comparison func. [](const std::unique_ptr<Widget>& p1, // for Widgets const std::unique_ptr<Widget>& p2) // pointed to by { return *p1 < *p2; }; // std::unique_ptrs
+Very cool. In C++14, the temperature drops further, because parameters to lambda
+expressions may involve auto:
+auto derefLess = // C++14 comparison [](const auto& p1, // function for
+38 | Item 5
+
+
+const auto& p2) // values pointed { return *p1 < *p2; }; // to by anything // pointer-like
+Coolness notwithstanding, perhaps you’re thinking we don’t really need auto to
+declare a variable that holds a closure, because we can use a std::function object.
+It’s true, we can, but possibly that’s not what you were thinking. And maybe now
+you’re thinking “What’s a std::function object?” So let’s clear that up.
+std::function is a template in the C++11 Standard Library that generalizes the idea
+of a function pointer. Whereas function pointers can point only to functions, how
+ever, std::function objects can refer to any callable object, i.e., to anything that can
+be invoked like a function. Just as you must specify the type of function to point to
+when you create a function pointer (i.e., the signature of the functions you want to
+point to), you must specify the type of function to refer to when you create a
+std::function object. You do that through std::function’s template parameter.
+For example, to declare a std::function object named func that could refer to any
+callable object acting as if it had this signature,
+bool(const std::unique_ptr<Widget>&, // C++11 signature for const std::unique_ptr<Widget>&) // std::unique_ptr<Widget> // comparison function
+you’d write this:
+std::function<bool(const std::unique_ptr<Widget>&, const std::unique_ptr<Widget>&)> func;
+Because lambda expressions yield callable objects, closures can be stored in
+std::function objects. That means we could declare the C++11 version of derefUP
+Less without using auto as follows:
+std::function<bool(const std::unique_ptr<Widget>&, const std::unique_ptr<Widget>&)> derefUPLess = [](const std::unique_ptr<Widget>& p1, const std::unique_ptr<Widget>& p2) { return *p1 < *p2; };
+It’s important to recognize that even setting aside the syntactic verbosity and need to
+repeat the parameter types, using std::function is not the same as using auto. An
+auto-declared variable holding a closure has the same type as the closure, and as such
+it uses only as much memory as the closure requires. The type of a std::function
+declared variable holding a closure is an instantiation of the std::function tem
+plate, and that has a fixed size for any given signature. This size may not be adequate
+for the closure it’s asked to store, and when that’s the case, the std::function con
+structor will allocate heap memory to store the closure. The result is that the
+Item 5 | 39
+
+
+std::function object typically uses more memory than the auto-declared object.
+And, thanks to implementation details that restrict inlining and yield indirect func
+tion calls, invoking a closure via a std::function object is almost certain to be
+slower than calling it via an auto-declared object. In other words, the std::func
+tion approach is generally bigger and slower than the auto approach, and it may
+yield out-of-memory exceptions, too. Plus, as you can see in the examples above,
+writing “auto” is a whole lot less work than writing the type of the std::function
+instantiation. In the competition between auto and std::function for holding a
+closure, it’s pretty much game, set, and match for auto. (A similar argument can be
+made for auto over std::function for holding the result of calls to std::bind, but
+in Item 34, I do my best to convince you to use lambdas instead of std::bind, any
+way.)
+The advantages of auto extend beyond the avoidance of uninitialized variables, ver
+bose variable declarations, and the ability to directly hold closures. One is the ability
+to avoid what I call problems related to “type shortcuts.” Here’s something you’ve
+probably seen—possibly even written:
+std::vector<int> v; ...
+unsigned sz = v.size();
+The official return type of v.size() is std::vector<int>::size_type, but few
+developers are aware of that. std::vector<int>::size_type is specified to be an
+unsigned integral type, so a lot of programmers figure that unsigned is good enough
+and write code such as the above. This can have some interesting consequences. On
+32-bit Windows, for example, both unsigned and std::vector<int>::size_type
+are the same size, but on 64-bit Windows, unsigned is 32 bits, while std::vec
+tor<int>::size_type is 64 bits. This means that code that works under 32-bit
+Windows may behave incorrectly under 64-bit Windows, and when porting your
+application from 32 to 64 bits, who wants to spend time on issues like that?
+Using auto ensures that you don’t have to:
+auto sz = v.size(); // sz's type is std::vector<int>::size_type
+Still unsure about the wisdom of using auto? Then consider this code:
+std::unordered_map<std::string, int> m; ...
+for (const std::pair<std::string, int>& p : m) {
+... // do something with p }
+40 | Item 5
+
+
+This looks perfectly reasonable, but there’s a problem. Do you see it?
+Recognizing what’s amiss requires remembering that the key part of a std::unor
+dered_map is const, so the type of std::pair in the hash table (which is what a
+std::unordered_map is) isn’t std::pair<std::string, int>, it’s std::pair
+<const std::string, int>. But that’s not the type declared for the variable p in the
+loop above. As a result, compilers will strive to find a way to convert
+std::pair<const std::string, int> objects (i.e., what’s in the hash table) to
+std::pair<std::string, int> objects (the declared type for p). They’ll succeed by
+creating a temporary object of the type that p wants to bind to by copying each object
+in m, then binding the reference p to that temporary object. At the end of each loop
+iteration, the temporary object will be destroyed. If you wrote this loop, you’d likely
+be surprised by this behavior, because you’d almost certainly intend to simply bind
+the reference p to each element in m.
+Such unintentional type mismatches can be autoed away:
+for (const auto& p : m) {
+... // as before }
+This is not only more efficient, it’s also easier to type. Furthermore, this code has the
+very attractive characteristic that if you take p’s address, you’re sure to get a pointer
+to an element within m. In the code not using auto, you’d get a pointer to a tempo
+rary object—an object that would be destroyed at the end of the loop iteration.
+The last two examples—writing unsigned when you should have written std::vec
+tor<int>::size_type and writing std::pair<std::string, int> when you
+should have written std::pair<const std::string, int>—demonstrate how
+explicitly specifying types can lead to implicit conversions that you neither want nor
+expect. If you use auto as the type of the target variable, you need not worry about
+mismatches between the type of variable you’re declaring and the type of the expres
+sion used to initialize it.
+There are thus several reasons to prefer auto over explicit type declarations. Yet auto
+isn’t perfect. The type for each auto variable is deduced from its initializing expres
+sion, and some initializing expressions have types that are neither anticipated nor
+desired. The conditions under which such cases arise, and what you can do about
+them, are discussed in Items 2 and 6, so I won’t address them here. Instead, I’ll turn
+my attention to a different concern you may have about using auto in place of tradi
+tional type declarations: the readability of the resulting source code.
+Item 5 | 41
+
+
+First, take a deep breath and relax. auto is an option, not a mandate. If, in your pro
+fessional judgment, your code will be clearer or more maintainable or in some other
+way better by using explicit type declarations, you’re free to continue using them. But
+bear in mind that C++ breaks no new ground in adopting what is generally known in
+the programming languages world as type inference. Other statically typed procedural
+languages (e.g., C#, D, Scala, Visual Basic) have a more or less equivalent feature, to
+say nothing of a variety of statically typed functional languages (e.g., ML, Haskell,
+OCaml, F#, etc.). In part, this is due to the success of dynamically typed languages
+such as Perl, Python, and Ruby, where variables are rarely explicitly typed. The soft
+ware development community has extensive experience with type inference, and it
+has demonstrated that there is nothing contradictory about such technology and the
+creation and maintenance of large, industrial-strength code bases.
+Some developers are disturbed by the fact that using auto eliminates the ability to
+determine an object’s type by a quick glance at the source code. However, IDEs’ abil
+ity to show object types often mitigates this problem (even taking into account the
+IDE type-display issues mentioned in Item 4), and, in many cases, a somewhat
+abstract view of an object’s type is just as useful as the exact type. It often suffices, for
+example, to know that an object is a container or a counter or a smart pointer,
+without knowing exactly what kind of container, counter, or smart pointer it is.
+Assuming well-chosen variable names, such abstract type information should almost
+always be at hand.
+The fact of the matter is that writing types explicitly often does little more than intro
+duce opportunities for subtle errors, either in correctness or efficiency or both. Fur
+thermore, auto types automatically change if the type of their initializing expression
+changes, and that means that some refactorings are facilitated by the use of auto. For
+example, if a function is declared to return an int, but you later decide that a long
+would be better, the calling code automatically updates itself the next time you com
+pile if the results of calling the function are stored in auto variables. If the results are
+stored in variables explicitly declared to be int, you’ll need to find all the call sites so
+that you can revise them.
+Things to Remember
+• auto variables must be initialized, are generally immune to type mismatches
+that can lead to portability or efficiency problems, can ease the process of
+refactoring, and typically require less typing than variables with explicitly
+specified types. • auto-typed variables are subject to the pitfalls described in Items 2 and 6.
+42 | Item 5
+
+
+Item 6: Use the explicitly typed initializer idiom when
+auto deduces undesired types.
+Item 5 explains that using auto to declare variables offers a number of technical
+advantages over explicitly specifying types, but sometimes auto’s type deduction zigs
+when you want it to zag. For example, suppose I have a function that takes a Widget
+and returns a std::vector<bool>, where each bool indicates whether the Widget
+offers a particular feature:
+std::vector<bool> features(const Widget& w);
+Further suppose that bit 5 indicates whether the Widget has high priority. We can
+thus write code like this:
+Widget w; ...
+bool highPriority = features(w)[5]; // is w high priority? ...
+processWidget(w, highPriority); // process w in accord // with its priority
+There’s nothing wrong with this code. It’ll work fine. But if we make the seemingly
+innocuous change of replacing the explicit type for highPriority with auto,
+auto highPriority = features(w)[5]; // is w high priority?
+the situation changes. All the code will continue to compile, but its behavior is no
+longer predictable:
+processWidget(w, highPriority); // undefined behavior!
+As the comment indicates, the call to processWidget now has undefined behavior.
+But why? The answer is likely to be surprising. In the code using auto, the type of
+highPriority is no longer bool. Though std::vector<bool> conceptually holds
+bools, operator[] for std::vector<bool> doesn’t return a reference to an element
+of the container (which is what std::vector::operator[] returns for every type
+except bool). Instead, it returns an object of type std::vector<bool>::reference
+(a class nested inside std::vector<bool>).
+std::vector<bool>::reference exists because std::vector<bool> is specified to
+represent its bools in packed form, one bit per bool. That creates a problem for
+std::vector<bool>’s operator[], because operator[] for std::vector<T> is
+supposed to return a T&, but C++ forbids references to bits. Not being able to return a
+Item 6 | 43
+
+
+bool&, operator[] for std::vector<bool> returns an object that acts like a bool&.
+For this act to succeed, std::vector<bool>::reference objects must be usable in
+essentially all contexts where bool&s can be. Among the features in std::vec
+tor<bool>::reference that make this work is an implicit conversion to bool. (Not
+to bool&, to bool. To explain the full set of techniques used by std::vec
+tor<bool>::reference to emulate the behavior of a bool& would take us too far
+afield, so I’ll simply remark that this implicit conversion is only one stone in a larger
+mosaic.) With this information in mind, look again at this part of the original code:
+bool highPriority = features(w)[5]; // declare highPriority's // type explicitly
+Here, features returns a std::vector<bool> object, on which operator[] is
+invoked. operator[] returns a std::vector<bool>::reference object, which is
+then implicitly converted to the bool that is needed to initialize highPriority. high
+Priority thus ends up with the value of bit 5 in the std::vector<bool> returned
+by features, just like it’s supposed to.
+Contrast that with what happens in the auto-ized declaration for highPriority:
+auto highPriority = features(w)[5]; // deduce highPriority's // type
+Again, features returns a std::vector<bool> object, and, again, operator[] is
+invoked on it. operator[] continues to return a std::vector<bool>::reference
+object, but now there’s a change, because auto deduces that as the type of highPrior
+ity. highPriority doesn’t have the value of bit 5 of the std::vector<bool>
+returned by features at all.
+The value it does have depends on how std::vector<bool>::reference is imple
+mented. One implementation is for such objects to contain a pointer to the machine
+word holding the referenced bit, plus the offset into that word for that bit. Consider
+what that means for the initialization of highPriority, assuming that such a
+std::vector<bool>::reference implementation is in place.
+The call to features returns a temporary std::vector<bool> object. This object
+has no name, but for purposes of this discussion, I’ll call it temp. operator[] is
+invoked on temp, and the std::vector<bool>::reference it returns contains a
+pointer to a word in the data structure holding the bits that are managed by temp,
+plus the offset into that word corresponding to bit 5. highPriority is a copy of this
+std::vector<bool>::reference object, so highPriority, too, contains a pointer
+to a word in temp, plus the offset corresponding to bit 5. At the end of the statement,
+44 | Item 6
+
+
+temp is destroyed, because it’s a temporary object. Therefore, highPriority contains
+a dangling pointer, and that’s the cause of the undefined behavior in the call to proc
+essWidget:
+processWidget(w, highPriority); // undefined behavior! // highPriority contains // dangling pointer!
+std::vector<bool>::reference is an example of a proxy class: a class that exists
+for the purpose of emulating and augmenting the behavior of some other type. Proxy
+classes are employed for a variety of purposes. std::vector<bool>::reference
+exists to offer the illusion that operator[] for std::vector<bool> returns a refer
+ence to a bit, for example, and the Standard Library’s smart pointer types (see Chap
+ter 4) are proxy classes that graft resource management onto raw pointers. The utility
+of proxy classes is well-established. In fact, the design pattern “Proxy” is one of the
+most longstanding members of the software design patterns Pantheon.
+Some proxy classes are designed to be apparent to clients. That’s the case for
+std::shared_ptr and std::unique_ptr, for example. Other proxy classes are
+designed to act more or less invisibly. std::vector<bool>::reference is an exam
+ple of such “invisible” proxies, as is its std::bitset compatriot, std::bitset::ref
+erence.
+Also in that camp are some classes in C++ libraries employing a technique known as
+expression templates. Such libraries were originally developed to improve the effi
+ciency of numeric code. Given a class Matrix and Matrix objects m1, m2, m3, and m4,
+for example, the expression
+Matrix sum = m1 + m2 + m3 + m4;
+can be computed much more efficiently if operator+ for Matrix objects returns a
+proxy for the result instead of the result itself. That is, operator+ for two Matrix
+objects would return an object of a proxy class such as Sum<Matrix, Matrix> instead
+of a Matrix object. As was the case with std::vector<bool>::reference and
+bool, there’d be an implicit conversion from the proxy class to Matrix, which would
+permit the initialization of sum from the proxy object produced by the expression on
+the right side of the “=”. (The type of that object would traditionally encode the entire
+initialization expression, i.e., be something like Sum<Sum<Sum<Matrix, Matrix>,
+Matrix>, Matrix>. That’s definitely a type from which clients should be shielded.)
+As a general rule, “invisible” proxy classes don’t play well with auto. Objects of such
+classes are often not designed to live longer than a single statement, so creating vari
+ables of those types tends to violate fundamental library design assumptions. That’s
+Item 6 | 45
+
+
+the case with std::vector<bool>::reference, and we’ve seen that violating that
+assumption can lead to undefined behavior. You therefore want to avoid code of this form:
+auto someVar = expression of "invisible" proxy class type;
+But how can you recognize when proxy objects are in use? The software employing
+them is unlikely to advertise their existence. They’re supposed to be invisible, at least
+conceptually! And once you’ve found them, do you really have to abandon auto and
+the many advantages Item 5 demonstrates for it?
+Let’s take the how-do-you-find-them question first. Although “invisible” proxy
+classes are designed to fly beneath programmer radar in day-to-day use, libraries
+using them often document that they do so. The more you’ve familiarized yourself
+with the basic design decisions of the libraries you use, the less likely you are to be
+blindsided by proxy usage within those libraries.
+Where documentation comes up short, header files fill the gap. It’s rarely possible for
+source code to fully cloak proxy objects. They’re typically returned from functions
+that clients are expected to call, so function signatures usually reflect their existence.
+Here’s the spec for std::vector<bool>::operator[], for example:
+namespace std { // from C++ Standards
+template <class Allocator> class vector<bool, Allocator> { public: ...
+class reference { ... };
+reference operator[](size_type n); ... }; }
+Assuming you know that operator[] for std::vector<T> normally returns a T&,
+the unconventional return type for operator[] in this case is a tip-off that a proxy
+class is in use. Paying careful attention to the interfaces you’re using can often reveal
+the existence of proxy classes.
+In practice, many developers discover the use of proxy classes only when they try to
+track down mystifying compilation problems or debug incorrect unit test results.
+Regardless of how you find them, once auto has been determined to be deducing the
+type of a proxy class instead of the type being proxied, the solution need not involve
+abandoning auto. auto itself isn’t the problem. The problem is that auto isn’t deduc
+46 | Item 6
+
+
+ing the type you want it to deduce. The solution is to force a different type deduction.
+The way you do that is what I call the explicitly typed initializer idiom.
+The explicitly typed initializer idiom involves declaring a variable with auto, but
+casting the initialization expression to the type you want auto to deduce. Here’s how
+it can be used to force highPriority to be a bool, for example:
+auto highPriority = static_cast<bool>(features(w)[5]);
+Here, features(w)[5] continues to return a std::vector<bool>::reference
+object, just as it always has, but the cast changes the type of the expression to bool,
+which auto then deduces as the type for highPriority. At runtime, the std::vec
+tor<bool>::reference object returned from std::vector<bool>::operator[]
+executes the conversion to bool that it supports, and as part of that conversion, the
+still-valid pointer to the std::vector<bool> returned from features is derefer
+enced. That avoids the undefined behavior we ran into earlier. The index 5 is then
+applied to the bits pointed to by the pointer, and the bool value that emerges is used
+to initialize highPriority.
+For the Matrix example, the explicitly typed initializer idiom would look like this:
+auto sum = static_cast<Matrix>(m1 + m2 + m3 + m4);
+Applications of the idiom aren’t limited to initializers yielding proxy class types. It
+can also be useful to emphasize that you are deliberately creating a variable of a type
+that is different from that generated by the initializing expression. For example, sup
+pose you have a function to calculate some tolerance value:
+double calcEpsilon(); // return tolerance value
+calcEpsilon clearly returns a double, but suppose you know that for your applica
+tion, the precision of a float is adequate, and you care about the difference in size
+between floats and doubles. You could declare a float variable to store the result
+of calcEpsilon,
+float ep = calcEpsilon(); // impliclitly convert // double → float
+but this hardly announces “I’m deliberately reducing the precision of the value
+returned by the function.” A declaration using the explicitly typed initializer idiom,
+however, does:
+auto ep = static_cast<float>(calcEpsilon());
+Similar reasoning applies if you have a floating-point expression that you are deliber
+ately storing as an integral value. Suppose you need to calculate the index of an ele
+ment in a container with random access iterators (e.g., a std::vector, std::deque,
+Item 6 | 47
+
+
+or std::array), and you’re given a double between 0.0 and 1.0 indicating how far
+from the beginning of the container the desired element is located. (0.5 would indi
+cate the middle of the container.) Further suppose that you’re confident that the
+resulting index will fit in an int. If the container is c and the double is d, you could
+calculate the index this way,
+int index = d * (c.size() - 1);
+but this obscures the fact that you’re intentionally converting the double on the right
+to an int. The explicitly typed initializer idiom makes things transparent:
+auto index = static_cast<int>(d * (c.size() - 1));
+Things to Remember
+• “Invisible” proxy types can cause auto to deduce the “wrong” type for an ini
+tializing expression.
+• The explicitly typed initializer idiom forces auto to deduce the type you want
+it to have.
+48 | Item 6
+
+
+CHAPTER 3
+Moving to Modern C++
+When it comes to big-name features, C++11 and C++14 have a lot to boast of. auto,
+smart pointers, move semantics, lambdas, concurrency—each is so important, I
+devote a chapter to it. It’s essential to master those features, but becoming an effective
+modern C++ programmer requires a series of smaller steps, too. Each step answers
+specific questions that arise during the journey from C++98 to modern C++. When
+should you use braces instead of parentheses for object creation? Why are alias decla
+rations better than typedefs? How does constexpr differ from const? What’s the
+relationship between const member functions and thread safety? The list goes on
+and on. And one by one, this chapter provides the answers.
+Item 7: Distinguish between () and {} when creating
+objects.
+Depending on your perspective, syntax choices for object initialization in C++11
+embody either an embarrassment of riches or a confusing mess. As a general rule,
+initialization values may be specified with parentheses, an equals sign, or braces:
+int x(0); // initializer is in parentheses
+int y = 0; // initializer follows "="
+int z{ 0 }; // initializer is in braces
+In many cases, it’s also possible to use an equals sign and braces together:
+int z = { 0 }; // initializer uses "=" and braces
+For the remainder of this Item, I’ll generally ignore the equals-sign-plus-braces syn
+tax, because C++ usually treats it the same as the braces-only version.
+49
+
+
+The “confusing mess” lobby points out that the use of an equals sign for initialization
+often misleads C++ newbies into thinking that an assignment is taking place, even
+though it’s not. For built-in types like int, the difference is academic, but for user
+defined types, it’s important to distinguish initialization from assignment, because
+different function calls are involved:
+Widget w1; // call default constructor
+Widget w2 = w1; // not an assignment; calls copy ctor
+w1 = w2; // an assignment; calls copy operator=
+Even with several initialization syntaxes, there were some situations where C++98
+had no way to express a desired initialization. For example, it wasn’t possible to
+directly indicate that an STL container should be created holding a particular set of
+values (e.g., 1, 3, and 5).
+To address the confusion of multiple initialization syntaxes, as well as the fact that
+they don’t cover all initialization scenarios, C++11 introduces uniform initialization:
+a single initialization syntax that can, at least in concept, be used anywhere and
+express everything. It’s based on braces, and for that reason I prefer the term braced
+initialization. “Uniform initialization” is an idea. “Braced initialization” is a syntactic
+construct.
+Braced initialization lets you express the formerly inexpressible. Using braces, speci
+fying the initial contents of a container is easy:
+std::vector<int> v{ 1, 3, 5 }; // v's initial content is 1, 3, 5
+Braces can also be used to specify default initialization values for non-static data
+members. This capability—new to C++11—is shared with the “=” initialization syn
+tax, but not with parentheses:
+class Widget { ...
+private: int x{ 0 }; // fine, x's default value is 0 int y = 0; // also fine int z(0); // error! };
+On the other hand, uncopyable objects (e.g., std::atomics—see Item 40) may be
+initialized using braces or parentheses, but not using “=”:
+std::atomic<int> ai1{ 0 }; // fine
+50 | Item 7
+
+
+std::atomic<int> ai2(0); // fine
+std::atomic<int> ai3 = 0; // error!
+It’s thus easy to understand why braced initialization is called “uniform.” Of C++’s
+three ways to designate an initializing expression, only braces can be used every
+where.
+A novel feature of braced initialization is that it prohibits implicit narrowing conver
+sions among built-in types. If the value of an expression in a braced initializer isn’t
+guaranteed to be expressible by the type of the object being initialized, the code won’t
+compile:
+double x, y, z;
+...
+int sum1{ x + y + z }; // error! sum of doubles may // not be expressible as int
+Initialization using parentheses and “=” doesn’t check for narrowing conversions,
+because that could break too much legacy code:
+int sum2(x + y + z); // okay (value of expression // truncated to an int)
+int sum3 = x + y + z; // ditto
+Another noteworthy characteristic of braced initialization is its immunity to C++’s
+most vexing parse. A side effect of C++’s rule that anything that can be parsed as a
+declaration must be interpreted as one, the most vexing parse most frequently afflicts
+developers when they want to default-construct an object, but inadvertently end up
+declaring a function instead. The root of the problem is that if you want to call a con
+structor with an argument, you can do it like this,
+Widget w1(10); // call Widget ctor with argument 10
+but if you try to call a Widget constructor with zero arguments using the analogous
+syntax, you declare a function instead of an object:
+Widget w2(); // most vexing parse! declares a function // named w2 that returns a Widget!
+Functions can’t be declared using braces for the parameter list, so default
+constructing an object using braces doesn’t have this problem:
+Widget w3{}; // calls Widget ctor with no args
+Item 7 | 51
+
+
+There’s thus a lot to be said for braced initialization. It’s the syntax that can be used
+in the widest variety of contexts, it prevents implicit narrowing conversions, and it’s
+immune to C++’s most vexing parse. A trifecta of goodness! So why isn’t this Item
+entitled something like “Prefer braced initialization syntax”?
+The drawback to braced initialization is the sometimes-surprising behavior that
+accompanies it. Such behavior grows out of the unusually tangled relationship among
+braced initializers, std::initializer_lists, and constructor overload resolution.
+Their interactions can lead to code that seems like it should do one thing, but actually
+does another. For example, Item 2 explains that when an auto-declared variable has a
+braced initializer, the type deduced is std::initializer_list, even though other
+ways of declaring a variable with the same initializer would yield a more intuitive
+type. As a result, the more you like auto, the less enthusiastic you’re likely to be about
+braced initialization.
+In constructor calls, parentheses and braces have the same meaning as long as
+std::initializer_list parameters are not involved:
+class Widget { public: Widget(int i, bool b); // ctors not declaring Widget(int i, double d); // std::initializer_list params ... };
+Widget w1(10, true); // calls first ctor
+Widget w2{10, true}; // also calls first ctor
+Widget w3(10, 5.0); // calls second ctor
+Widget w4{10, 5.0}; // also calls second ctor
+If, however, one or more constructors declare a parameter of type std::initial
+izer_list, calls using the braced initialization syntax strongly prefer the overloads
+taking std::initializer_lists. Strongly. If there’s any way for compilers to con
+strue a call using a braced initializer to be to a constructor taking a std::initial
+izer_list, compilers will employ that interpretation. If the Widget class above is
+augmented with a constructor taking a std::initializer_list<long double>, for
+example,
+class Widget { public: Widget(int i, bool b); // as before Widget(int i, double d); // as before
+52 | Item 7
+
+
+Widget(std::initializer_list<long double> il); // added
+... };
+Widgets w2 and w4 will be constructed using the new constructor, even though the
+type of the std::initializer_list elements (long double) is, compared to the
+non-std::initializer_list constructors, a worse match for both arguments!
+Look:
+Widget w1(10, true); // uses parens and, as before, // calls first ctor
+Widget w2{10, true}; // uses braces, but now calls // std::initializer_list ctor
+// (10 and true convert to long double)
+Widget w3(10, 5.0); // uses parens and, as before, // calls second ctor
+Widget w4{10, 5.0}; // uses braces, but now calls // std::initializer_list ctor
+// (10 and 5.0 convert to long double)
+Even what would normally be copy and move construction can be hijacked by
+std::initializer_list constructors:
+class Widget { public: Widget(int i, bool b); // as before Widget(int i, double d); // as before Widget(std::initializer_list<long double> il); // as before
+operator float() const; // convert ... // to float
+};
+Widget w5(w4); // uses parens, calls copy ctor
+Widget w6{w4}; // uses braces, calls
+// std::initializer_list ctor
+// (w4 converts to float, and float // converts to long double)
+Item 7 | 53
+
+
+Widget w7(std::move(w4)); // uses parens, calls move ctor
+Widget w8{std::move(w4)}; // uses braces, calls
+// std::initializer_list ctor // (for same reason as w6)
+Compilers’ determination to match braced initializers with constructors taking
+std::initializer_lists is so strong, it prevails even if the best-match std::ini
+tializer_list constructor can’t be called. For example:
+class Widget { public: Widget(int i, bool b); // as before Widget(int i, double d); // as before
+Widget(std::initializer_list<bool> il); // element type is // now bool
+... // no implicit }; // conversion funcs
+Widget w{10, 5.0}; // error! requires narrowing conversions
+Here, compilers will ignore the first two constructors (the second of which offers an
+exact match on both argument types) and try to call the constructor taking a
+std::initializer_list<bool>. Calling that constructor would require converting
+an int (10) and a double (5.0) to bools. Both conversions would be narrowing
+(bool can’t exactly represent either value), and narrowing conversions are prohibited
+inside braced initializers, so the call is invalid, and the code is rejected.
+Only if there’s no way to convert the types of the arguments in a braced initializer to
+the type in a std::initializer_list do compilers fall back on normal overload
+resolution. For example, if we replace the std::initializer_list<bool> construc
+tor with one taking a std::initializer_list<std::string>, the non
+std::initializer_list constructors become candidates again, because there is no
+way to convert ints and bools to std::strings:
+class Widget { public: Widget(int i, bool b); // as before Widget(int i, double d); // as before
+// std::initializer_list element type is now std::string Widget(std::initializer_list<std::string> il); ... // no implicit
+54 | Item 7
+
+
+}; // conversion funcs
+Widget w1(10, true); // uses parens, still calls first ctor
+Widget w2{10, true}; // uses braces, now calls first ctor
+Widget w3(10, 5.0); // uses parens, still calls second ctor
+Widget w4{10, 5.0}; // uses braces, now calls second ctor
+This brings us near the end of our examination of braced initializers and constructor
+overloading, but there’s an interesting edge case that needs to be addressed. Suppose
+you use an empty set of braces to construct an object that supports default construc
+tion and also supports std::initializer_list construction. What do your empty
+braces mean? If they mean “no arguments,” you get default construction, but if they
+mean “empty std::initializer_list,” you get construction from a std::ini
+tializer_list with no elements.
+The rule is that you get default construction. Empty braces mean no arguments, not
+an empty std::initializer_list:
+class Widget { public: Widget(); // default ctor
+Widget(std::initializer_list<int> il); // std::initializer // _list ctor
+... // no implicit }; // conversion funcs
+Widget w1; // calls default ctor
+Widget w2{}; // also calls default ctor
+Widget w3(); // most vexing parse! declares a function!
+If you want to call a std::initializer_list constructor with an empty std::ini
+tializer_list, you do it by making the empty braces a constructor argument—by
+putting the empty braces inside the parentheses or braces demarcating what you’re
+passing:
+Widget w4({}); // calls std::initializer_list ctor // with empty list
+Widget w5{{}}; // ditto
+Item 7 | 55
+
+
+At this point, with seemingly arcane rules about braced initializers, std::initial
+izer_lists, and constructor overloading burbling about in your brain, you may be
+wondering how much of this information matters in day-to-day programming. More
+than you might think, because one of the classes directly affected is std::vector.
+std::vector has a non-std::initializer_list constructor that allows you to
+specify the initial size of the container and a value each of the initial elements should
+have, but it also has a constructor taking a std::initializer_list that permits
+you to specify the initial values in the container. If you create a std::vector of a
+numeric type (e.g., a std::vector<int>) and you pass two arguments to the con
+structor, whether you enclose those arguments in parentheses or braces makes a tre
+mendous difference:
+std::vector<int> v1(10, 20); // use non-std::initializer_list // ctor: create 10-element // std::vector, all elements have // value of 20
+std::vector<int> v2{10, 20}; // use std::initializer_list ctor: // create 2-element std::vector, // element values are 10 and 20
+But let’s step back from std::vector and also from the details of parentheses,
+braces, and constructor overloading resolution rules. There are two primary take
+aways from this discussion. First, as a class author, you need to be aware that if your
+set of overloaded constructors includes one or more functions taking a std::ini
+tializer_list, client code using braced initialization may see only the std::ini
+tializer_list overloads. As a result, it’s best to design your constructors so that
+the overload called isn’t affected by whether clients use parentheses or braces. In
+other words, learn from what is now viewed as an error in the design of the std::vec
+tor interface, and design your classes to avoid it.
+An implication is that if you have a class with no std::initializer_list construc
+tor, and you add one, client code using braced initialization may find that calls that
+used to resolve to non-std::initializer_list constructors now resolve to the
+new function. Of course, this kind of thing can happen any time you add a new func
+tion to a set of overloads: calls that used to resolve to one of the old overloads might
+start calling the new one. The difference with std::initializer_list constructor
+overloads is that a std::initializer_list overload doesn’t just compete with
+other overloads, it overshadows them to the point where the other overloads may
+hardly be considered. So add such overloads only with great deliberation.
+The second lesson is that as a class client, you must choose carefully between paren
+theses and braces when creating objects. Most developers end up choosing one kind
+56 | Item 7
+
+
+of delimiter as a default, using the other only when they have to. Braces-by-default
+folks are attracted by their unrivaled breadth of applicability, their prohibition of nar
+rowing conversions, and their immunity to C++’s most vexing parse. Such folks
+understand that in some cases (e.g., creation of a std::vector with a given size and
+initial element value), parentheses are required. On the other hand, the go
+parentheses-go crowd embraces parentheses as their default argument delimiter.
+They’re attracted to its consistency with the C++98 syntactic tradition, its avoidance
+of the auto-deduced-a-std::initializer_list problem, and the knowledge that
+their object creation calls won’t be inadvertently waylaid by std::initial
+izer_list constructors. They concede that sometimes only braces will do (e.g.,
+when creating a container with particular values). There’s no consensus that either
+approach is better than the other, so my advice is to pick one and apply it consis
+tently.
+If you’re a template author, the tension between parentheses and braces for object
+creation can be especially frustrating, because, in general, it’s not possible to know
+which should be used. For example, suppose you’d like to create an object of an arbi
+trary type from an arbitrary number of arguments. A variadic template makes this
+conceptually straightforward:
+template<typename T, // type of object to create typename... Ts> // types of arguments to use void doSomeWork(Ts&&... params) {
+create local T object from params... ...
+}
+There are two ways to turn the line of pseudocode into real code (see Item 25 for
+information about std::forward):
+T localObject(std::forward<Ts>(params)...); // using parens
+T localObject{std::forward<Ts>(params)...}; // using braces
+So consider this calling code:
+std::vector<int> v; ...
+doSomeWork<std::vector<int>>(10, 20);
+Item 7 | 57
+
+
+1 More flexible designs—ones that permit callers to determine whether parentheses or braces should be used in
+functions generated from a template—are possible. For details, see the 5 June 2013 entry of Andrzej’s C++
+blog, “Intuitive interface — Part I.”
+If doSomeWork uses parentheses when creating localObject, the result is a
+std::vector with 10 elements. If doSomeWork uses braces, the result is a std::vec
+tor with 2 elements. Which is correct? The author of doSomeWork can’t know. Only
+the caller can.
+This is precisely the problem faced by the Standard Library functions
+std::make_unique and std::make_shared (see Item 21). These functions resolve
+the problem by internally using parentheses and by documenting this decision as part
+of their interfaces.1
+Things to Remember
+• Braced initialization is the most widely usable initialization syntax, it prevents
+narrowing conversions, and it’s immune to C++’s most vexing parse.
+• During constructor overload resolution, braced initializers are matched to
+std::initializer_list parameters if at all possible, even if other construc
+tors offer seemingly better matches.
+• An example of where the choice between parentheses and braces can make a
+significant difference is creating a std::vector<numeric type> with two
+arguments.
+• Choosing between parentheses and braces for object creation inside templates
+can be challenging.
+Item 8: Prefer nullptr to 0 and NULL.
+So here’s the deal: the literal 0 is an int, not a pointer. If C++ finds itself looking at 0
+in a context where only a pointer can be used, it’ll grudgingly interpret 0 as a null
+pointer, but that’s a fallback position. C++’s primary policy is that 0 is an int, not a
+pointer.
+Practically speaking, the same is true of NULL. There is some uncertainty in the details
+in NULL’s case, because implementations are allowed to give NULL an integral type
+other than int (e.g., long). That’s not common, but it doesn’t really matter, because
+the issue here isn’t the exact type of NULL, it’s that neither 0 nor NULL has a pointer
+type.
+58 | Item 7
+
+
+In C++98, the primary implication of this was that overloading on pointer and inte
+gral types could lead to surprises. Passing 0 or NULL to such overloads never called a
+pointer overload:
+void f(int); // three overloads of f void f(bool); void f(void*);
+f(0); // calls f(int), not f(void*)
+f(NULL); // might not compile, but typically calls // f(int). Never calls f(void*)
+The uncertainty regarding the behavior of f(NULL) is a reflection of the leeway gran
+ted to implementations regarding the type of NULL. If NULL is defined to be, say, 0L
+(i.e., 0 as a long), the call is ambiguous, because conversion from long to int, long
+to bool, and 0L to void* are considered equally good. The interesting thing about
+that call is the contradiction between the apparent meaning of the source code (“I’m
+calling f with NULL—the null pointer”) and its actual meaning (“I’m calling f with
+some kind of integer—not the null pointer”). This counterintuitive behavior is what
+led to the guideline for C++98 programmers to avoid overloading on pointer and
+integral types. That guideline remains valid in C++11, because, the advice of this Item
+notwithstanding, it’s likely that some developers will continue to use 0 and NULL,
+even though nullptr is a better choice.
+nullptr’s advantage is that it doesn’t have an integral type. To be honest, it doesn’t
+have a pointer type, either, but you can think of it as a pointer of all types. nullptr’s
+actual type is std::nullptr_t, and, in a wonderfully circular definition,
+std::nullptr_t is defined to be the type of nullptr. The type std::nullptr_t
+implicitly converts to all raw pointer types, and that’s what makes nullptr act as if it
+were a pointer of all types.
+Calling the overloaded function f with nullptr calls the void* overload (i.e., the
+pointer overload), because nullptr can’t be viewed as anything integral:
+f(nullptr); // calls f(void*) overload
+Using nullptr instead of 0 or NULL thus avoids overload resolution surprises, but
+that’s not its only advantage. It can also improve code clarity, especially when auto
+variables are involved. For example, suppose you encounter this in a code base:
+auto result = findRecord( /* arguments */ );
+if (result == 0) {
+Item 8 | 59
+
+
+... }
+If you don’t happen to know (or can’t easily find out) what findRecord returns, it
+may not be clear whether result is a pointer type or an integral type. After all, 0
+(what result is tested against) could go either way. If you see the following, on the
+other hand,
+auto result = findRecord( /* arguments */ );
+if (result == nullptr) { ... }
+there’s no ambiguity: result must be a pointer type.
+nullptr shines especially brightly when templates enter the picture. Suppose you
+have some functions that should be called only when the appropriate mutex has been
+locked. Each function takes a different kind of pointer:
+int f1(std::shared_ptr<Widget> spw); // call these only when double f2(std::unique_ptr<Widget> upw); // the appropriate bool f3(Widget* pw); // mutex is locked
+Calling code that wants to pass null pointers could look like this:
+std::mutex f1m, f2m, f3m; // mutexes for f1, f2, and f3
+using MuxGuard = // C++11 typedef; see Item 9 std::lock_guard<std::mutex>; ...
+{
+MuxGuard g(f1m); // lock mutex for f1 auto result = f1(0); // pass 0 as null ptr to f1 } // unlock mutex
+...
+{
+MuxGuard g(f2m); // lock mutex for f2 auto result = f2(NULL); // pass NULL as null ptr to f2 } // unlock mutex
+...
+{
+60 | Item 8
+
+
+MuxGuard g(f3m); // lock mutex for f3 auto result = f3(nullptr); // pass nullptr as null ptr to f3 } // unlock mutex
+The failure to use nullptr in the first two calls in this code is sad, but the code
+works, and that counts for something. However, the repeated pattern in the calling
+code—lock mutex, call function, unlock mutex—is more than sad. It’s disturbing.
+This kind of source code duplication is one of the things that templates are designed
+to avoid, so let’s templatize the pattern:
+template<typename FuncType, typename MuxType, typename PtrType> auto lockAndCall(FuncType func, MuxType& mutex, PtrType ptr) -> decltype(func(ptr)) {
+using MuxGuard = std::lock_guard<MuxType>;
+MuxGuard g(mutex); return func(ptr); }
+If the return type of this function (auto ... -> decltype(func(ptr)) has you scratch
+ing your head, do your head a favor and navigate to Item 3, which explains what’s
+going on. There you’ll see that in C++14, the return type could be reduced to a simple
+decltype(auto):
+template<typename FuncType, typename MuxType, typename PtrType> decltype(auto) lockAndCall(FuncType func, // C++14 MuxType& mutex, PtrType ptr) {
+using MuxGuard = std::lock_guard<MuxType>;
+MuxGuard g(mutex); return func(ptr); }
+Given the lockAndCall template (either version), callers can write code like this:
+auto result1 = lockAndCall(f1, f1m, 0); // error!
+...
+Item 8 | 61
+
+
+auto result2 = lockAndCall(f2, f2m, NULL); // error!
+...
+auto result3 = lockAndCall(f3, f3m, nullptr); // fine
+Well, they can write it, but, as the comments indicate, in two of the three cases, the
+code won’t compile. The problem in the first call is that when 0 is passed to lockAnd
+Call, template type deduction kicks in to figure out its type. The type of 0 is, was,
+and always will be int, so that’s the type of the parameter ptr inside the instantiation
+of this call to lockAndCall. Unfortunately, this means that in the call to func inside
+lockAndCall, an int is being passed, and that’s not compatible with the
+std::shared_ptr<Widget> parameter that f1 expects. The 0 passed in the call to
+lockAndCall was intended to represent a null pointer, but what actually got passed
+was a run-of-the-mill int. Trying to pass this int to f1 as a std::shared_ptr
+<Widget> is a type error. The call to lockAndCall with 0 fails because inside the
+template, an int is being passed to a function that requires a std::
+shared_ptr<Widget>.
+The analysis for the call involving NULL is essentially the same. When NULL is passed
+to lockAndCall, an integral type is deduced for the parameter ptr, and a type error
+occurs when ptr—an int or int-like type—is passed to f2, which expects to get a
+std::unique_ptr<Widget>.
+In contrast, the call involving nullptr has no trouble. When nullptr is passed to
+lockAndCall, the type for ptr is deduced to be std::nullptr_t. When ptr is
+passed to f3, there’s an implicit conversion from std::nullptr_t to Widget*,
+because std::nullptr_t implicitly converts to all pointer types.
+The fact that template type deduction deduces the “wrong” types for 0 and NULL (i.e.,
+their true types, rather than their fallback meaning as a representation for a null
+pointer) is the most compelling reason to use nullptr instead of 0 or NULL when you
+want to refer to a null pointer. With nullptr, templates pose no special challenge.
+Combined with the fact that nullptr doesn’t suffer from the overload resolution sur
+prises that 0 and NULL are susceptible to, the case is ironclad. When you want to refer
+to a null pointer, use nullptr, not 0 or NULL.
+Things to Remember • Prefer nullptr to 0 and NULL. • Avoid overloading on integral and pointer types.
+62 | Item 8
+
+
+Item 9: Prefer alias declarations to typedefs.
+I’m confident we can agree that using STL containers is a good idea, and I hope that
+Item 18 convinces you that using std::unique_ptr is a good idea, but my guess is
+that neither of us is fond of writing types like “std::unique_ptr<std::unor
+dered_map<std::string, std::string>>” more than once. Just thinking about it
+probably increases the risk of carpal tunnel syndrome.
+Avoiding such medical tragedies is easy. Introduce a typedef:
+typedef std::unique_ptr<std::unordered_map<std::string, std::string>> UPtrMapSS;
+But typedefs are soooo C++98. They work in C++11, sure, but C++11 also offers
+alias declarations:
+using UPtrMapSS =
+std::unique_ptr<std::unordered_map<std::string, std::string>>;
+Given that the typedef and the alias declaration do exactly the same thing, it’s rea
+sonable to wonder whether there is a solid technical reason for preferring one over
+the other.
+There is, but before I get to it, I want to mention that many people find the alias dec
+laration easier to swallow when dealing with types involving function pointers:
+// FP is a synonym for a pointer to a function taking an int and // a const std::string& and returning nothing typedef void (*FP)(int, const std::string&); // typedef
+// same meaning as above using FP = void (*)(int, const std::string&); // alias // declaration
+Of course, neither form is particularly easy to choke down, and few people spend
+much time dealing with synonyms for function pointer types, anyway, so this is
+hardly a compelling reason to choose alias declarations over typedefs.
+But a compelling reason does exist: templates. In particular, alias declarations may be
+templatized (in which case they’re called alias templates), while typedefs cannot.
+This gives C++11 programmers a straightforward mechanism for expressing things
+that in C++98 had to be hacked together with typedefs nested inside templatized
+structs. For example, consider defining a synonym for a linked list that uses a cus
+tom allocator, MyAlloc. With an alias template, it’s a piece of cake:
+Item 9 | 63
+
+
+template<typename T> // MyAllocList<T> using MyAllocList = std::list<T, MyAlloc<T>>; // is synonym for // std::list<T, // MyAlloc<T>>
+MyAllocList<Widget> lw; // client code
+With a typedef, you pretty much have to create the cake from scratch:
+template<typename T> // MyAllocList<T>::type struct MyAllocList { // is synonym for typedef std::list<T, MyAlloc<T>> type; // std::list<T, }; // MyAlloc<T>>
+MyAllocList<Widget>::type lw; // client code
+It gets worse. If you want to use the typedef inside a template for the purpose of cre
+ating a linked list holding objects of a type specified by a template parameter, you
+have to precede the typedef name with typename:
+template<typename T> class Widget { // Widget<T> contains private: // a MyAllocList<T> typename MyAllocList<T>::type list; // as a data member ... };
+Here, MyAllocList<T>::type refers to a type that’s dependent on a template type
+parameter (T). MyAllocList<T>::type is thus a dependent type, and one of C++’s
+many endearing rules is that the names of dependent types must be preceded by type
+name.
+If MyAllocList is defined as an alias template, this need for typename vanishes (as
+does the cumbersome “::type” suffix):
+template<typename T> using MyAllocList = std::list<T, MyAlloc<T>>; // as before
+template<typename T> class Widget { private: MyAllocList<T> list; // no "typename", ... // no "::type" };
+To you, MyAllocList<T> (i.e., use of the alias template) may look just as dependent
+on the template parameter T as MyAllocList<T>::type (i.e., use of the nested type
+64 | Item 9
+
+
+def), but you’re not a compiler. When compilers process the Widget template and
+encounter the use of MyAllocList<T> (i.e., use of the alias template), they know that
+MyAllocList<T> is the name of a type, because MyAllocList is an alias template: it
+must name a type. MyAllocList<T> is thus a non-dependent type, and a typename
+specifier is neither required nor permitted.
+When compilers see MyAllocList<T>::type (i.e., use of the nested typedef) in the
+Widget template, on the other hand, they can’t know for sure that it names a type,
+because there might be a specialization of MyAllocList that they haven’t yet seen
+where MyAllocList<T>::type refers to something other than a type. That sounds
+crazy, but don’t blame compilers for this possibility. It’s the humans who have been
+known to produce such code. For example, some misguided soul may have concocted something like this:
+class Wine { ... };
+template<> // MyAllocList specialization class MyAllocList<Wine> { // for when T is Wine private: enum class WineType // see Item 10 for info on { White, Red, Rose }; // "enum class"
+WineType type; // in this class, type is ... // a data member! };
+As you can see, MyAllocList<Wine>::type doesn’t refer to a type. If Widget were to
+be instantiated with Wine, MyAllocList<T>::type inside the Widget template
+would refer to a data member, not a type. Inside the Widget template, then, whether
+MyAllocList<T>::type refers to a type is honestly dependent on what T is, and
+that’s why compilers insist on your asserting that it is a type by preceding it with
+typename.
+If you’ve done any template metaprogramming (TMP), you’ve almost certainly bum
+ped up against the need to take template type parameters and create revised types
+from them. For example, given some type T, you might want to strip off any const
+or reference-qualifiers that T contains, e.g., you might want to turn const
+std::string& into std::string. Or you might want to add const to a type or turn
+it into an lvalue reference, e.g., turn Widget into const Widget or into Widget&. (If
+you haven’t done any TMP, that’s too bad, because if you want to be a truly effective
+C++ programmer, you need to be familiar with at least the basics of this facet of C++.
+You can see examples of TMP in action, including the kinds of type transformations I
+just mentioned, in Items 23 and 27.)
+Item 9 | 65
+
+
+C++11 gives you the tools to perform these kinds of transformations in the form of
+type traits, an assortment of templates inside the header <type_traits>. There are
+dozens of type traits in that header, and not all of them perform type transforma
+tions, but the ones that do offer a predictable interface. Given a type T to which you’d
+like to apply a transformation, the resulting type is std::transformation
+<T>::type. For example:
+std::remove_const<T>::type // yields T from const T
+std::remove_reference<T>::type // yields T from T& and T&&
+std::add_lvalue_reference<T>::type // yields T& from T
+The comments merely summarize what these transformations do, so don’t take them
+too literally. Before using them on a project, you’d look up the precise specifications,
+I know.
+My motivation here isn’t to give you a tutorial on type traits, anyway. Rather, note
+that application of these transformations entails writing “::type” at the end of each
+use. If you apply them to a type parameter inside a template (which is virtually always
+how you employ them in real code), you’d also have to precede each use with type
+name. The reason for both of these syntactic speed bumps is that the C++11 type
+traits are implemented as nested typedefs inside templatized structs. That’s right,
+they’re implemented using the type synonym technology I’ve been trying to convince
+you is inferior to alias templates!
+There’s a historical reason for that, but we’ll skip over it (it’s dull, I promise), because
+the Standardization Committee belatedly recognized that alias templates are the bet
+ter way to go, and they included such templates in C++14 for all the C++11 type
+transformations. The aliases have a common form: for each C++11 transformation
+std::transformation<T>::type, there’s a corresponding C++14 alias template
+named std::transformation_t. Examples will clarify what I mean:
+std::remove_const<T>::type // C++11: const T → T std::remove_const_t<T> // C++14 equivalent
+std::remove_reference<T>::type // C++11: T&/T&& → T std::remove_reference_t<T> // C++14 equivalent
+std::add_lvalue_reference<T>::type // C++11: T → T& std::add_lvalue_reference_t<T> // C++14 equivalent
+The C++11 constructs remain valid in C++14, but I don’t know why you’d want to
+use them. Even if you don’t have access to C++14, writing the alias templates yourself
+is child’s play. Only C++11 language features are required, and even children can
+66 | Item 9
+
+
+mimic a pattern, right? If you happen to have access to an electronic copy of the
+C++14 Standard, it’s easier still, because all that’s required is some copying and past
+ing. Here, I’ll get you started:
+template <class T> using remove_const_t = typename remove_const<T>::type;
+template <class T> using remove_reference_t = typename remove_reference<T>::type;
+template <class T> using add_lvalue_reference_t = typename add_lvalue_reference<T>::type;
+See? Couldn’t be easier.
+Things to Remember
+• typedefs don’t support templatization, but alias declarations do.
+• Alias templates avoid the “::type” suffix and, in templates, the “typename”
+prefix often required to refer to typedefs. • C++14 offers alias templates for all the C++11 type traits transformations.
+Item 10: Prefer scoped enums to unscoped enums.
+As a general rule, declaring a name inside curly braces limits the visibility of that
+name to the scope defined by the braces. Not so for the enumerators declared in
+C++98-style enums. The names of such enumerators belong to the scope containing
+the enum, and that means that nothing else in that scope may have the same name:
+enum Color { black, white, red }; // black, white, red are // in same scope as Color
+auto white = false; // error! white already // declared in this scope
+The fact that these enumerator names leak into the scope containing their enum defi
+nition gives rise to the official term for this kind of enum: unscoped. Their new C++11
+counterparts, scoped enums, don’t leak names in this way:
+enum class Color { black, white, red }; // black, white, red // are scoped to Color
+auto white = false; // fine, no other
+Item 9 | 67
+
+
+// "white" in scope
+Color c = white; // error! no enumerator named // "white" is in this scope
+Color c = Color::white; // fine
+auto c = Color::white; // also fine (and in accord // with Item 5's advice)
+Because scoped enums are declared via “enum class”, they’re sometimes referred to as
+enum classes.
+The reduction in namespace pollution offered by scoped enums is reason enough to
+prefer them over their unscoped siblings, but scoped enums have a second compelling
+advantage: their enumerators are much more strongly typed. Enumerators for unsco
+ped enums implicitly convert to integral types (and, from there, to floating-point
+types). Semantic travesties such as the following are therefore completely valid:
+enum Color { black, white, red }; // unscoped enum
+std::vector<std::size_t> // func. returning primeFactors(std::size_t x); // prime factors of x
+Color c = red; ...
+if (c < 14.5) { // compare Color to double (!)
+auto factors = // compute prime factors primeFactors(c); // of a Color (!) ... }
+Throw a simple “class” after “enum”, however, thus transforming an unscoped enum
+into a scoped one, and it’s a very different story. There are no implicit conversions
+from enumerators in a scoped enum to any other type:
+enum class Color { black, white, red }; // enum is now scoped
+Color c = Color::red; // as before, but ... // with scope qualifier
+if (c < 14.5) { // error! can't compare // Color and double
+68 | Item 10
+
+
+auto factors = // error! can't pass Color to primeFactors(c); // function expecting std::size_t ... }
+If you honestly want to perform a conversion from Color to a different type, do what
+you always do to twist the type system to your wanton desires—use a cast:
+if (static_cast<double>(c) < 14.5) { // odd code, but // it's valid
+auto factors = // suspect, but primeFactors(static_cast<std::size_t>(c)); // it compiles ... }
+It may seem that scoped enums have a third advantage over unscoped enums, because
+scoped enums may be forward-declared, i.e., their names may be declared without
+specifying their enumerators:
+enum Color; // error!
+enum class Color; // fine
+This is misleading. In C++11, unscoped enums may also be forward-declared, but
+only after a bit of additional work. The work grows out of the fact that every enum in
+C++ has an integral underlying type that is determined by compilers. For an unsco
+ped enum like Color,
+enum Color { black, white, red };
+compilers might choose char as the underlying type, because there are only three val
+ues to represent. However, some enums have a range of values that is much larger,
+e.g.:
+enum Status { good = 0, failed = 1, incomplete = 100, corrupt = 200, indeterminate = 0xFFFFFFFF };
+Here the values to be represented range from 0 to 0xFFFFFFFF. Except on unusual
+machines (where a char consists of at least 32 bits), compilers will have to select an
+integral type larger than char for the representation of Status values.
+Item 10 | 69
+
+
+To make efficient use of memory, compilers often want to choose the smallest under
+lying type for an enum that’s sufficient to represent its range of enumerator values. In
+some cases, compilers will optimize for speed instead of size, and in that case, they
+may not choose the smallest permissible underlying type, but they certainly want to
+be able to optimize for size. To make that possible, C++98 supports only enum defini
+tions (where all enumerators are listed); enum declarations are not allowed. That
+makes it possible for compilers to select an underlying type for each enum prior to the
+enum being used.
+But the inability to forward-declare enums has drawbacks. The most notable is proba
+bly the increase in compilation dependencies. Consider again the Status enum:
+enum Status { good = 0, failed = 1, incomplete = 100, corrupt = 200, indeterminate = 0xFFFFFFFF };
+This is the kind of enum that’s likely to be used throughout a system, hence included
+in a header file that every part of the system is dependent on. If a new status value is
+then introduced,
+enum Status { good = 0, failed = 1, incomplete = 100, corrupt = 200, audited = 500,
+indeterminate = 0xFFFFFFFF };
+it’s likely that the entire system will have to be recompiled, even if only a single sub
+system—possibly only a single function!—uses the new enumerator. This is the kind
+of thing that people hate. And it’s the kind of thing that the ability to forward-declare
+enums in C++11 eliminates. For example, here’s a perfectly valid declaration of a
+scoped enum and a function that takes one as a parameter:
+enum class Status; // forward declaration
+void continueProcessing(Status s); // use of fwd-declared enum
+The header containing these declarations requires no recompilation if Status’s
+definition is revised. Furthermore, if Status is modified (e.g., to add the audited
+enumerator), but continueProcessing’s behavior is unaffected (e.g., because
+70 | Item 10
+
+
+continueProcessing doesn’t use audited), continueProcessing’s implementation
+need not be recompiled, either.
+But if compilers need to know the size of an enum before it’s used, how can C++11’s
+enums get away with forward declarations when C++98’s enums can’t? The answer is
+simple: the underlying type for a scoped enum is always known, and for unscoped
+enums, you can specify it.
+By default, the underlying type for scoped enums is int:
+enum class Status; // underlying type is int
+If the default doesn’t suit you, you can override it:
+enum class Status: std::uint32_t; // underlying type for // Status is std::uint32_t // (from <cstdint>)
+Either way, compilers know the size of the enumerators in a scoped enum.
+To specify the underlying type for an unscoped enum, you do the same thing as for a
+scoped enum, and the result may be forward-declared:
+enum Color: std::uint8_t; // fwd decl for unscoped enum; // underlying type is // std::uint8_t
+Underlying type specifications can also go on an enum’s definition:
+enum class Status: std::uint32_t { good = 0, failed = 1, incomplete = 100, corrupt = 200, audited = 500, indeterminate = 0xFFFFFFFF };
+In view of the fact that scoped enums avoid namespace pollution and aren’t suscepti
+ble to nonsensical implicit type conversions, it may surprise you to hear that there’s
+at least one situation where unscoped enums may be useful. That’s when referring to
+fields within C++11’s std::tuples. For example, suppose we have a tuple holding
+values for the name, email address, and reputation value for a user at a social net
+working website:
+using UserInfo = // type alias; see Item 9 std::tuple<std::string, // name
+Item 10 | 71
+
+
+std::string, // email std::size_t> ; // reputation
+Though the comments indicate what each field of the tuple represents, that’s proba
+bly not very helpful when you encounter code like this in a separate source file:
+UserInfo uInfo; // object of tuple type ...
+auto val = std::get<1>(uInfo); // get value of field 1
+As a programmer, you have a lot of stuff to keep track of. Should you really be
+expected to remember that field 1 corresponds to the user’s email address? I think
+not. Using an unscoped enum to associate names with field numbers avoids the need
+to:
+enum UserInfoFields { uiName, uiEmail, uiReputation };
+UserInfo uInfo; // as before ...
+auto val = std::get<uiEmail>(uInfo); // ah, get value of // email field
+What makes this work is the implicit conversion from UserInfoFields to
+std::size_t, which is the type that std::get requires.
+The corresponding code with scoped enums is substantially more verbose:
+enum class UserInfoFields { uiName, uiEmail, uiReputation };
+UserInfo uInfo; // as before ...
+auto val =
+std::get<static_cast<std::size_t>(UserInfoFields::uiEmail)> (uInfo);
+The verbosity can be reduced by writing a function that takes an enumerator and
+returns its corresponding std::size_t value, but it’s a bit tricky. std::get is a tem
+plate, and the value you provide is a template argument (notice the use of angle
+brackets, not parentheses), so the function that transforms an enumerator into a
+std::size_t has to produce its result during compilation. As Item 15 explains, that
+means it must be a constexpr function.
+In fact, it should really be a constexpr function template, because it should work
+with any kind of enum. And if we’re going to make that generalization, we should
+72 | Item 10
+
+
+generalize the return type, too. Rather than returning std::size_t, we’ll return the
+enum’s underlying type. It’s available via the std::underlying_type type trait. (See
+Item 9 for information on type traits.) Finally, we’ll declare it noexcept (see Item 14),
+because we know it will never yield an exception. The result is a function template
+toUType that takes an arbitrary enumerator and can return its value as a compile
+time constant:
+template<typename E> constexpr typename std::underlying_type<E>::type toUType(E enumerator) noexcept {
+return static_cast<typename std::underlying_type<E>::type>(enumerator); }
+In C++14, toUType can be simplified by replacing typename std::underly
+ing_type<E>::type with the sleeker std::underlying_type_t (see Item 9):
+template<typename E> // C++14 constexpr std::underlying_type_t<E> toUType(E enumerator) noexcept {
+return static_cast<std::underlying_type_t<E>>(enumerator); }
+The even-sleeker auto return type (see Item 3) is also valid in C++14:
+template<typename E> // C++14 constexpr auto toUType(E enumerator) noexcept {
+return static_cast<std::underlying_type_t<E>>(enumerator); }
+Regardless of how it’s written, toUType permits us to access a field of the tuple like
+this:
+auto val = std::get<toUType(UserInfoFields::uiEmail)>(uInfo);
+It’s still more to write than use of the unscoped enum, but it also avoids namespace
+pollution and inadvertent conversions involving enumerators. In many cases, you
+may decide that typing a few extra characters is a reasonable price to pay for the abil
+ity to avoid the pitfalls of an enum technology that dates to a time when the state of
+the art in digital telecommunications was the 2400-baud modem.
+Item 10 | 73
+
+
+Things to Remember
+• C++98-style enums are now known as unscoped enums.
+• Enumerators of scoped enums are visible only within the enum. They convert
+to other types only with a cast.
+• Both scoped and unscoped enums support specification of the underlying type.
+The default underlying type for scoped enums is int. Unscoped enums have no
+default underlying type.
+• Scoped enums may always be forward-declared. Unscoped enums may be
+forward-declared only if their declaration specifies an underlying type.
+Item 11: Prefer deleted functions to private undefined
+ones.
+If you’re providing code to other developers, and you want to prevent them from
+calling a particular function, you generally just don’t declare the function. No func
+tion declaration, no function to call. Easy, peasy. But sometimes C++ declares func
+tions for you, and if you want to prevent clients from calling those functions, the
+peasy isn’t quite so easy any more.
+The situation arises only for the “special member functions,” i.e., the member func
+tions that C++ automatically generates when they’re needed. Item 17 discusses these
+functions in detail, but for now, we’ll worry only about the copy constructor and the
+copy assignment operator. This chapter is largely devoted to common practices in
+C++98 that have been superseded by better practices in C++11, and in C++98, if you
+want to suppress use of a member function, it’s almost always the copy constructor,
+the assignment operator, or both.
+The C++98 approach to preventing use of these functions is to declare them private
+and not define them. For example, near the base of the iostreams hierarchy in the
+C++ Standard Library is the class template basic_ios. All istream and ostream
+classes inherit (possibly indirectly) from this class. Copying istreams and ostreams is
+undesirable, because it’s not really clear what such operations should do. An istream
+object, for example, represents a stream of input values, some of which may have
+already been read, and some of which will potentially be read later. If an istream were
+to be copied, would that entail copying all the values that had already been read as
+well as all the values that would be read in the future? The easiest way to deal with
+such questions is to define them out of existence. Prohibiting the copying of streams
+does just that.
+74 | Item 10
+
+
+To render istream and ostream classes uncopyable, basic_ios is specified in C++98
+as follows (including the comments):
+template <class charT, class traits = char_traits<charT> > class basic_ios : public ios_base { public: ...
+private:
+basic_ios(const basic_ios& ); // not defined basic_ios& operator=(const basic_ios&); // not defined };
+Declaring these functions private prevents clients from calling them. Deliberately
+failing to define them means that if code that still has access to them (i.e., member
+functions or friends of the class) uses them, linking will fail due to missing function
+definitions.
+In C++11, there’s a better way to achieve essentially the same end: use “= delete” to
+mark the copy constructor and the copy assignment operator as deleted functions.
+Here’s the same part of basic_ios as it’s specified in C++11:
+template <class charT, class traits = char_traits<charT> > class basic_ios : public ios_base { public: ...
+basic_ios(const basic_ios& ) = delete; basic_ios& operator=(const basic_ios&) = delete; ... };
+The difference between deleting these functions and declaring them private may
+seem more a matter of fashion than anything else, but there’s greater substance here
+than you might think. Deleted functions may not be used in any way, so even code
+that’s in member and friend functions will fail to compile if it tries to copy
+basic_ios objects. That’s an improvement over the C++98 behavior, where such
+improper usage wouldn’t be diagnosed until link-time.
+By convention, deleted functions are declared public, not private. There’s a reason
+for that. When client code tries to use a member function, C++ checks accessibility
+before deleted status. When client code tries to use a deleted private function, some
+compilers complain only about the function being private, even though the func
+tion’s accessibility doesn’t really affect whether it can be used. It’s worth bearing this
+in mind when revising legacy code to replace private-and-not-defined member
+Item 11 | 75
+
+
+functions with deleted ones, because making the new functions public will generally
+result in better error messages.
+An important advantage of deleted functions is that any function may be deleted,
+while only member functions may be private. For example, suppose we have a non
+member function that takes an integer and returns whether it’s a lucky number:
+bool isLucky(int number);
+C++’s C heritage means that pretty much any type that can be viewed as vaguely
+numerical will implicitly convert to int, but some calls that would compile might not
+make sense:
+if (isLucky('a')) ... // is 'a' a lucky number?
+if (isLucky(true)) ... // is "true"?
+if (isLucky(3.5)) ... // should we truncate to 3 // before checking for luckiness?
+If lucky numbers must really be integers, we’d like to prevent calls such as these from
+compiling.
+One way to accomplish that is to create deleted overloads for the types we want to
+filter out:
+bool isLucky(int number); // original function
+bool isLucky(char) = delete; // reject chars
+bool isLucky(bool) = delete; // reject bools
+bool isLucky(double) = delete; // reject doubles and // floats
+(The comment on the double overload that says that both doubles and floats will
+be rejected may surprise you, but your surprise will dissipate once you recall that,
+given a choice between converting a float to an int or to a double, C++ prefers the
+conversion to double. Calling isLucky with a float will therefore call the double
+overload, not the int one. Well, it’ll try to. The fact that that overload is deleted will
+prevent the call from compiling.)
+Although deleted functions can’t be used, they are part of your program. As such,
+they are taken into account during overload resolution. That’s why, with the deleted
+function declarations above, the undesirable calls to isLucky will be rejected:
+if (isLucky('a')) ... // error! call to deleted function
+76 | Item 11
+
+
+if (isLucky(true)) ... // error!
+if (isLucky(3.5f)) ... // error!
+Another trick that deleted functions can perform (and that private member func
+tions can’t) is to prevent use of template instantiations that should be disabled. For
+example, suppose you need a template that works with built-in pointers (Chapter 4’s
+advice to prefer smart pointers to raw pointers notwithstanding):
+template<typename T> void processPointer(T* ptr);
+There are two special cases in the world of pointers. One is void* pointers, because
+there is no way to dereference them, to increment or decrement them, etc. The other
+is char* pointers, because they typically represent pointers to C-style strings, not
+pointers to individual characters. These special cases often call for special handling,
+and, in the case of the processPointer template, let’s assume the proper handling is
+to reject calls using those types. That is, it should not be possible to call
+processPointer with void* or char* pointers.
+That’s easily enforced. Just delete those instantiations:
+template<> void processPointer<void>(void*) = delete;
+template<> void processPointer<char>(char*) = delete;
+Now, if calling processPointer with a void* or a char* is invalid, it’s probably also
+invalid to call it with a const void* or a const char*, so those instantiations will
+typically need to be deleted, too:
+template<> void processPointer<const void>(const void*) = delete;
+template<> void processPointer<const char>(const char*) = delete;
+And if you really want to be thorough, you’ll also delete the const volatile void*
+and const volatile char* overloads, and then you’ll get to work on the overloads
+for pointers to the other standard character types: std::wchar_t, std::char16_t,
+and std::char32_t.
+Interestingly, if you have a function template inside a class, and you’d like to disable
+some instantiations by declaring them private (à la classic C++98 convention), you
+can’t, because it’s not possible to give a member function template specialization a
+Item 11 | 77
+
+
+different access level from that of the main template. If processPointer were a
+member function template inside Widget, for example, and you wanted to disable
+calls for void* pointers, this would be the C++98 approach, though it would not
+compile:
+class Widget { public: ...
+template<typename T> void processPointer(T* ptr) {...}
+private: template<> // error! void processPointer<void>(void*);
+};
+The problem is that template specializations must be written at namespace scope, not
+class scope. This issue doesn’t arise for deleted functions, because they don’t need a
+different access level. They can be deleted outside the class (hence at namespace
+scope):
+class Widget { public: ...
+template<typename T> void processPointer(T* ptr) {...} ...
+};
+template<> // still void Widget::processPointer<void>(void*) = delete; // public, // but // deleted
+The truth is that the C++98 practice of declaring functions private and not defining
+them was really an attempt to achieve what C++11’s deleted functions actually
+accomplish. As an emulation, the C++98 approach is not as good as the real thing. It
+doesn’t work outside classes, it doesn’t always work inside classes, and when it does
+work, it may not work until link-time. So stick to deleted functions.
+78 | Item 11
+
+
+Things to Remember
+• Prefer deleted functions to private undefined ones.
+• Any function may be deleted, including non-member functions and template
+instantiations.
+Item 12: Declare overriding functions override.
+The world of object-oriented programming in C++ revolves around classes, inheri
+tance, and virtual functions. Among the most fundamental ideas in this world is that
+virtual function implementations in derived classes override the implementations of
+their base class counterparts. It’s disheartening, then, to realize just how easily virtual
+function overriding can go wrong. It’s almost as if this part of the language were
+designed with the idea that Murphy’s Law wasn’t just to be obeyed, it was to be hon
+ored.
+Because “overriding” sounds a lot like “overloading,” yet is completely unrelated, let
+me make clear that virtual function overriding is what makes it possible to invoke a
+derived class function through a base class interface:
+class Base { public: virtual void doWork(); // base class virtual function ... };
+class Derived: public Base { public: virtual void doWork(); // overrides Base::doWork ... // ("virtual" is optional }; // here)
+std::unique_ptr<Base> upb = // create base class pointer std::make_unique<Derived>(); // to derived class object; // see Item 21 for info on ... // std::make_unique
+upb->doWork(); // call doWork through base // class ptr; derived class // function is invoked
+For overriding to occur, several requirements must be met:
+Item 11 | 79
+
+
+• The base class function must be virtual.
+• The base and derived function names must be identical (except in the case of
+destructors). • The parameter types of the base and derived functions must be identical. • The constness of the base and derived functions must be identical.
+• The return types and exception specifications of the base and derived functions
+must be compatible.
+To these constraints, which were also part of C++98, C++11 adds one more:
+• The functions’ reference qualifiers must be identical. Member function reference
+qualifiers are one of C++11’s less-publicized features, so don’t be surprised if
+you’ve never heard of them. They make it possible to limit use of a member func
+tion to lvalues only or to rvalues only. Member functions need not be virtual to
+use them:
+class Widget { public: ...
+void doWork() &; // this version of doWork applies // only when *this is an lvalue
+void doWork() &&; // this version of doWork applies }; // only when *this is an rvalue
+...
+Widget makeWidget(); // factory function (returns rvalue)
+Widget w; // normal object (an lvalue)
+...
+w.doWork(); // calls Widget::doWork for lvalues // (i.e., Widget::doWork &)
+makeWidget().doWork(); // calls Widget::doWork for rvalues // (i.e., Widget::doWork &&)
+I’ll say more about member functions with reference qualifiers later, but for now,
+simply note that if a virtual function in a base class has a reference qualifier,
+derived class overrides of that function must have exactly the same reference
+80 | Item 12
+
+
+qualifier. If they don’t, the declared functions will still exist in the derived class,
+but they won’t override anything in the base class.
+All these requirements for overriding mean that small mistakes can make a big differ
+ence. Code containing overriding errors is typically valid, but its meaning isn’t what
+you intended. You therefore can’t rely on compilers notifying you if you do some
+thing wrong. For example, the following code is completely legal and, at first sight,
+looks reasonable, but it contains no virtual function overrides—not a single derived
+class function that is tied to a base class function. Can you identify the problem in
+each case, i.e., why each derived class function doesn’t override the base class func
+tion with the same name?
+class Base { public: virtual void mf1() const; virtual void mf2(int x); virtual void mf3() &; void mf4() const; };
+class Derived: public Base { public: virtual void mf1(); virtual void mf2(unsigned int x); virtual void mf3() &&; void mf4() const; };
+Need some help?
+• mf1 is declared const in Base, but not in Derived.
+• mf2 takes an int in Base, but an unsigned int in Derived.
+• mf3 is lvalue-qualified in Base, but rvalue-qualified in Derived. • mf4 isn’t declared virtual in Base.
+You may think, “Hey, in practice, these things will elicit compiler warnings, so I don’t
+need to worry.” Maybe that’s true. But maybe it’s not. With two of the compilers I
+checked, the code was accepted without complaint, and that was with all warnings
+enabled. (Other compilers provided warnings about some of the issues, but not all of
+them.)
+Because declaring derived class overrides is important to get right, but easy to get
+wrong, C++11 gives you a way to make explicit that a derived class function is
+Item 12 | 81
+
+
+supposed to override a base class version: declare it override. Applying this to the
+example above would yield this derived class:
+class Derived: public Base { public: virtual void mf1() override; virtual void mf2(unsigned int x) override; virtual void mf3() && override; virtual void mf4() const override; };
+This won’t compile, of course, because when written this way, compilers will kvetch
+about all the overriding-related problems. That’s exactly what you want, and it’s why
+you should declare all your overriding functions override.
+The code using override that does compile looks as follows (assuming that the goal
+is for all functions in Derived to override virtuals in Base):
+class Base { public: virtual void mf1() const; virtual void mf2(int x); virtual void mf3() &; virtual void mf4() const; };
+class Derived: public Base { public: virtual void mf1() const override; virtual void mf2(int x) override; virtual void mf3() & override; void mf4() const override; // adding "virtual" is OK, }; // but not necessary
+Note that in this example, part of getting things to work involves declaring mf4 vir
+tual in Base. Most overriding-related errors occur in derived classes, but it’s possible
+for things to be incorrect in base classes, too.
+A policy of using override on all your derived class overrides can do more than just
+enable compilers to tell you when would-be overrides aren’t overriding anything. It
+can also help you gauge the ramifications if you’re contemplating changing the signa
+ture of a virtual function in a base class. If derived classes use override everywhere,
+you can just change the signature, recompile your system, see how much damage
+you’ve caused (i.e., how many derived classes fail to compile), then decide whether
+the signature change is worth the trouble. Without override, you’d have to hope you
+have comprehensive unit tests in place, because, as we’ve seen, derived class virtuals
+82 | Item 12
