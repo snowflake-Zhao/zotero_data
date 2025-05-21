@@ -1,0 +1,514 @@
+特别关注｜ Special Focus 乳腺 MRI 专题｜ 临 床 研 究
+
+磁共振成像 2024 年 1 月第 15卷第1期 Chin J Magn Reson Imaging, Jan, 2024, Vol. 15, No. 1
+
+基于 MRI 时空异质性模型预测三阴性乳腺癌
+
+病理完全缓解
+
+周嘉音 1，2，尤超 1，2，王泽洲 3，蔺璐奕 1，2，沈怡媛 1，2，顾雅佳 1，2*
+
+作者单位 1. 复旦大学附属肿瘤医院放射诊断科，上海 200032；2. 复旦大学上海医学院肿瘤学系，上海 200032；3. 复旦大学附属肿 瘤医院肿瘤预防部，上海 200032 *通信作者 顾雅佳，E-mail: guyajia@126.com 中图分类号 R445.2；R737.9 文献标识码 A DOI 10.12015/issn.1674-8034.2024.01.005 本文引用格式 周嘉音, 尤超, 王泽洲, 等 . 基于 MRI 时空异质性模型预测三阴性乳腺癌病理完全缓解[J]. 磁共振成像, 2024, 15(1): 28-34.
+[摘要] 目的　基于 MRI 时空异质性构建影像组学模型以早期预测三阴性乳腺癌（triple-negative breast cancer, TNBC）的病理 完 全 缓 解 （pathological complete response, pCR）。 材 料 与 方 法　 回 顾 性 分 析 我 院 2017 年 9 月 至 2022 年 3 月 接 受 新 辅 助 化 疗 （neoadjuvant chemotherapy, NAC）的 173 名 TNBC 患者资料，收集每位患者 NAC 前（Pre-）和 NAC 两疗程后（During-）的 MRI 图像。55 名 DUKE 大学的患者构成外部验证队列。从瘤内亚区域和瘤周区域提取影像组学特征来表征空间异质性，计算 NAC 前后特征值的变化（Delta-）来表征时间异质性。分别使用 Pre-、During-和 Delta-的特征，应用最小绝对收缩选择算子（least absolute shrinkage and selection operator, LASSO）回归构建影像组学模型。采用多因素逻辑回归对单模态模型进行集成，构建纵 向 融 合 （Stacking） 模 型 。 通 过 受 试 者 工 作 特 征 （receiver operating characteristic, ROC） 曲 线 、 校 准 曲 线 和 决 策 曲 线 分 析 （decision curve analysis, DCA）评价模型的诊断效能和临床应用价值。结果　分别从 Pre-、During-和 Delta-特征集中选取 8 个、 4 个和 10 个特征构建模型。基于空间异质性的 Pre-模型具有预测 pCR 的性能，在训练集、内部验证集和外部验证集中的 ROC 曲 线下面积（area under the curve, AUC）分别为 0.74、0.71 和 0.71。在训练集和验证集中，纵向融合模型预测 pCR 的性能最佳 ， AUC 均为 0.86。DCA 结果显示纵向融合模型在临床应用中价值是最高的。结论　基于 MRI 空间异质性特征可以有效预测 TNBC 的 pCR，整合时空异质性构建的纵向融合模型可以进一步提高预测性能。 [关键词] 三阴性乳腺癌；影像组学；时空异质性；生境成像；新辅助治疗；磁共振成像
+Value of radiomics model based on spatiotemporal heterogeneity of MRI to predict pathological complete response in triple-negative breast cancer
+ZHOU　Jiayin1, 2, YOU　Chao1, 2, WANG　Zezhou3, LIN　Luyi1, 2, SHEN　Yiyuan1, 2, GU　Yajia1, 2* 1Department of Radiology, Fudan University Shanghai Cancer Center, Shanghai 200032, China; 2Department of Oncology, Shanghai Medical College, Fudan University, Shanghai 200032, China; 3Department of Cancer Prevention, Fudan University Shanghai Cancer Center, Shanghai 200032, China *Correspondence to GU Y J, E-mail: guyajia@126.com Received 7 Oct 2023, Accepted 25 Dec 2023; DOI 10.12015/issn.1674-8034.2024.01.005 ACKNOWLEDGMENTS National Natural Science Foundation of China (No. 82271957); Wu Jieping Medical Foundation (No. 320.6750.2022-6-2). Cite this article as ZHOU J Y, YOU C, WANG Z Z, et al. Value of radiomics model based on spatiotemporal heterogeneity of MRI to predict pathological complete response in triple-negative breast cancer[J]. Chin J Magn Reson Imaging, 2024, 15(1): 28-34.
+Abstract Objective: To develop a spatiotemporal heterogeneity based radiomics model for the early prediction of pathological complete response (pCR) in triple-negative breast cancer (TNBC). Materials and Methods: The data of 173 TNBC patients who received neoadjuvant chemotherapy (NAC) in our hospital from September 2017 to March 2022 were retrospectively analyzed. MRI images of each patient were collected at pretreatment (Pre- ) and after two cycle of NAC (During- ). The 55 patients from the DUKE university constituted the external validation cohort. Radiomics features were extracted from the intratumoral subregions and peritumoral region to characterize spatial heterogeneity, and the changes of features before and during NAC (Delta-) were calculated to characterize temporal heterogeneity. The radiomics models were developed by least absolute shrinkage and selection operator (LASSO) regression using the Pre- , During- , and Delta- features. Multi-factor logistic regression was used to integrate single-mode models to develop the longitudinal fusion (Stacking) model. The diagnostic performance and clinical application value of models were evaluated by the receiver operating characteristic (ROC) curves, calibration curves, and decision curve analysis (DCA). Results: Finally, 8, 4 and 10 features were respectively selected from the Pre-, During- and Delta- feature sets to construct the models. The Pre- model based on spatial heterogeneity could predict pCR, with area under the curve (AUC) of 0.74, 0.71 and 0.71 in the training set, validation set and external validation set, respectively. In the training and validation sets, the Stacking model achieved the best performance to predict pCR, and the AUC was 0.86 in both sets. DCA indicated that the value of Stacking model was highest in clinical practice. Conclusions: Features based on MRI spatial heterogeneity can effectively predict the pCR of TNBC. The longitudinal fusion model integrated spatiotemporal heterogeneity has the potential to further improve the prediction performance. Key words triple-negative breast cancer; radiomics; spatiotemporal heterogeneity; habitat imaging; neoadjuvant therapy; magnetic resonance imaging
+
+收稿日期 2023-10-07 接受日期 2023-12-25 基金项目 国家自然科学基金项目（编号：82271957）；吴阶平医学基金会临床科研专项资助基金（编号：320.6750.2022-6-2）
+
+·28·
+
+https://www.chinesemri.com
+
+磁共振成像 2024 年 1 月第 15卷第1期 Chin J Magn Reson Imaging, Jan, 2024, Vol. 15, No. 1
+
+特别关注｜ Special Focus
+
+0　引言 三阴性乳腺癌（triple-negative breast cancer, TNBC）
+占 全 部 乳 腺 癌 的 15%~20%[1]。 相 比 于 其 他 乳 腺 癌 ， TNBC 发病年龄早，侵袭性高，预后差，缺乏有效的治 疗 靶 点 。 [2-4] 新 辅 助 化 疗（neoadjuvant chemotherapy, NAC）已成为局部晚期 TNBC 的一线治疗方法，大约三 分 之 一 的 病 例 NAC 后 可 以 达 到 病 理 完 全 缓 解 （pathological complete response, pCR）[5-6]。对于 NAC 后获得 pCR 的患者可以从保乳手术中获益 ，甚至可 以豁免手术 。 [7-8] 早期预测 pCR 对改善手术风险分层 和患者管理具有重要的临床意义。然而 ，pCR 评估 的金标准取决于 NAC 术后手术标本的病理评估 ，目 前没有标准的影像学标志物可用于准确预测 pCR。
+目 前 临 床 以 实 体 瘤 疗 效 评 价 标 准（response evaluation criteria in solid tumors, RECIST）将乳腺癌 的疗效根据病灶长径变化分为完全缓解 ，部分缓解 ， 疾病稳定和疾病进展。然而 ，在临床实践中 ，根据 RECIST 评估的完全缓解并不意味着 pCR。乳腺癌 的大小变化主要根据体格检查和影像学检查评估， 在确定 NAC 前后的肿瘤范围和形态方面 ，MRI 的表 现优于乳腺 X 线摄影和超声 ，相对而言提供了最为 全面的肿瘤的影像学信息[9]。然而 ，一项荟萃分析发 现，MRI 预测 pCR 的敏感度也仅为 64%[10]。
+TNBC 在空间和时间上均具有异质性，导致患者 对 NAC 的反应存在显著差异 。 [11-12] 影像组学具有无 创、动态、整体的优势 ，研究表明影像组学获得的一 系列相关参数可以量化病灶的异质性[13-15]，并且监测 NAC 期间肿瘤的纵向动态变化 。 [16-17] 每个肿瘤不只 是一个同质的个体 ，而是多个独特微环境构成的亚 区域（生境）拼凑而成的生态系统。生境成像明确地 将肿瘤分割成包含具有相似特征的体素簇的亚区 域 ，这些亚区域由类似基因型和表型的肿瘤细胞构 成 ，可在一定程度上反映肿瘤内部的空间异质性 。 [18] WU 等 和 [19] SHI 等[20]分别发现通过生境成像表征的瘤 内空间异质性与 pCR 和预后密切相关。也有研究通 过 纳 入 瘤 周 特 征 证 实 了 瘤 周 微 环 境 的 重 要 性 。 [21-23] HUANG 等[17]发现整合 NAC 前后的 MRI 影像组学信 息构建的集成模型能够更好地预测乳腺癌的 pCR。 我们假设影像组学可以从 TNBC 的纵向多区域 MRI 图像中获得更多定量特征 ，从而更好地预测 pCR。 我们团队的前期研究[24]发现 NAC 前和 NAC 两疗程 后的全瘤体影像组学模型预测 pCR 的效能差异无统 计 学 意 义（AUC：0.73 vs. 0.69，P=0.55）。 在 此 基 础 上 ，本研究期望进一步整合空间和时间维度 MRI 特 征，以求更精准地预测 pCR。
+本研究的目的是利用生境成像分割肿瘤亚区 域 、同时纳入瘤周影像共同表征空间异质性 ，并且整 合 NAC 治 疗 前 后 的 时 间 异 质 性 特 征 ，以 期 建 立 TNBC 对 NAC 反应的早期预测模型。本研究基于定 量时空异质性的影像组学模型能够早期预测 TNBC
+https://www.chinesemri.com
+
+的 pCR，有助于制订个体化的治疗方案，早期避免过 度无效治疗 ，从而改善患者预后。
+1　材料与方法 1.1 一般资料
+本研究遵守《赫尔辛基宣言》，经复旦大学附属 肿瘤医院伦理委员会批准 ，免除受试者知情同意 ，批 准 文 号 ：1612167-18。 回 顾 性 分 析 2017 年 9 月 至 2022 年 3 月于复旦大学附属肿瘤医院治疗的乳腺癌 患者资料。纳入标准 ：（1）治疗前空芯针活检证实是 TNBC 的 女 性 患 者 。 三 阴 性 定 义 为 雌 激 素 受 体 （estrogen receptor, ER）、孕 激 素 受 体（progesterone receptor, PR）、人表皮生长因子受体 2（human epidermal growth factor receptor 2, HER-2）均为阴性（免疫组化 HER-2 评分为 2+者采用荧光原位杂交证实基因扩 增）。（2）接受 NAC 并最终接受手术的患者。排除标 准（：1）缺乏基线或两疗程后 MRI 检查的患者（；2）MRI 图像质量差或序列不全的患者 ；（3）隐匿性乳腺癌 ； （4）术后无最终病理结果的患者（；5）NAC 两疗程后病 灶大小无法满足亚区域分割的患者。最终本研究连 续纳入了 173 例符合条件的患者，按 7∶3 随机抽样划 分 为 训 练 集（n=121）与 验 证 集（n=52）。 本 研 究 纳 入 DUKE 大学的患者作为外部验证队列（DUKE 大学的 原 始 图 像 可 在 以 下 网 址 公 开 获 取 ：https://wiki. cancerimagingarchive.net/pages/viewpage.action?pageId= 70226903）。纳入标准 ：治疗前活检证实为 TNBC 的 女性患者。排除标准：（1）无可见病变；（2）MRI 图像 质量较差的患者或序列不完整的患者 ；（3）未接受 NAC 的患者。最终共纳入 55 例患者。
+收集所有患者的临床 、病理信息 ：临床信息包括 年龄、绝经状态、基线 T 和 N 分期、手术分型和新辅助 治疗方案 ；病理信息包括治疗前穿刺活检的组织学 类型、Ki-67 指数以及新辅助治疗后的 pCR 情况，pCR 定义为乳腺和腋窝淋巴结均无浸润性癌负荷（ypT0/ ypN0）。 1.2 检查方法
+本 中 心 所 有 患 者 均 于 NAC 前（Pre-）2 周 内 及 NAC 两疗程后（During-）2 周内进行 1.5 T 或 3.0 T MRI 检 查 。 本 研 究 仅 选 取 动 态 对 比 增 强 MR（I dynamic contrast-enhanced MRI, DCE‑MRI）进行分析，具体参 数如下。
+采用西门子 3.0 T MR 扫描仪（Siemens Healthineers, Erlangen, Germany）及 16 通道相控阵乳腺线圈。患 者取俯卧位，获得一系列横断面图像。T1WI 增强参 数：轴位，TR 5.1 ms，TE 1.7 ms，FOV 260 mm×260 mm， 层厚 3 mm，层间距 0 mm，翻转角 15°。对比剂选用 Gd-DTPA（商品名称 ：马根维显 ，Magnevist，拜耳公 司，韦恩，美国），注射剂量 0.1 mmol/kg，速率 3 mL/s， 行连续无间隔采集 ，获得对比增强图像 ，共扫描 6 个 时相（蒙片+5 期增强），采集时间为 307 s。
+采 用 GE 1.5 T MR 扫 描 仪（GE, Signa HDx）及
+·29·
+
+特别关注｜ Special Focus
+
+磁共振成像 2024 年 1 月第 15卷第1期 Chin J Magn Reson Imaging, Jan, 2024, Vol. 15, No. 1
+
+16 通道相控阵乳腺线圈。患者取俯卧位，获得一系列 横断面图像。T1WI 增强参数：TR 6.5 ms，TE 3.5 ms， 层厚 3 mm，层间距 0 mm，FOV 300 mm×300 mm。对 比剂选用 Gd-DTPA（商品名称：马根维显，Magnevist， 拜耳公司 ，韦恩 ，美国），注射剂量 0.2 mmol/kg，速率 2 mL/s，行连续无间隔采集，获得对比增强图像，共扫 描 5 个时相（蒙片+4 期增强），采集时间为 155 s。
+DUKE 大学的患者均于 NAC 治疗前使用 1.5 T 或 3.0 T 乳腺 DCE-MRI 扫描仪进行成像。层厚 1.04~ 2.5 mm，TR 3.54~7.39 ms，TE 1.25~2.76 ms，FOV 250 mm×480 mm，翻转角 7°~12°。 1.3 感兴趣区分割 1.3.1 瘤体和瘤周分割
+首 先 对 图 像 进 行 预 处 理 ，使 用 ant 工 具 箱 （version 2.3.5）进行对称归一化算法 ，通过非线性配 准将所有其他时相配准到 DCE-MRI 的第一个增强 后时相 ，以消除运动伪影引起的空间不匹配。然后 使用 no-new-UNet 网络自动分割乳腺区域，并对图像 域进行 z-score 归一化处理。对于不同的 MRI 机型 ， 本研究通过时间配准选择增强时间点尽量相近的序 列 ，具体来说 ，本研究选取了平扫期、增强早期和增 强晚期（大致时间为注射对比剂后 80 s 和 150 s）这三 个时间点进行分析。
+肿瘤瘤体分割由两名从事乳腺影像诊断的放射 科医生（分别为工作年限 3 年的主治医师和 15 年的 副主任医师）在不知晓患者的临床和病理信息的情 况下 ，使用 ITK-SNAP（Version 3.8.0）手动分割。首 先在增强早期图像上创建整个肿瘤的 3D 分割感兴
+
+趣区（region of interest, ROI），然后传播到蒙片和增 强晚期的 DCE 图像上。自动识别肿瘤周围 5 mm 的 3D 区 域 为 瘤 周 区 域 。 组 内 相 关 系 数（intra-class correlation coefficients, ICCs）被用来评估在特征提取 方 面 观 察 者 内 部 和 观 察 者 之 间 的 一 致 性 ，ICCs≥ 0.75 代表一致性良好。 1.3.2 肿瘤亚区域的生境成像
+参考 WU 等[19]的文章,根据 DCE-MRI 的血流灌 注情况将每个肿瘤瘤体分割成多个表型一致的亚区 域。首先，提取同一像素点在不同期数的像素值并组 成特征向量，通过特征向量计算每个像素点的四个动 力学特征，包括流入速率（wash in slope, WIS）、流出速 率（wash out slope, WOS）、信 号 增 强 比（signal enhancement ratio, SER）以及增强百分比（percentage enhancement, PE）。然后 ，对这些特征向量用无监督 k-means 方法聚类。观察到当聚类数量为 3 时，在每个 肿瘤三个不同的聚类（即亚区域）中，四个动力学参数 均从亚区域 1 增加到 3。因此将肿瘤分为三个亚区 域，亚区 1、2 和 3 分别代表肿瘤中低灌注、中等灌注和 高灌注的亚区域（图 1）。NAC 两疗程后的图像同样 进行瘤周区域、瘤内亚区域的划分，方法与基线一致。 1.4 影像组学特征提取和选择
+首先从全瘤体提取 14 个形态学特征。然后在生 境成像的基础上，分别从 3 个亚区域和瘤周区域提取 影像组学特征 ，包括形态学特征 ；基于原始图像的一 阶统计量特征及纹理特征 ；基于滤波转化后图像提 取的一阶统计量特征及纹理特征，共 1 414×4 个影像 组学特征。从 NAC 前和 NAC 两疗程后的图像中分
+
+·30·
+
+图 1　亚区域分割示意图。1A~1C： 肿块型病变的亚区域分割情况 ；1D~ 1F：可能伴有坏死的病变的亚区域分 割情况 ，坏死部分表现为低灌注亚区 域 ；1G~1I ：非肿块强化的亚区域分割 情 况 。 1A、1D、1G ：肿 瘤 病 灶 的 原 始 图像 ；1B、1E、1H：肿瘤内亚区域分割 的结果 ；1C、1F、1I：三个亚区域内四 个灌注成像参数分布的盒形图。 SER：信 号 增 强 比 ；WIS：流 入 速 率 ； WOS：流出速率；PE 为增强百分比。 Fig. 1　 The illustration of subregion segmentation. 1A-1C: Subregion segmentation of the mass; 1D-1F: Subregion segmentation of lesions that may contain necrosis, the necrotic portion appeared as a poorly perfused subregions; 1G-1I: Subregion segmentation of the non-mass enhancement. 1A, 1D, 1G: The original image of the tumor; 1B, 1E, 1H: Outcome of subregion segmentation within the tumor; 1C, 1F, 1I: Box diagram of the distribution of four perfusion imaging parameters in three subregions. SER: signal enhancement ratio; WIS: wash in slope; WOS: wash out slope; PE: percentage enhancement.
+https://www.chinesemri.com
+
+磁共振成像 2024 年 1 月第 15卷第1期 Chin J Magn Reson Imaging, Jan, 2024, Vol. 15, No. 1
+
+特别关注｜ Special Focus
+
+别提取以上 5 670 个特征构成 Pre-和 During-特征集。
+
+此 外 ，为 了 反 映 肿 瘤 的 纵 向 时 间 变 化 ，本 研 究 将
+
+Delta-影像组学特征表示为从 Pre-影像组学特征值到
+
+During-影像组学特征值的相对变化率 ，见公式（1）。
+
+Delta
+
+-=
+
+( During -)-( Pre -
+
+Pre -)
+
+（1）
+
+每个患者共可获得 Pre-、During-和 Delta- 三个特
+
+征集。在进一步分析前 ，对所有提取的影像组学特
+
+征进行 z-score 标准化。在训练集进行特征筛选 ，首
+
+先剔除 ICCs 小于 0.75 的特征；对剩余特征进行单因素
+
+分析，选取在 pCR 和 non-PCR 之间存在显著差异的特
+
+征；计算特征间的 Pearson 相关系数，当系数为>0.9 时，
+
+随机剔除一个特征 ；最后采用最小绝对收缩和选择
+
+算 法（least absolute shrinkage and selection operator,
+
+LASSO）结合 5 折交叉验证 ，分别在 Pre-、During-和
+
+Delta-特征集中筛选出关键特征。
+
+1.5 影像组学模型的构建与评价
+
+本研究共建立 4 个影像组学模型 ，利用在 Pre-、
+
+During-和 Delta-特征集中筛选出的关键特征 ，采用
+
+LASSO 回 归 构 建 预 测 pCR 的 影 像 组 学 模 型（Pre- ，
+
+During-和 Delta-模型）。随后，使用多因素逻辑回归集
+
+成单模态模型的输出分数构建纵向融合（Stacking）模
+
+型 。 通 过 方 差 膨 胀 因 子（variance inflation factors,
+
+VIFs）对模型中变量进行多重共线性评价，VIFs>10 的
+
+变量表示具有严重的多重共线性[25]。
+
+应 用 受 试 者 工 作 特 征（receiver operating
+
+characteristic, ROC）曲线评价模型的预测效能 ，所有
+
+模型均在内部验证集中进行验证，基于 Pre-特征集构
+
+建的模型另在外部验证集中验证。应用校正曲线、
+
+Hosmer-Lemeshow 检验验证模型的拟合情况 ，应用
+
+决策曲线分析（decision curve analysis, DCA）评估模
+
+型的临床实用价值。
+
+1.6 统计学分析
+
+采用 SPSS 软件 26.0 版本和 R 软件 4.2.2 版本进
+
+行统计学分析。描述性统计量用均数±标准差表示，
+
+分类变量用频数和百分比表示。连续变量组间差异
+
+的比较采用两独立样本 t 检验或 Wilcoxon 秩和检验；
+
+分类变量使用卡方检验或 Fisher 精确检验。采用 ROC
+
+曲 线 对 不 同 模 型 进 行 评 估 ，计 算 ROC 曲 线 下 面 积
+
+（area under the curve, AUC）、准确度、敏感度和特异
+
+度。采用 DeLong 检验比较不同模型的 AUC 值[26]。P<
+
+0.05 表示差异有统计学意义。用 Hosmer-Lemeshow
+
+检验评价模型拟合优度（P>0.05 表示拟合优度较好）。
+
+2　结果 2.1 临床病理资料
+173 名研究人群全部在我院初治，遵照美国国家 综 合 癌 症 网 络（national comprehensive cancer network, NCCN）指南或临床试验方案接受 4~8 疗程 的 NAC。化疗结束后采用保乳手术的有 30（17.3%） 人 ，乳房切除术的有 143（82.7%）人。训练集和内部
+https://www.chinesemri.com
+
+验证集的 pCR 率分别为 37.2% 和 38.5%，两者之间差 异无统计学意义。大部分患者（131 例）接受蒽环序 贯紫杉的化疗方案 ，训练集中 pCR 和非 pCR 组的化 疗 方 案 差 异 无 统 计 学 意 义（P>0.05），其 余 基 线 临 床 病理特征在 pCR 组与非 pCR 组的差异均无统计学意 义，详见表 1。
+
+表 1 训练集中 pCR 组和非 pCR 组患者的临床病理特征 Tab. 1 Clinicopathological features of patients in the pCR
+group and non-pCR group in the training set
+
+特征
+年龄/岁 均数±标准差 范围
+绝经状态/例（%） 已绝经 未绝经
+Ki-67 状态/例（%） <20% ≥20%
+手术方式/例（%） 保乳术 乳房切除术
+T 分期/例（%） 1 2 3 4
+N 分期/例（%） 0 1 2 3
+病理类型/例（%） 浸润性导管癌 其他类型乳腺癌
+化疗方案/例（%） 包含蒽环和紫杉 仅以蒽环为主 仅以紫杉为主
+
+pCR 组 （n=45）
+47.60±10.54 26~73
+21 (46.7) 24 (53.3)
+0 (0.0) 45 (100.0)
+7 (15.6) 38 (84.4)
+5 (11.1) 32 (71.1)
+4 (8.9) 4 (8.9)
+11 (24.4) 21 (46.7)
+7 (15.6) 6 (13.3)
+45 (100.0) 0 (0.0)
+40 (88.9) 0 (0.0) 5 (11.1)
+
+非 pCR 组 （n=76）
+49.20±11.82 21~75
+45 (59.2) 31 (40.8)
+6 (7.9) 70 (92.1)
+15 (19.7) 61 (80.3)
+9 (11.8) 39 (51.3) 18 (23.7) 10 (13.2)
+7 (9.2) 38 (50.0) 15 (19.7) 16 (21.1)
+74 (97.4) 2 (2.6)
+61 (80.3) 6 (7.9) 9 (11.8)
+
+统计量 -0.747①
+1.794② 3.738② 0.332② 8.990②
+6.357②
+1.204② 3.818②
+
+P值 0.456 0.180 0.053 0.564 0.174
+0.174
+0.273 0.148
+
+注：①为 t 值；②为 χ2值。pCR 为病理完全缓解。
+
+2.2 影像组学特征选择的结果 本研究共提取了 11 340 个影像组学特征 ，此外
+还通过计算获得了 5 670 个 Delta-影像组学特征。首 先 ，为保证特征的重现性 ，剔除 1 506 个 ICC<0.75 的 特征。秩和检验显示共 5 528 个特征与 pCR 具有显 著 相 关 性 。 最 后 ，使 用 LASSO 回 归 分 别 从 Pre- 、 During-和 Delta-特征集中筛选出 8 个、4 个和 10 个最 优特征。Pearson 相关系数显示所选特征与其他特征 的 相 关 性 均 不 高 。 分 别 使 用 以 上 特 征 构 建 Pre- 、 During-和 Delta-模型，集成三个模型的输出分数使用 逻 辑 回 归 构 建 纵 向 融 合 模 型 。 具 体 特 征 的 来 源 、名 称和相应系数见表 2。 2.3 模型效能的评估
+Pre-模 型 能 够 较 为 鲁 棒 性 地 预 测 pCR，在 训 练 集 、内部和外部验证集中 AUC 分别为 0.74、0.71 和 0.71。During-、Delta-和纵向融合模型的预测性能均
+
+·31·
+
+特别关注｜ Special Focus
+
+磁共振成像 2024 年 1 月第 15卷第1期 Chin J Magn Reson Imaging, Jan, 2024, Vol. 15, No. 1
+
+模型 Pre-
+DuringDelta-
+
+Tab. 2
+ROI 低灌注亚区域 低灌注亚区域 高灌注亚区域
+瘤周 瘤周 瘤周 瘤周 全瘤体 低灌注亚区域 低灌注亚区域 中等灌注亚区域 中等灌注亚区域 低灌注亚区域 低灌注亚区域 低灌注亚区域 中等灌注亚区域 中等灌注亚区域 高灌注亚区域 瘤周 瘤周 瘤周 瘤周
+
+表 2 筛选的影像组学特征与其对应的特征系数
+
+Selected radiomic features and their corresponding coefficients
+
+滤波器
+
+类别
+
+特征
+
+lbp-2D
+
+first order
+
+Interquartile Range
+
+wavelet-HLL
+
+GLCM
+
+Correlation
+
+square
+
+first order
+
+Skewness
+
+lbp-2D
+
+GLRLM
+
+Short Run Emphasis
+
+lbp-2D
+
+GLRLM
+
+Long Run Low Gray Level Emphasis
+
+square
+
+first order
+
+Minimum
+
+wavelet-HHL
+
+GLRLM
+
+LongRun Low Gray Level Emphasis
+
+original
+
+shape
+
+Sphericity
+
+wavelet-LHH
+
+GLCM
+
+Joint Average
+
+wavelet-LHH
+
+GLCM
+
+Sum Average
+
+original
+
+shape
+
+Sphericity
+
+wavelet-LLH
+
+first order
+
+Total Energy
+
+original
+
+GLCM
+
+MCC
+
+gradient wavelet-HHL
+
+GLDM GLCM
+
+Dependence Entropy Idmn
+
+wavelet-LLH
+
+GLSZM
+
+Large Area Low Gray Level Emphasis
+
+wavelet-HHL
+
+GLSZM
+
+Zone Entropy
+
+original
+
+shape
+
+Maximum 2D Diameter Slice
+
+lbp-2D
+
+GLDM
+
+Dependence Variance
+
+lbp-2D
+
+GLRLM
+
+Short Run Emphasis
+
+lbp-2D
+
+GLRLM
+
+Short Run High Gray Level Emphasis
+
+wavelet-LHL
+
+GLCM
+
+Idmn
+
+系数 -5.465×10-3
+2.713×10-3 1.514×10-1 -8.260×10-2 -6.097×10-17 3.867×10-2 6.985×10-2 1.223×10-1 -7.266×10-3 -7.779×10-10 9.060×10-2 -9.140×10-2 2.090×10-1 -8.160×10-2 -7.222×10-2 7.573×10-2 -2.011×10-2 -3.283×10-1 6.640×10-2 7.558×10-5 5.928×10-17 -9.516×10-2
+
+注：ROI 为感兴趣区；GLCM 为灰度共生矩阵；GLRLM 为灰度行程长度矩阵；GLSZM 为灰度大小区域矩阵；GLDM 为灰度依赖矩阵。
+
+表 3 预测模型在训练集和内部验证集中的性能 Tab. 3 Performance of the predictive models in the training set and validation set
+
+模型
+PreDuringDeltaStacking
+
+AUC (95% CI) 0.74 (0.64~0.83) 0.76 (0.67~0.84) 0.82 (0.75~0.90) 0.86 (0.79~0.93)
+
+训练集
+
+准确度/% 敏感度/%
+
+66.94
+
+82.22
+
+74.38
+
+51.11
+
+74.38
+
+77.78
+
+81.82
+
+75.56
+
+特异度/% 57.89 88.16 72.37 85.52
+
+AUC (95% CI) 0.71 (0.57~0.86) 0.86 (0.76~0.96) 0.79 (0.65~0.94) 0.86 (0.73~0.98)
+
+内部验证集
+
+准确度/% 敏感度/%
+
+73.08
+
+60.00
+
+78.85
+
+100.00
+
+82.69
+
+75.00
+
+84.61
+
+85.00
+
+特异度/% 81.25 65.63 87.50 84.38
+
+注：AUC 为受试者工作特征曲线下面积；CI 为置信区间。
+
+高于 Pre-模型 ，在内部验证集中分别为 0.86、0.79 和 0.86。纵向融合模型在训练集和验证集中均取得了 最好的效能，AUC 均为 0.86，详见表 3、图 2。
+纵向融合模型中变量的 VIFs 均<10，说明变量之 间不存在多重共线性。多因素逻辑回归显示 ，Pre-和 Delta- 模 型 的 输 出 分 数 是 预 测 pCR 的 关 键（P= 0.008 和 P<0.001），Delta-特征的贡献是最大的（预测 价值 ：Delta->Pre->During-）。
+DeLong 检 验 显 示 纵 向 融 合 模 型 与 Pre- 和 During- 模 型 在 训 练 集 中 差 异 存 在 统 计 学 意 义（P= 0.003 和 0.004）。所有预测模型在训练集和验证集的校 准曲线都显示了良好的校正性能 ，Hosmer-Lemeshow
+·32·
+
+图 2　不同模型的受试者工作特征曲 线及曲线下面积（AUC）值。2A：训练 集 ；2B ：内部验证集 ；2C ：外部验证集。 Fig. 2　 The receiver operating characteristic curve and area under the curve (AUC) of different models. 2A: Training set; 2B: Validation set; 2C: External validation set.
+检验显示模型预测值与实际观察值之间存在一致性， 具有良好的拟合情况（P 均>0.05）（图 3）。DCA 结果显 示 ，During-、Delta-和纵向融合模型预测 pCR 的临床 价值均优于 Pre-模型 ，结合训练和验证集来看 ，纵向 融合模型的临床净获益总体来说是最佳的（图 4）。
+3　讨论 本研究针对 TNBC 联合时空异质性开发了更精
+确预测 pCR 的影像组学模型 ，基于 MRI 空间异质性 构建的 Pre-影像组学模型在内部验证集预测 pCR 的 AUC 值为 0.71，融合 NAC 前后的时间异质性特征构 建的纵向融合模型提高了预测准确性 ，在内部验证
+https://www.chinesemri.com
+
+磁共振成像 2024 年 1 月第 15卷第1期 Chin J Magn Reson Imaging, Jan, 2024, Vol. 15, No. 1
+
+特别关注｜ Special Focus
+
+图 3　Pre（- 3A）、During（- 3B）、Delta（- 3C）、Stacking（3D）模型在训练集中的校准曲线及 Pre（- 3E）、During（- 3F）、Delta（- 3G）、Stacking（3H）模型在内部验证集 的校准曲线。 Fig. 3　Calibration curves of the Pre- (3A), During- (3B), Delta- (3C), Stacking (3D) models in the training set and Calibration curves of Pre- (3E), During- (3F), Delta- (3G), Stacking (3H) models in the validation set.
+
+图 4　训练集（4A）与内部验证集（4B）不同模型的决策曲线。 Fig. 4　 Training set (4A) and validation set (4B) decision curves of different models.
+集中 AUC 值为 0.86。通过集成 MR 纵向时间变化数 据构建的融合模型可以提升评估肿瘤 NAC 反应的精 度 ，有助于指导临床治疗和手术风险分层 ，促进个体 化精准诊疗的发展。 3.1 基于空间异质性的影像组学预测 TNBC 患者对 NAC 反应的价值
+许多研究将全瘤体影像组学运用于乳腺癌 pCR 的预测 , [27-28] 但是忽略了 TNBC 的高度异质性对患者 治疗反应的重大意义。WU 等[19]通过 MRI 动力学参 数 将 肿 瘤 被 划 分 为 多 个 空 间 隔 离 、表 型 一 致 的 亚 区 域 ，从中提取空间特征表征了肿瘤异质性并证实了 其与预后的相关性。SHI 等[20]通过二次聚类的方法 进一步推动了肿瘤亚区域相关精准成像的发展 。 [20] 本研究参考 WU 等[19]的方法进行亚区域划分，但提取 的特征更加全面完善 ，分别从每个亚区域中提取影 像组学特征 ，更加全面地表征了瘤内组织的异质性。 此外 ，本研究联合了瘤周实质的特征 ，避免遗漏肿瘤
+
+微环境的附加价值。本研究发现基线多区域 MRI 定 量表征的空间异质性可以较好地预测 NAC 的疗效， 并在外部验证集中表现出稳健性。 3.2 融合时空异质性的影像组学对预测 NAC 反应的 提升价值
+在空间异质性的基础上 ，本研究整合了 TNBC 多 区 域 MRI 上 的 纵 向 时 间 变 化 数 据 ，包 括 Pre- 和 During-的图像 ，发现融合了时空异质性的纵向融合 模型取得了最佳的预测 pCR 的效能。NAC 治疗过程 中肿瘤功能的变化强烈预示了最终的治疗反应。 EUN 等[29]发现 ，单一时间点（NAC 三或四个周期后） 的基于 DCE-MRI 纹理特征的模型具有最高的诊断 性 能 (AUC=0.82)。 HUANG 等[17] 人 研 究 发 现 融 合 NAC 前 、后和 Delta-模型构建的集成模型预测 pCR 的性能最佳 ，并且 Delta-特征集的贡献是最大的 。 [17] 然而 ，对于 NAC 无效的患者 ，NAC 治疗中期或结束 后发现为时已晚 ，无法改变治疗方案。本研究纳入 NAC 两 疗 程 后 的 图 像 ，有 助 于 早 期 识 别 无 法 获 得 pCR 的患者，指导临床医生修改治疗方法，如添加免 疫疗法、贝伐单抗等[30-31]，提高患者获益率 ，最终改善 预后。在纵向融合放射组学模型中 ，Delta-影像组学 特征集的贡献是最大的 ，这与 HUANG 等的研究一 致，可能是因为 Delta-特征反映了治疗引起的肿瘤异 质性的变化，从而可以预测 pCR。 3.3 局限性
+本研究还存在一些局限性。第一 ，研究样本量
+较小 ，可能影响结果的稳定性和可重复性 ，后续需要 在多中心 、大样本量队列中验证临床适用性。第二 ，
+
+https://www.chinesemri.com
+
+·33·
+
+特别关注｜ Special Focus
+
+磁共振成像 2024 年 1 月第 15卷第1期 Chin J Magn Reson Imaging, Jan, 2024, Vol. 15, No. 1
+
+纵向融合模型的效能提升不够显著 ，未来可以纳入
+其他模态的影像学检查或结合深度学习 ，以进一步
+提高预测精度。第三 ，本研究只使用影像数据来建
+立模型 ，更多的医学资料 ，包括病理切片图像和基因
+检测等可能会改进模型的效能。
+4　结论
+综上所述，本研究使用基线 MR 多区域特征表征
+了肿瘤的空间异质性 ，并且在外部验证队列中证实
+了 其 预 测 TNBC 的 pCR 的 能 力 。 整 合 NAC 前 和
+NAC 期间时间异质性构建的融合模型进一步提升了
+预测 pCR 的效能 ，该模型有望帮助外科医生早期调
+整治疗方案和决定手术方式。
+作者利益冲突声明：全体作者均声明无利益冲突。
+作者贡献声明：顾雅佳设计本研究的方案，对稿件
+的重要内容进行了修改，获得了吴阶平医学基金会临
+床科研专项资助基金支持；周嘉音起草和撰写稿件，获
+取 、分析和解释本研究的数据 ；尤超 、王泽洲 、蔺璐奕 、
+沈怡媛获取、分析或解释本研究的数据，对稿件重要内
+容进行了修改 ；尤超获得了国家自然科学基金项目资
+助；全体作者都同意发表最后的修改稿，同意对本研究
+的所有方面负责，确保本研究的准确性和诚信。
+参考文献[References]
+[1] CAREY L, WINER E, VIALE G, et al. Triple-negative breast cancer: disease entity or title of convenience? [J]. Nat Rev Clin Oncol, 2010, 7(12): 683-692. DOI: 10.1038/nrclinonc.2010.154.
+[2] DENT R, TRUDEAU M, PRITCHARD K I, et al. Triple-negative breast cancer: clinical features and patterns of recurrence[J]. Clin Cancer Res, 2007, 13(15 Pt 1): 4429-4434. DOI: 10.1158/1078-0432.CCR-06-3045.
+[3] YIN L, DUAN J J, BIAN X W, et al. Triple-negative breast cancer molecular subtyping and treatment progress[J/OL]. Breast Cancer Res, 2020, 22(1): 61 [2023-10-06]. https://pubmed.ncbi.nlm.nih.gov/32517735/. DOI: 10.1186/s13058-020-01296-5.
+[4] TONG L, YU X L, WANG S, et al. Research progress on molecular subtyping and modern treatment of triple-negative breast cancer[J/OL]. Breast Cancer, 2023, 15: 647-658 [2023-10-06]. https://pubmed.ncbi. nlm.nih.gov/37644916/. DOI: 10.2147/BCTT.S426121.
+[5] LOO C E, STRAVER M E, RODENHUIS S, et al. Magnetic resonance imaging response monitoring of breast cancer during neoadjuvant chemotherapy: relevance of breast cancer subtype[J]. J Clin Oncol, 2011, 29(6): 660-666. DOI: 10.1200/JCO.2010.31.1258.
+[6] HOUSSAMI N, MACASKILL P, VON MINCKWITZ G, et al. Meta-analysis of the association of breast cancer subtype and pathologic complete response to neoadjuvant chemotherapy[J]. Eur J Cancer, 2012, 48(18): 3342-3354. DOI: 10.1016/j.ejca.2012.05.023.
+[7] KUERER H M, SMITH B D, KRISHNAMURTHY S, et al. Eliminating breast surgery for invasive breast cancer in exceptional responders to neoadjuvant systemic therapy: a multicentre, single-arm, phase 2 trial[J]. Lancet Oncol, 2022, 23(12): 1517-1524. DOI: 10.1016/ S1470-2045(22)00613-1.
+[8] GRADISHAR W J, MORAN M S, ABRAHAM J, et al. NCCN guidelines® insights: breast cancer, version 4.2021[J]. J Natl Compr Canc Netw, 2021, 19(5): 484-493. DOI: 10.6004/jnccn.2021.0023.
+[9] LOBBES M B, PREVOS R, SMIDT M, et al. The role of magnetic resonance imaging in assessing residual disease and pathologic complete response in breast cancer patients receiving neoadjuvant chemotherapy: a systematic review[J]. Insights Imaging, 2013, 4(2): 163-175. DOI: 10.1007/s13244-013-0219-y.
+[10] GU Y L, PAN S M, REN J, et al. Role of magnetic resonance imaging in detection of pathologic complete remission in breast cancer patients treated with neoadjuvant chemotherapy: a meta-analysis[J]. Clin Breast Cancer, 2017, 17(4): 245-255. DOI: 10.1016/j.clbc.2016.12.010.
+[11] WOLF D M, YAU C, WULFKUHLE J, et al. Redefining breast cancer subtypes to guide treatment prioritization and maximize response: predictive biomarkers across 10 cancer therapies[J/OL]. Cancer Cell, 2022, 40(6): 609-623.e6 [2023-10-06]. https://pubmed.ncbi.nlm.nih.gov/ 35623341/. DOI: 10.1016/j.ccell.2022.05.005.
+
+[12] NONNEVILLE A D, HOUVENAEGHEL G, COHEN M, et al. Pathological complete response rate and disease-free survival after neoadjuvant chemotherapy in patients with HER2-low and HER2-0 breast cancers[J/OL]. Eur J Cancer, 2022, 176: 181-188 [2023-10-06]. https://pubmed.ncbi.nlm.nih.gov/36257173/. DOI: 10.1016/j.ejca.2022. 09.017.
+[13] ZHANG L, LI X Y, YANG L, et al. Multi-sequence and multi-regional MRI-based radiomics nomogram for the preoperative assessment of muscle invasion in bladder cancer[J]. J Magn Reson Imaging, 2023, 58(1): 258-269. DOI: 10.1002/jmri.28498.
+[14] MA X W, GONG J, HU F X, et al. Pretreatment multiparametric MRI-based radiomics analysis for the diagnosis of breast Phyllodes tumors[J]. J Magn Reson Imaging, 2023, 57(2): 633-645. DOI: 10.1002/jmri.28286.
+[15] CHEN Y, TANG W, LIU W, et al. Multiparametric MR imaging radiomics signatures for assessing the recurrence risk of ER+/HER2breast cancer quantified with 21-gene recurrence score[J]. J Magn Reson Imaging, 2023, 58(2): 444-453. DOI: 10.1002/jmri.28547.
+[16] LIU S S, DU S Y, GAO S, et al. A delta-radiomic lymph node model using dynamic contrast enhanced MRI for the early prediction of axillary response after neoadjuvant chemotherapy in breast cancer patients[J/OL]. BMC Cancer, 2023, 23(1): 15 [2023-10-06]. https://pubmed. ncbi. nlm. nih. gov/ 36604679/. DOI: 10.1186/s12885-022-10496-5.
+[17] HUANG Y H, ZHU T, ZHANG X L, et al. Longitudinal MRI-based fusion novel model predicts pathological complete response in breast cancer treated with neoadjuvant chemotherapy: a multicenter, retrospective study[J/OL]. EClinicalMedicine, 2023, 58: 101899 [2023-10-06]. https:// pubmed.ncbi.nlm.nih.gov/37007742/. DOI: 10.1016/j.eclinm.2023.101899.
+[18] GILLIES R J, BALAGURUNATHAN Y. Perfusion MR imaging of breast cancer: insights using "habitat imaging"[J]. Radiology, 2018, 288(1): 36-37. DOI: 10.1148/radiol.2018180271.
+[19] WU J, CAO G H, SUN X L, et al. Intratumoral spatial heterogeneity at perfusion MR imaging predicts recurrence-free survival in locally advanced breast cancer treated with neoadjuvant chemotherapy[J]. Radiology, 2018, 288(1): 26-35. DOI: 10.1148/radiol.2018172462.
+[20] SHI Z W, HUANG X M, CHENG Z L, et al. MRI-based quantification of intratumoral heterogeneity for predicting treatment response to neoadjuvant chemotherapy in breast cancer[J/OL]. Radiology, 2023, 308(1): e222830 [2023-10-06]. https://pubmed.ncbi.nlm.nih.gov/37432083/. DOI: 10.1148/radiol.222830.
+[21] SU G H, XIAO Y, JIANG L, et al. Radiomics features for assessing tumor-infiltrating lymphocytes correlate with molecular traits of triple-negative breast cancer[J/OL]. J Transl Med, 2022, 20(1): 471 [2023-10-06]. https://pubmed.ncbi.nlm.nih.gov/36243806/. DOI: 10.1186/ s12967-022-03688-x.
+[22] SU G H, JIANG L, XIAO Y, et al. A multiomics signature highlights alterations underlying homologous recombination deficiency in triple-negative breast cancer[J]. Ann Surg Oncol, 2022, 29(11): 7165-7175. DOI: 10.1245/s10434-022-11958-7.
+[23] BRAMAN N M, ETESAMI M, PRASANNA P, et al. Erratum to: Intratumoral and peritumoral radiomics for the pretreatment prediction of pathological complete response to neoadjuvant chemotherapy based on breast DCE-MRI[J/OL]. Breast Cancer Res, 2017, 19(1): 80 [2023-10-06]. https://pubmed.ncbi.nlm.nih.gov/28693537/. DOI: 10.1186/s13058-0170862-1.
+[24] ZHANG Y, YOU C, PEI Y C, et al. Integration of radiogenomic features for early prediction of pathological complete response in patients with triple-negative breast cancer and identification of potential therapeutic targets[J/OL]. J Transl Med, 2022, 20(1): 256 [2023-10-06]. https://pubmed.ncbi.nlm.nih.gov/35672824/. DOI: 10.1186/s12967-02203452-1.
+[25] MARCOULIDES K M, RAYKOV T. Evaluation of variance inflation factors in regression models using latent variable modeling methods[J]. Educ Psychol Meas, 2019, 79(5): 874-882. DOI: 10.1177/0013164418817803.
+[26] DELONG E R, DELONG D M, CLARKE-PEARSON D L. Comparing the areas under two or more correlated receiver operating characteristic curves: a nonparametric approach[J]. Biometrics, 1988, 44(3): 837-845.
+[27] PENG Y S, CHENG Z L, GONG C, et al. Pretreatment DCE-MRI-based deep learning outperforms radiomics analysis in predicting pathologic complete response to neoadjuvant chemotherapy in breast cancer[J/OL]. Front Oncol, 2022, 12: 846775 [2023-10-06]. https://pubmed.ncbi.nlm. nih.gov/35359387/. DOI: 10.3389/fonc.2022.846775.
+[28] LIU Z Y, LI Z L, QU J R, et al. Radiomics of multiparametric MRI for pretreatment prediction of pathologic complete response to neoadjuvant chemotherapy in breast cancer: a multicenter study[J]. Clin Cancer Res, 2019, 25(12): 3538-3547. DOI: 10.1158/1078-0432.CCR-18-3190.
+[29] EUN N L, KANG D, SON E J, et al. Texture analysis with 3.0-T MRI for association of response to neoadjuvant chemotherapy in breast cancer[J]. Radiology, 2020, 294(1): 31-41. DOI: 10.1148/radiol.2019182718.
+[30] KEENAN T E, TOLANEY S M. Role of immunotherapy in triple-negative breast cancer[J]. J Natl Compr Canc Netw, 2020, 18(4): 479-489. DOI: 10.6004/jnccn.2020.7554.
+[31] SCHMID P, CORTES J, PUSZTAI L, et al. Pembrolizumab for early triple-negative breast cancer[J]. N Engl J Med, 2020, 382(9): 810-821. DOI: 10.1056/NEJMoa1910549.
+
+·34·
+
+https://www.chinesemri.com
+
