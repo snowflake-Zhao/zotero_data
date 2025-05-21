@@ -1,0 +1,228 @@
+’Retrospective Cohort Study
+Optimal examined lymph node number for accurate staging and long-term survival in rectal cancer: a population-based study
+Xu Guan, PhDa,b, Shuai Jiao, MDb,c, Rongbo Wen, MSd, Guanyu Yu, PhDd, Jungang Liu, PhDe,f, Dazhuang Miao, PhDg, Ran Wei, MDa, Weiyuan Zhang, MSc, Liqiang Hao, PhDd, Leqi Zhou, MSd, Zheng Lou, PhDd, Shucheng Liu, PhDh, Enliang Zhao, PhDi, Guiyu Wang, PhDc,*, Wei Zhang, PhDd,*, Xishan Wang, PhDa,b,*
+Background: Although the recommended minimal examined lymph node (ELN) number in rectal cancer (RC) is 12, this standard remains controversial because of insufﬁcient evidence. We aimed to reﬁne this deﬁnition by quantifying the relationship between ELN number, stage migration and long-term survival in RC. Methods: Data from a Chinese multi-institutional registry (2009-2018) and the Surveillance, Epidemiology, and End Results (SEER) database (2008-2017) on stages I–III resected RC were analysed to determine the relationship between ELN count, stage migration, and overall survival (OS) using multivariable models. The series of odds ratios (ORs) for negative-to-positive node stage migration and hazard ratios (HRs) for survival with more ELNs were ﬁtted using a Locally Weighted Scatterplot Smoothing (LOWESS) smoother, and structural breakpoints were determined using the Chow test. The relationship between ELN and survival was evaluated on a continuous scale using restricted cubic splines (RCS). Results: The distribution of ELN count between the Chinese registry (n = 7694) and SEER database (n = 21 332) was similar. With increasing ELN count, both cohorts exhibited signiﬁcant proportional increases from node-negative to node-positive disease (SEER, OR, 1.012, P < 0.001; Chinese registry, OR, 1.016, P = 0.014) and serial improvements in OS (SEER: HR, 0.982; Chinese registry: HR, 0.975; both P < 0.001) after controlling for confounders. Cut-point analysis showed an optimal threshold ELN count of 15, which was validated in the two cohorts, with the ability to properly discriminate probabilities of survival. Conclusions: A higher ELN count is associated with more precise nodal staging and better survival. Our results robustly conclude that 15 ELNs are the optimal cut-off point for evaluating the quality of lymph node examination and stratiﬁcation of prognosis. Keywords: examined lymph node count, rectal cancer, stage migration, survival, threshold
+aDepartment of Colorectal Surgery, National Cancer Center/National Clinical Research Center for Cancer/Cancer Hospital, Chinese Academy of Medical Sciences & Peking Union Medical College, Beijing, bDepartment of Colorectal Surgery, Shanxi Province Cancer Hospital/Hospital Afﬁliated to Cancer Hospital, Chinese Academy of Medical Sciences/Cancer Hospital Afﬁliated to Shanxi Medical University, Taiyuan, cDepartment of Colorectal Surgery, The Second Afﬁliated Hospital of Harbin Medical University, Harbin, dDepartment of Colorectal Surgery, Changhai Hospital, Naval Medical University, Shanghai, eDepartment of Gastrointestinal Surgery, Guangxi Medical University Cancer Hospital, Nanning, Guangxi Zhuang Autonomous Region, fGuangxi Clinical Research Center for Colorectal Cancer, Nanning, Guangxi Zhuang Autonomous Region, gDepartment of Colorectal Surgery, Harbin Medical University Cancer Hospital, Harbin, hColorectal Surgery Department, Chifeng Municipal Hospital, Chifeng and iSurgical Oncology Department, The Second Afﬁliated Hospital of Qiqihar Medical University, Qiqihar, China X.G., S.J., R.W. and G.Y. contributed equally to this study. Sponsorships or competing interests that may be relevant to content are disclosed at the end of this article. *Corresponding author. Address: Department of Colorectal Surgery, Department of Colorectal Surgery, National Cancer Center/Cancer Hospital, Chinese Academy of Medical Sciences & Peking Union Medical College, Beijing 100021, China.Tel.: +861 355 236 7779; fax: +010 677 813 31. E-mail: wxshan1208@126.com (X. Wang); Department of Colorectal Surgery, Changhai Hospital, Naval Medical University, Shanghai 200433, China. Tel.: +86 021 311 611; fax: +010 021 311 611. E-mail: weizhang2000cn@163.com (W. Zhang); Department of Colorectal Surgery, The Second Afﬁliated Hospital of Harbin Medical University, Harbin 150001, China. Tel.: +861 394 513 3256; fax: +0451 866 629 62. E-mail: guiywang@163.com (G. Wang). Copyright © 2023 The Author(s). Published by Wolters Kluwer Health, Inc. This is an open access article distributed under the terms of the Creative Commons Attribution-Non Commercial-No Derivatives License 4.0 (CCBY-NC-ND), where it is permissible to download and share the work provided it is properly cited. The work cannot be changed in any way or used commercially without permission from the journal. International Journal of Surgery (2023) 109:2241–2248 Received 7 October 2022; Accepted 20 February 2023 Supplemental Digital Content is available for this article. Direct URL citations are provided in the HTML and PDF versions of this article on the journal’s website, www.lww.com/international-journal-of-surgery. Published online 7 July 2023 http://dx.doi.org/10.1097/JS9.0000000000000320
+2241
+
+Guan et al. International Journal of Surgery (2023)
+
+International Journal of Surgery
+
+Introduction
+Surgical resection is the primary treatment for rectal cancer (RC)[1]. Cancer staging plays a key role in the choice of treatment strategy postoperatively; it also helps predict the long-term survival of patients with RC[2]. Presently, the TNM staging system of the American Joint Committee on Cancer (AJCC) is the most recognised system for classifying the extent of the spread of colorectal cancer[3]. The examined lymph node (ELN) is associated with the prognosis of RC patients and a minimum of 12 ELNs has been considered the standard yield in colorectal cancer by the College of American Pathologists (CAP) and AJCC[4]. The prognostic impact of these criteria has been conﬁrmed in several clinical studies[5–7]. However, survival prediction by the N category is always affected by stage migration because the total number of ELNs could contribute to the change in metastatic lymph nodes, which leads to up-migration or down-migration in the pathological N category[8]. Therefore, to achieve optimum reliability of the pathological N category, the optimal number of ELN to be surgically removed and pathologically examined needs to be carefully determined[9,10].
+Owing to the differences in various methodological approaches and study populations, the recommended optimal number of ELNs is signiﬁcantly heterogenous in RC[11,12]. Furthermore, ELN count is affected by a single factor or a combination of factors, including characteristics of the primary tumour, status of immune activation, extent of surgical resection, hospital volume and pathological examine methods, which could inﬂuence stage migration and tumour staging of RC patients[13]. Therefore, it is difﬁcult to draw a favourable conclusion on the optimal ELN count from a small sample size or a single-centre study[10,14]. As a result, optimal ELN count needs to be determined and validated in large population-based cohorts.
+In the present study, we hypothesised that there was an optimal ELN count to be examined for accurate staging and prognostic prediction in RC. Hence, we performed this longitudinal international cohort study to explore the ELN count after RC resection and assess the effects of ELN count on tumour stage migration and the long-term survival of RC patients.
+Method
+Study population
+Data from a multi-institutional registry of patients with RC who underwent surgical resection between January 2009 and December 2018 at the departments of colorectal surgery at ﬁve medical institutions in China were collected. ELNs were harvested during surgical resection of the RC, and the tissue was examined postoperatively by pathologists. The ELN count was determined based on pathological ﬁndings. The patients were staged according to TNM Classiﬁcation of Malignant Tumours, 8th edition. This study was retrospectively registered with the Clinical Trials (NCT05572151). This work has been reported in line with the STROCSS (strengthening the reporting of cohort, cross-sectional and case–control studies in surgery) criteria[15] (Supplemental Digital Content 1, http://links.lww.com/JS9/A757).
+In addition, data were collected from the Surveillance, Epidemiology, and End Results (SEER) database, an open-access database containing patient demographics, tumour data, perioperative treatment data, and survival data. The database includes
+
+HIGHLIGHTS
+• Accurate lymph node examination is crucial for cancer staging and prognostic prediction for rectal cancer (RC).
+• Fifteen examined lymph nodes (ELNs) are the optimal cutoff point for RC staging.
+• Examination of a larger number of ELNs could contribute to improved survival for RC patients.
+~28% of the U.S. population, with patient-level data abstracted from 18 geographically diverse populations that represent rural, urban, and regional populations. Data on RC cases diagnosed between January 2008 and December 2017 in the SEER database were extracted to match the time span of the Chinese cohort. Patients were uniformly reviewed and staged according to TNM Classiﬁcation of Malignant Tumours, 8th edition. The details were retrieved using SEER*Stat version 8.1.5.
+Patient selection
+Because preoperative chemo/radiotherapy is a common cause of ELN shrinkage[16], patients who received preoperative therapy were excluded from this study. Patients with stages I–III RC who underwent surgical resection for the ﬁrst primary RC with at least one ELN were eligible. Patients with missing ELN counts or clinical features were excluded. Patients information (age, sex and year of diagnosis), tumour data (TNM stage, histology, size and differentiation), treatments (resection type and chemotherapy) and outcome variables (follow-up time and survival status) were obtained from the SEER and China registries.
+Statistical analyses
+Categorical variables were presented as whole numbers and proportions, and continuous variables were presented as medians with interquartile ranges (IQR). The 5-year overall survival (OS) of the study population was calculated using the Kaplan–Meier method, and differences in OS were assessed using the log-rank test. Cox proportional hazards regression model was used to determine the effect of ELN count on OS and to visualise survival curves, which were adjusted for other signiﬁcant prognostic factors (age, sex, tumour stage, grade, histology type, tumour size and adjuvant chemotherapy).
+In addition, the relationships between ELN and OS were evaluated on a continuous scale with restricted cubic splines (RCS) based on a multivariable Cox model with three knots at the 10th, 50th and 90th percentiles of ELN. The use of RCS has been widely described as a valid strategy for analysing the relationship between survival and independent variables[17]. RCS are a smoothly joined sum of polynomial functions that do not assume linearity of the relationship between variables and the response (i.e. survival)[18]. In addition, the use of RCS allows the identiﬁcation of the risk function inﬂexion point (i.e. threshold)[19].
+Based on the assumption that more ELNs present a greater opportunity to identify positive ELNs, a binary logistic regression model was used to assess stage migration through the correlation of the ELN number and proportion of each node stage category (node-negative versus node-positive)[20] after adjusting for other potential confounders associated with ELN count and node stage.
+The curves of odds ratios (ORs; stage migration) of each ELN count compared with one ELN (as a reference) and the curves of
+
+2242
+
+Guan et al. International Journal of Surgery (2023)
+
+hazard ratios (HRs; OS) of each ELN count compared with ﬁve or fewer ELNs (as a reference) were ﬁtted using the Locally Weighted Scatterplot Smoothing (LOWESS) smoother with a bandwidth of 2/3 (default)[21]. Afterwards, structural breakpoints were determined by the Chow test and piecewise linear regression with the use of ‘strucchange’ and ‘segmented’ R packages. The breakpoints were considered the threshold for clinical impact. All statistical analyses were performed using R software (version 4.0.4; http://www.r-project.org). P < 0.05 was considered statistically signiﬁcant.
+Results
+Patient characteristics and distribution of ELN
+A total of 21 332 and 7694 patients with RC in the SEER and Chinese cohorts, respectively, who met the eligibility criteria were included in this study. Table 1 shows the baseline characteristics of each cohort. Of these patients, the proportion of men was greater than that of women in both the Chinese (60.4%, 4649/7694) and SEER (55.8%, 11 907/21 332) cohorts. The distribution of ELN counts (Fig. 1) was largely consistent between the cohorts; the median number of ELN counts in the Chinese cohort was 15 (IQR, 13–19) and that in the SEER cohort was 16 (IQR, 12–22). Besides, at least 12 lymph nodes (LNs) were retrieved in most patients in both the Chinese (85.8%, 6598/7694) and SEER cohorts (81.9%, 17 475/21 332).
+Number of ELNs and stage migration
+The association of ELNs with the detection rate of positive LNs was assessed to clarify the relationship between ELN count and stage migration. As shown in Supplementary Figure 1
+
+Table 1 Patient characteristics in SEER database and China registry.
+
+SEER database
+
+China registry
+
+Characteristics
+Total Age, years
+< 65 ≥ 65 Sex Female Male AJCC T stage T1–T2 T3–T4 AJCC N stage N0 N1/2 AJCC stage Stage 1 Stage 2 Stage 3 Grade Well/moderately Poorly/undifferentiated Histology type Adenocarcinoma Mucinous/signet Others Tumour size, cm (IQR) Adjuvant chemotherapy No/unknown Yes Median ELN count (IQR)
+
+N (%) 21 332 (100)
+9796 (45.9) 11 534 (54.1)
+9425 (44.2) 11 907 (55.8)
+9476 (44.4) 11 856 (55.6)
+13 933 (65.3) 7399 (34.7)
+7993 (37.5) 5940 (27.8) 7399 (34.7)
+18 501 (86.7) 2831 (13.3)
+20 007 (93.8) 1062 (5.0) 263 (1.2) 3.8 (2.5–5.2)
+16 012 (75.1) 5320 (24.9) 16 (12–22)
+
+N (%) 7694 (100)
+4900 (63.7) 2794 (36.3)
+3045 (39.6) 4649 (60.4)
+2337 (30.4) 5357 (69.6)
+5068 (65.9) 2626 (34.1)
+1879 (24.4) 3189 (41.4) 2626 (34.1)
+6791 (88.3) 903 (11.7)
+6883 (89.5) 672 (8.7) 139 (1.8) 4.0 (3.0–5.0)
+3387 (44.0) 4307 (56.0)
+15 (13–19)
+
+AJCC, American Joint Committee on Cancer; ELN, examined lymph node; IQR, interquartile range; SEER, Surveillance, Epidemiology, and End Results.
+
+Figure 1. Distribution of the number of harvested lymph nodes in the Surveillance, Epidemiology, and End Results (SEER) database (A) and the China registry (B). ELN, examined lymph node.
+2243
+
+Guan et al. International Journal of Surgery (2023)
+
+International Journal of Surgery
+
+Table 2 Effect of number of examined lymph nodes on stage migration and patient survival.
+
+Stage migration
+
+Overall survival
+
+OR 95% CI
+
+P HR 95% CI
+
+P
+
+SEER database
+
+Overall
+
+1.01 1.01–1.02 < 0.001 0.98 0.98–0.99 < 0.001
+
+Node-negative disease –
+
+–
+
+0.98 0.97–0.98 < 0.001
+
+Node-positive disease –
+
+–
+
+0.99 0.98–0.99 < 0.001
+
+China registry
+
+Overall
+
+1.02 1.00–1.03 0.014 0.98 0.96–0.99 < 0.001
+
+Node-negative disease –
+
+–
+
+0.98 0.96–1.00 0.014
+
+Node-positive disease –
+
+–
+
+0.97 0.95–0.99 0.005
+
+CI, conﬁdence interval; HR, hazard ratio; OR, odds ratio.
+
+(Supplemental Digital Content 2, http://links.lww.com/JS9/A758) a higher number of ELNs was correlated with a higher LN positivity rate. Furthermore, after adjusting for potential confounders (age, sex, T stage, N stage, grade, histology and tumour size), both cohorts showed a signiﬁcantly proportional increase in N stage (from N0 to N1 and N2) with increasing ELN count (Chinese registry: OR, 1.016; 95% CI, 1.003–1.029; P = 0.014; SEER: OR, 1.012; 95% CI, 1.009–1.015; P < 0.001; Table 2, and Supplementary Table 1, Supplemental Digital Content 3, http:// links.lww.com/JS9/A759).
+Number of ELNs and OS
+After controlling for other prognostic factors, including age, sex, T stage, N stage, grade, histology, tumour size and adjuvant chemotherapy, a higher ELN number was positively correlated
+
+with better OS in patients in the SEER (HR, 0.982; 95% CI, 0.979–0.985; P < 0.001) and in the Chinese cohorts (HR, 0.975; 95% CI, 0.963–0.987; P < 0.001), with a similar reduction in mortality risk. Notably, a consistent trend was observed (Table 2 and Supplementary Tables 2 and 3, Supplemental Digital Content 3, http://links.lww.com/JS9/A759) among patients with node-negative (N0) disease (SEER: HR, 0.978; 95% CI, 0.974–0.982; P < 0.001; Chinese registry: HR, 0.980; 95% CI, 0.964–0.996; P = 0.014) and those with node-positive (N1 and N2) disease (SEER: HR, 0.987; 95% CI, 0.983–0.991; P < 0.001; Chinese registry: HR, 0.972; 95% CI, 0.954–0.991; P = 0.005).
+Cut-point analysis
+For a more rigorous evaluation, a Cox model with RCS was created to ﬂexibly model and visualise the relationship between ELN and OS risk (Fig. 2). The results were adjusted for age, sex, T stage, grade, histology, tumour size, and adjuvant chemotherapy. The relationship between ELN on a continuous scale and the risk of OS was L-shaped. The risk of OS decreased rapidly until ~15 ELN counts and afterwards, the risk was relatively ﬂat (P for nonlinearity <0.001) both cohorts. For patients with an ELN count <15, the multivariable adjusted hazard ratio for OS was 0.957 (95% CI, 0.947–0.968, P < 0.001) in the SEER cohort and 0.932 (95% CI, 0.898–0.967, P < 0.001) in the Chinese cohort. For patients with an ELN count of at least 15, the multivariable adjusted hazard ratio for OS was 0.993 (95% CI, 0.989–0.997, P = 0.001) in the SEER cohort and 0.992 (95% CI, 0.975–1.008, P = 0.322) in the Chinese cohort.
+Figures 3 and 4 show the ﬁtting curves and corresponding structural breakpoints for the OR of stage migration and HR of OS after adjusting for other potential confounders in the two cohorts. All breakpoints were essentially consistent with each
+
+Figure 2. Association between ELN count and survival using restricted cubic splines model in the Surveillance, Epidemiology, and End Results (SEER) database and the China registry. Hazard ratios are indicated by solid lines and 95% CIs by shaded areas. The range of ELN count was restricted to 1–59 in the SEER database (1–55 in the China registry) because predictions greater than 59 and 55 (95th percentile) are based on too few data points. ELN, examined lymph node.
+2244
+
+Guan et al. International Journal of Surgery (2023)
+
+Figure 3. Associations of odds ratio for stage migration (negative-to-positive node) and number of examined lymph nodes. Locally Weighted Scatterplot Smoothing (LOWESS) smoothing ﬁtting curves with a ﬁtting bandwidth of 2/3 are shown in yellow, and the structural breakpoint was determined with the use of the Chow test in the Surveillance, Epidemiology, and End Results (SEER) database (A and B) and the China registry (C and D). ELN, examined lymph node.
+
+other (varied from 12 to 15). Because survival is the most crucial issue and for representativeness and generalisability, we recommend 15 ELNs as the optimal threshold based on the RCS curve in the two cohorts and the ﬁtting curve of HR, which was generated from the SEER cohort.
+Comparison of optimal thresholds
+As international guidelines have uniformly adopted 12 ELNs as the proposed threshold for colorectal cancer, which originated from the 1990 World Congress of Gastroenterology, and the ELN count was divided into three populations (ELN < 12, ELN: 12–14, ELN ≥ 15) into two cohorts. Survival analysis conﬁrmed a signiﬁcantly reduced all-cause mortality hazard for patients with at least 15 ELNs harvested in two cohorts (SEER database: HR12–14, 0.76; 95% CI, 0.71–0.82; P < 0.001; HR ≥ 15, 0.64; 95% CI, 0.60–0.68; P < 0.001; Chinese registry: HR12–14, 0.82; 95% CI, 0.65–1.02; P = 0.075; HR ≥ 15, 0.67; 95% CI, 0.55–0.82; P < 0.001) after adjusting for other prognostic factors (Fig. 5). Furthermore, the association remained signiﬁcant in declared nodenegative (SEER database: HR12–14, 0.76; 95% CI, 0.69–0.84; P < 0.001; HR ≥ 15, 0.61; 95% CI, 0.56–0.67; P < 0.001; Chinese registry: HR12–14, 1.02; 95% CI, 0.73–1.42; P = 0.918; HR ≥ 15,
+
+0.67; 95% CI, 0.49–0.92; P = 0.012) and node-positive patients (SEER database: HR12–14, 0.79; 95% CI, 0.70–0.89; P < 0.001; HR ≥ 15, 0.69; 95% CI, 0.63–0.77; P < 0.001; Chinese registry: HR12–14, 0.69; 95% CI, 0.51–0.94; P = 0.017; HR ≥ 15, 0.69; 95% CI, 0.53–0.90; P = 0.006) (Supplementary Fig. 2, Supplemental Digital Content 4, http://links.lww.com/JS9/A760).
+Notably, although patients with at least 15 LNs harvested had better survival outcomes than those with <12 LNs, no signiﬁcant differences in OS were observed between patients with 12–14 LNs harvested and those with <12 LNs in the Chinese cohort and node-negative disease patients.
+Discussion
+To the best of our knowledge, the present study is the largest population-based study of two real-world international cohorts. Although several studies have identiﬁed the optimal ELN number for colorectal cancer, most studies did not consider RC as an isolated tumour site[22,23]. In addition, a large number of studies have focused on RC patients treated with neoadjuvant therapy, and no relevant study has explored the optimal ELN number in RC patients without neoadjuvant therapy based on a large population-based study[14,24].
+
+2245
+
+Guan et al. International Journal of Surgery (2023)
+
+International Journal of Surgery
+
+Figure 4. Associations of the hazard ratio for overall survival and number of examined lymph nodes. Locally Weighted Scatterplot Smoothing (LOWESS) smoothing ﬁtting curves with a ﬁtting bandwidth of 2/3 are shown in yellow and the structural breakpoint was determined with use of the Chow test in the Surveillance, Epidemiology, and End Results (SEER) database (A and B) and the China registry (C and D). ELN, examined lymph node.
+
+Our ﬁndings indicated that a minimum of 15 ELNs were associated with increased detection of metastatic ELN and improved survival for RC patients, which was conﬁrmed in the
+
+U.S. and Chinese large population-based cohorts. The total number of ELN is considered a powerful indicator of stage migration and survival prediction in RC patients in clinical
+
+Figure 5. Kaplan–Meier curves of overall survival are shown for different groups of ELNs in the Surveillance, Epidemiology, and End Results (SEER) database and the China registry. ELN, examined lymph node.
+2246
+
+Guan et al. International Journal of Surgery (2023)
+
+practice. The data provide strong support for retrieving a minimum of 15 ELNs in the context of potentially curative proctectomy for RC. According to our ﬁndings, ELNs count was associated with a decreased risk of stage migration and improved long-term survival in RC patients, which encourages surgeons and pathologists to pursue a maximal effort of ELNs.
+The strengths of the present study include a long follow-up period as well as a large observational population with relatively homogeneous treatment exposure identiﬁed from the SEER database and Chinese multi-institutional registry. In addition, the statistical methods used for the analysis were essential for interpreting the results. In the present study, several key statistical methods were used to obtain strong evidence for the selection of the optimal number of ELNs for RC, which could provide a more valuable reference for the treatment of patients with RC in clinical practice.
+In the present study, the total number of ELNs was associated with stage migration, which was conﬁrmed by the consistent positive correlation between a larger ELN number and a higher proportion of advanced N categories in the U.S. and Chinese populations. It is known that the detection of more ELNs in rectal specimens could increase the likelihood of positive ELNs being detected, leading to an accurate N stage and the necessary implementation of adjuvant chemotherapy, thereby promoting the long-term survival of RC patients. Therefore, in the U.S. and Chinese cohorts, there were similar positive trends between a larger number of ELNs and better OS in RC patients with both metastatic and non-metastatic ELNs.
+Stage migration due to insufﬁcient ELNs may partly explain the improved survival of patients with a larger number of ELN. In addition to the reason for stage migration, a larger number of ELNs is related to a stronger anti-tumour immune response, which is considered a prognostic predictor for cancer patients[25]. Robust anti-tumour immune responses will lead to LNs enlargement, which is easily detected by surgeons and pathologists in clinical practice. This also partly explains our previous ﬁndings that LNs were more likely to be detected in younger patients than in older patients because of the stronger anti-tumour immune responses of the younger hosts[26]. Therefore, the examination of a larger number of ELNs may contribute to improved survival due to a stronger immune response[27]. Although the interplay between tumour biology and host that may confer this survival improvement needs to be explained, native host’s anti-tumour immune response may play a key role[28]. Further studies are warranted to explore the biological reasons underlying the prognosis of patients with ELNs and anti-tumour immune responses.
+However, several limitations of this study should be noted when interpreting the results. First, although the two international cohorts provided large population-based analyses with long-term follow-up information enabling the assessment of the association between optimal ELN and patient outcome after adjusting for several confounding factors, we cannot overcome the retrospective nature of selection bias. Second, it is well known that the number of ELN is affected by the shared responsibility of both surgeons and pathologists. However, because of the retrospective design of the study, information regarding the surgeon for lymphadenectomy and the pathological evaluation of postoperative rectal specimen could not be included and analysed in this study, which led to the inability to evaluate the inﬂuence of surgeons and pathologists on the number of ELN. Third, the change in the number of ELN over
+
+time contributed to unavoidable bias because of the long period of spanning years in these two cohorts. However, we performed several statistical methods and checks to evaluate the feasibility of our ﬁndings. Fourth, because this study was based on two realworld cohorts, the surgical procedures and pathological assessments of ELNs vary among surgeons, pathologists and regions.
+Conclusion
+In conclusion, a minimum of 15 ELNs was associated with more accurate tumour staging and favourable long-term survival of RC patients. We recommend 15 ELNs as the optimal cut-off point for the assessment of the quality of postoperative pathological examination and prognostic stratiﬁcation for RC patients. The novel optimal cut-off point has imposed an increased requirement for the routinely used AJCC nodal evaluation and has demonstrated compelling results based on external validation in a large cohort of the Chinese population, which suggest wide clinical applicability in different populations of RC patients.
+Ethical approval
+This study was approved by the Ethics Committee of the Chinese Academy of Medical Sciences and Peking Union Medical College (Approval No. 17-116/1439).
+Source of funding
+This study was supported by the Sanming Project of Medicine in Shenzhen (Grant Number: SZSM201911012), the National Natural Science Foundation of China (Grant Numbers: 82100598 and 82072750), Guangxi Natural Science Foundation (2021J JA140081), China Postdoctoral Science Foundation (48804), Shanghai Sailing Program (Grant Number: 21YF1459300), and National Key R&D Program for Young Scientists (Grant Number: 2022YFC2505700).
+Author contribution
+X.G.: conceptualization, funding acquisition, and study design; S.J.: data curation, data analysis, and writing; R.W. and G.Y.: data curation, statistical analysis, and writing; J.L., D.M., S.L., and G.W.: data collections; R.W., W.Z., L.H., L.Z., Z.L., and E.Z.: data analysis; W.Z. and X.W.: conceptualization, funding acquisition, and critical revision of the manuscript for important intellectual content.
+Conﬂicts of interest disclosure
+The authors declare that they have no conﬂicts of interest.
+Research registration unique identifying number (UIN)
+1. Name of the registry: https://register.clinicaltrials.gov/. 2. Unique identifying number or registration ID: NCT05572151. 3. Hyperlink to your speciﬁc registration (must be publicly
+accessible and will be checked): https://clinicaltrials.gov/ show/NCT05572151.
+
+2247
+
+Guan et al. International Journal of Surgery (2023)
+
+International Journal of Surgery
+
+Guarantor
+Xu Guan.
+Data availability statement
+All data generated during the study process are available from the corresponding author on reasonable request.
+Provenance and peer review
+Not commissioned, externally peer-reviewed.
+Acknowledgements
+The authors thank the staff in Surveillance, Epidemiology, and End Results Program (SEER) for their kind work in data collection and delivery.
+References
+[1] Keller DS, Berho M, Perez RO, et al. The multidisciplinary management of rectal cancer. Nat Rev Gastroenterol Hepatol 2020;17:414–29.
+[2] Evans J, Patel U, Brown G. Rectal cancer: primary staging and assessment after chemoradiotherapy. Semin Radiat Oncol 2011;21:169–77.
+[3] Nelson H, Petrelli N, Carlin A, et al. Guidelines 2000 for colon and rectal cancer surgery. J Natl Cancer Inst 2001;93:583–96.
+[4] Compton CC, Greene FL. The staging of colorectal cancer: 2004 and beyond. CA Cancer J Clin 2004;54:295–308.
+[5] Raoof M, Nelson RA, Nfonsam VN, et al. Prognostic signiﬁcance of lymph node yield in ypN0 rectal cancer. Br J Surg 2016;103:1731–7.
+[6] Mekenkamp LJ, van Krieken JH, Marijnen CA, et al. Lymph node retrieval in rectal cancer is dependent on many factors – the role of the tumor, the patient, the surgeon, the radiotherapist, and the pathologist. Am J Surg Pathol 2009;33:1547–53.
+[7] Betge J, Harbaum L, Pollheimer MJ, et al. Lymph node retrieval in colorectal cancer: determining factors and prognostic signiﬁcance. Int J Colorectal Dis 2017;32:991–8.
+[8] Kong SH, Lee HJ, Ahn HS, et al. Stage migration effect on survival in gastric cancer surgery with extended lymphadenectomy: the reappraisal of positive lymph node ratio as a proper N-staging. Ann Surg 2012;255:50–8.
+[9] Choi HK, Law WL, Poon JT. The optimal number of lymph nodes examined in stage II colorectal cancer and its impact of on outcomes. BMC Cancer 2010;10:267.
+[10] Feng H, Lyu Z, Liang W, et al. Optimal examined lymph node count in node-negative colon cancer should be determined. Future Oncol 2021;17: 3865–72.
+[11] Goldstein NS. Lymph node recoveries from 2427 pT3 colorectal resection specimens spanning 45 years: recommendations for a minimum number
+
+of recovered lymph nodes based on predictive probabilities. Am J Surg Pathol 2002;26:179–89. [12] Chan DKH, Tan KK. Lower lymph node yield following neoadjuvant therapy for rectal cancer has no clinical signiﬁcance. J Gastrointest Oncol 2019;10:42–7. [13] Ballanamada Appaiah NN, Rafaih Iqbal M, Kafayat Lesi O, et al. Clinicopathological factors affecting lymph node yield and positivity in left-sided colon and rectal cancers. Cureus 2021;13:e19115. [14] Yeo CS, Syn N, Liu H, et al. A lower cut-off for lymph node harvest predicts for poorer overall survival after rectal surgery post neoadjuvant chemoradiotherapy. World J Surg Oncol 2020;18:58. [15] Mathew G, Agha R. STROCSS 2021: strengthening the reporting of cohort, cross-sectional and case–control studies in surgery. Int J Surg 2021;96:106165. [16] Asli LM, Johannesen TB, Myklebust TA, et al. Preoperative chemoradiotherapy for rectal cancer and impact on outcomes – a populationbased study. Radiother Oncol 2017;123:446–53. [17] Salazar MC, Rosen JE, Wang Z, et al. Association of delayed adjuvant chemotherapy with survival after lung cancer surgery. JAMA Oncol 2017;3:610–9. [18] Gauthier J, Wu QV, Gooley TA. Cubic splines to model relationships between continuous variables and outcomes: a guide for clinicians. Bone Marrow Transplant 2020;55:675–80. [19] Molinari N, Daures JP, Durand JF. Regression splines for threshold selection in survival data analysis. Stat Med 2001;20:237–47. [20] Feinstein AR, Sosin DM, Wells CK. The Will Rogers phenomenon. Stage migration and new diagnostic techniques as a source of misleading statistics for survival in cancer. N Engl J Med 1985;312:1604–8. [21] Liang W, He J, Shen Y, et al. Impact of examined lymph node count on precise staging and long-term survival of resected non-small-cell lung cancer: a population study of the US SEER database and a Chinese multiinstitutional registry. J Clin Oncol 2017;35:1162–70. [22] Blaker H, Hildebrandt B, Riess H, et al. Lymph node count and prognosis in colorectal cancer: the inﬂuence of examination quality. Int J Cancer 2015;136:1957–66. [23] Vather R, Sammour T, Kahokehr A, et al. Lymph node evaluation and long-term survival in Stage II and Stage III colon cancer: a national study. Ann Surg Oncol 2009;16:585–93. [24] Wang Y, Zhou M, Yang J, et al. Increased lymph node yield indicates improved survival in locally advanced rectal cancer treated with neoadjuvant chemoradiotherapy. Cancer Med 2019;8:4615–25. [25] Pinato DJ, Howlett S, Ottaviani D, et al. Association of prior antibiotic treatment with survival and response to immune checkpoint inhibitor therapy in patients with cancer. JAMA Oncol 2019;5:1774–8. [26] Guan X, Chen W, Li S, et al. Alterations of lymph nodes evaluation after colon cancer resection: patient and tumor heterogeneity should be taken into consideration. Oncotarget 2016;7:62664–75. [27] Ning FL, Pei JP, Zhang NN, et al. Harvest of at least 18 lymph nodes is associated with improved survival in patients with pN0 colon cancer: a retrospective cohort study. J Cancer Res Clin Oncol 2020;146:2117–33. [28] Del Paggio JC, Peng Y, Wei X, et al. Population-based study to re-evaluate optimal lymph node yield in colonic cancer. Br J Surg 2017;104: 1087–96.
+
+2248
+
