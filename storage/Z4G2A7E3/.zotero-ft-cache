@@ -1,0 +1,260 @@
+European Journal of Cancer 189 (2023) 112930
+Available online at www.sciencedirect.com
+
+journal homepage: www.ejcancer.com
+
+Original Research
+
+Estimating mortality in women with triple-negative breast cancer: The ‘ESTIMATE triple-negative’ tool☆
+
+]]]]
+]]]]]]
+
+José P. Leone a,b,c,⁎, Noah Graham d, Julieta Leone e, Sara M. Tolaney a,b,c, Bernardo A. Leone e,1, Rachel A. Freedman a,b,c, Michael J. Hassett a,b,c, Carlos T. Vallejo e, Eric P. Winer a,b,c,2, Nancy U. Lin a,b,c, Nabihah Tayob c,d
+
+a Medical Oncology, Dana-Farber Cancer Institute, Boston, MA, USA b Breast Oncology Program, Dana-Farber Brigham Cancer Center, Boston, MA, USA c Harvard Medical School, Boston, MA, USA d Data Science, Dana-Farber Cancer Institute, Boston, MA, USA e Grupo Oncológico Cooperativo del Sur (GOCS), Argentina
+Received 4 April 2023; Received in revised form 21 May 2023; Accepted 23 May 2023 Available online 1 June 2023
+
+KEYWORDS
+ER negative; Survival; Competing risks; Death; Calculator
+
+Abstract Purpose: Triple-negative breast cancer (TNBC) is associated with a high risk of breast cancer-specific mortality (BCSM). Estimating the risk of BCSM and non-BCSM in TNBC would aid clinical decision-making. We developed the tool ‘ESTIMATE-TN’, to assess BCSM, non-BCSM, and all-cause mortality in non-metastatic TNBC. Methods: Using Surveillance, Epidemiology, and End Results (SEER), we created an inter­ active tool that provides a nonparametric estimate of the cumulative risk of BCSM and nonBCSM between years 0 and 7 from diagnosis, accounting for baseline clinical and pathologic variables, using Gray’s subdistribution method. Results: We included 37,293 women with TNBC diagnosed during 2010–2017. Most patients were White (71.9%) and aged 50–69 years (51.3%). Most tumour characteristics were highgrade (78.6%), T2 (42.4%), and N0 (69.5%). ESTIMATE-TN allows to input patient and tumour characteristics, and the preferred timeframe. For example, patients aged 50–59 years with a new diagnosis of T2, N1, high-grade TNBC have a risk of BCSM at 7 years of 30.8% (95% confidence interval [CI]: 26.3–35.4%) and a risk of non-BCSM over the same period of
+
+☆ Prior presentation: Presented in part at the 2021 San Antonio Breast Cancer Symposium: abstract P2-10-01. (https://aacrjournals.org/ cancerres/article/82/4_Supplement/P2-10-01/680668).
+⁎ Correspondence to: Dana-Farber Cancer Institute, 450 Brookline Ave, Boston, MA 02215, USA. E-mail address: JoseP_Leone@dfci.harvard.edu (J.P. Leone).
+1 Deceased 2 Current affiliation: Yale Cancer Center, New Haven, CT, USA
+https://doi.org/10.1016/j.ejca.2023.05.018 0959-8049/© 2023 Elsevier Ltd. All rights reserved.
+
+2
+
+J.P. Leone et al. / European Journal of Cancer 189 (2023) 112930
+
+2.8% (95% CI: 1.3–4.3%). After 3 years from initial diagnosis, the residual cumulative risks of BCSM and non-BCSM at 7 years are 17.4% (95% CI: 12.6–22.2%) and 1.1% (95% CI: 0–2.5%), respectively. Conclusions: ESTIMATE-TN is an interactive tool for TNBC that can be used to integrate population-based risks of BCSM and non-BCSM based on patient and tumour character­ istics, facilitating our understanding of competing risks of death, which can aid clinical de­ cision-making. © 2023 Elsevier Ltd. All rights reserved.
+
+1. Introduction
+Triple-negative breast cancer (TNBC) is associated with a high risk of distant recurrence and death [1]. This risk of recurrence is highest within the first 5 years from diagnosis [2]. Despite recent advances in systemic therapy, TNBC remains the breast cancer subtype with the worst prognosis [3].
+There are several prognostic factors that can help assess the risk of distant recurrence in TNBC such as age at di­ agnosis, tumour size, nodal status, and tumour grade [4]. Another important prognostic factor is the type of patho­ logic response to neoadjuvant chemotherapy, defined either as pathologic complete response versus not, or by residual cancer burden [5,6]. However, our ability to estimate risk of death from causes other than breast cancer is limited, par­ ticularly among elderly patients who are underrepresented in clinical trials. In patients with TNBC, assessing both the risk of breast cancer-specific mortality (BCSM) and the risk of non-BCSM is important to incorporate into treatment discussions and recommendations.
+Recently, our group created a prognostic tool called ‘ESTIMATE’ to quantify the risks of BCSM, nonBCSM, and all-cause mortality in patients with nonmetastatic hormone receptor-positive breast cancer [7]. The tool uses data from the Surveillance, Epidemiology, and End Results (SEER) Programme and provides nonparametric risk estimates based on patient and tumour characteristics, and for any desired time period between diagnosis and up to 20 years. ESTIMATE is freely available online at www.estimatetool.org [7]. In the case of TNBC, there is no available tool that provides po­ pulation-based risk estimates of mortality, or has flex­ ibility on the desired timeframe for estimation.
+This study was conducted with the following aims: 1) to generate population-based estimates of risk of BCSM and non-BCSM in TNBC by specific patient and tu­ mour characteristics; and 2) to create an interactive tool to convey these risks for users.
+2. Methods
+2.1. Data source and study design
+We obtained data from SEER using the 18 registry (2000–2017) database. Our inclusion criteria consisted of
+
+women with microscopically confirmed, non-metastatic, invasive TNBC diagnosed between 2010 and 2017, with active follow-up. We included the following study variables: age at diagnosis, race, year of diagnosis, tumour grade, tumour size (T), nodal status (N), surgery to the primary tumour and lymph nodes, vital status, and cause of death. The staging classification in SEER changed within the study period when in 2016 SEER adopted the American Joint Committee on Cancer (AJCC) staging system 7th edition. However, while the staging system has changed over the years, the tumour size (T) and nodal status (N) definitions, which is what we use in our tool, have remained the same. Cases diagnosed between 2010 and 2015 are recorded using the variables labelled: ‘Breast - Adjusted AJCC 6th T (1988–2015)’ and ‘Breast - Adjusted AJCC 6th N (1988–2015)’. Cases diagnosed between 2016 and 2017 are recorded using the SEER variables: ‘Derived SEER Combined T (2016+)’ and ‘Derived SEER Combined N (2016+)’. Patients with a breast cancer diagnosis prior to the TNBC of interest were excluded (n = 3053); in SEER, pa­ tients that have multiple breast cancer diagnoses and die from one of these breast cancers, the cause of death is la­ belled as ‘Dead (attributable to this cancer dx)’ for all breast cancers; in other words, specification as to which breast cancer caused the death is not included. Patients with prior malignancies other than breast cancer, and patients with subsequent malignancies after the index TNBC were al­ lowed, given that competing causes of death were a primary outcome of interest. Some additional exclusion criteria in­ cluded patients who did not undergo breast surgery, or in whom surgery was unknown, and those without nodal ex­ amination. Fig. 1 shows the entire selection of the study population.
+Given that data for this study were deidentified, the study was exempt from review at Dana-Farber Cancer Institute’s Institutional Review Board.
+2.2. Statistical considerations
+We computed BCSM, non-BCSM, and all-cause mortality among women with TNBC in SEER. BCSM was the pri­ mary endpoint, defined as the interval from initial breast cancer diagnosis to death from breast cancer, or to the date last known alive for censored patients. Non-BCSM and allcause mortality were defined as the intervals from the initial diagnosis to death from causes other than breast cancer, or
+
+J.P. Leone et al. / European Journal of Cancer 189 (2023) 112930
+
+3
+
+Fig. 1. Selection of TNBC study cohort. Abbreviations: SEER, Surveillance, Epidemiology, and End Results; TNBC, triple-negative breast cancer.
+
+any cause, respectively, or to the date last known alive for censored patients. Estimates of the cumulative incidence functions of BCSM and non-BCSM were obtained by computing the subdistribution hazard functions for death by each cause within subgroups, nonparametrically, as shown by Gray [8] and implemented in the cmprsk package in R. All-cause mortality was obtained by taking the complement of the Kaplan–Meier survival estimate for the composite outcome of death from any cause.
+Mortality estimates were computed at the subgroup level, according to the user-input patient and tumour characteristics, including age at diagnosis, T and N stage, and tumour grade (low-, mid-, and high-grade, defined as grade I, grade II, and grades III/IV, respec­ tively). These characteristics were selected for inclusion based on their strong associations with mortality in breast cancer [9,10]. Age at diagnosis was categorised as < 40, 40–49, 50–59, 60–69, 70–79, and ≥80 for ana­ lysis to limit the potential for small subgroups based on age. The number of years survived since the initial di­ agnosis was used to further define a given subgroup, and the number of years at which to estimate was used to allow for the calculation of residual mortality risks. It must be noted that the above-described inputs served only to identify a population of interest and were not entered into a statistical model of any kind.
+2.3. ESTIMATE-TN tool
+‘ESTIMATE-TN’ was created using the concept of our previously published ESTIMATE tool [7] but developed
+
+specifically for patients with non-metastatic TNBC. Akin to ESTIMATE, ESTIMATE-TN provides popu­ lation-based, non-parametric estimates of the cumula­ tive risks of BCSM, non-BCSM, and all-cause mortality based on patient and tumour characteristics with es­ tablished prognostic value. It allows for quick and effi­ cient subgroup analyses of mortality in TNBC, in the context of competing risks. For each endpoint, point estimates within the timeframe of interest and plots of the cumulative incidence functions – each equipped with optional confidence intervals (CI) – are provided, along with brief text descriptions to aid interpretation. Con­ sistent with the amount of follow-up available in this SEER cohort, ESTIMATE-TN allows for estimation up to 7 years post-diagnosis. Results are only displayed when there are at least 20 total deaths within the spe­ cified estimation timeframe and subgroup of interest, in efforts to ensure stable estimation; otherwise, estimates are withheld, and an ‘Inestimable’ message is shown. For additional details on the tool and its development, refer to the primary ESTIMATE publication.[7].
+3. Results
+3.1. Patient characteristics
+We included a total of 37,293 women diagnosed with TNBC between 2010 and 2017. Table 1 shows the characteristics of our cohort. Most patients were White (71.9%) and aged between 50 and 69 years (51.3%). The most common tumour characteristics were high-grade
+
+4
+
+J.P. Leone et al. / European Journal of Cancer 189 (2023) 112930
+
+Table 1 Patient characteristics.
+Demographics
+Age at diagnosis < 40 40–49 50–59 60–69 70–79 80+
+Race White Black Other Unknown
+Tumour grade I II III/IV Unknown
+Tumour size T1a T1b T1c T2 T3 T4
+Nodal status N0 N1 N2 N3
+Vital status (as of Dec 31, 2016) Alive Dead attributable to breast cancer Dead attributable to other causes
+
+N = 37,293
+3279 (8.8) 6820 (18.3) 9732 (26.1) 9400 (25.2) 5584 (15.0) 2478 (6.6)
+26,825 (71.9) 7436 (19.9) 2842 (7.6) 190 (0.5)
+709 (1.9) 6186 (16.6) 29,324 (78.6) 1074 (2.9)
+1936 (5.2) 4024 (10.8) 11,204 (30.0) 15,813 (42.4) 2875 (7.7) 1441 (3.9)
+25,934 (69.5) 7786 (20.9) 2149 (5.8) 1424 (3.8)
+31,203 (83.7) 4471 (12.0) 1619 (4.3)
+
+(78.6%), T2 (42.4%), and N0 (69.5%). A total of 1441 patients presented with T4 tumours, of whom 547 (37.9% of all T4 tumours, and 1.46% of the entire po­ pulation) were inflammatory breast cancers.
+3.2. Cumulative risk of BCSM and non-BCSM
+The cumulative risk of BCSM in years 0–7 was 10.7% (95% CI: 10.1–11.3%) for N0, 27.9% (95% CI: 26.5–29.3%) for N1, 46.4% (95% CI: 43.5–49.2%) for N2 and 64.0% (95% CI: 60.5–67.4%) for N3. In contrast, the cumulative risk of non-BCSM over the same period ranged from 7.5% (95% CI: 6.6–8.3%) in N1 to 8.7% (95% CI: 7.1–10.3%) in N2. Table 2 shows the risks of BCSM, non-BCSM, and all-cause mortality among patients with N0 disease by age at diagnosis and tumour size. Patients aged 50–69 years had an increasing cu­ mulative risk of BCSM as the tumour size increased, reaching up to 13.0% (95% CI: 11.6–14.4%) in those with T2 tumours, while the risk of non-BCSM in this age group ranged from 4.8% (95% CI: 3.3–6.3%) to 5.9% (95% CI: 3.2–8.6%). Women aged 70–79 years with T1a/b, N0 breast cancer had risks of BCSM that were approximately 60% lower than the risks of non-BCSM.
+
+In patients aged ≥80 years, the risk of non-BCSM reached 41.6% (95% CI: 34.2–49.1%) among women with T2 tumours. The risk of non-BCSM among women aged ≥80 years with T1b-T2 disease was substantially higher than the risk of BCSM (Table 2).
+The causes of death of non-BCSM both for the overall population and by age group are shown in eTable 1. In the entire cohort, the most frequent causes of non-BCSM included diseases of the heart (24.5%), other causes of death (19.0%) and chronic obstructive pulmonary disease (6.1%). The most frequent deaths due to second primary cancers included lung cancer (5.6%), pancreatic cancer (2.0%) and ovarian cancer (1.6%) (eTable 1).
+3.3. ESTIMATE-TN results
+Below we describe three results generated by the tool to depict the tool’s utility.
+3.3.1. Mortality results for young patients Example #1 shows patients in the age category 40–49 years old with a new diagnosis of a T1c, N0, high-grade TNBC. These patients have a risk of BCSM at 7 years of 7.0% (95% CI: 5.0–9.0%), and a risk of non-BCSM at 7 years of 1.4% (95% CI: 0.6–2.2%) (Fig. 2A and Table 3).
+3.3.2. Mortality results for elderly patients Examples #2 and #3 depict two patients in the age ca­ tegory 70–79 years old, with a new diagnosis of TNBC: both examples have T2 primary tumours that are highgrade, but Example #3 has lymph node involvement (N1 vs N0). The mortality estimates for these two ex­ amples are shown in Figs. 2B and C and Table 3. Ex­ ample #2 has similar risks of BCSM and non-BCSM at 7 years: 22.0% (95% CI: 17.9–26.2%) and 19.0% (95% CI: 14.4–23.7%), respectively. In contrast, Example #3 has double the risk of BCSM vs non-BCSM at 7 years: 32.2% (95% CI: 25.4–38.9%) vs 15.2% (95% CI: 8.5–21.9%), respectively.
+Example #4 illustrates patients in the age category 70–79 years old, with a new diagnosis of T1b, N0, highgrade TNBC. The risk of BCSM at 7 years from diag­ nosis is 5.6% (95% CI: 2.7–8.5%), as compared with the risk of non-BCSM at 7 years which is 14.9% (95% CI: 8.9–20.8%) (Fig. 2D and Table 3).
+3.3.3. Mortality after having survived a given time from diagnosis The starting year in ESTIMATE-TN can be adjusted to calculate risks after a given time from initial TNBC diag­ nosis, up to 7 years. Example #5 shows patients in the age category 50–59 years old with a new diagnosis of T2, N1, high-grade TNBC. These patients have a risk of BCSM at 7 years of 30.8% (95% CI: 26.3–35.4%) (Fig. 3A and Table 3). After 3 years from initial diagnosis, the residual cumulative
+
+J.P. Leone et al. / European Journal of Cancer 189 (2023) 112930
+
+5
+
+Table 2 Cumulative risks of BCSM, non-BCSM and all-cause mortality.
+
+Age at diagnosis and tumour size
+
+BCSM
+
+non-BCSM
+
+Cumulative risk (%) and 95% CI Cumulative risk (%) and 95% CI
+
+years 0–7
+
+years 0–7
+
+Tumour size among age 50–69, N0 only
+T1a T1b T1c T2 Tumour size among age 70–79,
+N0 only T1a T1b T1c T2 Tumour size among age 80+, N0 only T1a T1b T1c T2
+
+2.6 (1.0–4.3) 3.9 (2.8–5.0) 8.1 (6.9–9.4) 13 (11.6–14.4)
+6.1 (0–12.7) 5.3 (3.0–7.7) 11 (8.7–13.4) 21 (17.4–24.6)
+6.6 (0–19.7) 7.1 (2.1–12.2) 8.4 (5.2–11.6) 22.7 (18.1–27.3)
+
+5.9 (3.2–8.6) 4.8 (3.3–6.3) 4.8 (3.9–5.8) 5.5 (4.4–6.5)
+13.9 (7.0–20.9) 13.3 (9.0–17.7) 14.3 (11.4–17.2) 17.4 (13.4–21.5)
+27 (11.0–43.1) 33.2 (23.2–43.2) 32.7 (26.4–39.0) 41.6 (34.2–49.1)
+
+Abbreviations: BCSM, breast cancer-specific mortality; CI, confidence interval.
+
+All-cause mortality Cumulative risk (%) and 95% CI years 0–7
+8.5 (5.3–11.6) 8.7 (6.9–10.5) 13 (11.4–14.5) 18.5 (16.8–20.2)
+20 (10.2–28.7) 18.6 (13.7–23.3) 25.3 (21.7–28.8) 38.5 (33.3–43.2)
+33.7 (11.8–50.1) 40.3 (28.9–49.9) 41.1 (34.1–47.3) 64.3 (56.0–71.1)
+
+Fig. 2. A: ESTIMATE-TN inputs and results for patients aged 40–49 years, with a new diagnosis of a T1c, N0, high-grade TNBC (Example #1). B: ESTIMATE-TN inputs and results for patients aged 70–79 years, with a new diagnosis of a T2, N0, high-grade TNBC (Example #2). C: ESTIMATE-TN inputs and results for patients aged 70–79 years, with a new diagnosis of a T2, N1, high-grade TNBC (Example #3). D: ESTIMATE-TN inputs and results for patients aged 70–79 years, with a new diagnosis of a T1b, N0, high-grade TNBC (Example #4). Abbreviation: TNBC, triple-negative breast cancer.
+
+risk of BCSM at 7 years is 17.4% (95% CI: 12.6–22.2%) (Fig. 3B and Table 3).
+4. Discussion
+Our study showed that the risk of BCSM in TNBC in­ creases substantially with increasing nodal involvement, but also depends on other factors such as tumour size
+
+and age at diagnosis. These are known independent prognostic factors in breast cancer [9–11]. Although their interplay can affect overall prognosis, evaluating prognosis in routine clinical practice based on the as­ sociation of these factors can be challenging. To address this, we created ESTIMATE-TN, a tool that allows oncologists to quickly assess prognosis based on the information from these factors.
+
+6
+
+J.P. Leone et al. / European Journal of Cancer 189 (2023) 112930
+
+Fig. 2. (continued)
+
+Fig. 2. (continued)
+
+The balance between the competing risks of BCSM and non-BCSM becomes apparent in the sample sce­ narios. Example #1 represents younger patients for whom the non-BCSM risk is much lower, and the de­ gree of risk from their breast cancer represents the majority of their all-cause mortality risk. Examples #2, #3, and #4 all represent the subgroup of 70–79 yearsold patients with a new diagnosis of TNBC. The pre­ sence of positive nodes (N1) in Example #3 confers a BCSM risk double that of non-BCSM. In contrast, the risks of BCSM and non-BCSM in Example #2 are very similar. On the other hand, Example #4 has a smaller tumour and in this scenario the non-BCSM risk is
+
+almost 3-times higher than the BCSM risk. As seen in our study, older patients have a very high risk of nonBCSM. In situations where the risk of non-BCSM is so high, some of the benefit from measures to reduce the risk of BCSM may be lost. However, there is a wide range in the risk of BCSM in older patients, which can be very high in node-positive cases. Therefore, measures to reduce the risk of BCSM in many older patients would not be inappropriate.
+The option on ESTIMATE-TN to calculate risks after any given time from initial diagnosis allows to assess the residual risk, which is particularly important in a disease where the risk of recurrence is higher during
+
+J.P. Leone et al. / European Journal of Cancer 189 (2023) 112930
+
+7
+
+Fig. 2. (continued)
+
+Table 3 ESTIMATE-TN result for 5 scenarios.
+
+Characteristic
+
+Example #1 Example #2
+
+Example #3
+
+Example #4
+
+Example #5
+
+Current age (years) Years since diagnosis T N Grade Estimated mortality BCSM risk at 7 years (%) Non-BCSM risk at 7 years (%) All-cause mortality risk at 7
+years (%)
+
+40–49 0 T1c N0 III/IV
+
+70–79 0 T2 N0 III/IV
+
+70–79 0 T2 N1 III/IV
+
+70–79 0 T1b N0 III/IV
+
+50–59 0 T2 N1 III/IV
+
+50–59 3 T2 N1 III/IV
+
+7.0 (5.0–9.0) 22.0 (17.9–26.2) 32.2 (25.4–38.9) 5.6 (2.7–8.5)
+
+30.8 (26.3–35.4) 17.4 (12.6–22.2)
+
+1.4 (0.6–2.2) 19.0 (14.4–23.7) 15.2 (8.5–21.9) 14.9 (8.9–20.8) 2.8 (1.3–4.3)
+
+1.1 (0.0–2.5)
+
+8.4 (6.3–10.5) 41.0 (35.1–46.5) 47.4 (38.2–55.2) 20.5 (13.8–26.7) 33.6 (28.8–38.1) 18.5 (13.4–23.3)
+
+Abbreviation: BCSM, breast cancer-specific mortality.
+
+the first few years. This is illustrated in Example #5 where the risk of BCSM is reduced from 30.8% at initial diagnosis to 17.4% after 3 years from diagnosis.
+Users of the tool should consider that ESTIMATE-TN is not predictive of mortality outcomes for given individuals, but instead is prognostic for spe­ cific subgroups of interest, as defined by the selected patient characteristics.
+We acknowledge that our tool has important lim­ itations. SEER does not provide information on co­ morbidities and whether concomitant diseases are controlled, which are important for the non-BCSM es­ timation; however, this is common across all breast cancer risk tools as more comprehensive data collection is required to address this. Another limitation is the relatively short timeframe of 7 years for risk estimation. The lack of systemic therapy information in SEER and the evolving treatment standards for systemic therapy are also important limitations. In recent years, systemic
+
+therapy in TNBC has changed with the incorporation of immunotherapy [12], which has already shown to im­ prove event-free survival and may affect our tool’s BCSM estimates. Similarly, for patients with BRCAmutant tumours, olaparib has resulted in improved event-free survival [13]. Additionally, while tumour-in­ filtrating lymphocytes have been shown to be prog­ nostic, information on this is unavailable in SEER and is not included in our tool. Given that the data used in our tool is population-based, one should consider that the results provided by ESTIMATE-TN already in­ corporate treatment received [14]. However, older pa­ tients are more likely to be under-treated or treated with non-standard therapy options. Another limitation is that we do not have information about pathologic re­ sponse to neoadjuvant chemotherapy or disease recur­ rence, which if available would allow for additional risk stratification. The distribution of race in our study showed a very high proportion of white patients (71.9%)
+
+8
+
+J.P. Leone et al. / European Journal of Cancer 189 (2023) 112930
+
+Fig. 3. A: ESTIMATE input and results for patients aged 50–59 years with newly diagnosed T2, N1, high-grade TNBC (Example #5) from year 0. B: ESTIMATE input and results for patients aged 50–59 years with newly diagnosed T2, N1, high-grade TNBC (Example #5) from year 3. Abbreviation: TNBC, triple-negative breast cancer.
+
+Fig. 3. (continued)
+
+and fewer non-white patients (27%). Given the small proportion of non-white patients and the heterogeneity within this subgroup, caution should be taken when interpreting the results from ESTIMATE-TN in nonwhite patients. Unfortunately, we could not incorporate race and ethnicity, or tumour histology into the tool, because of the small subgroups that would result from the additional selection criteria which in turn would yield inestimable results. In fact, the tool’s requirement of a minimum of 20 mortality events to generate results
+
+limits the ability to estimate for certain small subgroups. Future versions of the tool should incorporate currently missing data elements that would help enhance the tool’s performance, if those data elements become available in SEER, and also have more years of followup to estimate risks over longer timeframes.
+Despite the limitations, our tool has important strengths. To our knowledge, ESTIMATE-TN re­ presents the first dynamic tool to simultaneously quan­ tify the risk of BCSM as well as competing risks of death
+
+J.P. Leone et al. / European Journal of Cancer 189 (2023) 112930
+
+9
+
+in patients with TNBC. Our tool allows the user to get a comprehensive prognostic assessment for groups of in­ terest that can help inform discussions about treatment options in clinic. Two existing prognostic calculators in TNBC include PREDICT and the Mayo Clinic triplenegative calculator [15,16]. However, important strengths of our tool include that it was developed from a very large sample size, which allows for narrower CI in the risk estimates, and that our tool allows the user to choose flexible start and stop times to estimate the risk of BCSM, non-BCSM, and all-cause mortality. Addi­ tional strengths of ESTIMATE-TN include its simpli­ city and ease of use, with the inclusion of prognostic factors that are widely available; both of which are important when using the tool in a busy clinic. Lastly, when compared to other available tools, it is important to consider that ESTIMATE-TN is not a model. Our tool generates population-based risk estimates that are non-parametric and based on actual observed data from the United States population. Unlike our tool, other available options used statistical modelling to generate inference results, which require validation in larger co­ horts. Given the population-based source of our data, ESTIMATE-TN does not require validation with other cohorts. However, it is possible that other countries may have different cancer outcomes than those reflected in ESTIMATE-TN.
+To summarise, the risk of BCSM in TNBC depends on traditional clinicopathologic factors, and in general, is much higher than the risk of non-BCSM. However, the risk of non-BCSM is substantially higher in older patients and it is important to consider this risk in the decision-making process. We developed an interactive tool for TNBC that can be used to integrate the risks of BCSM and non-BCSM based on patient and tumour characteristics. The tool can aid clinical decisionmaking by understanding the balance between com­ peting risks of death. In addition, ESTIMATE-TN may be incorporated to inform risk stratification in the de­ sign of clinical trials, either for the inclusion criteria of patients with certain risk, or as a stratification factor in randomised studies.
+Funding
+None received.
+CRediT authorship contribution statement
+Conceptualization: JPL, BAL, NT, Data curation: JPL, NG, Formal Analysis: NG, NT, Investigation: JPL, NG, SMT, BAL, MJH, JL, CTV, EPW, NUL, NT, Methodology: JPL, NG, BAL, RAF, JL, CTV, EPW, NUL, NT, Project administration: JPL, NG, Resources: JPL, NG, Software: JPL, NG, NT, Supervision: BAL, EPW, NUL, NT, Writing – original draft: JPL, NG, Writing – review & editing: All authors.
+
+Data availability
+The data underlying this article will be shared on rea­ sonable request to the corresponding author.
+Declaration of Competing Interest
+The authors declare the following financial interests/ personal relationships which may be considered as po­ tential competing interests: JPL received research funding from Kazia Therapeutics and consulting hon­ oraria from Minerva Biotechnologies. RAF has institu­ tional research funding from Puma Biotechnology. SMT receives institutional research funding from Genentech/Roche, Merck, Exelixis, Pfizer, Lilly, Novartis, Bristol Myers Squibb, Eisai, AstraZeneca, NanoString Technologies, Cyclacel, Nektar, Gilead, Sanofi, and Seattle Genetics; and has served as an ad­ visor/consultant to Novartis, Pfizer, Merck, Eli Lilly, AstraZeneca, Genentech/Roche, Eisai, Sanofi, Bristol Myers Squibb, Seattle Genetics, Odonate Therapeutics, CytomX Therapeutics, Daiichi Sankyo, Athenex, Gilead, Mersana, Certara, Ellipses Pharma, 4D Pharma, OncoSec Medical Inc., BeyondSpring Pharmaceuticals, OncXerna, Zymeworks, Zentalis, Blueprint Medicines, Reveal Genomics, ARC Therapeutics, Infinity Therapeutics, Chugai Pharmaceuticals, Myovant, Zetagen, Umoja Biopharma, Menarini/Stemline, Aadi Bio, and Bayer. EPW reports institutional research funding from Genentech/Roche; serving as a consultant for Athenex, Carrick Therapeutics, G1 Therapeutics, Genentech/ Roche, Genomic Health, Gilead, GlaxoSmithKline, GSK, Jounce, Lilly, St. Lucia, Syros, and Zymeworks; a non-paid scientific advisory board membership at Leap Therapeutics; and serving as President-Elect of the American Society of Clinical Oncology (ASCO). NUL reports institutional research funding from Genentech, Merck, Pfizer, Seattle Genetics, AstraZeneca, and Zion Pharmaceuticals; consultant/advisory board work for Pfizer, Puma, Seattle Genetics, Daiichi Sankyo, AstraZeneca, Prelude Therapeutics, Denali Therapeutics, Olema Pharmaceuticals, Aleta BioPharma, and Affinia Therapeutics; and royalties from UpToDate. All other authors report no conflicts.
+Appendix A. Supporting information
+Supplementary data associated with this article can be found in the online version at doi:10.1016/j.ejca.2023. 05.018.
+References
+[1] Bianchini G, De Angelis C, Licata L, Gianni L. Treatment landscape of triple-negative breast cancer - expanded options, evolving needs. Nat Rev Clin Oncol 2022;19(2):91–113.
+
+10
+
+J.P. Leone et al. / European Journal of Cancer 189 (2023) 112930
+
+[2] Dent R, Trudeau M, Pritchard KI, Hanna WM, Kahn HK, Sawka CA, et al. Triple-negative breast cancer: clinical features and patterns of recurrence. Clini Cancer Res 2007;13(15 Pt 1):4429–34.
+[3] Hennigs A, Riedel F, Gondos A, Sinn P, Schirmacher P, Marme F, et al. Prognosis of breast cancer molecular subtypes in routine clinical care: a large prospective cohort study. BMC Cancer 2016;16(1):734.
+[4] Ovcaricek T, Frkovic SG, Matos E, Mozina B, Borstnar S. Triple negative breast cancer - prognostic factors and survival. Radiol Oncol 2011;45(1):46–52.
+[5] Cortazar P, Zhang L, Untch M, Mehta K, Costantino JP, Wolmark N, et al. Pathological complete response and long-term clinical benefit in breast cancer: the CTNeoBC pooled analysis. Lancet 2014;384(9938):164–72.
+[6] Yau C, Osdoit M, van der Noordaa M, Shad S, Wei J, de Croze D, et al. Residual cancer burden after neoadjuvant chemotherapy and long-term survival outcomes in breast cancer: a multicentre pooled analysis of 5161 patients. Lancet Oncol 2022;23(1):149–60.
+[7] Leone JP, Graham N, Tolaney SM, Leone BA, Freedman RA, Hassett MJ, et al. Estimating long-term mortality in women with hormone receptor-positive breast cancer: the ’ESTIMATE’ tool. Eur J Cancer 2022;173:20–9.
+[8] Gray RJ. A class of K-sample tests for comparing the cumulative incidence of a competing risk. Ann Stat 1988;16(3):1141–54.
+[9] Adami HO, Malker B, Holmberg L, Persson I, Stone B. The relation between survival and age at diagnosis in breast cancer. N Engl J Med 1986;315(9):559–63.
+
+[10] Rakha EA, El-Sayed ME, Lee AH, Elston CW, Grainge MJ, Hodi Z, et al. Prognostic significance of Nottingham histologic grade in invasive breast carcinoma. J Clin Oncol 2008;26(19): 3153–8.
+[11] Leone JP, Vallejo CT, Hassett MJ, Leone J, Graham N, Tayob N, et al. Factors associated with late risks of breast cancer-spe­ cific mortality in the SEER registry. Breast Cancer Res Treat 2021;189(1):203–12.
+[12] Schmid P, Cortes J, Dent R, Pusztai L, McArthur H, Kummel S, et al. Event-free survival with Pembrolizumab in early triple-ne­ gative breast cancer. N Engl J Med 2022;386(6):556–67.
+[13] Tutt ANJ, Garber JE, Kaufman B, Viale G, Fumagalli D, Rastogi P, et al. Adjuvant Olaparib for patients with BRCA1- or BRCA2-mutated breast cancer. N Engl J Med 2021;384(25): 2394–405.
+[14] Mariotto A, Feuer EJ, Harlan LC, Wun LM, Johnson KA, Abrams J. Trends in use of adjuvant multi-agent chemotherapy and tamoxifen for breast cancer in the United States: 1975-1999. J Natl Cancer Inst 2002;94(21):1626–34.
+[15] Candido Dos Reis FJ, Wishart GC, Dicks EM, Greenberg D, Rashbass J, Schmidt MK, et al. An updated PREDICT breast cancer prognostication and treatment benefit prediction model with independent validation. Breast Cancer Res: BCR 2017;19(1):58.
+[16] Polley MC, Leon-Ferre RA, Leung S, Cheng A, Gao D, Sinnwell J, et al. A clinical calculator to predict disease outcomes in women with triple-negative breast cancer. Breast Cancer Res Treat 2021;185(3):557–66.
+
