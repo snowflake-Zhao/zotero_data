@@ -1,0 +1,548 @@
+ORIGINAL RESEARCH published: 14 February 2020 doi: 10.3389/fonc.2019.01551
+
+Post-mastectomy Radiotherapy in T1-2 Breast Cancer Patients With One to Three Lymph Node Metastases: A Propensity Score Matching Analysis
+
+Edited by: William Small Jr, Loyola University Chicago,
+United States
+Reviewed by: Tao Xu,
+First People’s Hospital of Foshan, China Stephan Bodis,
+Kantonsspital Aarau, Switzerland Guo-Qing Jiang,
+Yangzhou University, China
+*Correspondence: Hongwei Yang
+yhw.sn@163.com Lingmi Hou
+houlingmi@163.com
+†These authors have contributed equally to this work
+Specialty section: This article was submitted to
+Radiation Oncology, a section of the journal
+Frontiers in Oncology
+Received: 10 October 2019 Accepted: 23 December 2019
+Published: 14 February 2020
+Citation: Chen M, Huang Y, Leng Z, Yang G,
+Li F, Yang H and Hou L (2020) Post-mastectomy Radiotherapy in T1-2 Breast Cancer Patients With One to Three Lymph Node Metastases: A Propensity Score Matching Analysis.
+Front. Oncol. 9:1551. doi: 10.3389/fonc.2019.01551
+
+Maoshan Chen 1†, Yunhui Huang 1†, Zhengwei Leng 2†, Guanglun Yang 3, Fangfang Li 4, Hongwei Yang 1* and Lingmi Hou 2*
+1 Department of Breast Surgery, Suining Central Hospital, Suining, China, 2 Department of Breast and Thyroid Surgery, Hepatobiliary and Pancreatic Institution, Afﬁliated Hospital of North Sichuan Medical College, Nanchong, China, 3 Department of Endocrine and Breast Surgery, First Afﬁliated Hospital of Chongqing Medical University, Chongqing, China, 4 Department of Operating Room, Suining Central Hospital, Suining, China
+Background and Objectives: Whether post-mastectomy radiotherapy (PMRT) could improve prognosis for T1-2 breast cancer patients with one to three lymph node metastases remains controversial. The present study aimed to determine the signiﬁcance of PMRT in patients with T1-2N1M0 breast cancer.
+Methods: Data of 45,646 patients from the Surveillance, Epidemiology, and End Results (SEER) database were analyzed; 12,585 matched patients were divided into a PMRT group and non-radiotherapy group (no-PMRT), respectively, using the propensity score matching method. Univariate and multivariate analyses were performed to determine the prognostic factors of breast cancer, and subgroup analysis was performed according to the number of lymph node metastases.
+Results: With the median follow-up of 62 months, 5-year cancer-speciﬁc survival was 91.48% in the PMRT group and 91.88% in the no-PMRT group (P = 0.405). PMRT did not improve the breast cancer-speciﬁc survival (BCSS) in patients with stage T1-2N1M0 (HR = 0.99, 95% CI = 0.92–1.06, P = 0.715). In subgroup analysis, radiotherapy improved the BCSS in patients with three nodes positive, with the 5-year BCSS at 88.5% in the radiation group and 86.6% in the no-radiation group (HR = 0.78, 95% CI = 0.65–0.90, P < 0.001). In patients with two nodes positive, 5-year BCSS was 90.3% in the PMRT group and 89.5% in the no-PMRT group, with no signiﬁcant difference between the two groups (HR = 0.96, 95% CI = 0.85–1.09, P = 0.552). In patients with one node positive, 5-year BCSS was higher in the no-PMRT group (92.1%) than that in the PMRT group (90.8%); radiotherapy increased the cancer-related death compared with those who did not receive it (HR = 1.21, 95% CI = 1.08–1.36, P = 0.002).
+
+Frontiers in Oncology | www.frontiersin.org
+
+1
+
+February 2020 | Volume 9 | Article 1551
+
+Chen et al.
+
+Radiotherapy in T1-2N1M0 Breast Cancer Patients
+
+Conclusion: The beneﬁt of PMRT in T1-2N1M0 patients was obviously different, and the recommendation of PMRT for this population should be individualized. PMRT should be considered for patients with three nodes positive, should be suggested cautiously in those with two nodes positive, and could be omitted in those with one node positive.
+Keywords: breast neoplasms, lymph node, radiotherapy, prognosis, Surveillance, Epidemiology, and End Results (SEER) Program
+
+INTRODUCTION
+The incidence of breast cancer ranks ﬁrst among all the female malignant tumors and it has become the second largest reason for females’ deaths (1). Breast cancer screening and improvement of comprehensive treatment have signiﬁcantly improved the prognosis for breast cancer patients; however, better prognosis would be necessarily relying on further development of comprehensive treatments (2, 3). In the era of precision medicine, individualized treatment strategies are formulated according to the patient’s tumor stage, recurrence risk, and treatment sensitivity (4). Axillary lymph node status is not only an important reference for accurate staging of breast cancer but also an important index for evaluating prognosis and guiding treatment (2, 5, 6). And the number of lymph node metastases is closely related to prognosis (5–7). It is proven by a series of clinical studies that combined radiotherapy after mastectomy can improve the survival of patients with four or more positive lymph nodes (8–11).
+However, whether post-mastectomy radiotherapy (PMRT) could improve prognosis for T1-2 breast cancer patients with one to three lymph node metastases remains controversial (8, 11–13). In EBCTCG meta-analysis, 1,314 patients with one to three axillary lymph node metastases were analyzed, and the results showed that PMRT could reduce local recurrence and improve overall survival (11). The sample size of this study was small, and cases dated far back in time (1964–1986), when the local radiotherapy technology and systemic treatment were too underdeveloped to guide treatments under modern medical conditions. A recent study reported by the University of Chicago showed that radiotherapy improved the prognosis of patients with two lymph nodes positive with 2–5 cm size of tumors and patients with three lymph nodes positive (14). Nevertheless, Muhsen and colleagues analyzed 1,087 patients with T1-2N1 breast cancer to investigate the value of PMRT (15). The results showed that PMRT could not improve the recurrence-free survival and overall survival. A series of studies had evaluated the signiﬁcance of PMRT in T1-2N1 breast cancer patients, and the conclusions were discordant (8, 11, 14, 16–18).
+With the available evidence, the recommendations of PMRT for T1-2N1M0 breast cancer were quite discrepant (4, 19, 20). Considering the limitations of these studies, such as small sample and low level of evidence, recommending clinicians and patients should balance the beneﬁt and radiation toxicity. It is necessary to evaluate the value of PMRT in T1-2 breast cancer with one to three nodes’ metastases and to explore the predictor for choice of PMRT.
+
+In this study, we used real-world data from the American Surveillance, Epidemiology, and End Results (SEER) database to investigate the prognostic value of PMRT for T1-2N1M0 breast cancer patients. Simultaneously, we conducted a subgroup analysis to determine which patients were suitable to receive PMRT to assist physicians with clinical decision making for this controversial group.
+MATERIALS AND METHODS
+Data Source and Patient Selection
+This retrospective cohort study analyzed de-identiﬁed data from the SEER 18 Registry Research Data set, which collects data on patients’ demographics, tumor characteristics, ﬁrst course of treatment, and follow-up for vital status. The case listing in this retrospective cohort study was generated by SEER∗Stat software (version 8.3.5). Female patients with the ﬁrst primary stages of T1-2N1M0 breast cancer diagnosed between 2000 and 2014 were selected from the SEER database. We identiﬁed potentially eligible patients based on the following inclusion criteria: female, year of diagnosis between the years 2000 and 2014, unilateral breast cancer, pathological conﬁrmation of invasive carcinoma, breast cancer as the ﬁrst and only malignant cancer diagnosis, having received a mastectomy (including breast and axillary lymph nodes) with or without reconstruction, tumor stage T1 or T2, one to three lymph node metastases, and no distance metastasis at diagnosis. Patients were excluded for missing any information such as radiotherapy record, age at diagnosis, surgery record, chemotherapy record, estrogen receptor (ER) status, progesterone receptor (PR) status, grade, tumor stage, marital status, survival status, and time. Besides, patients who received radiotherapy other than post-mastectomy were excluded as well. The ﬁnal study sample contained 45,646 patients. Histologic types of tumors are classiﬁed according to the International Classiﬁcation of Disease for Oncology (ICD-O), 3rd Edition. Tumor stage is categorized according to the American Joint Committee on Cancer (AJCC) staging system, 6th edition. Breast cancer subtypes were classiﬁed into HR+/HER2–, HR+/HER2+, HR–/HER2+, and HR–/HER2– according to the status of the hormone receptor (HR) and human epidermal receptor 2 (HER2).
+Clinicopathologic Parameters
+The following variables were collected: year of diagnosis, age at diagnosis, race, marital status, laterality, histology, tumor size, AJCC stage, surgery procedure, number of regional lymph nodes examined, number of regional lymph nodes positive, histological
+
+Frontiers in Oncology | www.frontiersin.org
+
+2
+
+February 2020 | Volume 9 | Article 1551
+
+Chen et al.
+
+Radiotherapy in T1-2N1M0 Breast Cancer Patients
+
+grade, ER status, PR status, chemotherapy recode, radiotherapy recode, follow-up, and vital status.
+In this study, breast cancer-speciﬁc survival (BCSS) was used as the primary study outcome, indicating the survival time between the dates of diagnosis and the date of death due to breast cancer. Patients who died of other causes were censored on the data of death.
+Statistical Analyses
+Clinicopathologic features were compared between the radiotherapy (PMRT) group and no-radiotherapy (no-PMRT) group using Pearson’s chi-square test. To balance of baseline characteristics between each group, propensity score matching (PSM) analysis was conducted with a ratio of 1.0. BCSS was estimated, and the survival curves were plotted using the
+
+Kaplan-Meier method. The log-rank test was used to identify prognostic factors for BCSS. The hazard ratios (HRs) with 95% conﬁdence intervals (CIs) for BCSS of patients in the PMRT group compared with patients in the no-PMRT group were evaluated via univariate and multivariate Cox regression models. Parameters with a statistical signiﬁcance in univariate analysis or with a clinical signiﬁcance were included in the multivariate Cox model. Adjusted HRs and 95% CIs were calculated using multivariate Cox proportion hazard models, with adjustment for age at diagnosis, race, marital status, tumor stage, number of nodes positive, ER status, PR status, grade, and chemotherapy. Patients were classiﬁed into the one, two, or three nodes positive subgroup according to the number of lymph node metastases. Multivariate Cox models were conducted in subgroup analyses to determine whether there was a signiﬁcant interaction between
+
+TABLE 1 | Comparison of demographic and tumor characteristics between PMRT group and no-PMRT group.
+
+Variables
+
+Before PSM
+
+PMRT N = 12,585 (%)
+
+No-PMRT N = 33,061 (%)
+
+P-value
+
+After PSM
+
+PMRT N = 12,585 (%)
+
+No-PMRT N = 12,585 (%)
+
+P-value
+
+Age (years) <40 40–70 ≥70
+Race White Black Other*
+Marital status Married Unmarried#
+Tumor stage T1 T2
+Grade 1 2 3†
+ER status Negative Positive
+PR status Negative Positive
+No. of LNs positive One Two Three
+Chemotherapy No Yes Speciﬁc death
+
+1,885 (14.98) 9,261 (73.59) 1,439 (11.43)
+9,782 (77.73) 1,483 (11.78) 1,320 (10.49)
+8,187 (65.05) 4,398 (34.95)
+4,188 (33.28) 8,397 (66.72)
+1,151 (9.15) 5,261 (41.80) 6,173 (49.05)
+2,854 (22.68) 9,731 (77.32)
+4,218 (33.52) 8,367 (66.48)
+5,590 (44.42) 3,923 (31.17) 3,072 (24.41)
+1,591 (12.64) 10,994 (87.36) 1,375 (10.93)
+
+2,687 (8.13) 22,517 (68.11) 7,857 (23.77)
+26,603 (80.47) 3,355 (10.15) 3,103 (9.39)
+19,778 (59.82) 13,283 (40.18)
+15,293 (46.26) 17,768 (53.74)
+4,606 (13.93) 14,973 (45.29) 13,482 (40.78)
+6,417 (19.41) 26,644 (80.59)
+9,972 (30.16) 23,089 (69.84)
+20,316 (61.45) 8,647 (26.15) 4,098 (12.40)
+13,709 (41.47) 19,352 (58.53) 3,588 (10.85)
+
+<0.001 <0.001 <0.001 <0.001 <0.001 <0.001 <0.001 <0.001 <0.001
+–
+
+1,885 (14.98) 9,261 (73.59) 1,439 (11.43)
+9,782 (77.73) 1,483 (11.78) 1,320 (10.49)
+8,187 (65.05) 4,398 (34.95)
+4,188 (33.28) 8,397 (66.72)
+1,151 (9.15) 5,261 (41.80) 6,173 (49.05)
+2,854 (22.68) 9,731 (77.32)
+4,218 (33.52) 8,367 (66.48)
+5,590 (44.42) 3,923 (31.17) 3,072 (24.41)
+1,591 (12.64) 10,994 (87.36) 1,375 (10.93)
+
+1,754 (13.94) 9,344 (74.25) 1,487 (11.82)
+9,803 (77.89) 1,443 (11.47) 1,339 (10.64)
+8,193 (65.10) 4,392 (34.90)
+4,176 (33.18) 8,409 (66.82)
+1,149 (9.13) 5,242 (41.65) 6,194 (49.22)
+2,806 (22.30) 9,779 (77.70)
+4,191 (33.30) 8,394 (66.70)
+5,545 (44.06) 4,276 (33.98) 2,764 (21.96)
+1,592 (12.65) 10,993 (87.35) 1,542 (12.25)
+
+0.053 0.703 0.937 0.872 0.965 0.469 0.718 <0.001 0.985
+–
+
+*Including American Indian/AK Native, and Asian/Paciﬁc Islander. #Including single, separated, divorced, widowed, and unmarried or domestic partner. †Including poorly differentiated and undifferentiated. PMRT, post-mastectomy radiotherapy; ER, estrogen receptor; PR, progesterone receptor; LN, lymph node.
+
+Frontiers in Oncology | www.frontiersin.org
+
+3
+
+February 2020 | Volume 9 | Article 1551
+
+Chen et al.
+
+Radiotherapy in T1-2N1M0 Breast Cancer Patients
+
+diﬀerent features and radiotherapy in predicting BCSS. Statistical analyses were performed using Stata software (version 13.0 SE). A two-side P value lower than 0.05 was deemed to indicate statistical signiﬁcance.
+RESULTS
+Demographic and Tumor Characteristics
+A total of 45,646 patients with primary invasive breast cancer who met the study criteria were eventually selected. The median age of all patients was 52 years (IQR: 44–62). Patients’ demographics and tumor characteristics stratiﬁed by radiotherapy are summarized in Table 1. There were signiﬁcant diﬀerences in all variables between the PMRT group and noPMRT group (P < 0.001). The PSM method was used to balance baseline features between each group, and there were 12,585 patients in each group after PSM. Between the two groups, the number of lymph nodes positive showed a statistically signiﬁcant diﬀerence (P < 0.001); for other baseline characteristics, no signiﬁcant diﬀerences were observed (P > 0.05, Table 1).
+Association of PMTR and BCSS
+Median follow-up was 62 months (IQR: 29–107), and 2,917 women died of breast cancer. There were 1,375 (10.93%) breast cancer-related death events observed in the PMRT
+
+group and 1,542 (12.25%) in the no-PMRT group. The 5year cancer-speciﬁc survival was 91.48% in the PMRT group and 91.88% in the no-PMRT group (P = 0.405). KaplanMeier analysis showed that patients who received PMRT had a similar BCSS compared with patients who did not receive PMRT; the log-rank test P value was 0.676 (Figure 1A). In univariate analysis, age, race, marital status, tumor stage, grade, ER status, PR status, and number of lymph node metastases were signiﬁcantly associated with BCSS. However, chemotherapy was not associated with BCSS. For clinical consideration, all variables associated with BCSS and chemotherapy were included in the multivariate Cox regression model. The multivariate analysis results were almost consistent with the result of the univariate analysis except chemotherapy; the details are shown in Table 2. In multivariate Cox regression analysis, radiotherapy did not signiﬁcantly improve the cancer-speciﬁc survival for breast cancer patients (HR = 0.99, 95% CI = 0.92–1.06, P = 0.715, Table 2).
+Survival Analysis for Subgroups
+Subgroup analyses using the Cox model were conducted to further determine the eﬀect of radiotherapy on BCSS in patients with diﬀerent features. The baseline characteristic features between the PMRT group and no-PMRT group were almost
+
+FIGURE 1 | Survival curve in T1-2N1M0 breast cancer patients with and without PMRT. (A) The survival curve in all T1-2N1M0 breast cancer patients with PMRT and no PMRT. (B) The survival curve in T1-2 and three nodes positive breast cancer patients with PMRT and no PMRT. (C) The survival curve in T1-2 and two nodes positive breast cancer patients with PMRT and no PMRT. (D) The survival curve in T1-2 and one node positive breast cancer patients with PMRT and no PMRT.
+
+Frontiers in Oncology | www.frontiersin.org
+
+4
+
+February 2020 | Volume 9 | Article 1551
+
+Chen et al.
+
+Radiotherapy in T1-2N1M0 Breast Cancer Patients
+
+TABLE 2 | Univariate and multivariate analysis for BCSS in patients with one to three LNs positive.
+
+Variable
+
+Univariate analysis
+
+HR
+
+P
+
+(95% CI)
+
+Multivariate analysis
+
+HR
+
+P
+
+(95% CI)
+
+Age at diagnosis (years)
+
+<40
+
+Reference
+
+40–70
+
+0.77 (0.70–0.85)
+
+≥70
+
+1.14
+
+(1.07–1.22)
+
+Race
+
+White
+
+Reference
+
+Black
+
+1.52 (1.38–1.69)
+
+Other
+
+0.96 (0.90–1.02)
+
+Marital status
+
+Married
+
+Reference
+
+Unmarried
+
+1.30 (1.21–1.40)
+
+Tumor stage
+
+T1
+
+Reference
+
+T2
+
+1.88
+
+(1.72–2.05)
+
+Grade
+
+1
+
+Reference
+
+2
+
+2.07
+
+(1.67–2.55)
+
+3
+
+2.01
+
+(1.81–2.22)
+
+ER status
+
+Negative
+
+Reference
+
+Positive
+
+0.43 (0.40–0.46)
+
+PR status
+
+Negative
+
+Reference
+
+Positive
+
+0.45 (0.42–0.48)
+
+No. of LNs positive
+
+1
+
+Reference
+
+2
+
+1.14
+
+(1.04–1.24)
+
+3
+
+1.19
+
+(1.14–1.24)
+
+Chemotherapy
+
+No
+
+Reference
+
+Yes
+
+0.92
+
+(0.82–1.03)
+
+Radiotherapy
+
+No
+
+Reference
+
+Yes
+
+1.02
+
+(0.94–1.09)
+
+BCSS, breast cancer–speciﬁc survival.
+
+– <0.001 <0.001
+– <0.001 0.167
+– <0.001
+– <0.001
+– <0.001 <0.001
+– <0.001
+– <0.001
+– 0.004 <0.001
+– 0.130
+– 0.676
+
+Reference 0.84
+(0.76–0.93) 1.14
+(1.06–1.24)
+Reference 1.23
+(1.11–1.37) 0.96
+(0.90–1.02)
+Reference 1.24
+(1.15–1.34)
+Reference 1.68
+(1.54–1.83)
+Reference 1.77
+(1.43–2.19) 1.70
+(1.53–1.89)
+Reference 0.71
+(0.63–0.79)
+Reference 0.68
+(0.61–0.76)
+Reference 1.13
+(1.03–1.23) 1.19
+(1.14–1.25)
+Reference 0.77
+(0.68–0.86)
+Reference 0.99
+(0.92–1.06)
+
+– 0.001 0.001
+– <0.001 0.186
+– <0.001
+– <0.001
+– <0.001 <0.001
+– <0.001
+– <0.001
+– 0.007 <0.001
+– <0.001
+– 0.715
+
+balanced in patients with one, two, or three positive nodes (Supplementary Tables 1–3). Radiotherapy was not associated with improved BCSS in patients with age <70 years. In contrast,
+
+patients over 70 years who received PMRT had an adverse impact on BCSS (HR = 1.24, 95% CI = 1.04–1.48, P = 0.017, Table 3). In the setting with three lymph nodes positive, the 5year cancer-speciﬁc survival was 88.5% in the radiation group and 86.6% in the no-radiation group. Radiotherapy improved the BCSS in patients with three nodes positive (HR = 0.78, 95% CI = 0.65–0.90, P < 0.001, Figure 1B, Table 3). In the setting with two lymph nodes positive, the 5-year cancer-speciﬁc survival was 90.3% in the radiation group and 89.5% in the noradiation group. There was no signiﬁcant diﬀerence of survival in patients with two lymph node metastases between the PMRT group and no-PMRT group (HR = 0.96, 95% CI = 0.85–1.09, P = 0.552, Figure 1C, Table 3). Surprisingly, we found that the 5-year cancer-speciﬁc survival in patients with one lymph node positive was higher in the no-PMRT group (92.1%) than that of the PMRT group (90.8%). Radiotherapy increased the cancerrelated death compared with those who did not receive it (HR = 1.21, 95% CI = 1.08–1.36, P = 0.002, Figure 1D, Table 3). All subgroup analyses are summarized in Table 3 and shown in Figure 2.
+DISCUSSION
+In this study, we used real-world data from the SEER database to investigate the impact of PMRT on BCSS by the PSM method in breast cancer patients with stage T1-2N1M0. There was a similar 5-year cancer-speciﬁc survival rate in patients with or without PMRT; the percentage was 90.1% in the PMRT group and the 90.0% in the no-PMRT group. For women with stage T1-2 and three lymph node metastases, radiotherapy after mastectomy could improve the BCSS. For patients with one or two lymph node metastases, radiotherapy did not bring speciﬁc survival beneﬁts.
+Lymph node status is an important indicator of prognosis and treatment. The number of node metastases reﬂected the tumor burden; the more node metastases, the higher the recurrence risk (5, 6). PMRT was an important technique to reduce the recurrence risk, and a series of studies had demonstrated that radiotherapy could improve the survival in patients with four or more lymph node metastases (11, 21, 22). However, the recommendations of local radiotherapy for stage T1-2 patients with one to three lymph nodes positive were obviously diﬀerent (4, 19, 20). The EBCTCG meta-analysis and DBCG 82b&c study demonstrated that PMRT could reduce the local recurrence and improve survival (8, 11). The trials included by the EBCTCG were predominantly conducted in the 1970s and 1980s. The local recurrence rate at 10 years (21%) reported in this meta-analysis was considerably higher than that (4∼10%) reported in the later series (20). Otherwise, previous studies had a small sample size, and the limitations of these studies’ design decreased the evidence grade. Therefore, this evidence coming from elder circumstances was not suitable to guide treatment in the modern medicine era (20). The conclusions of whether PMRT could improve the survival for T1-2N1M0 breast cancer patients were controversial, and which patients beneﬁt from PMRT is unclear. This study found that the number
+
+Frontiers in Oncology | www.frontiersin.org
+
+5
+
+February 2020 | Volume 9 | Article 1551
+
+Chen et al.
+
+Radiotherapy in T1-2N1M0 Breast Cancer Patients
+
+TABLE 3 | Subgroup analyses of radiotherapy effect on BCSS in patients with different features.
+
+Variable
+
+PMRT group death/patient
+
+No-PMRT group death/patient
+
+Age <40 40–70 ≥70
+Race White Black Other
+Marital status Married Unmarried
+Tumor stage T1 T2
+Grade 1 2 3
+ER status Negative Positive
+PR status Negative Positive
+No. of LNs positive 1 2 3
+Chemotherapy No Yes
+
+128/1,315 339/6,360 390/987
+1,045/9,782 211/1,483 119/1,320
+818/8,187 557/4,398
+297/4,188 1,078/8,397
+44/1,151 384/5,261 947/6,173
+560/2,854 815/9,731
+733/4,218 642/8,367
+559/5,590 418/3,923 398/3,072
+168/1,591 1,207/10,994
+
+141/1,195 338/6,076 385/1,038
+1,158/9,803 242/1,443 142/1,339
+961/8,193 581/4,392
+366/4,176 1,176/8,409
+51/1,149 487/5,242 1,004/6,194
+602/2,806 940/9,779
+785/4,191 757/8,394
+539/5,545 538/4,276 465/2,764
+187/1,592 1,355/10,993
+
+HR (95% CI)
+1.03 (0.77–1.39) 0.91 (0.76–1.10) 1.24 (1.04–1.48)
+1.00 (0.92–1.08) 0.98 (0.82–1.18) 0.92 (0.72–1.17)
+0.94 (0.86–1.04) 1.05 (0.93–1.18)
+0.96 (0.82–1.12) 0.99 (0.92–1.08)
+0.99 (0.66–1.50) 0.99 (0.78–1.02) 1.03 (0.94–1.12)
+0.96 (0.86–1.08) 1.01 (0.92–1.11)
+0.99 (0.90–1.10) 0.98 (0.88–1.09)
+1.21 (1.08–1.36) 0.96 (0.85–1.09) 0.78 (0.64–0.90)
+1.01 (0.82–1.24) 0.98 (0.91–1.06)
+
+P
+0.831 0.338 0.017
+0.937 0.858 0.485
+0.223 0.423
+0.607 0.911
+0.981 0.105 0.536
+0.482 0.779
+0.914 0.725
+0.002 0.552 <0.001
+0.955 0.617
+
+of lymph node metastases was closely related to the beneﬁt of radiotherapy.
+In this study, radiotherapy improved the cancer-speciﬁc survival in patients with three nodes positive but did not beneﬁt the patients with one or two lymph nodes positive. Patients with three lymph nodes positive have a higher tumor burden and possibly higher risk of recurrence and metastasis than those of patients with one or two lymph nodes positive (6, 23). The escalation of local management allows patients to have a better local control and brings survival beneﬁts to patients with a high recurrence risk. In the Z0011 and AMAROS trails, the 5-year survival rate in the radiotherapy group was signiﬁcantly higher than that in the non-radiotherapy group in patients with three nodes positive (24, 25). The recurrence rate in patients with one or two nodes positive was mild and moderate, especially under the systemic treatment in modern times (26). McBride and his colleagues investigated the value of radiotherapy in diﬀerent years and found that patients in the past old times were the major beneﬁtted population (17). Patients with one or two
+
+nodes positive who received axillary lymph node dissection or radiotherapy had a similar local recurrence rate and diseasefree survival (25, 27). With the appropriate systemic treatment, the beneﬁts of radiotherapy after mastectomy were limited for patients with low recurrence risk. Therefore, PMRT should not be considered routinely for patients with one or two lymph node metastases after mastectomy and axillary dissection.
+In addition, the radiotherapy group showed even worse survival beneﬁts among T1-2 breast cancer patients with one lymph node positive. Patients with only one lymph node metastasis usually bear low tumor metastasis load and recurrence rate, and thus could expect relatively good prognosis with systematic treatment (chemotherapy, targeted therapy, and/or endocrine therapy) (26). For patients with a low risk of recurrence, adding radiotherapy after mastectomy may cause an interaction between radiation, tumor cells, and the immune system, which inﬂuenced the patients’ survival (28, 29). The complications of radiotherapy, such as pneumonitis, lymphedema, and cardiac toxicities, et al. may lead to even
+
+Frontiers in Oncology | www.frontiersin.org
+
+6
+
+February 2020 | Volume 9 | Article 1551
+
+Chen et al.
+
+Radiotherapy in T1-2N1M0 Breast Cancer Patients
+
+FIGURE 2 | The forest plot for HR comparing BCSS between the PMRT group and no-PMRT group according to different variables.
+
+worse results (20). A retrospective study analyzed the impact of radiotherapy on survival in patients collected from the NCDB and SEER database between the years 1998 and 2008. It was reported that radiotherapy could not improve the prognosis of patients with one or two lymph node metastases and with tumor size <2 cm (14). Therefore, there is insuﬃcient evidence to recommend PMRT to patients with one lymph node metastasis.
+Radiotherapy can bring not only survival beneﬁts but also side eﬀects—lung injury, cardiac, and skin side eﬀects, et al., which decreased the quality of life of patients (30, 31). In the T12N1M0 breast cancer population, the beneﬁt of radiotherapy may be less than the side eﬀects in some patients. Clinicopathological features that can eﬀectively predict the beneﬁts of radiotherapy could be helpful for clinical decision making. This study found that the number of lymph node metastases may be a reference parameter to predict the beneﬁt of radiotherapy and avoid the side eﬀects of unnecessary radiation in some patients. Further study is needed to validate this result.
+Our study revealed that a positive number of lymph nodes was an important indicator for predicting a beneﬁt from PMRT in stage T1-2N1M0 breast cancer patients. PMRT should be
+
+recommended to patients with three lymph node metastases regularly. Whether it is recommended to patients with one or two node metastases should balance the potential beneﬁts and risks. The limitations of our study were that the SEER database did not provide details of the irradiated technique and scope, the absence of local regional recurrence data, and that the molecular subtype information only gotten from the year 2010 resulted in a small sample size and short follow-up time for subgroup analysis. We look forward to the results of the prospective SUPREMO trial, which randomly allocated breast cancer patients with highrisk node-negative disease and those with one to three positive nodes to receive PMRT or not (32). The results of this trial may eventually help determine which patients are most likely to beneﬁt from PMRT when modern systemic treatment and surgery are used.
+CONCLUSION
+The beneﬁt of PMRT in T1-2N1M0 patients was obviously diﬀerent, and the recommendation of PMRT for this population should be individualized. PMRT should be recommended to
+
+Frontiers in Oncology | www.frontiersin.org
+
+7
+
+February 2020 | Volume 9 | Article 1551
+
+Chen et al.
+
+Radiotherapy in T1-2N1M0 Breast Cancer Patients
+
+patients with three nodes positive, should be suggested cautiously in those with two nodes positive, and could be omitted in those with one node positive.
+DATA AVAILABILITY STATEMENT
+Publicly available datasets were analyzed in this study. These data can be found here: www.seer.cancer.gov.
+ETHICS STATEMENT
+The studies involving human participants were reviewed and approved by the ethical committee of Aﬃliated Hospital of North Sichuan Medical College (Number: 2018EA030). Written informed consent for participation was not required for this study in accordance with the national legislation and the institutional requirements.
+AUTHOR CONTRIBUTIONS
+LH and HY designed the study. MC, YH, and HY wrote the primary manuscript. FL, YH, and ZL extracted the data from the
+
+SEER database. YH, ZL, MC, and GY performed the statistical analysis. All authors read and approved the ﬁnal manuscript.
+FUNDING
+This study was supported by the Foundation of the Health and Planning Committee of Sichuan province (Nos. 17PJ599, 18PJ005), the Foundation of the Department of Science and Technology of Sichuan province (No. 19YYJC0384), and Scientiﬁc Research Project of Aﬃliated Hospital of North Sichuan Medical College (No. 2019ZD006).
+ACKNOWLEDGMENTS
+We would like to acknowledge the contribution of Yi Qian for the language polishing of this article.
+SUPPLEMENTARY MATERIAL
+The Supplementary Material for this article can be found online at: https://www.frontiersin.org/articles/10.3389/fonc. 2019.01551/full#supplementary-material
+
+REFERENCES
+1. Siegel RL, Miller KD, Jemal A. Cancer statistics, 2018. CA Cancer J Clin. (2018) 68:277–300. doi: 10.3322/caac.21442
+2. Harbeck N, Gnant M. Breast cancer. Lancet. (2017) 389:1134–50. doi: 10.1016/S0140-6736(16)31891-8
+3. Smith RA, Andrews KS, Brooks D, Fedewa SA, Manassaram-Baptiste D, Saslow D, et al. Cancer screening in the United States, 2017: a review of current American Cancer Society guidelines and current issues in cancer screening. CA Cancer J Clin. (2017) 67:100–21. doi: 10.3322/caac.21392
+4. Curigliano G, Burstein HJ, Winer EP, Gnant M, Dubsky P, Loibl S, et al. De-escalating and escalating treatments for early-stage breast cancer: the St. Gallen International Expert Consensus Conference on the Primary Therapy of Early Breast Cancer 2017. Ann Oncol. (2017) 28:1700–12. doi: 10.1093/annonc/mdx308
+5. Ribelles N, Perez-Villa L, Jerez JM, Pajares B, Vicioso L, Jimenez B, et al. Pattern of recurrence of early breast cancer is diﬀerent according to intrinsic subtype and proliferation index. Breast Cancer Res. (2013) 15:R98. doi: 10.1186/bcr3559
+6. Moo TA, McMillan R, Lee M, Stempel M, Patil S, Ho A, et al. Selection criteria for postmastectomy radiotherapy in t1-t2 tumors with 1 to 3 positive lymph nodes. Ann Surg Oncol. (2013) 20:3169–74. doi: 10.1245/s10434-013-3117-0
+7. Darby S, McGale P, Correa C, Taylor C, Arriagada R, Clarke M, et al. Eﬀect of radiotherapy after breast-conserving surgery on 10-year recurrence and 15-year breast cancer death: meta-analysis of individual patient data for 10,801 women in 17 randomised trials. Lancet. (2011) 378:1707–16. doi: 10.1016/S0140-6736(11)61629-2
+8. Overgaard M, Nielsen HM, Overgaard J. Is the beneﬁt of postmastectomy irradiation limited to patients with four or more positive nodes, as recommended in international consensus reports? A subgroup analysis of the DBCG 82 b&c randomized trials. Radiother Oncol. (2007) 82:247–53. doi: 10.1016/j.radonc.2007.02.001
+9. Tseng YD, Uno H, Hughes ME, Niland JC, Wong YN, Theriault R, et al. Biological subtype predicts risk of locoregional recurrence after mastectomy and impact of postmastectomy radiation in a large national database. Int J Radiat Oncol Biol Phys. (2015) 93:622–30. doi: 10.1016/j.ijrobp.2015.07.006
+10. Frasier LL, Holden S, Holden T, Schumacher JR, Leverson G, Anderson B, et al. Temporal trends in postmastectomy radiation
+
+therapy and breast reconstruction associated with changes in national comprehensive cancer network guidelines. JAMA Oncol. (2016) 2:95–101. doi: 10.1001/jamaoncol.2015.3717 11. McGale P, Taylor C, Correa C, Cutter D, Duane F, Ewertz M, et al. Eﬀect of radiotherapy after mastectomy and axillary surgery on 10-year recurrence and 20-year breast cancer mortality: meta-analysis of individual patient data for 8135 women in 22 randomised trials. Lancet. (2014) 383:2127–35. doi: 10.1016/S0140-6736(14)60488-8 12. Harris JR. Treatment of regional lymph nodes in breast cancer-not recommended for all patients with 1 to 3 positive auxiliary nodes. JAMA Oncol. (2016) 2:991–2. doi: 10.1001/jamaoncol.2016.0222 13. Poortmans PM, Coles C, Bernier J. Treatment of regional lymph nodes in breast cancer-evidence in favor of radiation therapy. JAMA Oncol. (2016) 2:989–90. doi: 10.1001/jamaoncol.2016.0183 14. Huo D, Hou N, Jaskowiak N, Winchester DJ, Winchester DP, Yao K. Use of postmastectomy radiotherapy and survival rates for breast cancer patients with T1-T2 and one to three positive lymph nodes. Ann Surg Oncol. (2015) 22:4295–304. doi: 10.1245/s10434-015-4528-x 15. Muhsen S, Moo TA, Patil S, Stempel M, Powell S, Morrow M, et al. Most breast cancer patients with T1-2 tumors and one to three positive lymph nodes do not need postmastectomy radiotherapy. Ann Surg Oncol. (2018) 25:1912–20. doi: 10.1245/s10434-018-6422-9 16. Tam MM, Wu SP, Perez C, Gerber NK. The eﬀect of post-mastectomy radiation in women with one to three positive nodes enrolled on the control arm of BCIRG-005 at ten year follow-up. Radiother Oncol. (2017) 123:10–4. doi: 10.1016/j.radonc.2017.03.001 17. McBride A, Allen P, Woodward W, Kim M, Kuerer HM, Drinka EK, et al. Locoregional recurrence risk for patients with T1,2 breast cancer with 13 positive lymph nodes treated with mastectomy and systemic treatment. Int J Radiat Oncol Biol Phys. (2014) 89:392–8. doi: 10.1016/j.ijrobp.2014. 02.013 18. Ragaz J, Olivotto IA, Spinelli JJ, Phillips N, Jackson SM, Wilson KS, et al. Locoregional radiation therapy in patients with high-risk breast cancer receiving adjuvant chemotherapy: 20-year results of the British Columbia randomized trial. J Natl Cancer Inst. (2005) 97:116–26. doi: 10.1093/jnci/djh297 19. Cardoso F, Kyriakides S, Ohno S, Penault-Llorca F, Poortmans P, Rubio IT, et al. Early breast cancer: ESMO Clinical Practice Guidelines for
+
+Frontiers in Oncology | www.frontiersin.org
+
+8
+
+February 2020 | Volume 9 | Article 1551
+
+Chen et al.
+
+Radiotherapy in T1-2N1M0 Breast Cancer Patients
+
+diagnosis, treatment and follow-up. Ann Oncol. (2019) 30:1194–220. doi: 10.1093/annonc/mdz189 20. Recht A, Comen EA, Fine RE, Fleming GF, Hardenbergh PH, Ho AY, et al. Postmastectomy radiotherapy: an American Society of Clinical Oncology, American society for radiation oncology, and society of surgical oncology focused guideline update. Ann Surg Oncol. (2017) 24:38–51. doi: 10.1245/s10434-016-5558-8 21. Whelan TJ, Julian J, Wright J, Jadad AR, Levine ML. Does locoregional radiation therapy improve survival in breast cancer? A meta-analysis. J Clin Oncol. (2000) 18:1220–9. doi: 10.1200/JCO.2000.18.6.1220 22. Early Breast Cancer Trialists’ Collaborative Group. Favourable and unfavourable eﬀects on long-term survival of radiotherapy for early breast cancer: an overview of the randomised trials. Lancet. (2000) 355:1757–70. doi: 10.1016/S0140-6736(00)02263-7 23. Truong PT, Olivotto IA, Kader HA, Panades M, Speers CH, Berthelet E. Selecting breast cancer patients with T1-T2 tumors and one to three positive axillary nodes at high postmastectomy locoregional recurrence risk for adjuvant radiotherapy. Int J Radiat Oncol Biol Phys. (2005) 61:1337–47. doi: 10.1016/j.ijrobp.2004.08.009 24. Giuliano AE, Ballman KV, McCall L, Beitsch PD, Brennan MB, Kelemen PR, et al. Eﬀect of axillary dissection vs no axillary dissection on 10-year overall survival among women with invasive breast cancer and sentinel node metastasis: the ACOSOG Z0011 (Alliance) randomized clinical trial. JAMA. (2017) 318:918–26. doi: 10.1001/jama.2017.11470 25. Donker M, van Tienhoven G, Straver M E, Meijnen P, van de Velde CJ, Mansel RE, et al. Radiotherapy or surgery of the axilla after a positive sentinel node in breast cancer (EORTC 10981-22023 AMAROS): a randomised, multicentre, open-label, phase 3 non-inferiority trial. Lancet Oncol. (2014) 15:1303–10. doi: 10.1016/S1470-2045(14)70460-7 26. Sharma R, Bedrosian I, Lucci A, Hwang RF, Rourke LL, Qiao W, et al. Presentday locoregional control in patients with t1 or t2 breast cancer with 0 and 1 to 3 positive lymph nodes after mastectomy without radiotherapy. Ann Surg Oncol. (2010) 17:2899–908. doi: 10.1245/s10434-010-1089-x 27. Savolt A, Peley G, Polgar C, Udvarhelyi N, Rubovszky G, Kovacs E, et al. Eight-year follow up result of the OTOASOR trial: the optimal treatment of the axilla - surgery or radiotherapy after positive sentinel lymph node biopsy
+
+in early-stage breast cancer: a randomized, single centre, phase III, noninferiority trial. Eur J Surg Oncol. (2017) 43:672–9. doi: 10.1016/j.ejso.2016. 12.011 28. Finkelstein SE, Timmerman R, McBride WH, Schaue D, Hoﬀe SE, Mantz CA, et al. The conﬂuence of stereotactic ablative radiotherapy and tumor immunology. Clin Dev Immunol. (2011) 2011:439752. doi: 10.1155/2011/439752 29. Muraro E, Furlan C, Avanzo M, Martorelli D, Comaro E, Rizzo A, et al. Local high-dose radiotherapy induces systemic immunomodulating eﬀects of potential therapeutic relevance in oligometastatic breast cancer. Front Immunol. (2017) 8:1476. doi: 10.3389/ﬁmmu.2017.01476 30. Taylor CW, Kirby AM. Cardiac side-eﬀects from breast cancer radiotherapy. Clin Oncol. (2015) 27:621–9. doi: 10.1016/j.clon.2015.06.007 31. Schafer R, Strnad V, Polgar C, Uter W, Hildebrandt G, Ott OJ, et al. Quality-of-life results for accelerated partial breast cancer irradiation with interstitial brachytherapy versus whole-breast irradiation in early breast cancer after breast-conserving surgery (GEC-ESTRO): 5-year results of a randomized, phase 3 trial. Lancet Oncol. (2018) 19:834–44. doi: 10.1016/S1470-2045(18)30195-5 32. Thomas JS, Hanby AM, Russell N, van Tienhoven G, Riddle K, Anderson N, et al. The BIG 2.04 MRC/EORTC SUPREMO Trial: pathology quality assurance of a large phase 3 randomised international clinical trial of postmastectomy radiotherapy in intermediate-risk breast cancer. Breast Cancer Res Treat. (2017) 163:63–9. doi: 10.1007/s10549-017-4145-4
+Conﬂict of Interest: The authors declare that the research was conducted in the absence of any commercial or ﬁnancial relationships that could be construed as a potential conﬂict of interest.
+Copyright © 2020 Chen, Huang, Leng, Yang, Li, Yang and Hou. This is an open-access article distributed under the terms of the Creative Commons Attribution License (CC BY). The use, distribution or reproduction in other forums is permitted, provided the original author(s) and the copyright owner(s) are credited and that the original publication in this journal is cited, in accordance with accepted academic practice. No use, distribution or reproduction is permitted which does not comply with these terms.
+
+Frontiers in Oncology | www.frontiersin.org
+
+9
+
+February 2020 | Volume 9 | Article 1551
+
