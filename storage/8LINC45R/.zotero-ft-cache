@@ -1,0 +1,527 @@
+ORIGINAL RESEARCH
+Enhancing Prediction of Myocardial Recovery
+After Coronary Revascularization: Integrating
+Radiomics from Myocardial Contrast
+Echocardiography with Machine Learning
+Deyi Huang1, Xingan Yang2, Hongbiao Ruan3, Yushui Zhuo1, Kai Yuan4, Bowen Ruan1, Fang Li1
+1Department of Ultrasound, The People’s Hospital of Yuhuan, Yuhuan City, Zhejiang Province, People’s Republic of China; 2Department of Ultrasound, Taizhou Hospital of Zhejiang Province, Linhai City, Zhejiang Province, People’s Republic of China; 3Department of Cardiology, The People’s Hospital of Yuhuan, Yuhuan City, Zhejiang Province, People’s Republic of China; 4Department of Clinical Laboratory, The People’s Hospital of Yuhuan, Yuhuan City, Zhejiang Province, People’s Republic of China
+Correspondence: Fang Li, Department of Ultrasound, The People’s Hospital of Yuhuan, No. 18, Changle Road, Yuhuan City, Zhejiang Province, 317600, People’s Republic of China, Tel +8613967672898, Email 3260772796@qq.com
+Introduction: Chronic coronary artery disease (CAD) management often relies on myocardial contrast echocardiography (MCE), yet
+its effectiveness is limited by subjective interpretations and difficulty in distinguishing hibernating from necrotic myocardium. This
+study explores the integration of machine learning (ML) with radiomics to predict functional recovery in dyskinetic myocardial
+segments in CAD patients undergoing revascularization, aiming to overcome these limitations.
+Methods: This prospective study enrolled 55 chronic CAD patients, dividing into training (39 patients, 205 segments) and testing sets
+(16 patients, 68 segments). Dysfunctional myocardial segments were identified by initial wall motion scores (WMS) of ≥2 (hypokin
+esis or higher). Functional recovery was defined as a decrease of ≥1 grade in WMS during follow-up echocardiography. Radiomics
+features were extracted from dyssynergic segments in end-systolic phase MCE images across five cardiac cycles post- “flash” impulse
+and processed through a five-step feature selection. Four ML classifiers were trained and compared using these features and MCE
+parameters, to identify the optimal model for myocardial recovery prediction.
+Results: Functional improvement was noted in 139 out of 273 dyskinetic segments (50.9%) following revascularization. Receiver
+Operating Characteristic (ROC) analysis determined that myocardial blood flow (MBF) was the most precise clinical predictor of
+recovery, with an area under the curve (AUC) of 0.770. Approximately 1.34 million radiomics features were extracted, with nine
+features identified as key predictors of myocardial recovery. The random forest (RF) model, integrating MBF values and radiomics
+features, demonstrated superior predictive accuracy over other ML classifiers. Validation of the RF model on the testing dataset
+demonstrated its effectiveness, evidenced by an AUC of 0.821, along with consistent calibration and clinical utility.
+Conclusion: The integration of ML with radiomics from MCE effectively predicts myocardial recovery in CAD. The RF model,
+combining radiomics and MBF values, presents a non-invasive, precise approach, significantly enhancing CAD management.
+Keywords: coronary artery disease, myocardial contrast echocardiography, radiomics, machine learning, myocardial recovery
+prediction, random forest
+Introduction
+In patients with chronic coronary artery disease (CAD), not all viable myocardium regains contractile function after
+revascularization. Myocardium that can partially or fully recover contractile function is termed hibernating myocardium
+(HM).1 The presence of HM is a key factor in functional recovery post-revascularization.2,3 Revascularization in
+myocardial segments without recovery potential offers neither therapeutic benefit nor clinical improvement, and it
+increases the risks of procedural complications and healthcare costs.4,5 Therefore, detailed assessment of myocardial
+viability is essential to target potentially recoverable myocardium and enhance the efficacy of CAD interventions.
+International Journal of General Medicine 2024:17 2539–2555 2539
+© 2024 Huang et al. This work is published and licensed by Dove Medical Press Limited. The full terms of this license are available at https://www.dovepress.com/terms. php and incorporate the Creative Commons Attribution – Non Commercial (unported, v3.0) License (http://creativecommons.org/licenses/by-nc/3.0/). By accessing the work you hereby accept the Terms. Non-commercial uses of the work are permitted without any further permission from Dove Medical Press Limited, provided the work is properly attributed. For permission for commercial use of this work, please see paragraphs 4.2 and 5 of our Terms (https://www.dovepress.com/terms.php).
+International Journal of General Medicine Dovepress
+open access to scientific and medical research
+Open Access Full Text Article
+Received: 20 February 2024 Accepted: 23 May 2024 Published: 31 May 2024
+
+
+It is known that myocardial perfusion imaging is crucial for identifying HM. Positron emission tomography (PET) is
+considered the gold standard for assessing myocardial viability, as it reflects regional myocardial blood flow.6 However,
+the high cost of PET scanners and the use of radioactive tracers, which pose potential risks to patients and require
+specialized facilities and stringent protocols, limit its widespread application in routine clinical practice. In contrast,
+myocardial contrast echocardiography (MCE) is increasingly recognized for its ability to identify HM. Recommended by
+the European Society of Cardiology for initial screening in patients suspected of myocardial ischemia,7 MCE utilizes safe
+and non-toxic microbubble contrast agents to provide insights into myocardial perfusion. By highlighting areas with
+preserved microcirculation indicative of HM, MCE effectively visualizes myocardial perfusion and viability.
+Additionally, MCE equipment does not require complex infrastructure, making it accessible in most hospital settings.
+These attributes significantly lower the barriers to its clinical application, enabling broader and more routine use in
+developing revascularization strategies for chronic CAD.
+Recent studies have highlighted the value of MCE in predicting myocardial recovery following the restoration of
+normal blood flow in CAD patients.8–10 Despite these significant contributions, MCE is confronted with inherent
+limitations. Its reliance on visual interpretation can introduce subjectivity, potentially resulting in variable outcomes
+across different operators. This reliance on manual analysis renders the process time-intensive and susceptible to human
+error, both in data acquisition and interpretation phases. Moreover, there is evidence suggesting that the visual
+interpretation of MCE might overestimate the severity of myocardial ischemia, potentially leading to inaccurate
+prognostic evaluations.11,12 This risk of overestimation highlights the importance for more objective and reliable methods
+in evaluating myocardial viability post-revascularization to ensure appropriate therapeutic interventions.
+Radiomics, a novel approach in medical imaging endorsed by the European Society of Radiology,13 addresses the
+limitations of traditional MCE. By extracting quantitative features from digital images, radiomics transitions from
+subjective visual interpretations to objective, data-driven analysis.14 This technique has potential applications in various
+medical imaging areas, offering more detailed and nuanced information extraction which could, theoretically, enhance
+diagnostic accuracy and prognostic assessments.15 However, the challenge with radiomics lies in its generation of large,
+complex datasets. Integration of artificial intelligence (AI), particularly machine learning (ML), is essential to manage
+and interpret these datasets.16 ML algorithms can identify clinically relevant parameters, potentially improving analyses
+in medical imaging contexts.17 Recent studies have shown the effectiveness of integrating ML in medical imaging,
+indicating a potential for improved diagnostic performance and outcome prediction.18,19 While the synergistic potential
+of radiomics and ML is promising,20 research into their combined application in specific areas like MCE for CAD
+patients is still developing. These technologies hold the possibility for advancements in chronic CAD management, but
+further exploration is needed to fully establish their clinical effectiveness and relevance in improving the accuracy of
+myocardial recovery predictions after revascularization.
+Therefore, the objective of this study is to address the existing gaps by developing and validating an ML model based
+on radiomics from MCE, enhancing myocardial recovery prediction in chronic CAD patients after revascularization. This
+study aims to refine and personalize CAD treatment strategies by leveraging the objective, data-driven insights provided
+by radiomics combined with the predictive power of ML.
+Materials and Methods
+This prospective study was ethically approved by the Ethics Committee at The People’s Hospital of Yuhuan (Approval
+No: 2020–073), and conducted in accordance with the Declaration of Helsinki. Informed consent was obtained in writing
+from all participants. Strict confidentiality measures were applied to anonymize patient-specific data, ensuring privacy
+throughout the research process.
+Sample Size
+The minimum sample size required for this study, which aims to predict the probability of successful myocardial
+recovery in chronic CAD patients after revascularization, was calculated using the Power Analysis and Sample Size
+(PASS) software. Assuming a null hypothesis proportion (P0) of 0.4, based on previous literature reports,8,9 and an
+alternative hypothesis proportion (P1) of 0.5, based on clinical observations, a two-sided test with 80% power and a 5%
+https://doi.org/10.2147/IJGM.S465023 DovePress
+International Journal of General Medicine 2024:17
+2540
+Huang et al Dovepress
+Powered by TCPDF (www.tcpdf.org)
+
+
+significance level was employed. The software estimated that a minimum of 191 dyssynergic myocardial segments would
+be necessary to detect significant effects.
+Study Population
+Between July 2020 and July 2022, 77 patients with chronic CAD and resting left ventricular dysfunction were recruited
+for this study. These participants were all scheduled for coronary revascularization procedures. The inclusion criteria for
+this study were as follows: 1) significant coronary artery stenosis, defined as greater than 70% diameter stenosis, in at
+least one major coronary artery, as verified through coronary angiography; 2) left ventricular ejection fraction (LVEF) <
+45%; 3) presence of wall motion abnormalities in at least two contiguous segments, identified by resting echocardio
+graphy; and 4) maintenance of sinus rhythm. The study excluded individuals with: 1) prior percutaneous coronary
+intervention (PCI) or coronary artery bypass grafting; 2) unstable angina; 3) recent myocardial infarction (< 6 weeks); 4)
+atrial fibrillation; 5) severe valvular disease; 6) comorbid cardiomyopathy; 7) loss to follow-up; and 8) segments poorly
+visualized by echocardiography.
+In the initial cohort, 55 patients were successfully enrolled and subsequently completed the follow-up phase, with
+a total of 273 dyssynergic myocardial segments identified from 880 segments. Revascularization through PCI was
+determined independently of the MCE results, adhering to established clinical guidelines.21 For the development and
+validation of the ML model, the study population was randomly divided into training and testing cohorts at a 7:3 ratio,
+while simultaneously ensuring a comparable proportion of dyssynergic segments between the two cohorts. This resulted
+in 39 patients in the training set with 205 dyskinetic segments (representing 32.9%) and 16 patients in the testing set with
+68 dyskinetic segments (representing 26.6%), enabling robust model training and unbiased performance evaluation.
+Echocardiographic Protocol
+Echocardiographic evaluation was conducted using a GE Vivid E95 ultrasound system with an M3S probe (GE
+Healthcare, Sunnyvale, CA, USA). Two skilled operators, unaware of the patients’ clinical information, performed
+both two-dimensional echocardiography and MCE within one week before the revascularization. A follow-up echocar
+diography to assess myocardial recovery was scheduled 6–9 months post-revascularization. Measurements of LVEF were
+carried out using the Simpson’s biplane method. Segmental wall motion was evaluated in a standard 16-segment model,
+supplemented by speckle-tracking longitudinal strain bull’s eye plot for reference. Each segment was graded on a scale as
+follows: 1 for normal motion, 2 for hypokinesis, 3 for akinesis, and 4 for dyskinesis. Dysfunctional myocardial segments
+were identified based on initial wall motion scores (WMS) of 2 (hypokinesis) or higher. Functional recovery of these
+segments was determined by a decrease of ≥1 grade in the WMS, as observed in follow-up echocardiography compared
+to baseline measurements.
+MCE Procedure
+MCE was executed in conjunction with routine echocardiography before revascularization. The procedure involved
+imaging in apical 4-chamber, 2-chamber, and long-axis views, employing a continuous low power setting with
+a mechanical index of 0.1. A contrast agent, prepared by mixing 59 mg of SonoVue (Bracco, Imaging B.V.,
+Switzerland) with 5 mL saline, was administered intravenously at 2.5 mL with a flow rate of 1 mL/min. Upon achieving
+optimal opacification of the ventricular cavity and myocardium, the ultrasound system was switched to the “flash”
+impulse (transient high mechanical index impulses) to disrupt the microbubbles within the myocardium. This was
+followed by a return to low-power scanning to observe microbubble replenishment. Images captured 15 beats after the
+“flash” impulse from each apical view were recorded and later converted into cine-loop format for replenishment curve
+analysis. Furthermore, images acquired at end-systolic triggering, 5 beats after the “flash” impulse, were also recorded
+from these views for additional radiomics analysis.
+Replenishment Curve Fitting
+The offline analysis of MCE images was conducted using GE Q-analysis software. As illustrated in Figure 1, the method
+involved the placement of sampling points within the dyssynergic segments of the myocardium to track the region of
+International Journal of General Medicine 2024:17 https://doi.org/10.2147/IJGM.S465023
+DovePress 2541
+Dovepress Huang et al
+Powered by TCPDF (www.tcpdf.org)
+
+
+interest (ROI) dynamically. The replenishment curve was then evaluated based on a predefined perfusion model
+represented by the equation yðtÞ 1⁄4 A1⁄21?ekt� þ B. This process facilitated the computation of key parameters crucial
+for understanding myocardial perfusion dynamics: the “A” value, representing myocardial blood volume; the “k” value,
+indicating myocardial perfusion velocity; and the “B” value, denoting tissue intensity. Subsequently, the product of the
+“A” and “k” values was calculated to estimate local myocardial blood flow (MBF).
+Image Segmentation Process
+For the segmentation process, 3D Slicer software (version 5.0.2) was utilized to delineate the contours of dyssynergic
+myocardial segments as ROI, adhering to the standard 16-segment model for reference. This task was executed by two
+experienced sonographers who outlined each myocardial segment to ensure consistency and reliability. The segmentation
+involved tracing the dyssynergic segments across five consecutive cardiac cycles at the end-systolic phase of MCE
+images following the “flash” impulse. Labels from the first to the fifth cycle are illustrated in Figure 2. The software
+initially automated the identification of myocardial regions by detecting grayscale differences in pixels. Subsequent
+manual refinement was applied to these automated outlines to precisely define the boundaries of the dyssynergic
+segments. The finalized contours were saved in the nrrd (Nearly Raw Raster Data) file format, ensuring the accuracy
+and reproducibility of the data for further radiomics analysis.
+Radiomics Feature Extraction
+The extraction of radiomics features was conducted using the Pyradiomics open-source toolkit, transforming segmented
+medical images into a high-dimensional, structured format for detailed myocardial perfusion analysis. All images were
+standardized through resampling to a uniform resolution of 1×1 mm using nearest-neighbor interpolation. From each
+ROI, 1314 distinct features were derived, encompassing 12 shape, 18 first-order statistical, and 75 textural features from
+the original images. To further enhance the analysis, we applied six preprocessing filters to the first-order and textural
+features, generating an additional 1209 filtered features. These filters were selected to capture various aspects of
+myocardial texture and structure. The Exponential Filter was used to enhance higher intensity values, highlighting subtle
+variations in high-intensity myocardial regions. The Gradient Filter emphasized edges and boundaries, aiding in the
+Figure 1 Analysis of MCE replenishment curve. Sampling points in myocardial segments are shown on the left, with the derived replenishment curves on the right. Parameters “A”, “k”, and “B” from the perfusion model yðtÞ 1⁄4 A1⁄21?ekt� þ B are used to assess myocardial perfusion.
+https://doi.org/10.2147/IJGM.S465023 DovePress
+International Journal of General Medicine 2024:17
+2542
+Huang et al Dovepress
+Powered by TCPDF (www.tcpdf.org)
+
+
+identification of textural differences. The Logarithm Filter reduced the dynamic range to accentuate subtle variations in
+lower-intensity areas. The Square Filter intensified the effect of higher pixel values, while the Square-root Filter
+enhanced lower intensity values to differentiate areas of minimal perfusion. Finally, the Wavelet Filter decomposed
+the image to capture both spatial and frequency information, providing a comprehensive view of myocardial texture and
+structure. All extracted features were collated and organized in an Excel spreadsheet, preparing for the next stage of
+feature selection and analytical processing.
+Data Preprocessing
+Prior to the selection and analysis, all data underwent a comprehensive preprocessing phase to ensure analytical fairness.
+This phase included the normalization of both the radiomics features and the clinical data. Continuous variables
+underwent Z-score normalization, standardized to a mean of zero and standard deviation of one. Categorical variables
+were converted to binary format, marked as “0” or “1”. For the predictive model, clinical outcomes were determined by
+functional recovery in dysfunctional myocardial segments. Segments showing ≥1 grade decrease in WMS were classified
+as “0” (recovered), while others were classified as “1” (not recovered).
+Radiomics Feature Selection
+The selection of radiomics features predictive of myocardial following revascularization was conducted through
+a structured multi-step approach. Initially, the interobserver reliability was assessed using the intraclass correlation
+coefficient (ICC), with a threshold of 0.80 indicating acceptable agreement. To identify potential predictors of myocardial
+recovery, we utilized the Wilcoxon rank sum (WRS) test, a non-parametric method suitable for comparing the distribu
+tions of radiomics features between myocardial segments that showed recovery and those that did not after revascular
+ization. Features with false discovery rate-adjusted P-values below 0.1 were identified as potential predictors of recovery.
+Further refinement was achieved using the minimum redundancy maximum relevance (mRMR) algorithm, which
+selected the top 10 features per cardiac cycle based on their relevance and minimal redundancy, totaling 50 features
+across five cycles. The final selection stage employed least absolute shrinkage and selection operator (LASSO) logistic
+regression to isolate the most predictive features for myocardial recovery post-revascularization. Figure 3 presents the
+Figure 2 Sequential MCE images from end-systolic phases following the “flash” impulse across five cardiac cycles. (A–E) represent the first through fifth cycles, respectively. The green segment indicates the mid-anterior dyssynergic myocardial segment, and the yellow segment denotes the apical anterior dyssynergic myocardial segment.
+International Journal of General Medicine 2024:17 https://doi.org/10.2147/IJGM.S465023
+DovePress 2543
+Dovepress Huang et al
+Powered by TCPDF (www.tcpdf.org)
+
+
+entire workflow of the radiomics feature analysis, illustrating the sequential steps taken to develop and refine our
+predictive model.
+ML Models Derivation and Testing
+To predict the likelihood of recovery failure, four established ML classifiers were deployed: logistic regression (Logit),
+random forests (RF), support vector machine (SVM), and extreme gradient boosting (XGBoost). Models were developed
+using MCE parameters, radiomics features, and a combination of both. The training phase for each data subset involved
+10-fold cross-validation and a grid search algorithm to fine-tune hyperparameters and prevent overfitting. It allowed for
+the division of the training data into interchangeable sets for training and validation, enabling reliable model evaluation
+and ensuring high precision and generalizability. The entire process of algorithm selection, cross-validation, and
+hyperparameter optimization was conducted using the Scikit-Learn library in Python. For the RF classifier,
+a configuration of 500 trees was established, with node splitting based on the square root of the total number of features.
+The SVM employed a radial basis function (RBF) kernel, suitable for non-linear data, with the cost parameter and
+gamma for the RBF kernel optimized via grid search in the ranges [0.1, 1, 10] and [0.001, 0.01, 0.1], respectively.
+XGBoost parameters were set to a learning rate of 0.02, a maximum tree depth of 4, and an ensemble of 600 trees,
+determined through grid search to balance complexity and accuracy.
+After derivation, each model underwent comprehensive internal validation, assessing discrimination, calibration, and
+clinical utility. The relative standard deviation (RSD) of prediction accuracy from 10-fold cross-validation was recorded
+to further evaluate model consistency. The optimal model was selected based on superior discrimination, satisfactory
+stability, credibility, and clinical applicability. Model performance was further quantified through accuracy, precision,
+recall, kappa, and F1 scores derived from the confusion matrix. Moreover, an extensive evaluation of the optimal model
+was conducted using a designated testing cohort to further assess its predictive performance.
+Figure 3 Workflow for radiomics analysis: segmentation of images, extraction and selection of features. This process includes delineation of dyssynergic myocardial segments in accordance with the 16-segment model across five consecutive cardiac cycles at the end-systolic phase of MCE images, following the “flash” impulse. Three classes of radiomics features (shape, first-order, texture) were extracted per ROI, augmented with additional first-order and textural features through six filters. A four-step selection protocol (inter-observer consistency, WRS test, mRMR algorithm, and LASSO regression) was employed to identify primary indicators of myocardial recovery.
+https://doi.org/10.2147/IJGM.S465023 DovePress
+International Journal of General Medicine 2024:17
+2544
+Huang et al Dovepress
+Powered by TCPDF (www.tcpdf.org)
+
+
+Statistical Analysis
+Statistical assessments were conducted employing methodologies congruent with the data typology. Continuous variables
+following a normal distribution were evaluated using independent samples t-tests, and chi-square tests were utilized for
+the analysis of categorical variables. Skewed continuous variables and ordinal data were examined using the WRS test.
+Model discrimination was quantified by the area under the receiver operating characteristic (ROC) curve, commonly
+known as the AUC. Calibration of each model was assessed through calibration curve analysis alongside the Brier score.
+Decision curve analysis (DCA) was employed to determine the clinical utility by quantifying net benefits across various
+threshold probabilities. Execution of these statistical processes was carried out using IBM SPSS Statistics (v 22.0, SPSS
+Inc.) and Python (v 3.7.1).
+Result
+Patient Cohort Characteristics
+Figure 4 presents the criteria and process for patient selection, along with the derivation and validation of the predictive
+model in this study, which included 55 patients with chronic CAD. Of these, 44 were males with an average age of 63.27
+± 7.61 years. All participants successfully completed the prescribed echocardiographic protocol and underwent success
+ful revascularization without any adverse events. Post-revascularization follow-up indicated wall motion improvements
+in 139 segments (50.9%, 139/273). The observed rates of wall motion improvement between the training and testing sets
+were 50.7% and 51.5%, respectively, with no statistically significant difference (P-value = 0.916). Table 1 further
+illustrates that the baseline characteristics of the patients and myocardial segments were balanced across both datasets,
+showing no significant differences (all P-values > 0.05).
+MCE and Myocardial Recovery Prediction
+MCE was employed to predict myocardial recovery in 205 dyskinetic segments from a training set, where 104 segments
+showed recovery and 101 exhibited no improvement in wall motion. The efficacy of MCE parameters, namely A, k, and
+MBF, in predicting functional recovery was assessed through ROC curve analysis. Figure 5 demonstrates that MBF
+achieved the most notable AUC at 0.770 (95% CI: 0.706 to 0.826), indicating its superior performance for myocardial
+recovery. When a preoperative MBF threshold of ≤1 dB2/s was applied, the sensitivity for predicting the recovery six
+months following revascularization was determined to be 70.30%, with a specificity of 74.04%. Additionally, the positive
+predictive value and negative predictive value of MBF was 72.45% and 71.97%, respectively. MBF was then normalized
+using the Z-score method and incorporated into ML models to enhance the prognostication of functional recovery in
+dyskinetic myocardial segments.
+Radiomics Analysis
+In the radiomics analysis of this study, 6570 features were extracted from dyssynergic myocardial segments across five
+successive cardiac cycles at the end-systolic phase post-“flash” using MCE images, contributing 1314 distinct features
+per cycle. Following normalization, the inter-observer reliability assessment revealed that, on average, 65%, 68%, 73%,
+75%, and 70% of features from the first to fifth cardiac cycles, respectively, achieved an ICC of 0.80 or higher. The WRS
+test further refined this dataset, yielding 122, 107, 126, 120, and 123 features for the respective cycles, correlated with
+segmental function recovery. Further refinement through the mRMR algorithm isolated the top 10 features from each
+cycle, based on relevance and minimal redundancy, leading to a final set of 50 features per segment. The concluding
+feature selection stage, utilizing LASSO logistic regression, identified nine radiomics features significantly correlated
+with segmental function recovery, comprising four from the second cardiac cycle, three from the third, and two from the
+fourth. The LASSO selection process is depicted in Figure 6. Detailed descriptions and weights of the selected radiomics
+features are provided in Supplemental Table S1. Figure 7 presents a heatmap of the nine identified features, demonstrat
+ing minimal inter-feature correlation. The highest correlation coefficient among these features does not exceed 0.3,
+suggesting low collinearity and emphasizing the unique contribution of each feature to the prediction of functional
+recovery in myocardial segments.
+International Journal of General Medicine 2024:17 https://doi.org/10.2147/IJGM.S465023
+DovePress 2545
+Dovepress Huang et al
+Powered by TCPDF (www.tcpdf.org)
+
+
+ML Model Derivation and Evaluation
+An extensive evaluation of ML models was conducted to predict the likelihood of recovery failure in chronic CAD
+patients. The assessment encompassed four ML classifiers: Logit, SVM, RF, and XGBoost. These classifiers were applied
+Figure 4 Flowchart illustrating patient selection and cohort allocation for the development and testing of ML models aimed at myocardial recovery prediction.
+https://doi.org/10.2147/IJGM.S465023 DovePress
+International Journal of General Medicine 2024:17
+2546
+Huang et al Dovepress
+Powered by TCPDF (www.tcpdf.org)
+
+
+to three distinct data sets: normalized MBF values, nine selected radiomic features, and a combined dataset integrating
+both elements.
+Table 2 compares the efficacy of each model, while Figure 8A–I depict the performance of models utilizing MBF
+data, radiomics features, and the combined dataset, respectively. For models trained on MBF data, Logit and SVM
+exhibited superior performance in discrimination (AUC: 0.780–0.782) and excelled across various confusion matrix
+indicators. However, according to the DCA analysis, their utility was restricted to a threshold probability range of 30%
+70%. In contrast, the RF model, trained specifically on radiomics features, exhibited the highest discriminative capability
+(AUC: 0.858), outperforming MBF-based models in terms of discrimination, accuracy, precision, kappa, BSD, and F1
+score. Notably, its DCA curve demonstrated a consistent net benefit across the entire 0–100% threshold probability range.
+Further investigation of models utilizing the combined dataset highlighted the enhanced discriminative ability of the RF
+classifier (AUC: 0.901) and improved accuracy and kappa values, although with a minor reduction in calibration.
+Remarkably, this model achieved a precision of 1.000, significantly reinforcing confidence in future decision-making
+for CAD management based on predictive outcomes. The DCA curve for the combined dataset model also substantiated
+its comprehensive net benefit across the entire 0–100% threshold probability range. In light of these findings, the RF
+classifier, employing a combination of MBF values and radiomics features, is identified as the optimal model for
+predicting segmental function recovery in CAD patients.
+Table 1 Comparative Analysis of Training and Testing Sets
+Item Training Set (n=39) Testing Set (n=16) P value
+Patient characteristics
+Age, years 64.33 ± 7.58 60.69 ± 7.30 0.107a
+Gender - Male, n(%) 30 (76.9%) 14 (87.5%) 0.373b
+History of myocardial infarction, n (%) 19 (48.7%) 5 (31.3%) 0.235b
+CAD Profile Single-vessel, n (%) 24 (61.5%) 10 (62.5%) 0.746c
+Two-vessel, n (%) 11 (28.2%) 6 (37.5%)
+Three-vessel, n (%) 4 (10.2%) 0 (0.0%)
+Diameter stenosis, % 81.85 ± 6.97 83.19 ± 6.82 0.517a
+LVEF, % 48.56 ± 6.30 50.50 ± 5.70 0.293a
+Myocardial segment analysis
+Total segments, n 624 256
+Dyskinetic segments, n (%) 205 (32.9%) 68 (26.6%) 0.067b
+Baseline WMS 2, n (%) 123 (60.0%) 38 (55.9%) 0.729c
+3, n (%) 66 (32.2%) 27 (39.7%)
+4, n (%) 16 (7.8%) 3 (4.4%)
+MCE parameters A, dB 4.04 ± 0.98 3.84 ± 1.00 0.150a
+k, dB/s 0.27 (0.20, 0.34) 0.27 (0.21, 0.34) 0.729c
+MBF, dB2/s 1.02 (0.71, 1.47) 0.98 (0.73, 1.20) 0.670c
+Wall motion improvement, n (%) 104 (50.7%) 35 (51.5%) 0.916b
+Notes: aFor independent sample t-test, bFor chi-square test, and cFor WRS test.
+International Journal of General Medicine 2024:17 https://doi.org/10.2147/IJGM.S465023
+DovePress 2547
+Dovepress Huang et al
+Powered by TCPDF (www.tcpdf.org)
+
+
+Figure 5 ROC curve analysis comparing the predictive values of A, k, and MBF (A*k) for functional recovery in dyskinetic myocardial segments. MBF demonstrates the highest AUC, indicating its superior prognostic value over A and k.
+Figure 6 Illustration of feature selection and weights via LASSO logistic regression. Part (A) displays the distribution of LASSO coefficients, highlighting the process of identifying the most predictive features for myocardial recovery. Part (B) presents a bar chart detailing the names and corresponding weights of these nine selected features, visually representing their relative importance within the model. In the wavelet-transformed images, the low and high-frequency coefficient blocks are denoted as “L” and “H”, respectively.
+https://doi.org/10.2147/IJGM.S465023 DovePress
+International Journal of General Medicine 2024:17
+2548
+Huang et al Dovepress
+Powered by TCPDF (www.tcpdf.org)
+
+
+Validation of the Optimal Model with the Testing Set
+The efficacy of the RF model in predicting myocardial recovery was validated using the testing dataset. This model analyzed
+MBF and radiomics data to estimate the likelihood of functional non-improvement in dyskinetic segments. These predictions
+were compared with actual outcomes of wall motion improvement, employing ROC, calibration, and DCA curves, as
+depicted in Figure 9. Despite a minor decrease in performance compared to the training dataset, the RF model retained
+significant discriminative power, evidenced by an AUC of 0.821. The calibration curve indicated high concordance between
+predicted probabilities and observed events, especially when predictions exceeded a 30% probability threshold. DCA further
+validated the model’s clinical utility, showing notable net benefits for thresholds above 30%. These findings established the
+RF model as a valuable tool for myocardial recovery prediction after revascularization.
+Discussion
+In this preliminary study, an integration of ML techniques with radiomics derived from MCE images is introduced for
+predicting functional recovery in myocardial segments after revascularization. This innovative method stands out by
+extracting and analyzing radiomics features from dyssynergic segments, captured across five successive cardiac cycles at
+the end-systolic phase subsequent to the “flash” impulse in MCE. Employing ML algorithms, particularly the RF
+classifier, enables effective interpretation of these intricate and possibly non-linear features. The study identifies nine
+critical radiomics features, in conjunction with MBF values from MCE, as crucial predictors. The RF model, integrating
+these elements, demonstrates superior predictive capability compared to traditional MCE replenishment curve analysis.
+This refined approach presents a non-invasive, accurate method for preoperative evaluation of viable myocardium,
+offering significant potential to enhance clinical decision-making and overall management of chronic CAD.
+Figure 7 Heatmap of selected radiomics features. This heatmap visualizes the correlations among the nine predictive radiomics features for myocardial recovery, with correlation coefficients ranging between −0.25 and 1.00. Red shades represent positive correlations, whereas blue shades indicate negative correlations. Notably, the maximum correlation observed among these features is 0.3, highlighting their low collinearity.
+International Journal of General Medicine 2024:17 https://doi.org/10.2147/IJGM.S465023
+DovePress 2549
+Dovepress Huang et al
+Powered by TCPDF (www.tcpdf.org)
+
+
+In myocardial recovery following revascularization, the balance between viable hypocontractile and fibrotic tissues in
+dysfunctional segments is crucial.22 MCE is recognized for its precision in evaluating regional functional recovery,23,24
+yet it relies heavily on visual interpretation. Even with advanced software for replenishment curve analysis in dyssy
+nergic segments, the critical placement of the ROI is still predominantly manual, introducing potential inaccuracies. In
+this study, an AUC of 0.770 for MBF in predicting segmental recovery suggested limitations in predictive reliability.
+Utilizing a diagnostic threshold of ≤1 dB2/s, the observed positive and negative predictive values indicated that
+approximately 30% of myocardial segments might exhibit outcomes contrary to MBF predictions. This discrepancy
+could be attributed to the distribution of viable myocardium across myocardial layers.25 Significant subendocardial
+fibrosis, despite normal MBF in the epicardial and mid-myocardial layers, might impede functional recovery after
+revascularization.26 Additionally, energy distribution within the acoustic field could lead to unexpected functional
+recovery in low MBF areas.8 Radiomics, however, addresses these visual limitations by extracting comprehensive data
+from dyssynergic segments in MCE images, thus eliminating issues related to ROI placement and subjective observation
+of myocardial perfusion.27,28 By leveraging comprehensive data analysis, radiomics offers a more objective and thorough
+approach, potential enhancing the accuracy of myocardial viability assessment and functional recovery prediction after
+revascularization.
+In this study, a high mechanical index pulse was applied to instantaneously obliterate myocardial microbubbles within
+the myocardium during MCE. The ensuing five cardiac cycles following this disruption, specifically in the systolic phase,
+were targeted for radiomics analysis. This specific selection is critical as it captures the replenishment phase of
+microbubbles into the myocardial tissue. Focusing on these initial cycles is essential for observing the myocardium in
+its reperfusion state, which assists in differentiating perfusion conditions across different myocardial segments.29
+Additionally, the emphasis on end-systolic images is crucial because during systole, the myocardium thickens and
+the minute intramyocardial vessels collapse, predominantly leaving the capillaries as the main contributors to the
+microbubble signal.30 Analyzing images from this specific phase effectively minimizes interference from intramyocardial
+vessel signals, thus allowing for a more accurate extraction of radiomics features indicative of myocardial perfusion and
+viability.
+Our investigation entailed an extensive extraction of features, resulting in 6570 radiomics features from each
+dyssynergic myocardial segment across a training set comprising 205 segments. This process required managing
+approximately 1.34 million data points, creating a highly dimensional multi-omics dataset. Such complexity extends
+Table 2 Performance Comparison of ML Classifiers for Segmental Function Recovery Prediction Using Different Training Data
+Training Data ML Classifier Accuracy Precision Recall Kappa F1 Score BSD Brier Score
+MBF values Logit 0.683 0.619 0.722 0.368 0.667 0.074 0.012
+SVM 0.683 0.619 0.722 0.368 0.667 0.105 0.011
+RF 0.634 0.609 0.778 0.235 0.683 0.096 0.071
+XGBoost 0.610 0.520 0.722 0.226 0.605 0.093 0.058
+Radiomics features Logit 0.707 0.688 0.611 0.399 0.647 0.098 0.004
+SVM 0.756 0.684 0.722 0.505 0.703 0.090 0.009
+RF 0.805 0.900 0.556 0.540 0.710 0.076 0.002
+XGBoost 0.732 0.846 0.500 0.424 0.643 0.095 0.017
+Combined MBF and radiomics features Logit 0.756 0.722 0.722 0.505 0.722 0.083 0.005
+SVM 0.780 0.737 0.778 0.557 0.757 0.096 0.006
+RF 0.878 1.000 0.611 0.751 0.714 0.064 0.007
+XGBoost 0.756 0.846 0.611 0.493 0.710 0.094 0.008
+https://doi.org/10.2147/IJGM.S465023 DovePress
+International Journal of General Medicine 2024:17
+2550
+Huang et al Dovepress
+Powered by TCPDF (www.tcpdf.org)
+
+
+beyond the analytical scope of traditional linear models like Logit, which typically struggle with high-dimensional and
+intricate data interactions. Thus, ML techniques were employed, offering a methodologically superior approach to
+manage this complexity.31,32 Through detailed feature selection, our analysis streamlined these features into nine key
+radiomics attributes, significantly correlated with myocardial recovery. Integrated with MBF values, these features
+formed the basis of our predictive models. Among the evaluated ML models, the RF model was identified as the most
+effective, demonstrating high accuracy even in the testing dataset. The effectiveness of the RF model stems from its
+capability to efficiently manage large datasets and its robustness against overfitting, adeptly handling non-linearities and
+interactions among features, thus making it highly suitable for complex datasets.33
+Notably, the critical radiomics features for predicting myocardial recovery were predominantly sourced from
+the second to fourth cardiac cycles, which more distinctly reveal perfusion differences in the myocardium compared
+to the first and fifth cycles. These features, which include two first-order and seven textural types, intricately quantify
+intensity uniformity, variability, and outliers in myocardial tissue. Such nuanced characteristics are challenging to discern
+Figure 8 Evaluative comparisons of ML models for predicting segmental function recovery after revascularization. (A–I) correspond to model performances using MCE values, radiomic features, and a combined dataset, respectively. The analyses, encompassing ROC, calibration, and DCA curves, indicate a notable predictive accuracy of models using the combined dataset. Specifically, the RF classifier demonstrates superior performance with its robust AUC values and consistent calibration and DCA metrics, establishing it as the most effective model for function recovery prediction.
+International Journal of General Medicine 2024:17 https://doi.org/10.2147/IJGM.S465023
+DovePress 2551
+Dovepress Huang et al
+Powered by TCPDF (www.tcpdf.org)
+
+
+through conventional visual inspection, necessitating advanced computational techniques for their extraction.
+Sophisticated preprocessing methods, including multiple filters, were crucial in identifying these features and their
+association with myocardial recovery.
+To our knowledge, this study is the first to explore myocardial perfusion imaging parameters from MCE using
+a radiomics-based ML approach to enhance the prediction accuracy of myocardial recovery after coronary revascular
+ization. The ML-based model developed in this study surpassed previous studies that utilized traditional myocardial
+perfusion imaging methods such as single-photon emission computed tomography (SPECT), speckle tracking echocar
+diography, and MCE, which reported AUCs ranging from 0.7 to 0.8 for myocardial function recovery prediction.8,11,34,35
+This demonstrates the substantial potential of the MCE radiomics-based ML model in identifying visually subtle yet
+highly predictive image features. Although a few reports exist on radiomics-based ML approaches in myocardial function
+prediction,19 including the findings of Arian et al36 which showed that MRI radiomics features combined with ML
+Figure 9 Assessment of the RF model for predicting myocardial recovery in the test set. (A) depicts the ROC curve, demonstrating the model’s substantial discriminative ability with an AUC of 0.821. (B) shows the calibration curve, reflecting the concordance between the predicted probabilities and observed outcomes when predicted probabilities above a 30% threshold. (C) presents the DCA curve, illustrating the notable net benefits at similar probability thresholds.
+https://doi.org/10.2147/IJGM.S465023 DovePress
+International Journal of General Medicine 2024:17
+2552
+Huang et al Dovepress
+Powered by TCPDF (www.tcpdf.org)
+
+
+algorithms provided prognostic information regarding myocardial function in patients after coronary artery bypass
+grafting with an AUC similar to our report at 0.78, this study represents the first application of a radiomics-based ML
+approach in MCE. Furthermore, the integration of MBF into the model further enhanced predictive accuracy. This
+highlights the significance of merging radiomics features with clinical parameters, affirming that while radiomics is
+promising in predictive analysis, the inclusion of clinical data is essential for more comprehensive and accurate
+predictions.
+In this initial exploration of combining radiomics and ML in MCE for myocardial recovery prediction after
+revascularization, the results are indeed promising but not without limitations. Constrained by its single-center design
+and a limited cohort size, the study’s applicability across broader populations is uncertain. Moreover, the absence of post
+revascularization coronary angiography to exclude restenosis might compromise the accuracy of our findings.
+Inconsistencies in MCE protocols across various institutions could also impact the reproducibility and efficacy of the
+proposed radiomics-based ML models. Additionally, the follow-up period, limited to 6–9 months, may not be sufficient
+to capture delayed myocardial recovery, particularly as some HM may take over a year to recover.37 Lastly, while the
+proposed ML model demonstrates impressive performance within this study, its robustness needs external validation in
+diverse clinical settings. To overcome these limitations, future research should be directed towards multi-center studies
+with larger sample sizes and extended follow-up durations. Such studies would help validate and refine these models,
+deepening our understanding of myocardial recovery mechanisms and improving therapeutic strategies for chronic CAD.
+In summary, this study has effectively demonstrated the efficacy of the RF model, which integrates radiomics features
+from MCE and MBF values, for predicting the functional recovery of dyskinetic myocardial segments in chronic CAD
+patients undergoing revascularization. The incorporation of a radiomics-based ML approach signifies a significant
+advancement in precision medicine, offering a more nuanced and data-driven method for prognostic evaluation. This
+enhanced accuracy and predictive capability of our RF model facilitate a more customized approach in CAD manage
+ment, potentially improving individualized therapeutic strategies.
+Data Sharing Statement
+All data generated during this study are included in this article. Further enquiries can be directed to the corresponding
+author.
+Ethical Approval
+This study was approved by the Ethics Committees at The People’s Hospital of Yuhuan (Approval No: 2020-073).
+Informed Consent
+Informed consent was obtained in writing from all participants.
+Author Contributions
+All authors made a significant contribution to the work reported, whether that is in the conception, study design,
+execution, acquisition of data, analysis and interpretation, or in all these areas; took part in drafting, revising or critically
+reviewing the article; gave final approval of the version to be published; have agreed on the journal to which the article
+has been submitted; and agree to be accountable for all aspects of the work.
+Funding
+Taizhou Science and Technology Plan Project (20ywb159).
+Disclosure
+The authors have no conflicts of interest to declare in this work.
+International Journal of General Medicine 2024:17 https://doi.org/10.2147/IJGM.S465023
+DovePress 2553
+Dovepress Huang et al
+Powered by TCPDF (www.tcpdf.org)
+
+
+References
+1. McDiarmid AK, Pellicori P, Cleland JG, Plein S. Taxonomy of segmental myocardial systolic dysfunction. Eur Heart J. 2016;38(13):942–954. doi:10.1093/eurheartj/ehw140 2. Shah BN, Khattar RS, Senior R. The hibernating myocardium: current concepts, diagnostic dilemmas, and clinical challenges in the post-STICH era. Eur Heart J. 2013;34(18):1323–1336. doi:10.1093/eurheartj/eht018 3. Heusch G. Myocardial stunning and hibernation revisited. Nat Rev Cardiol. 2021;18(7):522–536. doi:10.1038/s41569-021-00506-7 4. McFalls EO, Ward HB, Moritz TE, et al. Coronary-artery revascularization before elective major vascular surgery. N Engl J Med. 2004;351 (27):2795–2804. doi:10.1056/NEJMoa041905 5. Almeida FF, Barreto SM, Couto BR, Starling CE. Predictive factors of in-hospital mortality and of severe perioperative complications in myocardial revascularization surgery. Arq Bras Cardiol. 2003;80(1):51–60, 41–50. doi:10.1590/s0066-782x2003000100005 6. O’Meara E, Mielniczuk LM, Wells GA, et al. Alternative Imaging Modalities in Ischemic Heart Failure (AIMI-HF) IMAGE HF Project I-A: study protocol for a randomized controlled trial. Trials. 2013;14(1):218. doi:10.1186/1745-6215-14-218 7. Knuuti J, Wijns W, Saraste A, et al. 2019 ESC Guidelines for the diagnosis and management of chronic coronary syndromes. Eur Heart J. 2020;41 (3):407–477. doi:10.1093/eurheartj/ehz425 8. Zeng X, Shu XH, Pan CZ, et al. Real-time myocardial contrast echocardiography can predict functional recovery and left ventricular remodeling after revascularization in patients with ischemic heart disease. Chin Med J. 2007;120(21):1890–1893. 9. Fernandes DR, Tsutsui JM, Bocchi EA, et al. Qualitative and quantitative real time myocardial contrast echocardiography for detecting hibernating myocardium. Echocardiography. 2011;28(3):342–349. doi:10.1111/j.1540-8175.2010.01317.x 10. Monakier D, Woo A, Vannan MA, Rakowski H. Myocardial contrast echocardiography in chronic ischemic and nonischemic cardiomyopathies. Cardiol Clin. 2004;22(2):269–282. doi:10.1016/j.ccl.2004.03.001 11. Fukuda S, Hozumi T, Muro T, et al. Quantitative intravenous myocardial contrast echocardiography predicts recovery of left ventricular function after revascularization in chronic coronary artery disease. Echocardiography. 2004;21(2):119–124. doi:10.1111/j.0742-2822.2004.03026.x 12. Xie F, Qian L, Goldsweig A, Xu D, Porter TR. Event-free survival following successful percutaneous intervention in acute myocardial infarction depends on microvascular perfusion. Circ Cardiovasc Imaging. 2020;13(6):e010091. doi:10.1161/CIRCIMAGING.119.010091 13. Fournier L, Costaridou L, Bidaut L, et al. Incorporating radiomics into clinical trials: expert consensus endorsed by the European Society of Radiology on considerations for data-driven compared to biologically driven quantitative biomarkers. Eur Radiol. 2021;31(8):6001–6012. doi:10.1007/s00330-020-07598-8 14. Mayerhoefer ME, Materka A, Langs G, et al. Introduction to Radiomics. J Nucl Med. 2020;61(4):488–495. doi:10.2967/jnumed.118.222893 15. Hatt M, Le Rest CC, Tixier F, Badic B, Schick U, Visvikis D. Radiomics: data are also images. J Nucl Med. 2019;60(Suppl 2):38s–44s. doi:10.2967/jnumed.118.220582 16. Jordan MI, Mitchell TM. Machine learning: trends, perspectives, and prospects. Science. 2015;349(6245):255–260. doi:10.1126/science.aaa8415 17. Giger ML. Machine learning in medical imaging. J Am Coll Radiol. 2018;15(3):512–520. doi:10.1016/j.jacr.2017.12.028 18. Zhou Z, Gao Y, Zhang W, et al. Deep learning–based prediction of percutaneous recanalization in chronic total occlusion using coronary CT angiography. Radiology. 2023;309(2):e231149. doi:10.1148/radiol.231149 19. Gao Y, Zhou Z, Zhang B, et al. Deep learning-based prognostic model using non-enhanced cardiac cine MRI for outcome prediction in patients with heart failure. Eur Radiol. 2023;33(11):8203–8213. doi:10.1007/s00330-023-09785-9 20. Langs G, Röhrich S, Hofmanninger J, et al. Machine learning: from radiomics to discovery and routine. Radiologe. 2018;58(Suppl 1):1–6. doi:10.1007/s00117-018-0407-3 21. Neumann FJ, Sousa-Uva M, Ahlsson A, et al. 2018 ESC/EACTS guidelines on myocardial revascularization. Eur Heart J. 2019;40(2):87–165. doi:10.1093/eurheartj/ehy394 22. Shivalkar B, Maes A, Borgers M, et al. Only hibernating myocardium invariably shows early recovery after coronary revascularization. Circulation. 1996;94(3):308–315. doi:10.1161/01.CIR.94.3.308 23. Borges AC, Richter WS, Witzel C, et al. Myocardial contrast echocardiography for predicting functional recovery after acute myocardial infarction. Int J Cardiovasc Imaging. 2002;18(4):257–268. doi:10.1023/A:1015529431982 24. Greaves K, Dixon SR, Fejka M, et al. Myocardial contrast echocardiography is superior to other known modalities for assessing myocardial reperfusion after acute myocardial infarction. Heart. 2003;89(2):139–144. doi:10.1136/heart.89.2.139 25. Myers JH, Stirling MC, Choy M, Buda AJ, Gallagher KP. Direct measurement of inner and outer wall thickening dynamics with epicardial echocardiography. Circulation. 1986;74(1):164–172. doi:10.1161/01.cir.74.1.164 26. Bondarenko O, Beek AM, Nijveldt R, et al. Functional outcome after revascularization in patients with chronic ischemic heart disease: a quantitative late gadolinium enhancement CMR study evaluating transmural scar extent, wall thickness and periprocedural necrosis. J Cardiovasc Magn Reson. 2007;9(5):815–821. doi:10.1080/10976640701547335 27. Scapicchio C, Gabelloni M, Barucci A, Cioni D, Saba L, Neri E. A deep look into radiomics. La radiologia medica. 2021;126(10):1296–1311. doi:10.1007/s11547-021-01389-x 28. Fusco R, Granata V, Grazzini G, et al. Radiomics in medical imaging: pitfalls and challenges in clinical management. Jpn J Radiol. 2022;40 (9):919–929. doi:10.1007/s11604-022-01271-4 29. Kaul S. Myocardial Contrast Echocardiography. Circulation. 2008;118(3):291–308. doi:10.1161/CIRCULATIONAHA.107.747303 30. Roldan P, Ravi S, Hodovan J, et al. Myocardial contrast echocardiography assessment of perfusion abnormalities in hypertrophic cardiomyopathy. Cardiovasc Ultrasound. 2022;20(1):23. doi:10.1186/s12947-022-00293-2 31. Malekloo A, Ozer E, AlHamaydeh M, Girolami M. Machine learning and structural health monitoring overview with emerging technology and high-dimensional data source highlights. Struct Health Monit. 2022;21(4):1906–1955. doi:10.1177/14759217211036880 32. Thottakkara P, Ozrazgat-Baslanti T, Hupf BB, et al. Application of machine learning techniques to high-dimensional clinical data to forecast postoperative complications. PLoS One. 2016;11(5):e0155705. doi:10.1371/journal.pone.0155705 33. Breiman L. Random Forests. Mach Learn. 2001;45(1):5–32. doi:10.1023/A:1010933404324 34. Nakajima K, Tamaki N, Kuwabara Y, et al. Prediction of functional recovery after revascularization using quantitative gated myocardial perfusion SPECT: a multi-center cohort study in Japan. Eur J Nucl Med Mol Imaging. 2008;35(11):2038–2048. doi:10.1007/s00259-008-0838-6
+https://doi.org/10.2147/IJGM.S465023 DovePress
+International Journal of General Medicine 2024:17
+2554
+Huang et al Dovepress
+Powered by TCPDF (www.tcpdf.org)
+
+
+35. Shehata M. Value of two-dimensional strain imaging in prediction of myocardial function recovery after percutaneous revascularization of infarct-related artery. Echocardiography. 2015;32(4):630–637. doi:10.1111/echo.12704 36. Arian F, Amini M, Mostafaei S, et al. Myocardial function prediction after coronary artery bypass grafting using MRI radiomic features and machine learning algorithms. J Digit Imaging. 2022;35(6):1708–1718. doi:10.1007/s10278-022-00681-0 37. Bax JJ, Visser FC, Poldermans D, et al. Time course of functional recovery of stunned and hibernating segments after surgical revascularization. Circulation. 2001;104(12 Suppl 1):I314–I318. doi:10.1161/hc37t1.094853
+International Journal of General Medicine Dovepress
+Publish your work in this journal
+The International Journal of General Medicine is an international, peer-reviewed open-access journal that focuses on general and internal medicine, pathogenesis, epidemiology, diagnosis, monitoring and treatment protocols. The journal is characterized by the rapid reporting of reviews, original research and clinical studies across all disease areas. The manuscript management system is completely online and includes a very quick and fair peer-review system, which is all easy to use. Visit http://www.dovepress.com/testimonials.php to read real quotes from published authors.
+Submit your manuscript here: https://www.dovepress.com/international-journal-of-general-medicine-journal
+International Journal of General Medicine 2024:17 DovePress 2555
+Dovepress Huang et al
+Powered by TCPDF (www.tcpdf.org)
