@@ -1,0 +1,488 @@
+The Breast 51 (2020) 50e56
+Contents lists available at ScienceDirect
+The Breast
+journal homepage: www.elsevier.com/brst
+Original article
+The effect of post mastectomy radiation therapy on survival in breast cancer patients with N1mic disease
+Mausam Patel a, Chenghui Li a, Julia H. Aronson a, Cole M. Howie a, Sanjay Maraboyina a, Arpan V. Prabhu a, Thomas Kim b, *
+a Department of Radiation Oncology, University of Arkansas for Medical Sciences, Little Rock, AR, 72205, USA b Department of Radiation Oncology, Rush University Medical Center, Chicago, IL, 60612, USA
+
+article info
+Article history: Received 8 September 2019 Received in revised form 16 February 2020 Accepted 25 February 2020 Available online 6 March 2020
+Keywords: Breast Cancer SEER Epidemiology Survival
+
+abstract
+Background: The role of post mastectomy radiation therapy (PMRT) in patients with N1mic breast cancer has not been well deﬁned. A retrospective analysis was performed using the SEER database to evaluate the impact of PMRT on survival in patients with N1mic breast cancer. Materials and methods: Women with T1-T2, N1mic, M0 breast cancer who had undergone mastectomy were analyzed. Descriptive statistics were calculated for all variables. Univariate analysis to assess for differences in survival with respect to covariates was performed using the log rank test while multivariate analysis was performed with Cox proportional hazards regression. Sub-cohort analysis with propensity score matching was used to assess differences in survival among patients undergoing PMRT vs no PMRT. Comparisons were considered statistically signiﬁcant at P < 0.05. Results: Among 5878 patients, 1202 (20%) underwent PMRT. On univariate analysis, PMRT was a signiﬁcant predictor of CSS, but not OS. There was no difference in either OS or CSS between the PMRT vs no PMRT groups on multivariate Cox regression analysis and after propensity score matching. Conclusions: Among patients with T1-T2, N1mic, M0 breast IDC from the SEER database, there was no difference in either OS or CSS among patients who underwent PMRT vs no PMRT. These results suggest that PMRT does not impact survival among breast cancer patients with N1mic disease. However, additional prospective studies with longer follow up are necessary for further evaluation. © 2020 The Author(s). Published by Elsevier Ltd. This is an open access article under the CC BY-NC-ND
+license (http://creativecommons.org/licenses/by-nc-nd/4.0/).
+
+1. Introduction
+Breast cancer represents the most commonly diagnosed noncutaneous malignancy and 2nd leading cause of cancer related to death in women with an estimated 268,000 new cases and 41,760 deaths in 2019 [1]. Yet, advancements in screening and treatment has reduced the mortality rate by 40% from 1989 to 2016. Radiation therapy comprises an important aspect of treatment.
+Results from the Early Breast Cancer Trialists’ Collaborative Group (EBCTCG) meta-analysis among women with invasive breast cancer after mastectomy and axillary lymph node dissection (ALND) demonstrated reductions in locoregional recurrence,
+Abbreviations: PMRT, Post mastectomy radiation therapy. * Corresponding author. Department of Radiation Oncology, Rush University Medical Center, 500 South Paulina Street, Atrium Building, Ground Floor, Chicago, IL, 60612, USA.
+E-mail addresses: thomas_Kim@rush.edu, Thomas_Kim@rush.edu (T. Kim).
+
+overall recurrence, and breast cancer mortality in women with 1e3 and 4 positive lymph nodes with PMRT, regardless of administration of systemic therapy [2]. However, these beneﬁts did not extend to women with node negative disease.
+It remains unknown how these results apply to patients with nodal micrometastases, as there are no prospective data to support PMRT in these patients. The increased use of sentinel lymph node biopsy (SLNB) with step sectioning and immunohistochemistry has led to an increase in the identiﬁcation of small nodal tumor foci [3]. The 5th edition of the AJCC Cancer Staging Manual initially identiﬁed micrometastatic nodal lesions as no more than 2.0 mm in diameter with subsequent editions providing a lower limit on the size deﬁning nodal micrometastases as > 0.2 mm but 2.0 mm, classiﬁed as pN1mi disease [4e7].
+Given that the EBGTCG meta-analysis did not provide a clear distinction or sub-analysis of pN1mi patients, the role of PMRT in these patients remains unknown. Furthermore, it is likely that any patients with pN1mi disease among the 22 trials analyzed were
+
+https://doi.org/10.1016/j.breast.2020.02.009 0960-9776/© 2020 The Author(s). Published by Elsevier Ltd. This is an open access article under the CC BY-NC-ND license (http://creativecommons.org/licenses/by-nc-nd/4.0/ ).
+
+M. Patel et al. / The Breast 51 (2020) 50e56
+
+51
+
+classiﬁed as pN0 disease, given that older trials were accruing patients prior to the current advancements in nodal evaluation, which has allowed the detection of tumor foci less than 2 mm. Retrospective analyses have suggested that PMRT among patients with pN1mi breast cancer does not improve either recurrence rates or survival [8e10]. However, these studies are limited by either small or heterogeneous patient cohorts. The largest study involved over 14,000 patients but was based on a hospital based registry and only evaluated overall survival (OS) using the National Cancer Database (NCDB) [10].
+We aimed to determine if these results could be extrapolated to a more general population using the National Cancer Institute’s Surveillance, Epidemiology, and End Results (SEER) program, which includes data on patients representative of the U.S. population and is not limited to hospital registries like the NCDB. Moreover, the SEER database also provides information on cancer speciﬁc survival (CSS), which to our knowledge, has not been reported among pN1mi breast cancer patients undergoing PMRT using a large national database. Here, we report the results of the effect of PMRT on OS and CSS among N1mic patients from the SEER database.
+2. Materials and Methods
+A population based search was performed using the SEER database. SEER collects and publishes cancer incidence and survival data from population registries covering 34.6% of the US population [11]. It has been validated for use in clinical research [12]. Because SEER contains publicly available, de-identiﬁed data, the National Cancer Institute does not require institutional review board approval for use of the database.
+A case listing session was performed to extract all cases of invasive ductal carcinoma (IDC) of the breast diagnosed between January 1, 2004 and December 31, 2014. Histologic International Classiﬁcation of Disease (ICD) codes (ICD-0-3) were used to extract all cases of IDC as identiﬁed by the following code: 8500/3: Inﬁltrating duct carcinoma, NOS. The following site speciﬁc codes were used to verify that the tumor originated in the breast: C50.0-Nipple, C50.1-Central portion of breast, C50.2-Upper-inner quadrant of breast, C50.3-Lower-inner quadrant of breast, C50.4-Upper-outer quadrant of breast, C50.5-Lower-outer quadrant of breast, C50.6Axillary tail of breast, C50.8-Overlapping lesion of breast, and C50.9-Breast, NOS. Only patients with T1-T2, N1mic, and M0 disease were included in the ﬁnal analysis.
+Patients with multiple primaries and diagnosis on autopsy/ death certiﬁcate were excluded from analysis. All patients underwent mastectomy and were classiﬁed by the extent of resection as follows: total (simple), radical/modiﬁed radical, and not otherwise speciﬁed (NOS). Patients with unknown radiation status, intraoperative radiation, pre-operative radiation, and radiation both before and after surgery were excluded from analysis. Those with death occurring within 1 month of PMRT were also excluded. Only patients with either no radiation or post-operative radiation were included in the ﬁnal analysis. The following covariates were also extracted for analysis: age, year of diagnosis, race, marital status, insurance, tumor stage (T1 vs. T2), laterality, grade, hormone receptor status (ER, PR, and HER2), number of regional lymph nodes positive, chemotherapy, and county level attributes such as level of education and median household income.
+The primary outcome measures were times in months from diagnosis to death secondary to any cause for OS and secondary to the cancer diagnosis for CSS. Descriptive statistics were calculated for all variables and compared between patients undergoing PMRT and those without using Chi-square or Fisher’s exact test for categorical variables and Student’s t or Wilcoxon rank sum test for continuous variables whenever appropriate. Survival curves were
+
+generated using the Kaplan Meier method. Differences in OS and CSS between patients with PMRT and those without were assessed using the log rank test. Multivariable analysis was performed with Cox proportional hazards regression models to determine the predictive performance of covariates with respect to OS and CSS. Proportional hazards (PH) assumption was tested on all covariates based on Schoenfeld residuals. For variables that violated the PH assumption (P > 0.05), stratiﬁed analysis by these variables were also conducted.
+Sub-cohort analysis with propensity score matching of patients undergoing PMRT vs no PMRT was also conducted. All covariates listed above were used in the matching. Balance in covariates before and after matching were assessed using t-test or Chi-square test. Post-matching differences in covariates were also tested using paired t-test and McNeamar’s test to account for the cohorts being matched. Since P values depend on sample size and may become insigniﬁcant after matching due to reduction in sample size, as recommended, standardized differences in covariates after matching were assessed and any differences >10% were considered large differences [13]; matching process was repeated until no standardized differences >10% for any covariates were observed. After successful matching, univariate Cox models were run to assess differences in survival among patients undergoing PMRT vs no PMRT. Standard errors adjusted for clustering in matching groups.
+Comparisons were considered statistically signiﬁcant at P < 0.05. All statistical analyses were performed in SPSS, version 24 (IBM Corporation) and Stata, version 14 (StataCorp LLC).
+3. Results
+3.1. Demographics
+A total of 5878 patients met inclusion criteria. There were 1202 (20%) patients who underwent PMRT and 4676 (80%) who did not. PMRT patients were more likely to be younger, have T2 tumors, grade III disease, ER/PR/HER2 negative status, 4 involved lymph nodes, and to undergo chemotherapy (P < 0.05). The remaining demographics for the cohort after stratiﬁcation by PMRT status are summarized in Table 1.
+3.2. Survival analysis
+On univariate analysis, there was no difference in OS with respect to PMRT. Patients undergoing PMRT demonstrated a signiﬁcantly worse CSS as compared to patients not undergoing PMRT (P ¼ 0.007, eFig. 1). However, no statistically signiﬁcant difference in either OS or CSS was observed between the two arms on multivariate Cox regression analysis or propensity score analysis after adjustment for covariates (Table 2, eTables 1-2, Fig. 1).
+On Cox regression, PMRT demonstrated similar OS to no PMRT (Hazard ratio [HR], 1.03; 95% CI, 0.84e1.25; P ¼ 0.794). The following covariates were associated with signiﬁcantly worse OS: older age, Black race, widowed/divorced/separated status, uninsured status, T2 stage, moderately and poorly differentiated grade, negative ER/PR/HER2 status, unknown HER2 status, and diagnosis after 2010. In contrast, involvement of <4 lymph nodes, chemotherapy, and greater baseline educational/income status were associated with improved OS. The remaining HRs, 95% CIs, and pvalues are summarized in Table 2.
+PMRT also demonstrated similar CSS to no PMRT on Cox regression (HR, 0.98; 95% CI, 0.77e1.25; P ¼ 0.862). Additionally, the following covariates were associated with a signiﬁcantly worse CSS: older age, Black race, uninsured status, T2 stage, moderately and poorly differentiated grade, negative ER/PR/HER2 status, and
+
+52
+Table 1 Demographics stratiﬁed by PMRT status.
+Demographics Age at Diagnosis
+Mean ± SD Median (min, max) Age at Diagnosis Group 40 41-50 51-64 65 Race White Black Asian/Paciﬁc Islander Native American/Unknown Marital Status Married/Partner Single Widowed/Divorced/Separated Unknown Insurance Some Medicaid Other Insurance Uninsured Unknown T Stage T1 T2 Laterality Right Left Grade Well differentiated (I) Moderately differentiated (II) Poorly differentiated (III) Undifferentiated (IV) Unknown ER Status Positive Negative Unknown PR Status Positive Negative Unknown HER2 Status Positive Negative Unknown No. Lymph Nodes Positive 1-3 4 Year of Diagnosis Before 2010 2010 and After Chemotherapy No Yes Mastectomy Total (Simple) Radical/Modiﬁed Radical NOS % w/o 9th grade education <6% 6 - <12% 12% Median household income <38K 38K - <48K 48K - <63K 63K
+1Standard Deviation.
+
+M. Patel et al. / The Breast 51 (2020) 50e56
+
+Post-Mastectomy Radiation
+
+No (N ¼ 4676)
+
+Total
+
+%/SD [1]/Range
+
+56.8 55
+
+±13.9 (19, 101)
+
+520
+
+11%
+
+1204
+
+26%
+
+1608
+
+34%
+
+1344
+
+29%
+
+3673
+
+79%
+
+482
+
+10%
+
+455
+
+10%
+
+66
+
+1%
+
+2807
+
+60%
+
+585
+
+13%
+
+1091
+
+23%
+
+193
+
+4%
+
+356
+
+8%
+
+3018
+
+65%
+
+52
+
+1%
+
+1250
+
+27%
+
+2670
+
+57%
+
+2006
+
+43%
+
+2338
+
+50%
+
+2338
+
+50%
+
+710
+
+15%
+
+2094
+
+45%
+
+1724
+
+37%
+
+32
+
+1%
+
+116
+
+2%
+
+3721
+
+80%
+
+772
+
+17%
+
+183
+
+4%
+
+3228
+
+69%
+
+1230
+
+26%
+
+218
+
+5%
+
+408
+
+9%
+
+1629
+
+35%
+
+2639
+
+56%
+
+4545
+
+97%
+
+131
+
+3%
+
+2539
+
+54%
+
+2137
+
+46%
+
+2202
+
+47%
+
+2474
+
+53%
+
+2476
+
+53%
+
+2182
+
+47%
+
+19
+
+0%
+
+2359
+
+50%
+
+1660
+
+36%
+
+657
+
+14%
+
+352
+
+8%
+
+615
+
+13%
+
+1967
+
+42%
+
+1742
+
+37%
+
+Yes (N ¼ 1202)
+Total
+51.7 50
+243 379 385 195
+924 152 114 12
+734 189 235 44
+99 829 23 251
+487 715
+649 553
+113 498 569 5 26
+927 261 14
+807 387 17
+147 506 549
+1075 127
+534 668
+196 1006
+599 599 4
+669 396 137
+104 166 508 424
+
+%/SD [1]/Range
+±13.1 (22, 92)
+20% 32% 32% 16%
+77% 13% 9% 1%
+61% 16% 20% 4%
+8% 69% 2% 21%
+41% 59%
+54% 46%
+9% 41% 47% 0% 2%
+77% 22% 1%
+67% 32% 1%
+12% 42% 46%
+89% 11%
+44% 56%
+16% 84%
+50% 50% 0%
+56% 33% 11%
+9% 14% 42% 35%
+
+P-value <0.001 <0.001 <0.001
+0.091
+0.003
+<0.001
+<0.001 0.014 <0.001
+<0.001 <0.001 <0.001 <0.001 <0.001 <0.001 0.138 0.003 0.408
+
+Table 2 Cox proportional hazard model for overall survival.
+
+Variable
+
+Hazard Ratio
+
+Post-Mastectomy Radiation No Yes
+Age at Diagnosis Group 40 41-50 51-64 65
+Race White Black Asian/Paciﬁc Islander Native American/Unknown
+Marital Status Married/Partner Single Widowed/Divorced/Separated Unknown
+Insurance Some Medicaid Other insurance Uninsured Unknown
+T Stage T1 T2
+Laterality Right Left
+Grade Well differentiated (I) Moderately differentiated (II) Poorly differentiated (III) Undifferentiated (IV) Unknown
+ER Status Positive Negative Unknown
+PR Status Positive Negative Unknown
+HER Status Positive Negative Unknown
+No. Lymph Nodes Positive 1-3 4
+Year of diagnosis Before 2010 2010 and After
+Chemotherapy No Yes
+Mastectomy Total (Simple) Radical/Modiﬁed Radical NOS
+% w/o 9th grade education <6% 6 - <12% 12%
+Median Household Income 38K 38K - <48K 48K - <63K 63K
+
+Ref 1.03
+Ref 0.89 1.29 3.35
+Ref 1.26 0.95 1.19
+Ref 1.05 1.37 0.84
+1.22 Ref 2.22 1.07
+Ref 1.65
+Ref 0.96
+Ref 1.58 2.05 1.67 0.98
+Ref 1.47 1.64
+Ref 1.63 0.75
+Ref 1.91 3.00
+0.44 Ref
+Ref 1.93
+Ref 0.67
+Ref 1.15 0.83
+Ref 0.90 0.72
+Ref 0.83 0.76 0.72
+
+M. Patel et al. / The Breast 51 (2020) 50e56
+
+53
+
+[95% CI]
+
+P-value
+
+e [0.84, 1.25]
+
+e 0.794
+
+e [0.64, 1.22] [0.96, 1.73] [2.49, 4.50]
+
+e 0.462 0.090 <0.001
+
+e [1.03, 1.56] [0.71, 1.26] [0.61, 2.32]
+
+e 0.027 0.701 0.614
+
+e [0.82, 1.34] [1.16, 1.63] [0.54, 1.33]
+[0.91, 1.64]
+e [1.21, 4.09] [0.89, 1.28]
+
+e 0.711 <0.001 0.467
+0.178
+e 0.010 0.466
+
+e [1.42, 1.93]
+
+e <0.001
+
+e [0.83, 1.11]
+
+e 0.583
+
+e [1.19, 2.10] [1.53, 2.75] [0.75, 3.72] [0.51, 1.89]
+
+e 0.002 <0.001 0.209 0.961
+
+e [1.17, 1.84] [0.58, 4.66]
+
+e 0.001 0.353
+
+e [1.32, 2.00] [0.27, 2.07]
+
+e <0.001 0.578
+
+e [1.19, 3.08] [1.40, 6.42]
+[0.34, 0.56] e
+
+e 0.007 0.005
+<0.001 e
+
+e [1.03, 3.63]
+
+e 0.041
+
+e [0.57, 0.80]
+
+e <0.001
+
+e [0.98, 1.34] [0.20, 3.39]
+
+e 0.084 0.792
+
+e [0.77, 1.06] [0.56, 0.92]
+
+e 0.214 0.010
+
+e [0.63, 1.10] [0.60, 0.97] [0.56, 0.94]
+
+e 0.198 0.030 0.014
+
+Fig. 1. Kaplan Meier curves for propensity matched data by (a) overall survival and (b) cancer speciﬁc survival.
+unknown HER2 status. Involvement of <4 lymph nodes and greater baseline educational status were associated with improved CSS. Results are summarized in eTable 1.
+3.3. Propensity score matched analysis
+The sub-cohort of patients for propensity score matched analysis consisted of 2284 patients with 1142 patients who underwent PMRT who were matched in a 1:1 ratio to 1142 patients not undergoing PMRT. After propensity matching, there were no statistically signiﬁcant differences in the distribution of covariates between the PMRT and no PMRT arms (P > 0.05, eTable 2). No signiﬁcant differences in either OS or CSS were seen between the PMRT and no PMRT arms in the matched sub-cohorts (HR, 1.10; 95% CI, 0.87e1.38; P ¼ 0.436 and HR, 0.99; 95% CI 0.74e1.31; P ¼ 0.918, respectively).
+4. Discussion
+
+With the increasing prevalence of SLNB, there has been a trend towards omitting ALND among low risk breast cancer patients who may not beneﬁt from extensive axillary management. Multiple
+
+54
+
+M. Patel et al. / The Breast 51 (2020) 50e56
+
+phase III randomized trials, including the International Breast Cancer Study Group 23e01 (IBCSG 23e01), American College of Surgeons Oncology Group Z0011 (ACSOG Z0011), and AATRM 048/ 13/2000 have demonstrated either non-inferiority or similar outcomes between ALND and omission of ALND in patients with limited nodal disease as identiﬁed by SLNB, including those with nodal micrometastases [14e17]. However, retrospective studies have demonstrated worse recurrence and survival rates among patients with nodal micrometastatic disease with the omission of ALND [18e20]. Additionally, there is evidence of worse outcomes among these patients when compared to node negative disease [19,21]. The discordance between phase III trials and other studies may be at least partially be explained by the use of adjuvant therapy, lack of long term follow up, and heterogeneous patient populations in terms of nodal involvement [14e16,18,19,22,23].
+While randomized trials have demonstrated similar outcomes among breast cancer patients with low nodal burden with and without ALND, it is difﬁcult to extrapolate these results to patients undergoing mastectomies. The majority of patients in IBCSG 23e01, ACSOG Z0011, and AATRM 048/13/2000 underwent breast conserving therapy (BCT) in which post-surgical radiation was standard. In IBCSG 23e01, 91% of patients underwent BCT with 97e98% of these undergoing post-surgical radiotherapy [14]. ACSOG Z001 required all patients to undergo BCT and AATRM 048/ 13/2000 had over 90% of patients undergoing BCT with radiotherapy [16,17]. This has led to the question of whether radiation may have led to decreased nodal recurrence rates and possibly inﬂuenced outcomes between treatment arms among these trials [22e24].
+Indeed, it has been suggested that ACSOG Z0011 not be extrapolated to those patients not undergoing adjuvant radiation or only receiving partial breast irradiation in which the axillary nodes are not covered [23]. This is further supported by the results of MA.20 and EORTC 22922/10925 [25,26]. MA.20 evaluated the addition of nodal irradiation to whole breast radiation therapy (WBRT) in node positive and high risk node negative breast cancer patients. Among 1832 women, 99%, had T1-T2 tumors and 85% had between 1 and 3 positive lymph nodes. The experimental group received both WBRT and nodal irradiation to the internal mammary, supraclavicular, and axillary lymph nodes while the control group only received WBRT. With 916 patients randomized to each arm, there was an improvement in 10 year disease free survival (DFS) of 82% in the nodal irradiation arm vs 77% in the control arm, p ¼ 0.01. However, no improvement in OS was noted.
+Similarly, EORTC 22922/10925 demonstrated improved DFS among women with early stage, node positive or high risk, node negative breast cancer after internal mammary and supraclavicular nodal irradiation. Unlike MA.20, however, 24% of patients underwent mastectomy in the EORTC trial. In addition, there was a marginal effect on 10 year OS of 82.3% in the experimental group vs 80.7% in the control group, p ¼ 0.06. A signiﬁcant reduction in breast cancer mortality was also seen with nodal irradiation.
+The results of these trials leads to the question of what role radiation plays in women with low nodal burden, such as those with pN1mic disease. Both MA.20 and EORTC 22922/10925 included not only node positive patients but also those with node negative disease but considered to be at high risk of nodal involvement including those with tumors 5 cm or 2 cm with <10 axillary lymph nodes dissected and with either grade III disease, ER negative hormone status, or positive lymphovascular invasion as deﬁned on MA.20; and with central/medially located tumor as deﬁned on EORTC 22922/10925. Thus, it is conceivable that patients with low nodal burden, i.e. pN1mi disease, may derive the same beneﬁts as those with nonexistent nodal burden but with high risk features.
+
+Another uncertainty involves whether the results of the aforementioned trials can be extrapolated to patients who undergo mastectomy rather than BCT as the former group is underrepresented in most trials. This is especially true among low risk postmastectomy patients in whom radiation may be omitted altogether. Indeed, the National Comprehensive Cancer Network (NCCN) guidelines recommend omitting PMRT among patients with early stage breast cancer with negative axillary lymph nodes, tumor size 5 cm, and negative margins 1 mm [26]. Consistent with the results of the EBCTCG meta-analysis, however, PMRT is a category 2 A recommendation for patients with 1e3 positive axillary lymph nodes and a category 1 recommendation for patients with 4 or more positive lymph nodes. However, it remains unclear if patients with N1mic disease, who would be deﬁned as low risk by NCCN otherwise, should be treated with PMRT as these patients may possibly fall in between N0 and N1 disease in terms of prognosis [27]. Thus, in order to assess this group of patients, we limited our analysis to post mastectomy patients with T1-T2 tumors (i.e.  5 cm in size) but with nodal micrometastases.
+While analysis initially demonstrated signiﬁcantly worse CSS among those undergoing PMRT, this difference was likely due to differing baseline clinical characteristics between the two treatment arms. A selection bias for PMRT was present among high risk patients as those with larger primary tumors, higher grade disease, and ER/PR/HER2 negative hormone status were more likely to undergo PMRT. These risk factors have been consistently associated with greater locoregional recurrence (LRR) and worse CSS [28e37].
+In their retrospective analysis of 877 post mastectomy, node negative breast cancer patients; Jagsi et al. identiﬁed size >2 cm as an independent risk factor for increased LRR [38]. Indeed, patients with T2 disease, i.e. those with >2 cm disease, were more likely to receive PMRT among our cohort. Moreover, Abdulkarim et al. found an increased rate of LRR among patients undergoing mastectomy without PMRT as compared to those undergoing BCT with adjuvant radiation among their cohort of 768 breast cancer patients with triple negative hormonal status [37]. Again, as demonstrated among our patient cohort, PMRT was more likely among patients with a negative hormonal status. These high risk factors likely inﬂuenced patient selection for PMRT. However, after correction for baseline characteristics and high risk factors on both Cox regression and propensity score matched analysis, PMRT was no longer signiﬁcantly associated with CSS.
+Our results for OS are consistent with the ﬁndings of Wu et al. [10]. Their cohort of patients was very similar to ours, including post-mastectomy patients with pT1-2 N1mic disease. Similar to our results, no signiﬁcant difference in OS was demonstrated between PMRT and no PMRT. However, they used the NCDB database. In contrast, we used the SEER database to not only study CSS, which is not collected by the NCDB, but also to determine if the results of Wu et al. could be extrapolated to the SEER population. One important difference between the two databases is that SEER is able to provide population based demographics and statistics whereas the NCDB data is limited to data provided by Commission on Cancer (CoC) accredited hospitals which represent only about a third of hospitals in the US. As a result, the NCDB does not contain information on many cases within pre-deﬁned geographic locations that would be captured by SEER [39].
+Multiple demographic and socioeconomic variables have been associated with cancer survival including race, marital status, insurance, education, and income [40e45]. Disparities in survival with respect to these variables include differences in social support, access to care, screening and treatment [46]. Indeed, race, marital status, insurance, and educational/income status were independent predictors of OS while race, insurance, and educational level were independent predictors of CSS among our cohort.
+
+M. Patel et al. / The Breast 51 (2020) 50e56
+
+55
+
+Limitations of this study include those inherent to retrospective analyses. Details of radiation treatment such as dose, distribution, treatment volumes, and radiation ﬁelds are not collected in the SEER database. Thus, data on the extent of PMRT including thoracic wall radiation and/or nodal irradiation is not provided. Thus, it is possible that among our cohort, a signiﬁcant proportion of PMRT patients may have undergone thoracic wall irradiation without nodal irradiation and that this may have led to a lack of difference in survival between our two arms.
+Finally, our analysis was limited to patients diagnosed with nodal micrometastases as deﬁned by the 6th and later editions of the American Joint Committee on Cancer (AJCC) staging system. We limited our analysis to patients staged by the AJCC 6th and later editions as prior editions did not provide a lower size limit for nodal micrometasases. As the 6th edition was published in 2002, the earliest cases in our cohort date back to 2004. Thus, it is possible that any divergence in survival between our two arms may take additional time to emerge as early stage breast cancer has a long natural history.
+It has been estimated that 1 breast cancer death is avoided within 20 years of PMRT for every 1.5 recurrences prevented within the ﬁrst 10 years [2]. As these reported outcomes are based on the results of the EBCTCG meta-analysis in which the majority of patients had pN1 or greater disease, we hypothesize that if PMRT does indeed improve survival, beneﬁts among N1mic patients may take even longer to appear as compared to patients with nodal macrometastases. This is further supported by data suggesting that patients with nodal micrometastases to have an intermediate survival rate falling in between node negative and node positive disease [27,47]. For example, in their SEER analysis of 207,720 breast cancer patients, Chen et al. demonstrated N1mic disease to be a signiﬁcant prognostic predictor for survival with a HR of 1.35 as compared to N0 disease and 0.82 as compared to N1 disease. Both 5- and 10-year survival for pN1mic disease was intermediate between N0 and N1 nodal status [27].
+Despite the limitations of this study, it is the largest retrospective analysis assessing the effect of RT on CSS in patients with N1mi breast cancer after PMRT. The strength of this study lies in the large patient population analyzed. Moreover, to our knowledge, this is the ﬁrst SEER analysis assessing the role of PMRT on OS and CSS among this cohort of patients. The unique advantage of SEER over other databases is in its’ tendency to capture details of the general U.S. population. Our results demonstrate similar survival outcomes between the use of PMRT and no PMRT among patients with N1mic breast IDC. However, randomized trials with longer follow up are necessary for further evaluation of the role of PMRT in this cohort of patients.
+Funding
+This research did not receive any speciﬁc grant from funding agencies in the public, commercial, or not-for-proﬁt sectors.
+Declaration of competing interest
+The authors have no conﬂicts of interest to declare.
+Appendix A. Supplementary data
+Supplementary data to this article can be found online at https://doi.org/10.1016/j.breast.2020.02.009.
+References
+[1] Siegel RL, Miller KD, Jemal A. Cancer statistics. CA Cancer J Clin 2019;69(1):
+
+7e34. 2019. [2] Ebctcg, McGale P, Taylor C, et al. Effect of radiotherapy after mastectomy and
+axillary surgery on 10-year recurrence and 20-year breast cancer mortality: meta-analysis of individual patient data for 8135 women in 22 randomised trials. Lancet 2014;383(9935):2127e35. [3] van Rijk MC, Peterse JL, Nieweg OE, Oldenburg HS, Rutgers EJ, Kroon BB. Additional axillary metastases and stage migration in breast cancer patients with micrometastases or submicrometastases in sentinel lymph nodes. Cancer 2006;107(3):467e71. [4] Amin MB, Edge SB, Greene FL, et al. AJCC cancer staging manual. Springer International Publishing; 2018. [5] Compton CC, Byrd DR, Garcia-Aguilar J, Kurtzman SH, Olawaiye A, Washington MK. AJCC cancer staging atlas: a companion to the seventh editions of the AJCC cancer staging manual and handbook. New York: Springer; 2012. [6] Greene F, Balch C, Haller D, Morrow M. AJCC cancer staging manual. sixth ed. Springer; 2002. [7] Singletary SE, Allred C, Ashley P, et al. Revision of the American Joint Committee on Cancer staging system for breast cancer. J Clin Oncol 2002;20(17): 3628e36. [8] Forissier V, Tallet A, Cohen M, et al. Is post-mastectomy radiation therapy contributive in pN0-1mi breast cancer patients? Results of a French multicentric cohort. Eur J Canc 2017;87:47e57. [9] Mamtani A, Patil S, Stempel M, Morrow M. Axillary micrometastases and isolated tumor cells are not an indication for post-mastectomy radiotherapy in stage 1 and 2 breast cancer. Ann Surg Oncol 2017;24(8):2182e8. [10] Wu SP, Tam M, Shaikh F, et al. Post-mastectomy radiation therapy in breast cancer patients with nodal micrometastases. Ann Surg Oncol 2018;25(9): 2620e31. [11] National Cancer Institiue. Overview of the SEER program. Available at: http:// seer.cancer.gov/about/overview.html. [Accessed 29 March 2019]. [12] Merrill RM, Capocaccia R, Feuer EJ, Mariotto A. Cancer prevalence estimates based on tumour registry data in the Surveillance, Epidemiology, and End Results (SEER) Program. Int J Epidemiol 2000;29(2):197e207. [13] Austin PC. An introduction to propensity score methods for reducing the effects of confounding in observational studies. Multivariate Behav Res 2011;46(3):399e424. [14] Galimberti V, Cole BF, Viale G, et al. Axillary dissection versus no axillary dissection in patients with breast cancer and sentinel-node micrometastases (IBCSG 23-01): 10-year follow-up of a randomised, controlled phase 3 trial. Lancet Oncol 2018;19(10):1385e93. [15] Giuliano AE, Ballman KV, McCall L, et al. Effect of axillary dissection vs No axillary dissection on 10-year overall survival among women with invasive breast cancer and sentinel node metastasis: the ACOSOG Z0011 (alliance) randomized clinical trial. J Am Med Assoc 2017;318(10):918e26. [16] Giuliano AE, Hunt KK, Ballman KV, et al. Axillary dissection vs no axillary dissection in women with invasive breast cancer and sentinel node metastasis: a randomized clinical trial. J Am Med Assoc 2011;305(6):569e75. [17] Sola M, Alberro JA, Fraile M, et al. Complete axillary lymph node dissection versus clinical follow-up in breast cancer patients with sentinel node micrometastasis: ﬁnal results from the multicenter clinical trial AATRM 048/ 13/2000. Ann Surg Oncol 2013;20(1):120e7. [18] Houvenaeghel G, Boher JM, Reyal F, et al. Impact of completion axillary lymph node dissection in patients with breast cancer and isolated tumour cells or micrometastases in sentinel nodes. Eur J Canc 2016;67:106e18. [19] Jafferbhoy S, McWilliams B. Clinical signiﬁcance and management of sentinel node micrometastasis in invasive breast cancer. Clin Breast Canc 2012;12(5): 308e12. [20] Youssef MMG, Cameron D, Pucher PH, Olsen S, Ferguson D. The signiﬁcance of sentinel lymph node micrometastasis in breast cancer: comparing outcomes with and without axillary clearance. Breast 2016;30:101e4. [21] Andersson Y, Bergkvist L, Frisell J, de Boniface J. Long-term breast cancer survival in relation to the metastatic tumor burden in axillary lymph nodes. Breast Canc Res Treat 2018;171(2):359e69. [22] Cong BB, Yu JM, Wang YS. Axillary management still needed for patients with sentinel node micrometastases. Canc Manag Res 2019;11:2097e100. [23] Jagsi R, Chadha M, Moni J, et al. Radiation ﬁeld design in the ACOSOG Z0011 (alliance) trial. J Clin Oncol 2014;32(32):3600e6. [24] Robertson JF, Herrod PJ, Matthew J, Kilburn LS, Coles CE, Bradbury I. Treatment of the axilla in patients with primary breast cancer and low burden axillary disease: limitations of the evidence from randomised controlled trials. Crit Rev Oncol Hematol 2017;110:74e80. [25] Poortmans PM, Collette S, Kirkove C, et al. Internal mammary and medial supraclavicular irradiation in breast cancer. N Engl J Med 2015;373(4): 317e27. [26] Whelan TJ, Olivotto IA, Parulekar WR, et al. Regional nodal irradiation in earlystage breast cancer. N Engl J Med 2015;373(4):307e16. [27] Chen SL, Hoehne FM, Giuliano AE. The prognostic signiﬁcance of micrometastases in breast cancer: a SEER population-based analysis. Ann Surg Oncol 2007;14(12):3378e84. [28] Voduc KD, Cheang MC, Tyldesley S, Gelmon K, Nielsen TO, Kennecke H. Breast cancer subtypes and the risk of local and regional relapse. J Clin Oncol 2010;28(10):1684e91. [29] Parise CA, Caggiano V. Breast cancer survival deﬁned by the ER/PR/HER2 subtypes and a surrogate classiﬁcation according to tumor grade and
+
+56
+
+M. Patel et al. / The Breast 51 (2020) 50e56
+
+immunohistochemical biomarkers. J Cancer Epidemiol 2014;2014:469251. [30] Nottage MK, Kopciuk KA, Tzontcheva A, Andrulis IL, Bull SB, Blackstein ME.
+Analysis of incidence and prognostic factors for ipsilateral breast tumour recurrence and its impact on disease-speciﬁc survival of women with nodenegative breast cancer: a prospective cohort study. Breast Cancer Res 2006;8(4):R44. [31] Lundin J, Lundin M, Holli K, et al. Omission of histologic grading from clinical decision making may result in overuse of adjuvant therapies in breast cancer: results from a nationwide study. J Clin Oncol 2001;19(1):28e36. [32] Katz A, Strom EA, Buchholz TA, et al. Locoregional recurrence patterns after mastectomy and doxorubicin-based chemotherapy: implications for postoperative irradiation. J Clin Oncol 2000;18(15):2817e27. [33] Henson DE, Ries L, Freedman LS, Carriaga M. Relationship among outcome, stage of disease, and histologic grade for 22,616 cases of breast cancer. The basis for a prognostic index. Cancer 1991;68(10):2142e9. [34] Elston CW, Ellis IO. Pathological prognostic factors in breast cancer. I. The value of histological grade in breast cancer: experience from a large study with long-term follow-up. Histopathology 1991;19(5):403e10. [35] Anderson TJ, Alexander FE, Lamb J, Smith A, Forrest AP. Pathology characteristics that optimize outcome prediction of a breast screening trial. Br J Canc 2000;83(4):487e92. [36] Abi-Raad R, Boutrus R, Wang R, et al. Patterns and risk factors of locoregional recurrence in T1-T2 node negative breast cancer patients treated with mastectomy: implications for postmastectomy radiotherapy. Int J Radiat Oncol Biol Phys 2011;81(3):e151e7. [37] Abdulkarim BS, Cuartero J, Hanson J, Deschenes J, Lesniak D, Sabri S. Increased risk of locoregional recurrence for women with T1-2N0 triple-negative breast cancer treated with modiﬁed radical mastectomy without adjuvant radiation therapy compared with breast-conserving therapy. J Clin Oncol 2011;29(21):
+
+2852e8. [38] Jagsi R, Raad RA, Goldberg S, et al. Locoregional recurrence rates and prog-
+nostic factors for failure in node-negative patients treated with mastectomy: implications for postmastectomy radiation. Int J Radiat Oncol Biol Phys 2005;62(4):1035e9. [39] Mohanty S, Bilimoria KY. Comparing national cancer registries: the national cancer data base (NCDB) and the surveillance, Epidemiology, and End results (SEER) program. J Surg Oncol 2014;109(7):629e30. [40] Quang C, Hill S, Blair S, Dyess DL, Liles JS. Patient and tumor disparities in breast cancer based on insurance status. Am Surg 2017;83(8):875e80. [41] Pan HY, Walker GV, Grant SR, et al. Insurance status and racial disparities in cancer-speciﬁc mortality in the United States: a population-based analysis. Cancer Epidemiol Biomark Prev 2017;26(6):869e75. [42] Thomson CS, Hole DJ, Twelves CJ, Brewster DH, Black RJ. Prognostic factors in women with breast cancer: distribution by socioeconomic status and effect on differences in survival. J Epidemiol Community 2001;55(5):308e15. [43] Iqbal J, Ginsburg O, Rochon PA, Sun P, Narod SA. Differences in breast cancer stage at diagnosis and cancer-speciﬁc survival by race and ethnicity in the United States. J Am Med Assoc 2015;313(2):165e73. [44] Dalton SO, Ross L, Düring M, et al. Inﬂuence of socioeconomic factors on survival after breast cancerda nationwide cohort study of women diagnosed with breast cancer in Denmark 1983e1999. Int J Canc 2007;121(11):2524e31. [45] Aizer AA, Chen M-H, McCarthy EP, et al. Marital status and survival in patients with cancer. J Clin Oncol 2013;31(31):3869e76. [46] Woods LM, Rachet B, Coleman MP. Origins of socio-economic inequalities in cancer survival: a review. Ann Oncol 2005;17(1):5e19. [47] Grabau D, Jensen MB, Rank F, Blichert-Toft M. Axillary lymph node micrometastases in invasive breast cancer: national ﬁgures on incidence and overall survival. APMIS 2007;115(7):828e37.
+
