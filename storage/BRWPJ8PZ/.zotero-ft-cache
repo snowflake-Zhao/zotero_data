@@ -1,0 +1,306 @@
+ORIGINAL RESEARCH
+T
+he tumor stroma constitutes a vital component of the tumor microenvironment, which substantially contributes to the initiation and progression of tumors by fostering a dynamic interaction with cancer cells (1). Studies have demonstrated that the tumor stroma has therapeutic implications linked to its crucial involvement in tumor initiation, progression, and metastasis (2–4). Recently, the tumor-stroma ratio (TSR), the proportion of tumor to stromal components, has emerged as a valuable histologic indicator for assessing therapeutic response and predicting prognosis across diverse solid tumors, including breast cancer (5–12). Indeed, the prognosis was found to be worse in patients with stroma-rich (hereafter, low-TSR) breast cancer compared with those with stroma-poor (hereafter, high-TSR) breast cancer (10–12). High-TSR breast cancer is associated with improved survival rates and higher pathologic complete response rates than low-TSR breast
+cancer (9,10), which may be associated with higher immune status and less aggressive behavior in high-TSR tumors than in low-TSR tumors (11). The rate of the 10-year recurrence-free period was 87% for patients with high-TSR invasive breast carcinomas, in sharp contrast with 17% for patients with low-TSR tumors (11). Clinically, the TSR status of breast tumors is determined with biopsy before treatment (10–12). This procedure has several shortcomings, including the invasive nature and inadequate sampling. More importantly, the tumor stroma content could change dynamically, exhibit spatial heterogeneity, and frequently display diverse statuses across different breast cancer subtypes (4,13), which may lead to interobserver variability and ambiguous interpretations during the histologic evaluation of TSR status. Thus, a noninvasive imaging approach that can determine the pretreatment TSR status and monitor the
+This copy is for personal use only. To order printed copies, contact reprints@rsna.org
+Purpose: To determine whether metrics from mean apparent propagator (MAP) MRI perform better than apparent diffusion coefficient (ADC) value in assessing the tumor-stroma ratio (TSR) status in breast carcinoma.
+Materials and Methods: From August 2021 to October 2022, 271 participants were prospectively enrolled (ClinicalTrials.gov identifier: NCT05159323) and underwent breast diffusion spectral imaging and diffusion-weighted imaging. MAP MRI metrics and ADC were derived from the diffusion MRI data. All participants were divided into high-TSR (stromal component < 50%) and low-TSR (stromal component ≥ 50%) groups based on pathologic examination. Clinicopathologic characteristics were collected, and MRI findings were assessed. Logistic regression was used to determine the independent variables for distinguishing TSR status. The area under the receiver operating characteristic curve (AUC) and sensitivity, specificity, and accuracy were compared between the MAP MRI metrics, either alone or combined with clinicopathologic characteristics, and ADC, using the DeLong and McNemar test.
+Results: A total of 181 female participants (mean age, 49 years ± 10 [SD]) were included. All diffusion MRI metrics differed between the high-TSR and low-TSR groups (P < .001 to P = .01). Radial non-Gaussianity from MAP MRI and lymphovascular invasion were significant independent variables for discriminating the two groups, with a higher AUC (0.81 [95% CI: 0.74, 0.87] vs 0.61 [95% CI: 0.53, 0.68], P < .001) and accuracy (138 of 181 [76%] vs 106 of 181 [59%], P < .001) than that of the ADC.
+Conclusion: MAP MRI may serve as a better approach than conventional diffusion-weighted imaging in evaluating the TSR of breast carcinoma.
+ClinicalTrials.gov Identifier: NCT05159323
+Supplemental material is available for this article.
+© RSNA, 2024
+Mean Apparent Propagator MRI: Quantitative Assessment of Tumor-Stroma Ratio in Invasive Ductal Breast Carcinoma
+Xiang Zhang, MD* • Ya Qiu, MM* • Wei Jiang, BS • Zehong Yang, MD • Mengzhu Wang, PhD • Qin Li, MM • Yeqing Liu, MD • Xu Yan, PhD • Guang Yang, PhD • Jun Shen, MD
+From the Department of Radiology (X.Z., Y.Q., W.J., Z.Y., J.S.), Guangdong Provincial Key Laboratory of Malignant Tumor Epigenetics and Gene Regulation, Medical Research Center (X.Z., Y.Q., W.J., Z.Y., Q.L., Y.L., J.S.), and Department of Pathology (Q.L., Y.L.), Sun Yat-Sen Memorial Hospital, Sun Yat-Sen University, No. 107 Yanjiang Road West, Guangzhou 510120, People’s Republic of China; Department of Radiology, the First People’s Hospital of Kashi Prefecture, Kashi, People’s Republic of China (Y.Q.); Department of MR Scientific Marketing, Siemens Healthineers, Guangzhou, People’s Republic of China (M.W., X.Y.); and Shanghai Key Laboratory of Magnetic Resonance, School of Physics and Electronic Science, East China Normal University, Shanghai, People’s Republic of China (G.Y.). Received September 25, 2023; revision requested November 26; revision received April 7, 2024; accepted May 13. Address correspondence to J.S. (email: shenjun@mail.sysu.edu.cn).
+* X.Z. and Y.Q. contributed equally to this work.
+Supported by the National Natural Science Foundation of China (82102130, 12126610), Guangdong Basic and Applied Basic Research Foundation (2023A1515011305), Guangzhou Basic and Applied Basic Research Foundation (2023A04J2112), and Xinjiang Uygur Autonomous Region Tianshan Talent Youth Science and Technology Top Talent Project (2022TSYCJC0011).
+Conflicts of interest are listed at the end of this article.
+Radiology: Imaging Cancer 2024; 6(4):e230165 • https://doi.org/10.1148/rycan.230165 • Content codes:
+
+
+2 radiology-ic.rsna.org ■ Radiology: Imaging Cancer Volume 6: Number 4—2024
+Mean Apparent Propagator MRI: Tumor-Stroma Ratio Assessment in Breast Carcinoma
+compared. The study aimed to determine whether MAP MRI metrics have better performance than ADC value in evaluating different TSR statuses among participants diagnosed with invasive ductal breast cancer.
+Materials and Methods
+Two authors (M.W. and X.Y.) are affiliated with Siemens Healthineers and contributed as MRI research scientists, offering technical assistance (ie, debugging of breast MRI sequence) for this study under Siemens’ collaborative regulations, without receiving remuneration or having personal interests tied to the study. One author (J.S.), who is not an employee of or consultant for Siemens Healthineers, had control of the inclusion of any data and information that might present a conflict of interest for those authors (M.W. and X.Y.). This prospective study (ClinicalTrials. gov identifier: NCT05159323) received approval from the institutional review board of Sun Yat-Sen Memorial Hospital, Sun Yat-Sen University (registration no. SYSEC-KY-KS-2021–182). All participants provided written informed consent.
+Participants
+The flowchart of participant selection is shown in Figure 1. From August 2021 to October 2022, 281 consecutive participants were prospectively recruited from the breast tumor center in our hospital. All participants underwent breast MRI within a 2-week timeframe prior to biopsy and surgery. Participants were included if they were adults (age ≥ 18 years) and had clinically suspected malignant breast tumors, based on physical examination and breast US or mammography. The exclusion criteria were as follows: (a) claustrophobia, renal insufficiency, or previous history of allergic reaction to the contrast agents; (b) previous neoadjuvant therapy before breast tumor dissection; (c) no surgical resection of breast tumor; (d) inadequate MR image quality (eg, artifacts) of MAP MR or ADC images; (e) appearance of a non–masslike type tumor at MRI; (f) benign lesions proven with biopsy pathology or malignant tumor types other than invasive ductal carcinoma; and (g) small range of tumor invasion that was not suitable for pathologic evaluation of the TSR. The clinicopathologic information of participants was recorded (Appendix S1).
+Breast MRI Protocol
+Breast MRI was performed with a 3.0-T MRI scanner (MAGNETOM Skyra; Siemens Healthcare) with a dedicated phased-array bilateral breast coil. The sequences consisted of T1-weighted imaging, T2-weighted imaging, diffusion spectral imaging, DWI, dynamic contrast-enhanced imaging, and delayed contrast-enhanced imaging. Diffusion spectral imaging data were acquired using a grid sampling scheme with nine b values (0, 200, 450, 650, 900, 1100, 1350, 1800, and 2000 msec/mm2) along two, six, 12, eight, six, 24, 24, 12, and six directions, respectively. The details of diffusion spectral imaging and other sequences are presented in Appendix S1.
+Breast MRI Morphologic Assessment
+MRI morphologic findings, including tumor size (long diameter), fibroglandular tissue (almost entirely fat or scattered
+dynamics of TSR status during treatment is highly desirable for breast cancer therapy. To date, the apparent diffusion coefficient (ADC) derived from conventional diffusion-weighted imaging (DWI) and fast signal fraction derived from the biexponential model were found to be correlated with the collagen content in benign, malignant, and normal breast tissue (14). ADC was also found to be associated with stromal density in fibroadenomas (15) and TSR status in estrogen receptor (ER)–positive invasive ductal breast carcinoma (16). Notably, the conventional DWI model presumes that the random motion of water molecules is based on Gaussian distribution without any restriction (17). However, water molecule diffusion within breast lesions is constrained and deviates from a Gaussian distribution, attributed to the intricate nature of the tumor microenvironment (17,18). The non-Gaussian diffusion model, mean apparent propagator (MAP) MRI, offers new insights into the intricate and heterogeneous characteristics of tissue microstructure with a variety of quantitative metrics (19–23). Previously, the quantitative metrics derived from MAP MRI have been reported to be helpful in characterizing brain microstructural changes (22,23) and glioma (24–26). However, the diagnostic performance of the ADC value and whether the diffusion metrics derived from MAP MRI outperform ADC in evaluating the TSR status in breast cancers remains unknown. We hypothesized that MAP MRI could help detect the intricate and heterogeneous nature of the tissue microstructure in invasive breast cancers and that diffusion metrics from MAP MRI can reflect the TSR status of invasive ductal breast carcinoma. In this study, MAP MRI metrics and conventional ADC value were measured in participants with invasive ductal breast carcinoma, and their performances in quantifying the TSR were
+Abbreviations
+ADC = apparent diffusion coefficient, AUC = area under the receiver operating characteristic curve, DWI = diffusion-weighted imaging, ER = estrogen receptor, HER2 = human epidermal growth factor receptor 2, MAP = mean apparent propagator, OR = odds ratio, TSR = tumor-stroma ratio
+Summary
+The mean apparent propagator MRI quantitative metric, radial non-Gaussianity, combined with lymphovascular invasion had higher performance than the apparent diffusion coefficient value from conventional diffusion-weighted imaging in assessing the tumor-stroma ratio in invasive ductal breast carcinoma.
+Key Points
+■ Mean apparent propagator (MAP) MRI metrics and the apparent diffusion coefficient (ADC) value significantly differed between high and low tumor-stroma ratio (TSR) breast carcinomas (P < .001 to P = .01).
+■ Radial non-Gaussianity from MAP MRI combined with lymphovascular invasion had better performance than the ADC value in distinguishing high and low TSR in luminal A breast carcinomas (area under the receiver operating characteristic curve, 0.79 [95% CI: 0.71, 0.87] vs 0.58 [95% CI: 0.48, 0.67] and accuracy, 79 of 111 [71%] vs 64 of 111 [58%], respectively).
+Keywords
+MR Diffusion-weighted Imaging, MR Imaging, Breast, Oncology
+
+
+Radiology: Imaging Cancer Volume 6: Number 4—2024 ■ radiology-ic.rsna.org 3
+Zhang and Qiu et al
+3.6.0; http://www.itksnap.org/pmwiki/pmwiki.php). The 12th phase of dynamic contrast-enhanced images was used as a reference to place the region of interest on MAP and ADC maps (28). A freehand region of interest was delineated along the profile of the breast mass, excluding the adjacent edema or normal breast fibroglandular tissue, on the maximal section of the MAP non-Gaussianity map and then automatically copied to seven other MAP maps (Fig S1). The ADC value was measured on the ADC map. Two radiologists (Y.Q. [radiologist 1] and X.Z. [radiologist 2], with 8 and 10 years, respectively, of experience in breast MRI diagnosis) performed independent measurements of the diffusion metrics. After 3 weeks, radiologist 1 measured the diffusion MRI metrics in 50 randomly selected cases again to assess the intrareader reproducibility. Both radiologists were unaware of the clinicopathologic information and the US and mammographic findings. The mean value of each diffusion metric assessed by both radiologists was calculated for further analysis. The largest mass was selected as the target tumor in case of multicentric or multifocal lesions.
+Pathologic Assessment
+The surgically resected breast tumors were processed for hematoxylin-eosin staining to assess the TSR status and predominant stromal type, as previously described (16) (Fig 2, Appendix S1). According to the pathologic results, participants were divided into the high-TSR group (stromal component percentage < 50%, stroma poor) and the low-TSR group (stromal component percentage ≥ 50%, stroma rich) (9,16). For the predominant stromal type, tumors were classified into three categories: collagen-predominant, lymphocyte-predominant, and fibroblast-predominant (16). Two pathologists (Y.L. [pathologist 1] and Q.L. [pathologist 2], with 9 and 4 years of experience, respectively, in pathologic evaluation for
+fibroglandular tissue/heterogeneous fibroglandular tissue or extreme fibroglandular tissue), background parenchymal enhancement (minimal or mild/moderate or marked), background enhancement distribution (symmetry/asymmetry), tumor number (single/multiple), tumor margin (spiculated/ nonspiculated), tumor internal enhancement characteristics (homogeneous/heterogeneous), and tumor enhancement curve (persistent or plateau/washout), were assessed by two radiologists (Y.Q. and Z.Y., with 8 and 13 years of experience, respectively, in breast MRI) following the Breast Imaging Reporting and Data System Atlas 5th edition (27). Disagreements between the two radiologists for categorical findings were resolved by a third radiologist (J.S., with 23 years of experience in breast MRI).
+Diffusion MRI Data Analysis
+The diffusion spectral imaging data were imported into NeuDiLab, in-house–developed software built upon the open source Diffusion Imaging in Python tool (https://nipy.org/ packages/dipy/index.html) to calculate MAP metrics. Eight sets of quantitative parametric maps from the MAP model, including non-Gaussianity, axial non-Gaussianity, radial nonGaussianity, mean-squared displacement, q-space-inverse variance, return-to-origin probability, return-to-plane probability, and return-to-axis probability were obtained (21). The calculation of MAP MRI metrics is presented in Appendix S1 and Table S1. Conventional DWI data were processed using built-in software on the MRI scanner. The ADC maps derived from DW images were obtained automatically.
+Diffusion MRI Metrics Measurement
+The diffusion MRI metrics of tumors were measured on MAP maps and ADC maps using the ITK-SNAP software (version
+Figure 1: The flowchart of participant selection for this study. ADC = apparent diffusion coefficient, DSI = diffusion spectral imaging, DWI = diffusion-weighted imaging, H&E = hematoxylin-eosin, MAP = mean apparent propagator.
+
+
+4 radiology-ic.rsna.org ■ Radiology: Imaging Cancer Volume 6: Number 4—2024
+Mean Apparent Propagator MRI: Tumor-Stroma Ratio Assessment in Breast Carcinoma
+Results
+Clinicopathologic Characteristics and MRI Morphologic Findings of Participants
+In total, 181 female participants (mean age, 49 years ± 10 [SD]) with 181 invasive ductal breast carcinomas were included in this study. The clinicopathologic characteristics between highTSR and low-TSR groups are summarized in Table 1. The MRI morphologic findings between high-TSR and low-TSR groups are summarized in Table S2. There was a significant difference in the lymphovascular invasion (P = .03) and breast tumor number at MRI (P = .04) between groups. No evidence of a difference was found in other clinicopathologic characteristics and MRI morphologic findings between the two groups (P = .11 to .94). Univariable logistic regression analysis (Table 2) showed that lymphovascular invasion (odds ratio [OR] = 2.33, P = .03) and breast tumor number at MRI (OR = 2.96, P = .04) were associated with the TSR status. No other clinicopathologic characteristics or MRI morphologic findings were associated with TSR status (OR = 0.58 to 2.19, P = .11 to .88).
+Diffusion MRI Metrics in Different Pathologic Categories
+The intraclass correlation coefficient of inter- and intrareader reliability for measuring diffusion MRI metrics ranged from 0.89 to 0.96 and 0.96 to 0.98, respectively. The κ values for assessing the reproducibility of the TSR statuses and predominant stromal types between the two pathologists were 0.96 and 0.94, respectively. Diffusion MRI metrics in different TSR statuses and predominant stromal types are shown in Table S3. The correlation between different diffusion MRI metrics is shown in Figure S2. Six MAP MRI quantitative metrics, including MAP non-Gaussianity (mean, 0.26 ± 0.004 vs 0.22 ± 0.004), MAP axial non-Gaussianity (mean, 0.21 ± 0.004 vs 0.17 ± 0.004), MAP radial non-Gaussianity (mean, 0.15 ± 0.003 vs 0.12 ± 0.003), MAP return-to-origin probability (mean, 2.51 ± 0.10 vs 1.63 ± 0.07), MAP return-to-plane probability (mean, 5.08 ± 0.07 vs 4.47 ± 0.06), and MAP returnto-axis probability (mean, 3.74 ± 0.10 vs 2.80 ± 0.08), were significantly higher in the low-TSR group than those in the high-TSR group (all P < .001). Another two MAP MRI
+breast tumors) independently evaluated the pathologic characteristics of breast carcinoma on a microscope (BX53; OLYMPUS). Disagreements between these two pathologists were resolved by consensus with another senior pathologist (Lijuan Bian [pathologist 3], with 16 years of experience in pathologic evaluation for breast tumors). All three pathologists were aware of the pathologic results of breast carcinoma but were blinded to the radiologic findings and diffusion metrics.
+Statistical Analysis
+Continuous data are presented as means ± SDs. The intraclass correlation coefficient was used to evaluate the interand intrareader reliability for measuring diffusion metrics. The κ test was used to assess the concordance between two pathologists (pathologist 1 and pathologist 2) for pathologic assessment. Two-tailed Mann-Whitney U and Kruskal-Wallis tests were used for two-group and multiple-group comparisons, respectively. Univariable and multivariable logistic regression analyses were conducted to identify independent variables derived from MAP metrics, ADC value, clinicopathologic characteristics, and MRI findings for distinguishing between high-TSR and low-TSR tumors. These statistical analyses were performed using SPSS (version 26.0; IBM). The diagnostic performance of the diffusion MRI metrics, clinicopathologic characteristics, and MRI morphologic findings were assessed through the area under the receiver operating characteristic curve (AUC), sensitivity, specificity, and accuracy. The optimal thresholds for the diffusion MRI metrics were determined using the maximum Youden index. The AUC comparison between the MAP metrics, either alone or combined with clinicopathologic characteristics and MRI morphologic findings, and the ADC value was conducted using the DeLong test. The McNemar test was employed to compare sensitivity, specificity, and accuracy between the MAP metrics alone or combined with clinicopathologic characteristics and MRI morphologic findings and the ADC value. These statistical analyses were performed using R statistical software (version 4.2.2; http://www.r-project.org). P value less than .05 was considered to indicate a statistically significant difference.
+Figure 2: Photomicrographs show sections of invasive ductal breast carcinomas. (A) Section with a low tumor-stroma ratio equal to approximately 10% (the stroma component represented a collagen-dominant tumor and is estimated to be 90%, which is defined as stroma rich). (B) Section with a tumor-stroma ratio equal to approximately 80% (the stroma component represents a lymphocyte-dominant tumor and is estimated to be 20%, which is defined as stroma poor). (C) Section with a tumor-stroma ratio equal to approximately 70% (the stroma component represents a fibroblast-dominant tumor and is estimated to be 30%, which is defined as stroma poor). Bar = 100 μm. (Hematoxylin-eosin stain; original magnification, ×200.)
+
+
+Radiology: Imaging Cancer Volume 6: Number 4—2024 ■ radiology-ic.rsna.org 5
+Zhang and Qiu et al
+ADC values (mean, 981.99 ± 21.54 vs 1050.10 ± 19.26) were significantly lower in the low-TSR group than those in the high-TSR group (P < .001 to P = .01). No evidence of
+quantitative metrics (ie, MAP mean-squared displacement [mean, 23.21 ± 4.69 vs 27.47 ± 4.16] and MAP q-spaceinverse variance [mean, 88.35 ± 4.03 vs 131.23 ± 4.88]) and
+Table 1: Clinicopathologic Characteristics of High-TSR Group and Low-TSR Group in Participants with Breast Carcinomas
+Parameter
+TSR Status
+High TSR (Stroma Poor) (n = 79)
+Low TSR (Stroma Rich) (n = 102)
+Age (y)* 48 ± 10 (24–75) 49 ± 11 (25–75) Race/ethnicity Asian 79/79 (100) 102/102 (100) Family history Yes 2/79 (3) 3/102 (3) No 77/79 (97) 99/102 (97) Laterality Left 38/79 (48) 46/102 (45) Right 41/79 (52) 56/102 (55) Molecular subtype Luminal A 44/79 (56) 67/102 (66) Luminal B 17/79 (22) 20/102 (20) HER2 positive 11/79 (14) 6/102 (6) Basal 7/79 (8) 9/102 (8) HER2 expression Positive 27/79 (34) 26/102 (26) Negative 52/79 (66) 76/102 (74) ER/PR status Positive 18/79 (23) 15/102 (15) Negative 61/79 (77) 87/102 (85) Ki-67 level High (>20%) 59/79 (75) 78/102 (76) Low (≤20%) 20/79 (25) 24/102 (24) Predominant stromal type Collagen 50/79 (63) 69/102 (68) Fibroblast 22/79 (28) 29/102 (28) Lymphocyte 7/79 (9) 4/102 (4) Degree of tumor differentiation Well differentiated 39/79 (49) 47/102 (46) Moderately differentiated/poorly differentiated 40/79 (51) 55/102 (54) Lymphovascular invasion Yes 12/79 (15) 30/102 (29) No 67/79 (85) 72/102 (71) Nottingham grade I/II 34/79 (43) 53/102 (52) III 45/79 (57) 49/102 (48) Pathology-determined axillary lymph node metastasis Yes 28/79 (35) 48/102 (47) No 51/79 (65) 54/102 (53)
+Note.—Data are numbers of participants, with percentages in parentheses, unless otherwise noted. ER = estrogen receptor, HER2 = human epidermal growth factor receptor 2, PR = progesterone receptor, TSR = tumor-stroma ratio. * Data are mean values ± SDs.
+
+
+6 radiology-ic.rsna.org ■ Radiology: Imaging Cancer Volume 6: Number 4—2024
+Mean Apparent Propagator MRI: Tumor-Stroma Ratio Assessment in Breast Carcinoma
+a difference was observed in all the MAP MRI metrics and ADC values across tumors with different predominant stromal types (P = .05 to .88). The diffusion MRI metrics in the high- and low-TSR groups are presented as box plots (Fig 3) and pseudocolorized maps (Figs 4, 5). The comparison of MAP MRI metrics and ADC value in different molecular subtypes, including luminal A, luminal B, human epidermal growth factor receptor 2 (HER2)–positive, and basal breast cancers, are presented in Tables S4–S7, respectively.
+Performance of Diffusion MRI Metrics, Pathologic Characteristics, and MRI Morphologic Findings in Discriminating Low-TSR and High-TSR Tumors
+The AUCs of the diffusion MRI metrics, pathologic characteristics, and MRI morphologic findings in discriminating low- and high-TSR tumors are shown in Table 3. Among them, MAP radial non-Gaussianity had the highest AUC of 0.80 (95% CI: 0.73, 0.85), which was higher than that of the ADC value (0.61 [95% CI: 0.53, 0.68], P < .001). Multivariable logistic regression
+Table 2: Univariable and Multivariable Logistic Regression Analyses of MAP MRI Quantitative Metrics, ADC Value, Clinicopathologic Characteristics, and MRI Findings in Discriminating High-TSR and Low-TSR Breast Carcinomas
+Variable β Value Odds Ratio P Value
+Univariable logistic regression MAP_NG −1.26 0.29 (0.19, 0.43) <.001* MAP_NGAx −1.26 0.28 (0.19, 0.43) <.001* MAP_NGRad −1.32 0.27 (0.18, 0.41) <.001* MAP_MSD 1.03 2.80 (1.92, 4.09) <.001* MAP_QIV 1.13 3.11 (2.08, 4.64) <.001* MAP_RTOP −1.34 0.26 (0.16, 0.42) <.001* MAP_RTPP −1.05 0.35 (0.24, 0.52) <.001* MAP_RTAP −1.26 0.28 (0.18, 0.44) <.001* ADC .88 2.41 (1.11, 5.25) .03* Age .02 1.02 (0.99, 1.05) .29 Family history of breast carcinoma .14 1.15 (0.19, 7.06) .88 Laterality .12 1.13 (0.63, 2.03) .69 HER2 expression −.42 0.66 (0.35, 1.25) .20 ER/PR status −.54 0.58 (0.27, 1.25) .17 Ki-67 status .10 1.10 (0.56, 2.18) .78 Degree of tumor differentiation .13 1.14 (0.63, 2.06) .66 Lymphovascular invasion .84 2.33 (1.10, 4.91) .03* Nottingham grade −.36 0.70 (0.39, 1.26) .23 Pathology-determined axillary lymph node metastasis .30 1.35 (0.78, 2.32) .29 Tumor size at MRI (mm) −.01 0.99 (0.97, 1.01) .23 Breast fibroglandular tissue at MRI −.51 0.60 (0.32, 1.11) .11 Breast background parenchymal enhancement at MRI −.28 0.75 (0.28, 2.00) .57 Breast background enhancement distribution at MRI .64 1.89 (0.58, 6.18) .30 Breast tumor number at MRI 1.09 2.96 (1.04, 8.41) .04* Breast tumor margin at MRI .78 2.19 (0.69, 6.96) .19 Breast tumor internal enhancement at MRI .26 1.30 (0.08, 21.03) .86 Breast tumor enhancement curve at MRI 1.26 1.26 (0.66, 2.42) .48 Multivariable logistic regression MAP_NGRad −1.33 0.27 (0.17, 0.41) <.001* Lymphovascular invasion .87 2.39 (1.01, 5.64) .047*
+Note.—Data in parentheses are 95% CIs. ADC = apparent diffusion coefficient, ER = estrogen receptor, HER2 = human epidermal growth factor receptor 2, MAP = mean apparent propagator, MSD = mean-squared displacement, NG = non-Gaussianity, NGAx = axial non-Gaussianity, NGRad = radial non-Gaussianity, PR = progesterone receptor, QIV =
+q-space-inverse variance, RTAP = return-to-axis probability, RTOP = return-to-origin probability, RTPP = return-toplane probability, TSR = tumor-stoma ratio. * P < .05 indicates a significant difference.
+
+
+Radiology: Imaging Cancer Volume 6: Number 4—2024 ■ radiology-ic.rsna.org 7
+Zhang and Qiu et al
+analysis showed that MAP radial non-Gaussianity (OR = 0.27, P < .001) and lymphovascular invasion (OR = 2.39, P = .047) were the independent variables for discriminating different TSR statuses (Table 2). Compared with MAP radial non-Gaussianity alone, MAP radial non-Gaussianity combined with lymphovascular invasion showed a comparable AUC (0.81 [95% CI: 0.74, 0.87] vs 0.80 [95% CI: 0.73, 0.85], P = .30) in discriminating different TSR statuses. The combination of MAP radial nonGaussianity with lymphovascular invasion had a higher AUC (0.81 [95% CI: 0.74, 0.87] vs 0.61 [95% CI: 0.53, 0.68], P <
+.001) (Fig 6), specificity (82 of 102 [80%] vs 49 of 102 [48%], P < .001), and accuracy (131 of 181 [76%] vs 106 of 181 [59%], P < .001) but a comparable sensitivity (56 of 79 [71%] vs 57 of 79 [72%], P = .86) compared with the ADC value. A stratified analysis based on different molecular subtypes of breast carcinoma in discriminating the low- and high-TSR tumors was performed using the combination of MAP radial non-Gaussianity and lymphovascular invasion (Table 4). In luminal A invasive ductal breast carcinoma, MAP radial non-Gaussianity combined with lymphovascular invasion had a higher AUC (0.79 [95% CI:
+Figure 3: Box plots show mean apparent propagator (MAP) MRI quantitative metrics and apparent diffusion coefficient (ADC) values in low–tumor-stroma ratio (TSR) and high-TSR tumors. * indicates statistical significance. MSD = mean-squared displacement, NG = non-Gaussianity, NGAx = axial non-Gaussianity, NGRad = radial nonGaussianity, QIV = q-space-inverse variance, RTAP = return-to-axis probability, RTOP = return-to-origin probability, RTPP = return-to-plane probability.
+
+
+8 radiology-ic.rsna.org ■ Radiology: Imaging Cancer Volume 6: Number 4—2024
+Mean Apparent Propagator MRI: Tumor-Stroma Ratio Assessment in Breast Carcinoma
+0.71, 0.87] vs 0.58 [95% CI: 0.48, 0.67], P < .001), sensitivity (38 of 44 [86%] vs 30 of 44 [68%], P = .04), and accuracy (79 of 111 [71%] vs 64 of 111 [58%], P = .04), while having a comparable specificity (41 of 67 [61%] vs 34 of 67 [51%], P = .22) in discriminating high-TSR and low-TSR tumors compared with
+the ADC value. No evidence of a difference was found in the AUC, sensitivity, specificity, and accuracy between MAP radial non-Gaussianity combined with lymphovascular invasion and the ADC in discriminating high-TSR and low-TSR tumors in other subtypes of breast cancer (P = .05 to P > .99).
+Figure 4: Images show invasive ductal carcinoma of the left breast in a 49-year-old woman. (A) Axial dynamic contrast-enhanced (DCE) MR image in the 12th phase (arrowhead) and (B–I) axial mean apparent propagator (MAP) MRI maps, including (B) non-Gaussianity (NG), (C) axial non-Gaussianity (NGAx), (D) radial non-Gaussianity (NGRad), (E) mean-squared displacement (MSD), (F) q-space-inverse variance (QIV), (G) return-to-origin probability (RTOP), (H) return-to-plane probability (RTPP), and (I) return-to-axis probability (RTAP), show an irregular mass. A region of interest (ROI) was manually delineated along the left breast mass profile on the MAP NG map and then copied to other MAP MRI maps. (J) Axial apparent diffusion coefficient (ADC) map from diffusion-weighted imaging (DWI) shows the same irregular mass of the left breast. The mean NG, NGAx, NGRad, MSD, QIV, RTOP, RTPP, RTAP,
+and ADC values within the indicated left breast mass ROI are 0.31, 0.25, 0.18, 21.71 × 10−5 mm2, 75.63 × 10−10 mm5, 3.47 × 105 mm−3, 5.57 × 101 mm−1, 4.75 × 103 mm−2, and 759.75 × 10−3 mm2/sec, respectively. (K) Hematoxylin-eosin–stained (H&E) section of invasive ductal breast carcinomas at ×200 magnification. Section shows a low tumor-stroma ratio equal to approximately 30% (the stroma component represents a collagen-dominant tumor type and is estimated to be 70%, which is defined as stroma rich). The units of line segments in A–J are millimeters, there is no unit for color bars in B–D, and the units of color bars in E–J are 10−5 mm2, 10−10 mm5,105 mm−3, 101 mm−1, 103 mm−2, and 10−3 mm2/sec, respectively.
+
+
+Radiology: Imaging Cancer Volume 6: Number 4—2024 ■ radiology-ic.rsna.org 9
+Zhang and Qiu et al
+Discussion
+Our study results demonstrated that MAP MRI quantitative metrics differed in invasive ductal breast carcinomas with low or high TSR. Radial non-Gaussianity (OR = 0.27) and lymphovascular invasion (OR = 2.39) were independent factors with
+higher diagnostic performance than the conventional ADC value (AUC, 0.81 [95% CI: 0.74, 0.87] vs 0.61 [95% CI: 0.53, 0.68]) in differentiating the low- and high-TSR tumors, particularly in luminal A invasive ductal breast carcinoma (AUC, 0.79 [95% CI: 0.71, 0.87] vs 0.58 [95% CI: 0.48, 0.67]).
+Figure 5: Images show invasive ductal carcinoma of the right breast in a 48-year-old woman. (A) Axial dynamic contrast-enhanced (DCE) MR image in the 12th phase (arrowhead) and (B–I) axial mean apparent propagator (MAP) MRI maps, including (B) non-Gaussianity (NG), (C) axial non-Gaussianity (NGAx), (D) radial non-Gaussianity (NGRad), (E) mean-squared displacement (MSD), (F) q-space-inverse variance (QIV), (G) return-to-origin probability (RTOP), (H) return-to-plane probability (RTPP), and (I) return-to-axis probability (RTAP), show an irregular mass. A region of interest (ROI) is manually delineated along the right breast mass profile on the NG map and then copied to other MAP MRI maps. (J) Axial apparent diffusion coefficient (ADC) map from diffusion-weighted imaging (DWI) shows the same irregular mass of the right breast. The mean NG, NGAx, NGRad, MSD, QIV, RTOP, RTPP, RTAP, and
+ADC values within the indicated right breast mass ROI are 0.23, 0.19, 0.13, 25.11 × 10−5 mm2, 94.92 × 10−10 mm5, 1.81 × 105 mm−3, 4.68 × 101 mm−1, 3.05 × 103 mm−2, and 971.61 × 10−3 mm2/sec, respectively. (K) Hematoxylin-eosin–stained (H&E) section of invasive ductal breast carcinomas at ×200 magnification. Section shows a high tumor-stroma ratio equal to approximately 70% (the stroma component represents a fibroblast-dominant tumor type and is estimated as 30%, which is defined as stroma poor). The units of line segments in A–J are millimeters, there is no unit for color bars in B–D, and the units of color bars in E–J were 10−5 mm2, 10−10 mm5, 105 mm−3, 101 mm−1, 103 mm−2, and 10−3 mm2/sec, respectively.
+
+
+10 radiology-ic.rsna.org ■ Radiology: Imaging Cancer Volume 6: Number 4—2024
+Mean Apparent Propagator MRI: Tumor-Stroma Ratio Assessment in Breast Carcinoma
+Table 3: Diagnostic Performance of Diffusion MRI Quantitative Metrics, Pathologic Characteristics, and MRI Findings in Discriminating High-TSR and Low-TSR Breast Carcinomas
+Variables Threshold AUC Sensitivity (%) Specificity (%) Accuracy (%)
+MAP_NG 0.23 0.79 [0.72, 0.84]
+71 (56/79) [60, 81]
+77 (78/102) [67, 84]
+74 (134/181) [67, 80] MAP_NGAx 0.19 0.79 [0.72, 0.85]
+70 (55/79) [58, 80]
+77 (78/102) [67, 84]
+74 (134/181) [67, 80] MAP_NGRad 0.13 0.80 [0.73, 0.85]
+72 (57/79) [61, 82]
+75 (77/102) [66, 83]
+74 (134/181) [67, 80] MAP_MSD (×10−5 mm2) 21.71 0.75 [0.68, 0.81]
+95 (75/79) [88, 99]
+44 (45/102) [34, 54]
+66 (120/181) [59, 73] MAP_QIV (×10−10 mm5) 114.70 0.79 [0.72, 0.84]
+62 (49/79) [50, 73]
+82 (84/102) [74, 89]
+73 (133/181) [66, 80] MAP_RTOP (×105 mm−3) 1.91 0.79 [0.72, 0.84]
+76 (60/79) [65, 84]
+71 (72/102) [61, 80]
+73 (132/181) [66, 79] MAP_RTPP (×101 mm−1) 4.63 0.77 [0.70, 0.83]
+66 (52/79) [54, 76]
+77 (79/102) [68, 85]
+72 (131/181) [65, 79] MAP_RTAP (×103 mm−2) 2.84 0.78 [0.71, 0.84]
+60 (47/79) [48, 70]
+85 (87/102) [77, 93]
+74 (134/181) [67, 80] ADC (×10−3 mm2/sec) 949.36 0.61 [0.53, 0.68]
+72 (57/79) [61, 82]
+48 (49/102) [38, 58]
+59 (106/181) [51, 66] Lymphovascular invasion ... 0.57 [0.50, 0.64]
+85 (67/79) [75, 92]
+29 (30/102) [21, 39]
+54 (97/181) [46, 60] Breast tumor number at MRI
+... 0.55 [0.48, 0.63]
+94 (74/79) [86, 98]
+17 (17/102) [10, 25]
+50 (91/181) [43, 58]
+Note.—Data in parentheses are numerators and denominators; data in brackets are 95% CIs. ADC = apparent diffusion coefficient, AUC = area under the receiver operating characteristic curve, MAP = mean apparent propagator, MSD = mean-squared displacement, NG = non-Gaussianity, NGAx = axial non-Gaussianity, NGRad = radial non-Gaussianity, QIV = q-space-inverse variance, RTAP = return-to-axis
+probability, RTOP = return-to-origin probability, RTPP = return-to-plane probability, TSR = tumor-stroma ratio.
+Figure 6: The receiver operating characteristic curves of the mean apparent propagator radial non-Gaussianity (MAP_NGRad), MAP_NGRad combined with lymphovascular invasion, and apparent diffusion coefficient (ADC) values for discrimination of high–tumor-stroma ratio tumors and low–tumor-stroma ratio tumors in (A) the entire data set and (B) the stratified data set of luminal A breast cancer. AUC = area under the receiver operating characteristic curve.
+
+
+Radiology: Imaging Cancer Volume 6: Number 4—2024 ■ radiology-ic.rsna.org 11
+Zhang and Qiu et al
+Diffusion MRI could quantitatively measure the restricted and hindered diffusion of water molecules, which has been used for noninvasively characterizing the tissue microstructure and cytoarchitecture of breast tumors (17,18,29). Conventional DWI, as a simple monoexponential model, has been widely used to discriminate between benign and malignant breast tumors by probing tumor cellularity with the derived ADC value (30,31). However, the conventional DWI model assumes a Gaussian diffusion distribution, which weakens the ability of DWI to depict intricate tissue microstructures (32). Thus, several non-Gaussian diffusion MRI models were developed and found to be sensitive to microstructural heterogeneity in tumor tissues in which the diffusion of water molecules does not follow a Gaussian distribution (32). Previously, some parameters derived from the non-Gaussian diffusion models have been used to assess the breast tumoral structure and prognosis of patients with breast cancer (14,33,34). For example, Du et al (33) found that the metrics (ie, Dm, α, and β) from the non-Gaussian continuous-time random-walk model could be used to differentiate malignant and benign breast lesions with an AUC of 0.985 and a diagnostic accuracy of 94.23%. Honda et al (34) reported that higher kurtosis from a nonGaussian diffusion may serve as a biomarker to help predict the distant metastasis–free survival of patients with breast cancer. In addition, the stromal collagen content in breast tumors was found to be associated with the fast signal fraction from a biexponential diffusion model (14). MAP MRI is a recently introduced technique to estimate the diffusion probability density function, allowing for the calculation of zero-displacement and non-Gaussianity metrics, which better characterize tissue microstructure compared with conventional diffusion MRI models (22,35). Whereas, the use of MAP MRI metrics has been reported only in a single study of breast cancer, demonstrating that MAP MRI metrics may be used to preoperatively predict HER2 expression (36). Our study showed that all eight MAP MRI metrics differed between high-TSR and low-TSR tumors, suggesting the potential of the MAP MRI metrics in discriminating between these breast tumor types. Previously, the ADC value from conventional DWI was reported to be associated with different TSR statuses in ERpositive breast carcinoma (16). The authors suggested that high-TSR tumors had greater breast cancer cellularity than low-TSR tumors, resulting in decreased ADC values in highTSR tumors in ER-positive invasive ductal breast carcinoma (16). However, the diagnostic performance of ADC was not determined in that study (16). In our study, all four molecular types of breast cancer were included. Our study demonstrated no evidence of a difference in the ADC value between the high-TSR and low-TSR tumors in luminal A, luminal B, and HER2-positive breast cancers. This result is similar to that reported by Yamaguchi et al (37). However, our study showed that low-TSR tumors had lower ADC values than those of high-TSR tumors in basal breast cancers. This finding is contrary to that reported in ER-positive invasive ductal breast carcinoma, where high-TSR tumors were found to have a lower ADC value (16). The discrepancy may indicate the high heterogeneity of the stromal components in certain molecular
+Table 4: Performance of Combination of MAP Radial Non-Gaussianity and Lymphovascular Invasion versus ADC Value in Discriminating High-TSR and Low-TSR
+Breast Carcinomas
+Breast
+Molecular
+Subtype
+AUC
+P Value
+Sensitivity (%)
+P Value
+Specificity (%)
+P Value
+Accuracy (%)
+P Value
+MAP NGRad +
+Lymphovascular
+Invasion ADC
+MAP_NGRad +
+Lymphovascular
+Invasion ADC
+MAP_NGRad +
+Lymphovascular
+Invasion ADC
+MAP_NGRad +
+Lymphovascular
+Invasion ADC
+Total
+(n = 181)
+0.81
+[0.74, 0.87]
+0.61
+[0.53, 0.68]
+<.001* 71 (56/79)
+[60, 81]
+72 (57/79)
+[61, 82]
+.86 80 (82/102)
+[71, 88]
+48 (49/102)
+[38, 58]
+<.001* 76 (138/181)
+[69, 82]
+59 (106/181)
+[51, 66]
+<.001*
+Luminal A
+(n = 111)
+0.79
+[0.71, 0.87]
+0.58
+[0.48, 0.67]
+<.001* 86 (38/44)
+[73, 95]
+68 (30/44)
+[52, 81]
+.04* 61 (41/67)
+[49, 73]
+51 (34/67)
+[38, 63]
+.22 71 (79/111)
+[62, 79]
+58 (64/111)
+[48, 67]
+.04*
+Luminal B
+(n = 37)
+0.73
+[0.56, 0.86]
+0.60
+[0.43, 0.76]
+.26 71 (12/17)
+[44, 90]
+82 (14/17)
+[57, 96]
+.69 75 (15/20)
+[51, 91]
+40 (8/20)
+[19, 64]
+.05 73 (27/37)
+[56, 86]
+59 (22/37)
+[42, 75]
+.22
+HER2+
+(n = 17)
+0.92
+[0.69, 1.00]
+0.70
+[0.43, 0.89]
+.11 82 (10/11)
+[48, 98]
+55 (6/11)
+[23, 83]
+.36 100 (6/6)
+[54, 100]
+83 (5/6)
+[36, 100]
+>.99 88 (15/17)
+[64, 99]
+65 (11/17)
+[38, 86]
+.23
+Basal
+(n = 16)
+0.92
+[0.68, 1.00]
+0.69
+[0.42, 0.90]
+.19 100 (7/7)
+[59, 100]
+71 (5/7)
+[29, 96]
+.46 78 (7/9)
+[40, 97]
+78 (7/9)
+[40, 97]
+>.99 88 (14/16)
+[62, 98]
+75 (12/16)
+[48, 93]
+.65
+Note.—Data in parentheses are numerators and denominators, and data in brackets are 95% CIs. ADC = apparent diffusion coefficient, AUC = area under the receiver operating characteristic
+curve, HER2 = human epidermal growth factor receptor 2, MAP = mean apparent propagator, NGRad = radial non-Gaussianity.
+* P < .05 indicates a significant difference.
+
+
+12 radiology-ic.rsna.org ■ Radiology: Imaging Cancer Volume 6: Number 4—2024
+Mean Apparent Propagator MRI: Tumor-Stroma Ratio Assessment in Breast Carcinoma
+types of breast cancer; thus, the ADC value derived from the Gaussian-based diffusion model may be limited in assessing the TSR among different breast cancer subtypes due to the high microstructural heterogeneity in certain invasive breast cancers (38,39). ADC value derived from conventional DWI may be inadequate to serve as a robust biomarker in predicting the TSR status in all breast cancer subtypes. In our study, for the first time, we use MAP MRI metrics to assess TSR status in breast cancer. MAP non-Gaussianity, MAP axial non-Gaussianity, MAP radial non-Gaussianity, MAP return-to-origin probability, MAP return-to-plane probability, and MAP return-to-axis probability were lower, while the MAP mean-squared displacement and MAP q-space-inverse variance were higher in high-TSR tumors compared with low-TSR tumors. The higher MAP non-Gaussianity, MAP axial non-Gaussianity, and MAP radial non-Gaussianity values in low-TSR tumors may indicate a higher degree of structural complexity and heterogeneity in low-TSR tumors than in high-TSR tumors. The higher MAP return-to-origin probability, MAP return-to-plane probability, and MAP returnto-axis probability in low-TSR tumors may indicate the more obvious restriction of water molecules resulting from greater microstructural complexity and more diffusion barriers in lowTSR tumors than in high-TSR tumors. Notably, collagen fibers and fibroblasts are major barriers to molecular diffusion in the stroma (40,41). In our study, most participants (170 of 181, 94%) were diagnosed with collagen- and fibroblast-dominant breast tumors. Thus, more collagen fibers and fibroblasts might lead to greater diffusion restriction in low-TSR tumors, contributing to lower MAP mean-squared displacement values (21). MAP q-space-inverse variance exhibits high sensitivity to slow diffusion compartments or instances of restricted diffusion (42). The decreased MAP q-space-inverse variance in the low-TSR tumor may be associated with the more prominent slow diffusion component in low-TSR tumors (42). Our study showed that among the MAP MRI metrics, MAP radial non-Gaussianity had the highest AUC of 0.80 in differentiating the low-TSR and high-TSR tumors. The AUC of MAP radial non-Gaussianity was significantly higher than that of the ADC value (0.80 [95% CI: 0.73, 0.85] vs 0.61 [95% CI: 0.53, 0.68]). This indicates that MAP MRI might serve as a better noninvasive imaging technique to predict TSR status in breast cancer. Previously, no difference was found in ER status, progesterone receptor status, HER2 expression, Ki-67 level, histologic grade, and lymph node metastasis between low-TSR and high-TSR breast cancers (37). Similar findings were also found in our study. Moreover, our study showed that MAP radial nonGaussianity and lymphovascular invasion were both independent variables in differentiating low-TSR and high-TSR breast cancers. The combination of MAP radial non-Gaussianity with lymphovascular invasion showed a higher AUC and accuracy compared with the ADC value (0.81 [95% CI: 0.74, 0.87] vs 0.61 [95% CI: 0.53, 0.68]; 138 of 181 [76%] vs 106 of 181 [59%], respectively) in discriminating low-TSR and high-TSR breast cancers. Further stratified analysis based on different molecular subtypes of breast carcinoma showed that the combination of MAP radial non-Gaussianity and lymphovascular
+invasion also had a higher AUC and accuracy (0.79 [95% CI: 0.71, 0.87] vs 0.58 [95% CI: 0.48, 0.67] and 79 of 111 [71%] vs 64 of 111 [58%], respectively) than ADC in luminal A breast carcinoma. However, the addition of lymphovascular invasion to MAP radial non-Gaussianity did not improve performance, as comparable AUC and accuracy were found between MAP radial non-Gaussianity alone and the combination of MAP radial nonGaussianity with lymphovascular invasion (0.80 [95% CI: 0.73, 0.85] vs 0.81 [95% CI: 0.74, 0.87] and 134 of 181 [74%] vs 138 of 181 [76%], respectively). These findings suggest that one of the MAP MRI metrics, namely MAP radial non-Gaussianity, could be better than the ADC value for determining TSR status. It is known that the ADC value reflects the cellularity of the tumor. However, DWI is a random model without diffuse information of orientations and compartments; it cannot reflect cytoarchitecture details such as cell size and shape of tumor cells (19). Comparatively, MAP MRI is a diffusion-weighted MRI framework for accurately characterizing and quantifying anisotropic diffusion properties at large, as well as small levels of diffusion sensitivity, which can more accurately quantify the diffusion in complex microstructures (eg, multiple orientations, restrictions, and compartments) (19,22). As the cell type, size, and shape differ between the parenchyma and stroma components within tumors (2), it is reasonable that the MAP MRI metric is superior to the ADC value in helping discriminate the different TSR statuses. MAP MRI metrics may be clinically relevant if integrated into the clinical workup of invasive breast cancer. There were several limitations to our study. First, only participants with a pathologic subtype of invasive ductal breast carcinoma were included. The tumor stroma components may vary from different pathologic subtypes. The therapeutic or prognostic implications of the TSR are mainly determined in invasive breast cancer. The value of MAP MRI in predicting TSR in other pathologic types, such as invasive lobular carcinoma, remains to be determined in future studies. Second, our stratified analysis showed that the combination of a single MAP MRI metric with a pathologic feature was better than the ADC value in differentiating the high-TSR and low-TSR breast cancers in luminal A invasive ductal breast carcinoma. Whether it can outperform the ADC value from conventional DWI in other molecular types of breast cancer remains to be determined in future studies with a larger cohort of patients. Third, 50% was selected as the cutoff value to classify highTSR and low-TSR tumors, which was based on previous studies (10–12). Fourth, the survival data of participants were not available in this prospective study, and further studies are warranted to determine the value of MAP MRI in predicting outcomes in patients with breast cancer. In conclusion, our study demonstrated that MAP MRI could serve as an approach to noninvasively characterize the microstructures of breast tissue and the TSR in invasive ductal breast carcinoma. The combination of one MAP MRI metric (ie, radial non-Gaussianity) and a single pathologic feature (ie, lymphovascular invasion) had higher performance than the ADC value from conventional DWI in discriminating highand low-TSR breast cancers, particularly in luminal A invasive ductal breast carcinoma.
+
+
+Radiology: Imaging Cancer Volume 6: Number 4—2024 ■ radiology-ic.rsna.org 13
+Zhang and Qiu et al
+Acknowledgment: Our special thanks go to Lijuan Bian, MD, for her assistance in the pathologic assessment. We also thank Yingying Zhu, PhD, for her kind help in the consultation for statistical methods.
+Author contributions: Guarantors of integrity of entire study, X.Z., Y.Q., W.J., Z.Y., M.W., Q.L., Y.L., G.Y., J.S.; study concepts/study design or data acquisition or data analysis/interpretation, all authors; manuscript drafting or manuscript revision for important intellectual content, all authors; approval of final version of submitted manuscript, all authors; agrees to ensure any questions related to the work are appropriately resolved, all authors; literature research, X.Z., Y.Q., W.J., Z.Y., M.W., Q.L., Y.L., X.Y., J.S.; clinical studies, X.Z., Y.Q., W.J., M.W., Q.L., Y.L., X.Y., G.Y., J.S.; statistical analysis, Y.Q., Z.Y.; and manuscript editing, X.Z., Y.Q., W.J., M.W., Q.L., Y.L., G.Y., J.S.
+Data sharing: Data generated or analyzed during the study are available from the corresponding author by request.
+Disclosures of conflicts of interest: X.Z. No relevant relationships. Y.Q. No relevant relationships. W.J. No relevant relationships. Z.Y. No relevant relationships. M.W. No relevant relationships. Q.L. No relevant relationships. Y.L. No relevant relationships. X.Y. No relevant relationships. G.Y. No relevant relationships. J.S. No relevant relationships.
+References
+1. Elhanani O, Ben-Uri R, Keren L. Spatial profiling technologies illuminate the tumor microenvironment. Cancer Cell 2023;41(3):404–420. 2. Valkenburg KC, de Groot AE, Pienta KJ. Targeting the tumour stroma to improve cancer therapy. Nat Rev Clin Oncol 2018;15(6):366–381. 3. Narunsky L, Oren R, Bochner F, Neeman M. Imaging aspects of the tumor stroma with therapeutic implications. Pharmacol Ther 2014;141(2):192–208. 4. Xu M, Zhang T, Xia R, Wei Y, Wei X. Targeting the tumor stroma for cancer therapy. Mol Cancer 2022;21(1):208. 5. Kemi N, Eskuri M, Herva A, et al. Tumour-stroma ratio and prognosis in gastric adenocarcinoma. Br J Cancer 2018;119(4):435–439. 6. Ichikawa T, Aokage K, Sugano M, et al. The ratio of cancer cells to stroma within the invasive area is a histologic prognostic parameter of lung adenocarcinoma. Lung Cancer 2018;118:30–35. 7. Zong L, Zhang Q, Kong Y, et al. The tumor-stroma ratio is an independent predictor of survival in patients with 2018 FIGO stage IIIC squamous cell carcinoma of the cervix following primary radical surgery. Gynecol Oncol 2020;156(3):676–681. 8. Zunder SM, van Pelt GW, Gelderblom HJ, et al. Predictive potential of tumour-stroma ratio on benefit from adjuvant bevacizumab in high-risk stage II and stage III colon cancer. Br J Cancer 2018;119(2):164–169. 9. Hagenaars SC, de Groot S, Cohen D, et al. Tumor-stroma ratio is associated with Miller-Payne score and pathological response to neoadjuvant chemotherapy in HER2-negative early breast cancer. Int J Cancer 2021;149(5):1181–1188. 10. Vangangelt KMH, Green AR, Heemskerk IMF, et al. The prognostic value of the tumor-stroma ratio is most discriminative in patients with grade III or triple-negative breast cancer. Int J Cancer 2020;146(8):2296–2304. 11. Vangangelt KMH, van Pelt GW, Engels CC, et al. Prognostic value of tumor-stroma ratio combined with the immune status of tumors in invasive breast carcinoma. Breast Cancer Res Treat 2018;168(3):601–612. 12. Xu Q, Yuan JP, Chen YY, Zhang HY, Wang LW, Xiong B. Prognostic significance of the tumor-stromal ratio in invasive breast cancer and a proposal of a new Ts-TNM staging system. J Oncol 2020;2020:9050631. 13. Malik R, Lelkes PI, Cukierman E. Biomechanical and biochemical remodeling of stromal extracellular matrix in cancer. Trends Biotechnol 2015;33(4):230–236. 14. EgnellL,VidićI,JeromeNP,BofinAM,BathenTF,GoaPE.Stromalcollagen content in breast tumors correlates with in vivo diffusion-weighted imaging: a comparison of multi b-value DWI with histologic specimen from benign and malignant breast lesions. J Magn Reson Imaging 2020;51(6):1868–1878. 15. Parsian S, Giannakopoulos NV, Rahbar H, Rendi MH, Chai X, Partridge SC. Diffusion-weighted imaging reflects variable cellularity and stromal density present in breast fibroadenomas. Clin Imaging 2016;40(5):1047–1054. 16. Ko ES, Han BK, Kim RB, et al. Apparent diffusion coefficient in estrogen receptor-positive invasive ductal breast carcinoma: correlations with tumorstroma ratio. Radiology 2014;271(1):30–37. 17. Sun K, Chen X, Chai W, et al. Breast cancer: diffusion kurtosis MR imagingdiagnostic accuracy and correlation with clinical-pathologic factors. Radiology 2015;277(1):46–55.
+18. Iima M, Honda M, Sigmund EE, Ohno Kishimoto A, Kataoka M, Togashi K. Diffusion MRI of the breast: Current status and future directions. J Magn Reson Imaging 2020;52(1):70–90. 19. Özarslan E, Koay CG, Shepherd TM, et al. Mean apparent propagator (MAP) MRI: a novel diffusion imaging method for mapping tissue microstructure. Neuroimage 2013;78:16–32. 20. Ma K, Zhang X, Zhang H, et al. Mean apparent propagator-MRI: A new diffusion model which improves temporal lobe epilepsy lateralization. Eur J Radiol 2020;126:108914. 21. Fick RHJ, Wassermann D, Caruyer E, Deriche R. MAPL: Tissue microstructure estimation using Laplacian-regularized MAP-MRI and its application to HCP data. Neuroimage 2016;134:365–385. 22. Avram AV, Sarlls JE, Barnett AS, et al. Clinical feasibility of using mean apparent propagator (MAP) MRI to characterize brain tissue microstructure. Neuroimage 2016;127:422–434. 23. Spotorno N, Strandberg O, Vis G, Stomrud E, Nilsson M, Hansson O. Measures of cortical microstructure are linked to amyloid pathology in Alzheimer’s disease. Brain 2023;146(4):1602–1614. 24. Mao J, Zeng W, Zhang Q, et al. Differentiation between high-grade gliomas and solitary brain metastases: a comparison of five diffusion-weighted MRI models. BMC Med Imaging 2020;20(1):124. 25. Sun Y, Su C, Deng K, Hu X, Xue Y, Jiang R. Mean apparent propagatorMRI in evaluation of glioma grade, cellular proliferation, and IDH-1 gene mutation status. Eur Radiol 2022;32(6):3744–3754. [Published correction appears in Eur Radiol 2022;32(6):4334.] 26. Gao A, Zhang H, Yan X, et al. Whole-tumor histogram analysis of multiple diffusion metrics for glioma genotyping. Radiology 2022;302(3):652–661. 27. Rao AA, Feneis J, Lalonde C, Ojeda-Fournier H. A Pictorial Review of Changes in the BI-RADS Fifth Edition. RadioGraphics 2016;36(3):623–639. 28. Mann RM, Cho N, Moy L. Breast MRI: State of the Art. Radiology 2019;292(3):520–536. 29. Luo J, Hippe DS, Rahbar H, Parsian S, Rendi MH, Partridge SC. Diffusion tensor imaging for characterizing tumor microstructure and improving diagnostic performance on breast MRI: a prospective observational study. Breast Cancer Res 2019;21(1):102. 30. Tsvetkova S, Doykova K, Vasilska A, et al. Differentiation of benign and malignant breast lesions using ADC values and ADC ratio in breast MRI. Diagnostics (Basel) 2022;12(2):332. 31. Guo Y, Cai YQ, Cai ZL, et al. Differentiation of clinically benign and malignant breast lesions using diffusion-weighted imaging. J Magn Reson Imaging 2002;16(2):172–178. 32. Tang L, Zhou XJ. Diffusion MRI of cancer: From low to high b-values. J Magn Reson Imaging 2019;49(1):23–40. 33. Du M, Zou D, Gao P, et al. Evaluation of a continuous-time random-walk diffusion model for the differentiation of malignant and benign breast lesions and its association with Ki-67 expression. NMR Biomed 2023;36(8):e4920. 34. Honda M, Iima M, Kataoka M, et al. Biomarkers predictive of distant diseasefree survival derived from diffusion-weighted imaging of breast cancer. Magn Reson Med Sci 2023;22(4):469–476. 35. Olson DV, Arpinar VE, Muftuler LT. Optimization of q-space sampling for mean apparent propagator MRI metrics using a genetic algorithm. Neuroimage 2019;199:237–244. 36. Mao C, Jiang W, Huang J, et al. Quantitative parameters of diffusion spectrum imaging: HER2 status prediction in patients with breast cancer. Front Oncol 2022;12:817070. 37. Yamaguchi K, Hara Y, Kitano I, et al. Tumor-stromal ratio (TSR) of invasive breast cancer: correlation with multi-parametric breast MRI findings. Br J Radiol 2019;92(1097):20181032. 38. Harbeck N, Penault-Llorca F, Cortes J, et al. Breast cancer. Nat Rev Dis Primers 2019;5(1):66. 39. Acerbi I, Cassereau L, Dean I, et al. Human breast cancer invasion and aggression correlates with ECM stiffening and immune cell infiltration. Integr Biol 2015;7(10):1120–1134. 40. Erikson A, Andersen HN, Naess SN, Sikorski P, Davies CL. Physical and chemical modifications of collagen gels: impact on diffusion. Biopolymers 2008;89(2):135–143. 41. Ramanujan S, Pluen A, McKee TD, Brown EB, Boucher Y, Jain RK. Diffusion and convection in collagen gels: implications for transport in the tumor interstitium. Biophys J 2002;83(3):1650–1660. 42. WuYC,FieldAS,AlexanderAL.Computationofdiffusionfunctionmeasures in q-space using magnetic resonance hybrid diffusion imaging. IEEE Trans Med Imaging 2008;27(6):858–865.
