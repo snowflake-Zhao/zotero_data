@@ -1,0 +1,1274 @@
+41 卷 6 期
+2022 年 12 月
+中国生物医学工程学报
+Chinese Journal of Biomedical Engineering
+Vol. 41 No. 6 December 2022
+doi: 10. 3969 / j.issn.0258-8021. 2022. 06. 012
+收稿日期: 2021-05-18,录用日期: 2022-05-19
+基金项目: 国家自然科学基金( 62071176,61671204,61271382) ; 湖南省科技计划重点研发专项( 2016WK2001)
+# 中国生物医学工程学会会员( Member,Chinese Society of Biomedical Engineering)
+* 通信作者( Corresponding author) ,E-mail: lgc630819@ hnu.edu.cn
+肿瘤精确放射治疗剂量分布和疗效预测的机器学习方法综述
+刘国才1,2#* 顾冬冬1,3 刘劲光1,4
+1( 湖南大学电气与信息工程学院,长沙 410082)
+2( 机器人视觉感知与控制技术国家工程研究中心,长沙 410082)
+3( 上海联影智能医疗科技有限公司,上海 200032)
+4( 湖南工程学院计算科学与电子学院,湖南 湘潭 411104)
+摘 要: 调强放疗( IMRT) 是当前主要的肿瘤临床治疗技术,制定临床上可接受、可执行的 IMRT 计划的关键是放
+疗剂量计算、剂量分布预测和优化评估,同时还需要对各种肿瘤放化疗的疗效和毒副作用进行预测和评估。综述
+近几年机器学习方法在基于肿瘤影像进行的肿瘤放疗剂量分布预测和疗效预测中的研究进展,包括基于深度学习
+的剂量预测方法和基于深度学习、影像组学与逻辑回归的放化疗疗效预测方法; 综述针对 IMRT、立体定向放射治
+疗( SBRT) 、容积弧调强放疗( VMAT) 等不同治疗方法的应用进展; 提出了未来研究的方向、内容和策略。
+关键词: 机器学习; 深度学习; 影像组学; 放疗剂量预测; 疗效预测
+中图分类号: R318 文献标志码: A 文章编号: 0258-8021( 2022) 06-0744-15
+Machine Learning Methods for Prediction of Dose Distribution and Response
+to Treatment in Tumor Precision Radiotherapy: A Review
+Liu Guocai1,2#* Gu Dongdong1,3 Liu Jinguang1,4
+1( College of Electrical and Information Engineering,Hunan University,Changsha 410082,China)
+2( National Engineering Research Center for Robot Visual Perception and Control Technology,Changsha 410082,China)
+3( Shanghai United Imaging Intelligence Co.,Ltd.,Shanghai 200032,China)
+4( School of Computational Science and Electronics,Hu'nan Institute of Engineering,Xiangtan 411104,Hunan,China)
+Abstract: Intensity modulated radiation therapy ( IMRT) is a main technology for tumor treatment in clinics. In
+order to design a clinically acceptable and executable IMRT plan,key factors including radiotherapy dose
+calculation, dose distribution prediction and optimization evaluation are required to carefully consider.
+Meanwhile,it also needs to predict and evaluate the outcome,toxicity and side effects of radiotherapy and
+chemotherapy. This article reviewed machine learning methods based on the images for dose distribution
+prediction and responses to the tumor radiotherapy and chemotherapy,including deep learning methods for dose
+prediction as well as deep learning,radiomics,logistic regression methods for outcome prediction of IMRT,
+stereotactic body radiotherapy ( SBRT) ,volumetric arc modulated radiation therapy ( VMAT) . Finally,the
+future research directions and research contents were proposed.
+Key words: machine learning; deep learning; radiomics; radiotherapy dose prediction; outcome prediction
+引言
+目前,癌症已经成为严重威胁人类健康的主要
+公共卫生问题之一。根据 2022 年 2 月发布的中国
+癌症统计数据[1]: 2016 年全国恶性肿瘤新发病例约
+406. 40 万例,新发癌症死亡病例 241. 35 万例。我
+
+
+6 期 刘国才,等: 肿瘤精确放射治疗剂量分布和疗效预测的机器学习方法综述
+国整体癌症粗发病率仍呈上升趋势,恶性肿瘤发病
+和死亡数仍持续上升,每年恶性肿瘤所致医疗花费
+超过2 200亿,社会负担沉重,防控形势严峻。根据
+2022 年发布的“2019 年美国癌症统计报告”[2]: 预
+计 2022 年美国将新增约 191. 8 万癌症患者,因癌死
+亡数约 60. 9 万。根据 2021 年发布的“全球癌症统
+计报告”[3]: 2020 年全球 185 个国家共新增约1 930
+万癌症患者,因癌症死亡约1 000万人。总之,癌症
+的临床治疗形势严峻。据统计资料显示,约 60% ~
+70%的癌症患者需要进行放射治疗,即由多模态医
+学影像引导的放疗,这是一种从肿瘤分期、定位、治
+疗到疗效评估的复杂诊疗过程。实现放疗的精确
+定位、精确计划、精确治疗、科学预测是百余年来一
+直追求的目标[4]。
+癌症患者进行放疗前,临床放疗医师和物理师
+需 要 根 据 计 算 机 断 层 扫 描 ( computerized
+tomography,CT) 影像模拟放疗定位,进行放疗靶区
+( planed target volume,PTV) 与 危 及 器 官 ( organs at
+risk,OARs) 分割、放疗计划设计优化 ( 包括放疗剂
+量计算与分布预测评估、疗效预测评估) ,而 PTV 与
+OARs 的高精度分割、肿瘤影像的高精度配准以及
+调 强 放 疗 ( intensity modulated radiation therapy,
+IMRT) 计划设计的智能优化是实施肿瘤精确放射治
+疗的关键技术。
+目前临床应用的肿瘤多模态影像包括: CT、磁
+共振成像 ( magnetic resonance imaging,MRI) 、锥形
+束 CT( cone beam CT,CBCT) 和正电子发射型计算
+机断层显像( positron emission tomography,PET) ,采
+用深度学习、机器学习等新一代人工智能技术和方
+法,对 这 些 多 模 态 影 像 进 行 影 像 配 准 与 转 换、P TV
+和 OARs 分割以及放疗剂量分布预测和放疗疗效预
+测,已经成 为 研 究 热 点[5-11]。 尽 管 目 前 国 内 外 相 关
+研究已经取得很大的进展,但当前配准和分割的精
+度及速度在多数情况下还不能满足临床精确放疗
+的要求。制定临床上可接受、可执行的 IMRT 计划,
+不仅需要进行 PTV 和 OARs 分割、肿瘤多模态影像
+配准与转换,而 且 需 要 进 行 放 疗 剂 量 计 算、剂 量 分
+布预测和优化评估。同时临床医生还需要对各种
+肿瘤放化疗的疗效和毒副作用进行科学预测和评
+估,以制定更加科学合理的治疗方案。
+刘国才等[11]论 述 了 多 模 态 影 像 引 导 肿 瘤 精 确
+放疗技术的临床应用现状与发展趋势,并综述了最
+近几年 PTV 分割、多模态影像配准和转换的深度学
+习方法研究进展及成果。本文综述近几年基于肿
+瘤影像的放疗剂量分布预测和疗效预测机器学习
+方法的应用研究进展和未来主要研究方向、内容和
+策略。
+1 肿瘤调强放疗剂量分布预测方法
+近 年 来,基 于 深 度 卷 积 神 经 网 络 ( deep
+convolutional neural network,DCNN) 和生成对抗神
+经网络( generative adversarial network,GAN) 的肿瘤
+放疗剂量分布预测和放疗计划优化研究取得了很
+大进展[9-10,12],包括 IMRT 的 3D 空间点剂量预测和
+剂量体积直方图( dose volume histogram,DVH) 预测
+及其物理上临床可实现性的研究。早期基于经典
+机 器 学 习 方 法[13],如 查 询 方 法、主 成 分 分 析
+( principal component analysis,PCA) 方法、随机森林
+( random forest,RF) 方法以及支持向量回归( support
+vector regression,SVR) 方法,与这些方法相比,基于
+DCNN 和 GAN 获得的剂量预测模型,其速度更快、
+精度更高。在进一步经大规模、多中心的临床实验
+验证后,剂量预测深度学习模型将有望广泛应用于
+临床放疗计划优化评估。
+目前,主要的肿瘤放疗剂量预测深度学习方法
+及性能如表 1 所示,下阶段研究的重点是如何提高
+放疗剂量预测模型的泛化能力和肿瘤类型与放疗
+方法的通用性,预测模型输入的构成和融合方式是
+提高模型预测性能的关键。
+1. 1 肿瘤放疗剂量预测 DCNN 方法
+基 于 先 验 知 识 的 自 动 放 疗 计 划 ( automatic
+treatment planning,ATP ) ,主要通过建立放疗剂量
+分布预测模型来实现[7,13]。深度卷积神经网络类的
+训练方法,采用回顾性临床放疗患者的模拟定位 CT
+影像、PTV 和 OARs 分割信息等作为模型输入的训
+练样本,放疗计划剂量分布信息等作为模型输出金
+标准,通过 端 到 端 的 学 习,直 接 建 立 剂 量 预 测 深 度
+卷积神经网络模型,然后直接使用该网络“计算”新
+患者放疗 DVH、2D 或 3D 的点剂量值、放疗计划优
+化的约束条件和模型参数等。
+Eriksson 等[14]提出在创建鲁棒的质子放疗计划
+时采用两个 U-Net 深度卷积神经网络,一个用于以
+患者 CT 影像和感兴趣区域( region of interest,ROI)
+作为输入预测“名义上”的剂量分布,另一个以名义
+上的预测剂量作为输入,预测特定临床场景下的剂
+量分布。尽管训练样本数据可能存在不确定性,但
+通过采用一个特别设计的基于 DVH 的损失函数和
+非鲁棒计划的形变,使得训练优化后的场景剂量预
+745
+
+
+中 国 生 物 医 学 工 程 学 报 41 卷
+表 1 主要的肿瘤放疗剂量预测深度学习方法及性能总结
+Tab.1 Summary of dose prediction methods and their performance
+参考文献 肿瘤类型 预测网络模型 预测网络输入 剂量预测网络性能
+[14] 前列腺癌
+IMRT 改进的 3D U-Net 网络 CT 影 像 和 靶 区 PTV、危 及 器
+官 OARs 比现有预测方法的 IMRT 更加鲁棒
+[15] 头颈部
+IMRT、OARs 改进的 3D U-Net 网络 CT 影像和 PTV、OARs 比 MC 剂量计算速度提高 38 倍以上
+[16] 头颈部 IMRT 级联的 3D U-Net CT 影像和 PTV、OARs
+非零剂量区域预测剂量平均的均方绝对 误 差 MAE 达 到 2. 50 Gy ( 处 方 剂 量 的 3. 57%)
+[17] 头颈部 IMRT 密集连接的 3D U-Net CT 影像和 PTV、OARs
+预测剂量平均的均方绝对误差 MAE 达 到 2. 56 Gy,DVH 误 差 小 于 临 床 计 划 DVH 值的 3%
+[18] 鼻咽癌 IMRT DCNN CT 影像和 PTV、OARs OARs 的平均剂量均方预测误差 MAE 为
+0. 30 ± 0. 95 Gy,优于临床计划
+[19] 前列腺癌、直肠癌 3D U-Net CT 影像和 PTV、OARs
+子野剂 量 预 测 平 均 绝 对 误 差 MAE 为 0. 3%± 0. 7%,3%3 mm 标 准 测 试 的 伽 马 通过率 99. 4%±0. 6%
+[20] 前列腺癌、头颈癌
+和肺癌 IMPT DCNN+Transformer CT 影像和 PTV、OARs
+质子放疗 MC 剂量计算分布预测伽马通 过率 99. 37 ± 1. 17% ( 1%3 mm) ,预 测 时 间( 5. 0± 4. 9) ms,预测性能优于笔形束 剂量计算 方 法 PBAs,计 算 速 度 是 PBAs 的 100 倍以上
+[21] 前列腺癌 IMRT 改进的 U-Net 网络
+肿瘤靶区 PTV 和膀胱、直肠等 5 个 危及器官 OARs 的轮廓作为 6 个单 独输入通道
+平均剂量均方绝对误差 MAE: 处方剂量 的 5%
+[22] 头颈部 IMRT 联 合 U-Net 和
+DenseNet: HD U-Net
+1- 5 个靶区 PTVs 和脑干、腮腺等 22 个危及器官 OARs 的轮 廓 作 为 23 个单独输入通道
+平均剂量均方绝对误差 MAE: 处方剂量 的 5. 3%
+[23] 肺癌 VMAT 联 合 U-Net 和
+DenseNet: HD U-Net
+1 个为射野通道,另外 9 个为解剖 通道 ( 肿瘤 靶 区 PTV 和 肺、心 脏、 脊髓等 8 个危及器官 OARs)
+增加射野后剂量预测预测精度提高 1% ~ 2%
+[24] 前列腺癌 IMRT 联 合 U-Net 和
+DenseNet: HD U-Net
+肿瘤靶区 PTV、Body 和膀胱、直肠 等 7 个危及器官 OARs 作为 3 个单 独输入通道
+靶区平均剂量均方绝对误差 MAE: 处方 剂量的 3. 4%
+[25] 鼻咽癌 改进 ResNet10 2 个靶区 PTVs 和 17 个 危 及 器 官
+OARs 编码图像
+仅考虑靶区与危及器官平均剂量均方绝 对误差 MAE: 处方剂量的 5. 5%,同时考 虑射野几何特征平均剂量均方绝对误差 MAE: 处方剂量的 4. 7%
+[26] 前列腺癌 SBRT 改 进 的 U-Net 网
+络: DoseNet
+CT 影像和肿瘤靶区 PTV 及膀胱、 直肠等 4 个危及器官 OARs
+靶 区 剂 量 的 适 形 度 指 数、均 匀 性 指 数 等 临床剂量评价指标均优于 U-Net
+[27] 前列腺癌 改进的 V-Net 网络 CT 影 像,肿 瘤 靶 区 PTV,以 及 膀
+胱,直肠等 4 个危及器官 OARs
+对前列腺癌的剂量预测精度要高于 UNet 网络
+[28] 前 列 腺 癌 IMRT
+头颈癌 VMAT 3D U-Net+迁移学习 CT 影像和 PTV、OARs
+靶区 PTV 的均值误差 MAE 为处方剂量 的 1. 08% ± 0. 95%,所 有 危 及 器 官 OAR 的 平 均 误 差 MAE 小 于 处 方 剂 量 的 2. 43%
+[29-30] 口咽癌 IMRT 改进的 cGAN 模型
+对 CT 影像、PTVs 和 OARs 统一进 行编码,生 成 一 个 三 维 的 伪 彩 色 CT 图像
+cGAN 模型生成的可执行放疗计划能使 77% 的临床 放 疗 剂 量 准 则 得 到 满 足,而 临床实际的计划仅 64%
+[31] 宫 颈 癌 直 肠
+癌 IMRT
+多约 束 的 GAN + 膨 胀 卷积 U-Net + 空 间 和 特 征注意力 DAM
+CT 影像和 PTV、OARs 预测性能优于 4 个现有的深度网络预测
+模型
+[32] 胰腺癌 SBRT 双金字塔 GAN CT 影像和 PTV、OARs
+能够预测 91% 的临床相关剂量参数,而 且能够预测 SBRT 的剂量热区,预测的剂 量分布和金标准剂量分布的相关系数比 现有的预测方法更大
+[33] 头 部 肿 瘤 仿
+体 IMRT cGAN 蒙特卡罗 MC 仿真 CT
+99% 的体素点剂 量 预 测 误 差 小 于 其 最 大 沉积能量的 3%,预测时间小于 1 s,而采 用 Geant4 MC 仿真则需要几百个小时
+[34] 头颈部肿瘤 IMRT 改进的 ResNet50
+PTVs“处方剂量”、CT 影像与 12 个 OARs 、人体区 域级 联 分 别 作 为 2 个输入通道的输入
+和 临 床 计 划 相 比 较,除 脑 干 和 晶 体 剂 量 体积直方图 DVH、PTV70. 4 相差 0. 5%以 外,其它没有统计意义上的差异
+746
+
+
+6 期 刘国才,等: 肿瘤精确放射治疗剂量分布和疗效预测的机器学习方法综述
+测 U-Net,可以非常鲁棒地预测一组特定临床场景
+下的剂量分布,并且均能满足名义上的靶区剂量覆
+盖要求。然 后,以 这 组 预 测 的 场 景 剂 量 为 参 考 剂
+量,通过剂 量 模 拟 优 化 方 法,创 建 一 个 临 床 上 放 疗
+设施可实际照射执行的鲁棒放疗计划。52 例前列
+腺癌患者质子 IMRT 测试结果验证了该方法的有
+效性。
+Neph 等[15]基于 3D U-Net,提出了一种噪声非
+常大、但速度非常快的蒙特卡罗( Monte Carlo,MC)
+剂量计算结果和 CT 影像快速预测低噪的剂量分布
+的方法,可 满 足 临 床 剂 量 计 算 精 度 的 要 求,同 时 比
+现有的实时 MRI 引导放疗计划 MC 剂量计算速度
+提高 38 倍以上。
+Liu 等[16]报告了参与 2021 年 AAPM ( American
+Association of Physicists in Medicine ) 、OpenKBP
+( The Open Knowledge-Based Planning Challenge) 挑
+战赛的方法和结果。提出了一种级联的 3D U-Net
+剂量预测模型,并通过数据扩增和知识蒸馏方法进
+一步提升该模型的泛化能力和预测性能。其头颈
+部 IMRT 非零剂量区域预测剂量平均的均方绝对误
+差达到 2. 50 Gy ( 处方剂量的 3. 57%) ,不仅名列该
+挑战赛第 1 名,而且其剂量预测误差小于其它 5 个
+非 参 赛 剂 量 预 测 模 型 约 0. 1 ~ 1. 7 Gy。 同 时,
+Gronberg 等[17]也报告了参与 2021 年 OpenKBP 挑战
+赛的方法和结果。采用膨胀( 空洞) 卷积,提出了一
+种密集连接的 3D U-Net 剂量预测模型,采用定制的
+加权均方误差损失函数训练优化网络参数,预测头
+颈部 IMRT 剂量。进一步通过训练和集成( 平均) 3
+个最优性能预测网络的结果,其预测剂量平均的均
+方绝对剂量误差达到 2. 56 Gy,DVH 误差小于临床
+计划 DVH 值的 3%,名列该挑战赛第 2 名。
+Chen 等[18]提出了一种直接预测鼻咽癌患者放
+疗 OARs 剂量体积直方图的深度卷积网络 DVHnet。
+采用 2D 的 CT 影 像 和 OARs 轮 廓 作 为 模 型 输 入,
+DVH 曲线上连续的 256 个点构成的 DVH 百分数向
+量作为 DVH 预测值输出。每个患者 16 个 OARs 的
+平均剂量均方预测误差为( 0. 30 ± 0. 95) Gy,D2% 和
+D50小于 2. 32 和 0. 69 Gy。大多数 OAR 预测误差优
+于临床商用计划系统。Tsekas 等[19]提出了一个前
+列腺、直肠等腹部肿瘤剂量计算( 预测) 的神经网络
+模型。该模型采用患者 CT 影像中 PTV 和 OARs 的
+几何轮廓作为输入,通过 MC 剂量计算方法生成金
+标准样本剂量分布,直接预测放疗加速器每个多叶
+光栅分割( 子野) 对应的剂量分布,剂量计算结果平
+均绝对误差为 0. 3% ± 0. 7%,以 3%3 mm 标准测试
+的伽马通过率达到 99. 4%±0. 6%。
+Momin 等[20]提出了一种毫秒级的质子放疗剂
+量预测计算模型。该模型由深度卷积子网络编码
+解码器和 Transformer 子网络主干模块构建,一例患
+者的 CT 影像质子束照射方向的 2D 切片序列和质
+子束能量作为模型输入,直接预测质子放疗束的剂
+量分布 2D 切片序列,其中自注意力 Transformer 子
+网络以所有从 2D 切片序列编码子网提取的特征向
+量序列作为 输 入,以 融 合 各 特 征 切 片 信 息,并 将 融
+合后的特征信息作为解码子网络的输入,预测剂量
+分布切片序列,最后预测生成 3D 的低噪声 MC 剂量
+计算分布。前列腺癌、头颈癌和肺癌患者质子放疗
+MC 剂量计算分布预测实验表明,该模型不仅达到
+了 非 常 高 的 伽 马 通 过 率 99. 37% ± 1. 17%
+( 1%3 mm) ,而且预测时间仅( 5. 0±4. 9) ms,其预测
+性能超越了所有现有的质子放疗剂量预测模型和
+经典的笔形束剂量计算方法 PBAs,其速度是 PBAs
+的 100 倍以上。
+Nguyen 等[21]通过改进的深度卷积神经网络模
+型 U-Net,来预测前列腺癌 IMRT 的 2D 剂量分布。
+将前列腺癌患者的 PTV 和膀胱、直肠等 5 个 OARs
+的轮廓“影像”作为 6 个单独影像输入通道,级联后
+作为剂量预测网络 U-Net 的输入。PTV 通道采用处
+方剂量作为“影像像素值”,OARs 通道采用器官二
+值掩膜作 为“影 像 像 素 值 ”。 采 用 有 监 督 的 方 式 训
+练网络,80 个前列腺癌患者、7 个照射野、15 MV 射
+线能量的临床 IMRT 计划的剂量分布“影像”作为金
+标准输出,剂量预测均方误差作为损失函数。8 例
+患者的放疗剂量预测实验结果表明,预测剂量与临
+床计划的处方剂量各等级的等剂量面的 Dice 相似
+系数平均值达到了 0. 91。且预测剂量与临床计划
+的最大剂量和平均剂量绝对偏差的平均值低于处
+方剂量的 5%。随后,Nguyen 等[22]基于 U-Net 和密
+集连接的深度卷积神经网络 DenseNet,提出了一个
+多层的密集连接模型 HD U-Net。该模型能够更准
+确有效 地 预 测 头 颈 部 肿 瘤 容 积 弧 调 强 ( volumetric
+arc therapy,VMAT) 3D 空间放疗剂量分布。将头颈
+部肿瘤患者 1 ~ 5 个靶区的 PTVs 和脑干、腮腺等 22
+个 OARs 的轮廓“影像”作为 23 个单独影像输入通
+道,级联后成为剂量预测网络 HD U-Net 的输入,采
+用有监督的方式训练网络,100 例前列腺癌患者、临
+床 VMAT 计划的剂量分布“影像”作为金标准输出,
+剂量预测均方误差作为损失函数。20 例患者的剂
+747
+
+
+中 国 生 物 医 学 工 程 学 报 41 卷
+量预测测试表明,该模型预测的 OAR 剂量最大值误
+差为处方剂量的 6. 3%,平均值误差为处方剂量的
+5. 1%。对靶区的剂量预测,该模型预测的最大剂量
+平均误差为 6. 23%,平均剂量的平均误差为 5. 3%,
+预测精度都高于标准的 U-Net 网络和密集连接的深
+度卷积神经网络 DenseNet。Barragan-Montero 等[23]
+采用 HD U-Net 模型结构,研究了肺癌 IMRT 计划射
+野方向的设计优化问题,建立了一个空间剂量分布
+的预测模型( AB 模型: anatomy and beam model) ,该
+模型能预测 4 ~ 9 个射野、6 ~ 10 MV 射线能量组合下
+的 IMRT 计划剂量分布。AB 模型共包含 10 个输入
+通道,其中一个为射野通道,另外 9 个为解剖通道
+( PTV 和肺、心脏、脊髓等 8 个 OARs) 。采用有监督
+的方式 训 练 网 络,100 例 肺 癌 患 者、临 床 4 ~ 9 野
+IMRT 计划每个射野方向的射线追踪累积剂量分布
+“影像”作为金标准输出,剂量预测均方误差作为损
+失函数。对 29 例肺癌患者、通过与 9 个输入通道的
+同一模型( AO 模型: anatomy only,无射野通道) 进行
+对比测试。试验结果表明,AB 模型比 AO 模型预测
+的精度高,特别是低剂量和中等剂量区域的剂量体
+积指标,AB 模型大约比 AO 模型提高 1% ~ 2%。
+更进一步,为借助剂量预测来实现放疗计划的
+多目标优化,Nguyen 等[24]利用 HD U-Net 模型,通
+过在前列腺患者的多目标最优化 Pareto 前沿上进行
+采样,其上的各样本点代表 PTV 和 OARs 之间的各
+种放疗计量学权衡,来对 Pareto 前沿上各样本点所
+对应的剂量分布进行预测。首先在 70 例前列腺患
+者中生成了 84 000 个 IMRT 治疗计 划 ( 每 个 患 者
+1200 个计划) ,并将数据分为 10 个测试样本和 60
+个训练 / 验证样本。然后,通过训练一个 HD U-Net,
+来预测最优放疗计划的剂量分布。在 Pareto 前沿
+上,HD U-Net 能够准确预测 3D 剂量分布。对 PTV,
+平均剂量的平均误差为处方剂量的 3. 4%,最大剂
+量的平均误差为处方剂量的 7. 7%。预测剂量分布
+的时间大约为 1. 7 s,而 IMRT 计划优化和剂量计算
+的时间要慢得多,大约为 5 ~ 10 min。
+Chen 等[25] 基 于 改 进 的 深 度 卷 积 残 差 网 络
+ResNet101,预测鼻咽癌同步综合推进 IMRT 的剂量
+分布。对比了两种不同类型输入的预测性能,第一
+类输入通道为 2 个 PTVs 和 17 个 OARs 的“编码影
+像”,不同 PTV 和 OARs 采用不同的唯一整数编码。
+第二类输入通道按 PTV 和 OARs 到照射野边界的
+“距离”进行编码修正。通过 ResNet101 预测 256 级
+的 2D 剂量分布,再通过高斯低通滤波器平滑,得到
+最终的 2D 剂量分布预测值。先采用 ImageNet 预训
+练 ResNet,然后采用 70 名早期鼻咽癌患者同步综合
+推进 IMRT 计划样本精调网络,采用 10 例患者临床
+计划剂量分 布 测 试,实 验 结 果 表 明,两 类 模 型 对 剂
+量的预测都较精确。但第二类输入通道因考虑照
+射野几何特征,所以预测精度相对更高。与临床计
+划剂量相比,预测误差分别为 5. 5% ±7. 9% 和 4. 7%
+±6. 1%; 预 测 剂 量 的 Gamma 通 过 率 和 临 床 计 划
+相当。
+Kearney 等[26]采用残差块和 V-Net 网络框架,
+提出了 全 卷 积 深 度 神 经 网 络 3D 剂 量 预 测 网 络
+( DoseNet) ,预 测 前 列 腺 癌 立 体 定 向 放 射 治 疗
+( stereotactic body radiotherapy,SBRT) 的 3D 剂量分
+布。采用 CT 影像和 PTV 及膀胱、直肠等 4 个 OARs
+“影像”等 6 个输入级联作为预测网络的输入,3D
+剂量分布“影像”作为输出。与 U-Net 相比,DoseNet
+模型能减少网络冗余。采用 106 名前列腺癌患者的
+临床放疗计划剂量样本进行训练,25 例患者样本进
+行测试,结果表明: 和临床计划剂量相比,靶区剂量
+的适形度指数 ( conformity index,CI) 、均匀性指数
+( heterogeneity index, HI ) 和 PTV V95、V100 及
+OARs V50 临床剂量评价指标均优于 U-Net 算法。
+Campbell 等 [27]提出了一个全连接人工神经网
+络模型,直接预测胰腺癌 SBRT 的空间剂量分布,该
+预测模型以空间体素点到 PTV 表面的距离、体素点
+到 OARs 的距离、PTV 体积等几何特征量和放疗射
+线的能量 等 作 为 输 入,预 测 每 个 体 素 位 置 的 剂 量
+值。分别对照射野内、外区域的剂量进行训练建模
+和预测,获得了 3D 剂量分布较准确的预测。平均
+剂量误差小于 5%,平均绝对误差小于 10%,处于
+5%等级。25 Gy 以上的 DVH 误差很小,低剂量的
+DVH 误差较大。
+Mashayekhi 等[28]报告了迁移学习在不同类型肿
+瘤放疗剂量预测中的应用研究结果。先通过前列腺
+癌患者的 IMRT 样本训练一个剂量预测 3D U-Net 模
+型,然后,通过迁移学习方法,利用头颈部肿瘤患者
+VMAT 样本对剂量预测模型进行精调。精调后的剂
+量预测绝对误差: PTV 的均值误差 1. 08%±0. 95%,所
+有 OAR 的平均误差小于 2. 43%。
+1. 2 肿瘤放疗剂量预测 GAN 方法
+Mahmood 等[29-30] 采 用 条 件 生 成 对 抗 网 络
+( cGAN) 模型构建了口咽癌 IMRT 计划剂量分布预
+测模型。采用伪彩色对 CT 影像、临床医师勾画的
+PTVs 和 OARs 统一进行编码,生成一个 3D 的“伪彩
+748
+
+
+6 期 刘国才,等: 肿瘤精确放射治疗剂量分布和疗效预测的机器学习方法综述
+色 CT 影像”,用红色通道编码 PTVs 区域,绿色通道
+编码 OARs,蓝色通道编码 CT HU。采用 U-Net 作为
+剂量预测 GAN 的生成器子网络,编码的“伪彩色 CT
+影像”作为 生 成 器 的 输 入,预 测 的 剂 量 分 布 作 为 生
+成器的输出。采用影像块分类网络作为剂量预测
+GAN 的判别器子网络 PatchGAN,生成器预测的剂
+量、或者临床 IMRT 计划的剂量分布“影像子块”作
+为判别器的输入,输出为剂量分布“影像子块”的是
+否为实际临床计划的剂量分布。在 cGAN 模型训练
+时,患者相应的临床放疗剂量分布“影像”作为剂量
+预测判别网络的输入之一,为剂量预测生成网络提
+供对抗性损失正则项。设计了 3 个不同输出形式的
+剂量预测生成子网络,前两个网络预测每个切片的
+2D 剂量分布,第一个预测的输出通道有 3 个( 类似
+红、绿、蓝通道构成的 2D 剂量分布伪彩色影像) ; 第
+二个预测的输出通道只有一个,即 2D 剂量分布的
+输出值; 第三个网络直接预测患者的 3D 剂量分布。
+采用 130 名口咽癌患者 IMRT 计划剂量样本进行训
+练,87 名患者样本进行测试,实验结果表明,直接预
+测 3D 剂量分布的 3D cGAN 剂量预测性能最好,甚
+至优于临床计划的剂量分布。基于 3D cGAN 剂量
+预测分布生成的可执行放疗计划能使 77% 的临床
+放疗剂量准则得到满足,而临床实际的计划仅能满
+足 64%的剂量准则。与其它现有的基于深度卷积
+神经 网 络 的 剂 量 预 测 方 法 等[21-27] 相 比,根 据 3D
+cGAN 预 测 的 剂 量 分 布 性 能 更 优。 而 且 根 据 3D
+cGAN 预测的剂量所生成的可执行放疗计划能更好
+地满足临床上的放疗性能指标,且预测的剂量能够
+满足临床上放疗剂量照射的物理约束。
+Zhan 等[31]提出一种多约束的 GAN 剂量预测模
+型,其生成器采用类似 U-Net 的膨胀卷积网络结构,
+并集成空间和特征注意力机制,引入附加的局部约
+束和自监督感知特征损失项,其宫颈癌和直肠癌患
+者放疗剂量分布预测性能优于 4 个现有的深度网络
+预测模型。
+Momin 等[32]提出一个双金字塔 GAN 模型,用
+于胰腺癌 SBRT 剂量预测,其中一个金字塔深度网
+络用于提取患者 CT 影像特征,另一个金字塔深度
+网络用于提取 PTV 和 OAR 轮廓特征,然后,基于注
+意力门控机制对提取的多层特征进行影像和轮廓
+特征的融合,生 成 预 测 的 剂 量 分 布,并 通 过 鉴 别 器
+网络,进行对抗学习。该模型能够预测 91% 的临床
+相关剂量参数,而且能够预测 SBRT 的剂量热区,预
+测的剂量分布和金标准剂量分布的相关系数比现
+有的预测方法更大。
+为了满足同步加速器 X 射线微束放疗等新技
+术 研 究 要 求,Mentzel 等[33] 基 于 3D U-Net 采 用
+cGAN 提出了一种快速、精准的剂量预测模型,该模
+型以光子束和数字仿体特征作为条件,采用 Geant4
+MC 蒙特卡罗仿真软件系统模拟光子束照射数字仿
+体生成的高精度放疗剂量分布数据样本训练和测
+试,剂量体素边长为 1 mm。测试结果: 99% 的体素
+点剂量预测误差小于其最大沉积能量的 3%,预测
+时间小于 1 s,而采用 Geant4 MC 仿真则需要数百个
+小时。
+1. 3 肿瘤放疗剂量预测的物理可实现性
+目前,虽然能通过深度学习和机器学习成功预
+测 IMRT 治疗计划的剂量分布,且预测的精度越来
+越高,但是,对 于 预 测 的 剂 量 分 布 能 否 转 换 为 临 床
+上可实际执行的放疗计划,以上剂量预测模型和方
+法均未给出答案。
+Fan 等[34]利用改进的双通道深度卷积残差网
+络 ResNet50,采用 PTVs“处方剂量编码影像”和 CT
+影像、12 个 OARs 和人体区域的“编码影像”级联,
+分别作为 2 个输入通道的输入,较准确地预测了头
+颈部肿瘤的 2D 剂量分布。为了提高剂量预测精
+度,采用了上、下相邻的 6 个切片作为训练样本,Fan
+等[35]进一步利用剂量模拟方法 ( dose mimicking) ,
+通过 IMRT 计划通量图优化开源软件 [36],生成了临
+床上可执行的 IMRT 计划。采用 220 例头颈部肿瘤
+患者 IMRT 临床计划剂量训练网络,用 50 例患者样
+本进行测试,结果表明,通过改进的 ResNet50 网络
+可预测临床上实际可执行的剂量分布。除脑干和
+晶体以外,其 它 所 有 临 床 相 关 的 剂 量 体 积 直 方 图
+DVH 指标之间无统计差异。而且,通过预测的剂量
+分布自动生成的 IMRT 计划与临床实际执行的放疗
+计划,除 PTV70. 4相差 0. 5%以外,其它指标也无统计
+差异,且预测生成的放疗计划在临床上是可执行的
+和可接受的。
+2 肿瘤放化疗疗效预测方法
+临床上,需要对各种肿瘤放化疗的疗效和毒副
+作用进行 预 测 评 估,便 于 制 定 科 学 合 理 的 治 疗 方
+案。国内外相关研究一直在探讨如何通过患者的
+临床数据和 各 种 影 像、基 因 等 大 数 据,建 立 科 学 客
+观的肿瘤治疗疗效预测模型,为临床肿瘤治疗提供
+科学方法和工具。近年来影像组学和深度学习方
+法在肿瘤放化疗疗效预测和毒副作用预测方面的
+749
+
+
+中 国 生 物 医 学 工 程 学 报 41 卷
+研究成果和应用进展如表 2 和表 3 所示。
+表 2 基于影像组学的肿瘤疗效预测方法总结
+Tab.2 Summary of prediction of response to treatment methods based on radiomics
+参考文献 预测模型 影像模态 肿瘤类型 病例数 预测性能
+[37] 模糊逻辑 / 朴素贝叶斯 CT 头颈癌 37 预测 放 疗 后 腮 腺 萎 缩 准 确 度 0. 84,预 测 口 干 症 准 确
+度 0. 79
+[38] 多变量 Cox 模型 CT 口咽癌 465 预测放疗后 5 年局部控制率准确度 94%
+[39] 逻辑回归 CT 食管癌 106 预测放射性肺炎患者和非放射性肺炎患者,AUC 为 0. 59
+~ 0. 84
+[40] Cox 比 例 风 险 模 型 /
+Harrell’s C-index CT 非 小 细 胞
+肺癌 93 预测放疗后 2 年的总生存率、无复发生存率和无复发生
+存率的准确率分别为 69. 95%、41. 3%和 51. 85%
+[41] SVM CT 肺癌 45 预测 立 体 定 向 消 融 放 疗 后 6 个 月 内 复 发 率 的 AUC
+为 0. 85
+[42] SVM CT 肺癌 399 预测立体定向放疗后局部肿瘤控制率的 AUC 为 0. 81
+[43] Cox 回归分 析 / 随 机 生 存
+森林 MRI 前列腺癌 74 预测前列 腺 癌 放 疗 后 生 化 复 发 最 相 关 的 特 征,C-index
+为 0. 90
+[44] LASSO 降 维 + Cox 回 归
+模型 MRI 脑 部 胶 质 母
+细胞瘤 79 预测总生存率,优于传统的预后因素,如年龄和肿瘤体积
+[45] PCA / LASSO 单 变 量 Cox
+模型 PET 头 颈 部 鳞 状
+细胞癌 178 PET 组学特征在不同预后预测模型的不可重复性达 88%
+[46] Cox 逻辑回归模型 CT 头 颈 部 鳞 状
+细胞癌 149 发现 3 个组学特征与肿瘤局部控制有关,预测人乳头状
+瘤病毒状态的 AUC 为 0. 85
+[47] 线 性 回 归 / 皮 尔 曼 相 关
+分析 PET 食管鳞癌 40 发现 T 分期期与 SUVmax 显著相关,SUVmax ,熵,能量与 N
+分期有相关性
+[48] Kaplan-Meier 统计分析 PET 食管癌 45 发现熵值可以显著区分对放化疗无响应者与完全响应者
+和部分应答者
+[49] Kaplan-Meier 统计分析 CT 肺癌
+头颈癌 1 019 能量、紧密度、纹 理 和小 波 特 征 等更具有疾病预后预测
+价值
+[50] 斯皮尔曼秩统计分析 CT 非 小 细 胞
+肺癌 47
+Law-energy 特征 可 显 著 预 测 EFDR 突 变 状 态 ( AUC = 0. 67,P = 0. 03) ; 治疗前的组学特征数据能预测突变状 态和相关的 gefitinib 反应
+[51] Cox 回归模型 PET 非 小 细 胞
+肺癌 53
+RECIST 有响应和无响应的纹理特征量分别为: 粗糙程度 ( 0. 012 vs 0. 027,P = 0. 004) 、对比度( 0. 11 vs 0. 044,P = 0. 002) 和 busyness( 0. 76 vs 0. 37,P = 0. 027)
+[52] LASSO Cox 比 例 风 险 回
+归模型 PET 非 小 细 胞
+肺癌 54 模型内部性能为 0. 64 ( P <0. 01) ,外部性能为 0. 61 ( P =
+0. 05)
+[53] 单变量 Cox 回归模型 4DCT 非 小 细 胞
+肺癌 107 对患者整体生存率预后的 C-index 最高可达 0. 675,不同
+模型间对数秩检验的 P 值小于 0. 005
+[54] Cox 比 例 风 险 生 存 回 归
+模型 Kaplan-Meier 估计 CBCT 非 小 细 胞
+肺癌 53
+模型采用 GTV 内的肿块代替 GTV 时,平均一致性指数从 0. 47 提高到 0. 64,有响应的患者和无响应患者在治疗反 应上存在差异,所提出的方法可用于预测患者生存能力
+[55] 单变量和多变量分析 CT 肺腺癌 98 发现 35 个放射组学特征与远端转移的预后有关,12 个与
+生存有关
+[56] 多元逻辑回归分析 CT 结 肠 直 肠 癌
+肝转移 21 发现预测最佳参数为均匀性和熵值
+[57] 单变量分析
+三层感知机 MRI 直肠癌 48 结合多信息对 pCR 预测的 AUC 可达 0. 84,对 GR 预测的
+AUC 为 0. 89
+2. 1 基于影像组学的肿瘤疗效预测方法
+影像组学是一种分析处理患者医学影像大数
+据的方法,它 通 过 特 定 的 特 征 提 取 算 法,自 动 分 析
+提取成百上千种肿瘤影像特征量,并联合患者的临
+床数据,采 用 逻 辑 回 归 模 型 等 方 法,建 立 科 学 客 观
+的肿瘤疗效定量预测模型。目前,影像组学方法已
+被广泛用于肿瘤患者放疗、化疗和新辅助放化疗的
+疗效预测,包括对肿瘤局部控制率、复发率、病理响
+应、转移、分 期、表 型 与 基 因 表 达 的 预 测,以 及 患 者
+生存率和毒副作用的预测。上述相关研究主要是
+基于从患者治疗前或治疗后的 CT、MRI 或 PET 影
+像中提取的影像组学特征量,并以此建立起相应的
+750
+
+
+6 期 刘国才,等: 肿瘤精确放射治疗剂量分布和疗效预测的机器学习方法综述
+表 3 基于深度学习肿瘤疗效预测方法总结
+Tab.3 Summary of prediction of response to treatment methods based on deep learning
+参考
+文献 深度网络模型 影像
+模态 肿瘤类型 病例数 预测性能
+[58] VGG16+
+Grad-Cam CT 宫颈癌 42 放疗对直肠毒副作用预测的 AUC 为 0. 89,敏感性 0. 75,特异性 0. 83
+[59] CNN CTCBCT 头颈癌 216 LR 模型在临 床 数 据 上 表 现 最 好 AUC 0. 69; 通 过 迁 移 学 习 训 练 的
+CNN 在图像数据上表现最好 AUC 0. 73
+[60] VAE,CNN CT 肝细胞癌 167 例
+组学模型、临床模型、图像输入模型和组合模型总体预测生存率 Cindex 分 别 为 0. 579 ( 95% CI: 0. 544 ~ 0. 621 ) 、0. 629 ( 95% CI: 0. 601 ~ 0. 643) 、0. 581 ( 95% CI: 0. 553 ~ 0. 613) 和 0. 650 ( 95% CI: 0. 635 ~ 0. 683)
+[61] 迁移学习 MRI 胶 质 母 细
+胞瘤 112 提取 1 403 个组学特征和 98 304 个深度特征,通过 LASSO 降维,成功
+地将患者分为高危组和低危组
+[62] ResNet-25 CT 非 小 细 胞
+肺癌 750 预测化疗后病变缩小程度,AUC 为 0. 73
+[63] ResNet-50 CT 肝细胞癌 227 预测经动脉化疗栓塞术后病变完全缓解、部分缓、稳定和进展,准确
+率为 84. 3%,AUC 分别为 0. 97,0. 96,0. 95,和 0. 96
+[64] CNN PET / CT 头 颈 部 鳞
+状细胞癌 669 预测 远 处 转 移、局 部 复 发 和 总 体 生 存 的 AUC 分 别 为 80%、80%
+和 82%
+[65] VGG-Net PET / CT 头颈癌 206 预测局部复发的 AUC 为 0. 81 [66] 16 种 CNN CT 头颈癌 175 预测 GTVp AUC = 0. 75,GTVn AUC = 0. 73
+[67] DCNNs PET / CT 晚期
+鼻咽癌 707 预测 无 病 生 存,发 现 18 个 特 征 与 无 病 生 存 率 显 著 相 关,C-index
+为 0. 722
+[68] 3S-CNN PET 食管癌 107 预测化疗无响应患者的平均敏感度为 80. 7%,特异度为 81. 6% [69] ResNet50 CT 食管鳞癌 161 预测新辅助放化疗响应,AUC 和准确率为 0. 805 和 77. 1%
+[70] LeNet CT 胰腺癌 91 预测肿瘤对新辅助治疗的响应 AUC 为 0. 784 6 ( P < 0. 0001) ,Brier
+统计量为 0. 173 5
+[71] CRBM MRI 乳腺癌 57 预测新 辅 助 化 疗 响 应,AUC 为 0. 92,准 确 率,敏 感 性,特 异 性 均
+为 0. 83
+[72] DCNN MRI 乳腺癌 166 预测新辅助化疗响应,AUC 为 077,准确率为 85% [73] VGG MRI 乳腺癌 46 预测新辅助化疗响应,AUC 为 0. 85 [74] DenseNet-201 超声 乳腺癌 592 预测新辅助化疗响应,AUC 为 0. 94 [75] VGG-13 MRI 乳腺癌 112 预测新辅助化疗响应,准确性为 0. 83,AUC 为 0. 80 [76] 多路径 CNN MRI 乳腺癌 302 预测新辅助化疗响应,AUC 为 0. 970
+[77] DCNN CT 局 部 晚 期
+直肠癌 95 预测完全响应,准确率为 80%
+[78] 多相 CNN MRI 乳腺癌 100 预测靶向新辅助化疗疗效,AUC 为 0. 77,95% [79] 多路径 CNN MRI 直肠癌 412 预测 pCR 的 AUC 为 0. 99
+[80] 密 集 连 接 网 络
+( DCPCNN) MRI 结 肠 癌 肝
+转移 155 预测化疗响应,准确率为 0. 875,AUC 为 0. 833
+[81] VGG19 MRI 局 部 晚 期
+直肠癌 43 预测新辅助化疗响应,AUC 为 0. 73
+[82] ShuffleNet
++ LSTM MRI 直肠癌 779 预测放化疗后的病理完全响应和最佳响应,AUC 为 0. 76 和 0. 72
+[83] Siamese 网络 MRI 直肠癌 2 568 预测疗效 AUC 为 0. 95( 95%CI: 0. 91 ~ 0. 98) 和 0. 92 ( 0. 87 ~ 0. 96) ,
+结合血液肿瘤标志物 AUC 为 0. 97 ( 0. 93 ~ 0. 99)
+[84] DCNN CT 膀胱癌 172 预测化疗响应,AUC 为 0. 73±0. 08
+疗效预测回归模型。目前所涉及的肿瘤类型包括:
+脑部胶质母 细 胞 瘤、头 颈 部 癌、食 管 癌、肺 癌、乳 腺
+癌、直肠癌、前列腺癌、宫颈( 妇科) 癌、膀胱癌等。
+2. 1. 1 放疗疗效预测方法
+Pota 等[37]基于 37 例头颈癌患者( 共 74 个腮腺
+组织) 的 CT 影像,采用影像组学特征提取和似然模
+糊分析方法,对 IMRT 引起的早期腮腺萎缩和毒副作
+用进行早期预测。对腮腺萎缩分类的准确度为 0. 84,
+敏感性为 0. 76,特异性为 0. 92,对口干症分类的准确
+度为 0. 79,敏感性为 0. 50,特异性为 1. 00。
+751
+
+
+中 国 生 物 医 学 工 程 学 报 41 卷
+MD Anderson 癌症中心基于 465 例局部晚期口
+咽癌患者治疗前增强 CT 影像,用机器学习的方法
+提取了具有最小重叠和最大预后意义的特征组成
+的组学特征,对 5 年局部控制率( local control rate,
+LCR) 的无偏估计值达 94%,5 年 LCR 的差异均具有
+统计学意义( P<0. 001) [38]。Cunliffe 等[39]对 106 例
+接受放疗的食管癌患者 CT 肺部影像进行回顾性分
+析,通过影像组学特征建立了放射性肺炎( radiation
+pneumonitis,RP) 的预测模型。RP 患者和非 RP 患
+者分类的受试者操作特征曲线 ( ROC) 的曲线下面
+积( area under curve,AUC) 为 0. 49 ~ 0. 78。在分类
+预测模型中使用多个特征后,AUC 可显著增加达到
+0. 59 ~ 0. 84。Li 等[40]基于 92 例患者的治疗前计划
+CT 影像组学特征对非小细胞肺癌立体定向放疗后
+的复发进行了预测,2 年的总生存率、无复发生存率
+和无 复 发 生 存 率 的 分 类 预 测 准 确 率 分 别 为
+69. 95%、41. 3% 和 51. 85%。Mattonen 等[41]通过对
+肺癌患者经 SBRT 后的 CT 影像进行分析,结果表
+明,组学特 征 可 以 发 现 与 局 部 复 发 相 关 的 早 期 变
+化,而医生通常容易忽视这些变化。评估局部复发
+的中位敏感性为 83%,特异性为 75%,发现复发的
+中位时间为 15. 5 个月。在对 SBRT 后 6 个月内复
+发的早期预测时,评估大多数影像为良性损伤 / 无
+复发,平均误差为 35%,假阳性为 1%,假阴性率为
+99%。Klement 等[42]采用支持向量机( support vector
+machine,SVM) 对 399 个病例经 SBRT 治疗后的早期
+非小细胞肺癌局部肿瘤控制概率进行了预测,灵敏
+度和特异性分别为 67. 0%±0. 5%和 78. 7%±0. 3%。
+Gnep 等[43]基于 74 例外周区局限性前列腺癌
+患者的 3. 0 T MRI T2 加 权 影 像 共 生 矩 阵 提 取 的
+Haralick 特征,对前列腺癌放疗后的复发进行了预
+测,单 特 征 的 C-index 为 0. 76 ~ 0. 82,P 值 远 小 于
+0. 05,多特征的 C-index 为 0. 90。
+2. 1. 2 放化疗疗效预测方法
+Cui 等[44]对 79 例胶质瘤患者术前 T1 加权增强
+和 T2 加权 MR 影像进行组学分析,在多区域定量影
+像分析的基础上,提出了胶质母细胞瘤患者放化疗
+生存预后的预测模型,其预测结果一致性为 0. 67,
+优于 传 统 的 预 后 因 素,如 年 龄 和 肿 瘤 体 积。
+Bogowicz 等[45]基于 178 例头颈部鳞状细胞癌患者
+PET 影像,提取了 649 个组学特征,使用 PCA 和最
+小绝对收缩和选择算子 ( least absolute shrinkage and
+selection operator,LASSO) 对局部递归预测模型进
+行训练,预 测 局 部 肿 瘤 控 制 效 果,不 同 模 型 的 不 可
+重复性达 88%。作者进一步利用影像组学特征预
+测放疗后的局部肿瘤控制和人乳头瘤病毒状态[46],
+证明了头颈部鳞状细胞肿瘤密度的异质性、组学特
+征与放疗后的 LC 和人乳头瘤病毒的状态相关,在
+训练 集 和 验 证 集 方 面 的 一 致 性 指 数 为 0. 75 和
+0. 78,预 测 人 乳 头 瘤 病 毒 状 态 的 AUC 为 0. 85 和
+0. 78。Dong 等[47]对 40 例食 管 鳞 癌 患 者 进 行 了 研
+究,建立了肿瘤摄取异质性参数、肿瘤 PET 影像标
+准示踪剂标准摄取值 ( standard uptake value,SUV)
+与肿瘤分 期 和 预 后 之 间 的 关 系 预 测 模 型,实 验 发
+现: T 期 与 SUVmax 显 著 相 关 ( rs = 0. 390,P =
+0. 013) 。SUVmax、熵、能量与分期也有相关性。Yip
+等[48]建立了 PET 影像组学特征的时间变化与肿瘤
+放化疗病理响应和生存率的关系预测模型,45 例食
+管癌患者术前放化疗实验发现: 熵值可以显著区分
+无响应者与完全响应者的 AUC 为 0. 79,P = 1. 7 ×
+10-4、部分应答者的 AUC 为 0. 71,P = 0. 01。
+Aerts 等[49]基于 1 019 例肺癌或头颈部癌患者
+CT 影像的 440 个组学特征,建立了肿瘤表型分类预
+测模型,其 实 验 结 果 表 明,能 量、紧 密 度、纹 理 和 小
+波特征 等 更 具 有 疾 病 预 后 预 测 价 值。另 外,Aerts
+等[50]还发现这 些 特 征 与 基 因 表 达 有 一 定 关 联。 还
+采用了 47 例早期非小细胞肺癌靶向治疗患者在治
+疗前和治疗后 3 周的高分辨率 CT 影像,研究报告
+了影像组学特征和非小细胞肺癌患者采用 gefitinib
+靶向药治疗后响应表型之间的关系预测模型。
+Cook 等[51]通过研究 53 例 非 小 细 胞 癌 患 者 的
+影像数据,基于18 F-FDG PET 影像纹理特征及放化
+疗的肿瘤响 应,建 立 了 患 者 总 生 存 期、无 进 展 生 存
+期和局 部 无 进 展 生 存 期 的 预 测 模 型。 类 似 地,
+Carvalhol 等[52]基于 54 例接受根治性放化疗患者的
+PET 影像组学特征,建立了早期变异与生存率的预
+测模型。Fave 等[53]将组学特征用于预测非小细胞
+肺癌患者的预后,采用 107 例患者每周治疗前的 4D
+CT 影像,对患者整体生存率预后的 C-index 最高可
+达 0. 675,不 同 模 型 间 对 数 秩 检 验 P < 0. 005。
+Veduruparthi 等[54]利用所有分次放疗的 7 次 CBCT
+扫描影像评估肺部非小细胞癌患者放疗的早期响
+应,当 预 测 模 型 采 用 大 体 肿 瘤 靶 区 ( gross target
+volume,GTV) 内的肿块代替 GTV 时,使平均一致性
+指数从 0. 47 提高到 0. 64,且有响应的患者和无响
+应患者在治疗反应上存在差异。Coroller 等[55]基于
+98 例 CT 影像的 635 个组学特征,预测肺腺癌的远
+处转移,其实验结果表明,其中 35 个组学特征与预
+752
+
+
+6 期 刘国才,等: 肿瘤精确放射治疗剂量分布和疗效预测的机器学习方法综述
+后有关,12 个特征与患者生存特性有关,35 个放射
+组学 特 征 与 远 端 转 移 的 预 后 有 关,其 C-index >
+0. 60,错误发现率 ( false discovery rate,FDR) 小 于
+5%,12 个与生存有关。组学特征对远端转移有很
+强的预测能力( C-index = 0. 61,P = 1. 79×10-17) 。
+Rao 等[56]证实了结肠直肠癌肝转移的 CT 纹理
+特征比肿瘤大小和体积更有利于对化疗响应进行
+评估。对 21 例患者化疗前后 CT 影像的组学特征
+分析,结果表明基于均匀性和熵的响应预测性能最
+佳。Nie 等[57]分析评估了 MRI 影像多参数特征在
+预测局部晚期直肠癌术前放化疗后的病理响应,对
+48 例接受新辅助放化疗的患者预测得到的 AUC 为
+0. 71 ~ 0. 79。
+2. 2 基于深度学习的肿瘤疗效预测方法
+随着 深 度 学 习 方 法 的 深 入 研 究 和 发 展,近 年
+来,国内外学者开始将深度学习方法用于肿瘤疗效
+预测,取得了较大的进展。现有的研究涉及肿瘤治
+疗响应、患 者 生 成 期 和 治 疗 毒 性 预 测,治 疗 方 法 包
+括放疗、化 疗 和 新 辅 助 放 化 疗,肿 瘤 类 型 包 括 鼻 咽
+癌、食管癌、非小细胞肺癌、肝细胞癌、乳腺癌、结直
+肠癌、膀胱癌、宫颈癌等,肿瘤影像类型包括 MRI、
+CT 和 PET 等,预测模型包括 CNN、VGG、ResNet 等。
+2. 2. 1 放疗疗效预测方法
+Zhen 等[58]采用迁移学习方法,将 CNN 模型用
+于宫颈癌放疗直肠毒性预测,根据 42 例宫颈癌患者
+的 CT 影 像 和 治 疗 计 划 剂 量 分 布 数 据,先 通 过
+ImageNet 进行 VGG-16 预测网络进行预训练,再通
+过患者直 肠 表 面 剂 量 图 ( rectum surface dose map,
+RSDMs) 对预测 VGG - 16 网络进行精调,同时采用
+梯度加权激活图,突出 RSDM 上的标志性区域。网
+络对放疗的直肠毒副作用预测的 AUC 为 0. 89,敏
+感性 0. 75,特异性 0. 83。Dohopolski 等[59]将传统的
+机器学习与深度学习相结合,在头颈癌患者放疗早
+期,预测识别哪些患者随后需要增加营养。结果表
+明,基于临床数据和图像的联合模型获得的预测性
+能最好,其 AUC 为 0. 75,联合模型在统计学上优于
+单独临床模型( P = 0. 001) 。
+Wei 等[60]利用影像学表型和临床信息,预测接
+受 SBRT 治疗的肝细胞癌患者的总生存期。在治疗
+前的增强扫描 CT 图像中提取 56 个放射特征,从患
+者电子病历中获得 37 个临床因素特征,结合放射组
+学、临床和 原 始 图 像,采 用 深 度 学 习 网 络 预 测 患 者
+生存的风险概率,组学模型、临床模型、图像输入模
+型和组合模型总体生存率预测分别为 0. 579 ( 95%
+C-index: 0. 544 ~ 0. 621 ) 、0. 629 ( 95% C-index:
+0. 601 ~ 0. 643 ) 、0. 581 ( 95% C-index: 0. 553 ~
+0. 613) 和 0. 650 ( 95% C-index: 0. 635 ~ 0. 683) 。
+2. 2. 2 化疗疗效预测方法
+Lao 等[61]联合肿瘤 MRI 影像组学特征和通过迁
+移学习提取的 MRI 影像深度特征,建立了多形性胶
+质母细胞瘤癌患者生存特性关系预测模型。该模型
+基于 112 例患者的术前多模态 MR 影像( T1,T1C,
+T2,T2 FLAIR) 1 403 个组学特征和 98 304 个深度特
+征,通过 LASSO 方法降维,成功地将患者分为高危组
+和低危组。Chen 等[62]提出了一种基于 ResNet 25 预
+测非小细胞肺癌患者化疗病变缩小程度的模型。采
+用 750 例患者的 1 066 个 CT 影像,对不同解剖位置
+的原发病灶和转移病灶进行分类,并分割治疗前扫描
+和第一次随访扫描中的病变部分,提取相应的组学特
+征,测试结果 AUC 为 73%。Peng 等[63]利用 ResNet50
+预测肝细胞癌经动脉化疗栓塞术的响应。采用 227
+例患者的 CT 影像,实验表明,完全缓解、部分缓解、病
+变稳定和病变进展的预测准确性为 84. 3%,AUC 分
+别为 0. 97、0. 96、0. 95 和 0. 96。
+2. 2. 3 放化疗疗效预测方法
+Le 等[64]使用 CNN 预测头颈部鳞状细胞癌患者
+10 年随访时间内的远处转移、局部复发和总体生存
+概率,AUC 分别为 80%、80% 和 82%。对 另 外 371
+例患者的 回 顾 性 数 据 进 行 外 部 验 证,所 有 结 果 的
+AUC 为 69%。Wang 等[65]提 出 了 一 种 端 到 端 的 多
+模态多视图特征扩展方法,联合优化使用 CT、PET
+和临床数据,通 过 深 度 网 络 提 取 深 度 特 征,提 高 模
+型头颈癌局部复发的预测能力。206 例患者中,有
+49 例有局部复发,157 例无局部复发。所提出的最
+佳预测方法的 AUC 结果为 0. 81。Tanaka 等[66]提出
+一种结合深度学习和放射组学的方法,用于预测头
+颈部肿瘤的早期退化。结果表明,最好效果为使用
+InceptionResNet 的 模 型,对 GTVp 的 平 均 AUC 为
+0. 75,使 用 NASNetLarge 的 模 型,对 GTVn 的 平 均
+AUC 为 0. 73。
+Peng 等[67]通过 LASSO,在 470 个训练集数据
+中得到了可以有效预测无病生存的 18 个组学特征
+( P < 0. 001,C-index 为 0. 722) ,并在 237 个测试集
+上进行了验证,结果表明,PET-CT 的深度学习组学
+特征可作为可靠而有力的预后预测特征量,并可作
+为晚 期 鼻 咽 癌 个 体 诱 导 化 疗 的 潜 在 特 征 指 标。
+Ypsilantis 等[68]研究了基于 PET 影像预测新辅助放
+化疗的响应。对 107 例食管癌患者进行了验证,结
+753
+
+
+中 国 生 物 医 学 工 程 学 报 41 卷
+果表明,3 S-CNN 在预测有无响应方面达到 80. 7%
+的敏感性和 81. 6%的特异性。Hu 等[69]对食管鳞癌
+新辅助放 化 疗 的 响 应 进 行 了 预 测 研 究,通 过 使 用
+ResNet50,从 161 例患者的 CT 影像中提取了 6 个深
+度学习特征,采用 SVM 作为分类器,在另外 70 例患
+者的数据中进行验证,AUC 和准确率分别为 0. 805
+和 77. 1%,优 于 影 像 组 学 预 测 模 型 的 0. 725 和
+67. 1%。Watson 等[70]研究了胰腺癌患者在新辅助
+放化疗后的肿瘤响应预测,将 91 例患者治疗前后的
+CT 影像,根据有治疗响应 ( 333 张) 和无治疗响应
+( 443 张) ,采 用 LeNet 进 行 分 类,最 终 AUC 达 到
+0. 738 3 。
+Wang 等[71]基于 57 例乳腺癌患者的 MRI 动态
+增强数据,使用影像组学特征和卷积限制玻尔兹曼
+机网络提取的高层语义特征,训练 SVM、逻辑回归
+( logistic regression,LR) 和 RF 分类器,预测新辅助
+化疗病理完全缓解,结果: AUC 为 0. 92,准确率、敏
+感 性、特 异 性 均 为 0. 83。 类 似 地,Ravichandran
+等[72]使用 166 例患者乳腺 MRI 动态增强数据,基于
+CNN 预测得到的 AUC 为 0. 77,其中 82% 的患者得
+到了治疗响应的正确分类。
+Huynh 等[73] 将 CNN 用 于 乳 腺 癌 DCE-MRI 评
+估新辅助化疗的响应,64 例受试者的 561 个 ROI 影
+像训练 VGG-Net 提取影像特征,并采用线性判别分
+析分类器进行分类预测,AUC 达到了 0. 85。Jiang
+等[74]采用 DenseNet - 201 网络模型,组学特征包括
+了直方图、形态学、强度、小波和纹理等,对 592 例超
+声影像的实验结果表明,该网络可以准确预测病理
+完全缓解状态,AUC 达到了 0. 94。Duanmu 等[75]采
+用具有 10 层的经典 VGG 预测模型,联合乳腺癌患
+者 MRI 影像数据和人口统计数据进行新辅助化疗
+的响应预测,实验结果显示: 准确性为 0. 83,AUC 为
+0. 80,灵敏度为 0. 68,特异性为 0. 88。Qu 等[76]采
+用 302 例乳腺癌患者化疗前、化疗后和联合的 T1 加
+权 MRI 影像数据集训练 CNN 预测网络,实验结果
+显示,AUC 分别为 0. 553、0. 968 和 0. 970。
+Bibault 等[77]使用深度学习和影像组学预测局
+部晚期直肠癌放化疗后的病理完全缓解,基于 95 例
+患者的 CT 影像,提取了 1 683 个组学特征,采用线
+性回 归 模 型 和 SVM 模 型 预 测,AUC 分 别 达 到
+69. 5% 和 71. 58%,而 DNN 模 型 预 测 的 AUC
+为 80%。
+Braman 等[78]基于深度学习预测 HER2 靶向新
+辅助 化 疗 的 疗 效,基 于 100 例 患 者 治 疗 前 的 乳 腺
+DCE-MRI,采用多相 CNN 模型预测,多中心测试的
+结果 为: AUC = 0. 77,95% C-index = 0. 58 ~ 0. 97,
+P = 0. 006。Zhang 等[79]用弥散峰度和 T2 加权 MR
+影像,采用多路径 CNN 预测直肠癌患者对新辅助放
+化疗 的 响 应,结 果 显 示 AUC 达 到 了 0. 99。 Zhu
+等[80]采用 CNN 基于 MRI 影像预测结肠癌肝转移患
+者经化疗 后 的 肿 瘤 响 应,在 有 响 应 组 和 无 响 应 组,
+模型预测的准确度为 0. 875 vs 0. 578,AUC 为 0. 849
+vs 0. 615。Fu 等[81]用影像组学特征和深度学习方
+法提取的特征预测局部晚期直肠癌患者对新辅助
+放化疗响应。数据集包括 43 例患者治疗前弥散加
+权磁共振影像,采用 LASSO 降维后进行分类。采用
+组学方法的实验结果 AUC 均值为 0. 64,而采用深
+度学习特 征 构 建 的 预 测 模 型 的 实 验 结 果 AUC 为
+0. 73。对于放化疗患者,Jang 等[82]将深度学习模型
+用于预测直肠癌放化疗后的病理响应。数据采用
+放化疗后的 MRI,466 例用于训练,113 例用于测试。
+模型结合了 ShuffleNet 和 LSTM。预测病理性完全
+缓解的 AUC、敏感性、特异性、阳性预测值、阴性预
+测值和准确性,结果分别为 0. 76、0. 30、0. 96、0. 67、
+0. 87 和 85. 0%,对应的预测完全缓解的结果分别为
+0. 72、0. 54、0. 81、0. 60、0. 77 和 71. 7%。Jin 等[83]提
+出了一种多任务深度学习方法,同时进行肿瘤分割
+和放化疗疗效预测。通过两个多层连接的 Siamese
+子网络,集 成 多 尺 度 特 征 表 示,并 对 预 处 理 和 处 理
+后的图像进行深入的比较。在多机构的两个独立
+队列中,基于图像的预测模型的 AUC 分别为 0. 95
+( 95% 置 信 区 间 为 0. 91 ~ 0. 98 ) 和 0. 92 ( 0. 87 ~
+0. 96) 。当结合血液肿瘤标志物的数据时,预测精
+度得 到 进 一 步 提 高,AUC 为 0. 97 ( 0. 93 ~ 0. 99 ) 。
+Cha 等[84]采用 172 例膀胱癌患者治疗前和治疗后
+的 CT 影像,探讨了进行深度学习协助评估化疗响
+应的可行性。CNN 用于区分治疗后诊断为 T0 期
+( 无残留肿瘤) 和大于 T0 期( 有残留肿瘤) 的膀胱病
+变。CNN 得到的 AUC 为 0. 73±0. 08,通过从分割的
+损伤区域中提取的组学特征得到的 AUC 为 0. 77 ±
+0. 08,通过从治疗前和治疗后配对 ROI 中提取组学
+特征得到的 AUC 为 0. 69±0. 08。
+3 展望
+放疗剂量分布预测、放疗疗效预测和自适应智
+能放疗计划优化仍是当前实施高精度智能 IMRT 的
+技术瓶颈和未来的关键科学问题。未来主要的研
+究方向包括: 1) 肿瘤 IMRT 的 3D 剂量分布高精度实
+754
+
+
+6 期 刘国才,等: 肿瘤精确放射治疗剂量分布和疗效预测的机器学习方法综述
+时智能预测和放疗疗效智能评估; 2) 临床上可执行
+的肿瘤 自 适 应 智 能 放 疗 计 划 实 时 优 化 和 高 精 度
+执行。
+目前,采用深度学习方法虽然能够预测 IMRT
+的剂量分布,且 预 测 的 精 度 越 来 越 高,但 预 测 的 剂
+量分布能否转换为临床上可执行的治疗计划,指导
+实现肿瘤放 疗,尚 无 定 数,绝 大 多 数 的 剂 量 预 测 模
+型和方法也均未给出确定答案。而且,现有的剂量
+预测方法,都 针 对 特 定 部 位 的 肿 瘤,需 先 通 过 临 床
+医生在 CT 影像上勾画放疗靶区及周围危及器官,
+才能建立相应的放疗剂量分布预测模型,能否根据
+肿瘤 CT 或 MRI 影像直接预测放疗剂量分布,也无
+定论。目前尚没有一个通用的深度网络模型能预
+测放疗剂量 的 分 布,因 不 同 部 位 的 肿 瘤、不 同 治 疗
+方式需建立不同的剂量预测网络模型,且需对模型
+进行大样本 的 训 练 和 验 证,其 工 作 效 率 低,剂 量 预
+测精度 还 不 能 完 全 满 足 临 床 自 适 应 放 疗 计 划 的
+需要。
+另一方面,目 前 肿 瘤 放 化 疗 疗 效 的 预 测 方 法,
+均基于人工预先提取的影像组学特征,或是联合现
+有深度卷积神经网络自动提取的高层视觉特征,针
+对疗效预测 这 个 重 要 问 题,尚 无 深 入 的 研 究,尚 未
+产生相应的基于深度学习可实现直接预测的有效
+模型,这值 得 未 来 深 入 探 讨。 因 此,预 计 未 来 几 年
+放疗剂量分布预测和疗效预测的重点包括:
+1) 基于肿瘤 CT、或者 MRI 影像,形成直接预测
+肿瘤智能放疗 3D 剂量分布的 GAN 学习建模方法;
+2) 基于肿瘤 CT、MRI、PET 影像,形成直接预测肿瘤
+放疗疗效的 DCNN 学习建模方法; 3) 联合肿瘤智能
+放疗 MRI-CT 影像转换、3D 放疗剂量分布预测、放
+疗疗效预测的多任务模式,形成 GAN 学习建模方
+法; 4) 基于肿瘤放疗 MRI-CT 影像转换与配准、靶区
+和危及器官分割和剂量分布预测、放疗疗效预测的
+多任务模式,形成 DCNN 学习建模方法。
+文中多角度综述了肿瘤放射治疗剂量分布和
+疗效预测 的 现 状 与 发 展 趋 势,重 点 综 述 了 深 度 学
+习、经典机器学习和影像组学方法在多模态影像引
+导肿瘤精确放射治疗剂量分布和放化疗疗效预测
+中的应用研究进展,并就未来肿瘤放疗剂量和疗效
+预测研究重点给予阐述。
+参考文献
+[1] Zheng Rongshou,Zhang Siwei,Zeng Hongmei,et al. Cancer
+incidence and mortality in China,2016 [J]. Journal of the
+National Cancer Center,2022,2 ( 1) : 1-9.
+[2] Siegel RL,Miller KD,Fuchs HE,et al. Cancer statistics,2022
+[J]. CA: A Cancer Journal for Clinicians,2022,72( 1) : 7-33.
+[3] Sung Hyuna,Ferlay J,Siegel RL,et al. Global Cancer Statistics
+2020: GLOBOCAN estimates of incidence and mortality
+worldwide for 36 cancers in 185 countries[J]. CA: A Cancer
+Journal for Clinicians,2021,71( 3) : 209-249.
+[4] Bernier J,Hall EJ,Giaccia A. Radiation oncology: a century of
+achievements [J]. Nature Reviews Cancer,2004,4 ( 9) : 737
+747.
+[5] Barragán-Montero A,Bibal A,Dastarac MH,et al. Towards a
+safe and efficient clinical implementation of machine learning in
+radiation oncology by exploring model interpretability,
+explainability and data-model dependency [J]. Phys Med Biol,
+2022,67: 11TR01.
+[6] Chen Zihang,Lin Li,Wu Chenfei,et al. Artificial intelligence
+for assisting cancer diagnosis and treatment in the era of precision
+medicine [J]. Cancer Communications,2021,41: 1100-1115.
+[7] Momin S,Fu Yabo,Lei Yang,et al. Knowledge-based radiation
+treatment planning: A data-driven method survey [J]. Journal of
+Applied Clinical Medical Physics,2021,22: 16-44.
+[8] Wang Mingqing, Zhang Qilin, Lam S, et al. A review on
+application of deep learning algorithms in external beam
+radiotherapy automated treatment planning [J]. Frontiers in
+Oncology,2020,10: 580919) .
+[9] Sahiner B,Pezeshk A,Hadjiiski LM,et al. Deep learning in
+medical imaging and radiation therapy [J]. Medical Physics,
+2019,46( 1) : e1-e36.
+[10] Wang Chunhao, Zhu Xiaofeng, Julian CH, et al. Artificial
+intelligence in radiotherapy treatment planning: present and
+future [J]. Technology in Cancer Research & Treatment,2019,
+18: 1-11.
+[11] 刘国才,顾冬冬,刘骁,等. 用于肿瘤调强放射治疗影像分
+析与转换 的 深 度 学 习 方 法 [J]. 中 国 生 物 医 学 工 程 学 报,
+2022,41( 2) : 224-237.
+[12] Yi X,Walia E,Babyn P. Generative adversarial network in
+medical imaging: a review [J]. Medical Image Analysis,2019,
+58( 101552) : 1-20.
+[13] Ge Yaorong,Wu QJ. Knowledge-based planning for intensity
+modulated radiation therapy: a review of data-driven approaches
+[J]. Medical Physics,2019,46( 6) : 2760-2765.
+[14] Eriksson O,Zhang Tianfang. Robust automated radiation therapy
+treatment planning using scenario-specific dose prediction and
+robust dose mimicking [J]. Medical Physics,2022,49 ( 6 ) :
+3564-3573.
+[15] Neph R,Lv Qihui,Huang Yangsibo,et al. DeepMC: a deep
+learning method for efficient Monte Carlo beamlet dose calculation
+by predictive denoising in magnetic resonance-guided
+radiotherapy [J]. Physics in Medicine & Biology,2021,66( 3)
+035022.
+[16] Liu Shuolin,Zhang Jingjing,Li Teng,et al. Technical Note:
+cacascade 3D U-Net for dose prediction in radiotherapy [J].
+755
+
+
+中 国 生 物 医 学 工 程 学 报 41 卷
+Medical Physics,2021,48( 9) : 5574-5582.
+[17] Gronberg MP,Gay SS,Netherton TJ,et al. Technical Note: dose
+prediction for head and neck radiotherapy using a three
+dimensional dense dilated U-net architecture [J]. Medical
+Physics,2021,48( 9) : 5567-5573.
+[18] Chen Xinyuan, Men Kuo, Zhu Ji,et al. DVHnet: a deep
+learning-based prediction of patient-specific dose volume
+histograms for radiotherapy planning [J]. Medical Physics,
+2021,48( 6) : 2705-2713.
+[19] Tsekas G,Bol GH,Raaymakers BQ,et al. DeepDose: a robust
+deep learning-based dose engine for abdominal tumors in a 1. 5 T
+MRI radiotherapy system [J]. Physics in Medicine & Biology,
+2021,66( 6) : 065017: 1-8.
+[20] Shadab M,Yang Lei,Wang Tonghe,et al. Learning-based dose
+prediction for pancreatic stereotactic body radiation therapy using
+dual pyramid adversarial network [J]. Physics in Medicine &
+Biology,2021,66( 105006) : 1-17.
+[21] Nguyen D,Long T,Jia X,et al. A feasibility study for predicting
+optimal radiation therapy dose distributions of prostate cancer
+patients from patient anatomy using deep learning [J]. Scientific
+Reports,2019,9( 1) : 1-10.
+[22] Nguyen D,Jia X,Sher D,et al. 3D radiotherapy dose prediction
+on head and neck cancer patients with a hierarchically densely
+connected U-net deep learning architecture [J]. Physics in
+Medicine & Biology,2019,64( 6) : 065020.
+[23] Barragán-Montero AM, Nguyen D, Lu W, et al. Three
+dimensional dose prediction for lung IMRT patients with deep
+neural networks: robust learning from heterogeneous beam
+configurations [J]. Medical Physics,2019,46( 8) : 3679-3691.
+[24] Nguyen D,Barkousaraie AS,Shen Chenyang,et al. Generating
+pareto optimal dose distributions for radiation therapy treatment
+planning [C] / / International Conference on Medical Image
+Computing and Computer-Assisted Intervention. Shenzhen:
+Springer-Cham,2019: 59-67.
+[25] Chen Xinyuan,Men Kuo,Li Yexiong,et al. A feasibility study
+on an automated method to generate patient-specific dose
+distributions for radiotherapy using deep learning [J]. Medical
+Physics,2019,46( 1) : 56-64.
+[26] Kearney V,Chan JW,Haaf S,et al. DoseNet: a volumetric dose
+prediction algorithm using 3D fully-convolutional neural networks
+[J]. Physics in Medicine & Biology,2018,63( 23) : 235022.
+[27] Campbell WG,Miften M,Olsen L,et al. Neural network dose
+models for knowledge-based planning in pancreatic SBRT [J].
+Medical Physics,2017,44( 12) : 6148-6158.
+[28] Mashayekhi M,Tapia IR,Balagopal A,et al. Site-agnostic 3D
+dose distribution prediction with deep learning neural networks
+[J]. Medical Physics,2022,49( 3) : 1391-1406.
+[29] Mahmood R,Babier A,McNiven A,et al. Automated treatment
+planning in radiation therapy using generative adversarial
+networks [C] / / Proceedings of the 3rd Machine Learning for
+Healthcare Conference. Palo Alto: PMLR,2018: 484-499.
+[30] Babier A,Mahmood R,McNiven AL,et al. Knowledge-based
+automated planning with three-dimensional generative adversarial
+networks [J]. Medical Physics,2020,47( 2) : 297-306.
+[31] Zhan Bo, Xiao Jianghong, Cao Chongyang, et al. Multi
+constraint generative adversarial network for dose prediction in
+radiotherapy [J]. Medical Image Analysis,2022,77: 102339.
+[32] Momin S,Lei Yang,Wang Tonghe,et al. Learning-based dose
+prediction for pancreatic stereotactic body radiation therapy using
+dual pyramid adversarial network [J]. Physics in Medicine &
+Biology,2021,66: 125019.
+[33] Mentzel F,Kröninger K,Lerch M,et al. Fast and accurate dose
+predictions for novel radiotherapy treatments in heterogeneous
+phantoms using conditional 3D-UNet generative adversarial
+networks [J]. Medical Physics,2022,49( 5) : 3389-3404.
+[34] Fan Jiawei,Wang Jiazhou,Chen Zhi,et al. Automatic treatment
+planning based on three-dimensional dose distribution predicted
+from deep learning technique [J]. Medical Physics,2019,46
+( 1) : 370-381.
+[35] Petersson K,Nilsson P,Engström P,et al. Evaluation of dual
+arc VMAT radiotherapy treatment plans automatically generated
+via dose mimicking [J]. Acta Oncologica,2016,55( 4) : 523
+525.
+[36] Wieser HP,Cisternas E,Wahl N,et al. Development of the
+opensource dose calculation and optimization toolkit matRad [J].
+Medical Physics,2017,44( 6) : 2556-2568.
+[37] Pota M,Scalco E,Sanguineti G,et al. Early prediction of
+radiotherapy-induced parotid shrinkage and toxicity based on CT
+radiomics and fuzzy classification [J]. Artificial Intelligence in
+Medicine,2017,81: 41-53.
+[38] MD Anderson Cancer Center. Investigation of radiomic signatures
+for local recurrence using primary tumor texture analysis in
+oropharyngeal head and neck cancer patients [J]. Scientific
+Reports,2018,8: 1524.
+[39] Cunliffe A,Armato IIISG,Castillo R,et al. Lung texture in
+serial thoracic computed tomography scans: correlation of
+radiomics-based features with radiation therapy dose and radiation
+pneumonitis development [J]. International Journal of Radiation
+Oncology Biology Physics,2015,91( 5) : 1048-1056.
+[40] Li Qian,Kim J,Balagurunathan Y,et al. Imaging features from
+pretreatment CT scans are associated with clinical outcomes in
+nonsmall cell lung cancer patients treated with stereotactic body
+radiotherapy [J]. Medical Physics,2017,44( 8) : 4341-4349.
+[41] Mattonen SA,Palma A,Johnson C,et al. Detection of local
+cancer recurrence after stereotactic ablative radiation therapy for
+lung cancer: physician performance versus radiomic assessment
+[J]. International Journal of Radiation Oncology Biology
+Physics,2016,94( 5) : 1121-1128.
+[42] Klement RJ, Allgäuer M, Appold S, et al. Support vector
+machine-based prediction of local tumor control after stereotactic
+body radiation therapy for early-stage non-small cell lung cancer
+[J]. International Journal of Radiation Oncology Biology
+Physics,2014,88( 3) : 732-738.
+[43] Gnep K,Fargeas A,Gutiérrez-Carvajal RE, et al. Haralick
+756
+
+
+6 期 刘国才,等: 肿瘤精确放射治疗剂量分布和疗效预测的机器学习方法综述
+textural features on T2 - weighted MRI are associated with
+biochemical recurrence following radiotherapy for peripheral zone
+prostate cancer [J]. Journal of Magnetic Resonance Imaging,
+2017,45( 1) : 103-117.
+[44] Cui Yi, Tha KK, Terasaka S, et al. Prognostic imaging
+biomarkers in glioblastoma: development and independent
+validation on the basis of multiregion and quantitative analysis of
+MR images [J]. Radiology,2016,278( 2) : 546-553.
+[45] Bogowicz M, Leijenaar RT, Tanadini-Lang S, et al. Post
+radiochemotherapy PET radiomics in head and neck cancer-the
+influence of radiomics implementation on the reproducibility of
+local control tumor models [J]. Radiotherapy Oncology,2017,
+125( 3) : 385-391.
+[46] Bogowicz M, Riesterer O, Ikenberg K, et al. Computed
+tomography radiomics predicts HPV status and local tumor control
+after definitive radiochemotherapy in head and neck squamous
+cell carcinoma [J]. International Journal of Oncology Biology
+Physics,2017,99( 4) : 921-928.
+[47] Dong Xinzhe,Xing Ligang,Wu Peipei,et al. Three-dimensional
+positron emission tomography image texture analysis of esophageal
+squamous cell carcinoma: relationship between tumor 18F
+fluorodeoxyglucose uptake heterogeneity,maximum standardized
+uptake value, and tumor stage [J ]. Nuclear Medicine
+Communications,2013,34( 1) : 40-46.
+[48] Yip SS,Coroller TP,Sanford NN,et al. Relationship between
+the temporal changes in positron-emission-tomography-imaging
+based textural features and pathologic response and survival in
+esophageal cancer patients [J]. Frontiers in Oncology,2016,6:
+72.
+[49] Aerts HJ,Velazquez ER,Leijenaar RT,et al. Decoding tumor
+phenotype by noninvasive imaging using a quantitative radiomics
+approach [J]. Nature Communications,2014,5( 1) : 1-9.
+[50] Aerts HJ,Grossmann P,Tan Y,et al. Defining a radiomic
+response phenotype: a pilot study using targeted therapy in
+NSCLC [J]. Scientific Reports,2016,6( 1) : 1-10.
+[51] Cook GJ,Yip C,Siddique M,et al. Are pretreatment 18F-FDG
+PET tumor textural features in non-small cell lung cancer
+associated with response and survival after chemoradiotherapy?
+[J]. Journal of Nuclear Medicine,2013,54( 1) : 19-26.
+[52] Carvalho S,Leijenaar R,Troost E,et al. Early variation of FDG
+PET radiomics features in NSCLC is related to overall survival-the
+“delta radiomics”concept [J]. Radiotherapy Oncology,2016,
+118: S20-S21.
+[53] Fave X,Zhang Lifei,Yang Jinzhong,et al. Delta-radiomics
+features for the prediction of patient outcomes in non-small cell
+lung cancer [J]. Scientific Reports,2017,7( 1) : 1-11.
+[54] Veduruparthi BK,Mukherjee J,Das PP,et al. Novel radiomic
+feature for survival prediction of lung cancer patients using low
+dose CBCT images [OL]. https: / / arxiv. org / pdf /2003. 03537.
+pdf,2003-03-07 /2020-11-16.
+[55] Coroller TP,Grossmann P,Hou Y,et al. CT-based radiomic
+signature predicts distant metastasis in lung adenocarcinoma [J].
+Radiotherapy Oncology,2015,114( 3) : 345-350.
+[56] Rao SX,Lambregts DM,Schnerr RS,et al. CT texture analysis
+in colorectal liver metastases: a better way than size and volume
+measurements to assess response to chemotherapy? [J]. United
+European Gastroenterology Journal,2016,4( 2) : 257-263.
+[57] Nie Ke,Shi Liming,Chen Qin,et al. Rectal cancer: assessment
+of neoadjuvant chemoradiation outcome based on radiomics of
+multiparametric MRI [J]. Clinical Cancer Research,2016,22
+( 21) : 5256-5264.
+[58] Zhen Xin,Chen Jiawei,Zhong Zichun,et al. Deep convolutional
+neural network with transfer learning for rectum toxicity prediction
+in cervical cancer radiotherapy: a feasibility study [J]. Physics
+in Medicine Biology,2017,62( 21) : 8246.
+[59] Dohopolski M,Wang K,Morgan H,et al. Use of deep learning
+to predict the need for aggressive nutritional supplementation
+during head and neck radiotherapy [J]. Radiotherapy and
+Oncology,2022,171: 129-138.
+[60] Wei L,Owen D,Rosen B,et al. A deep survival interpretable
+radiomics model of hepatocellular carcinoma patients [J].
+Physica Medica,2021,82: 295-305.
+[61] Lao Jiangwei,Chen Yinsheng,Li Zhicheng,et al. A deep learning
+based radiomics model for prediction of survival in glioblastoma
+multiforme [J]. Scientific Reports,2017,7( 1) : 1-8.
+[62] Chen Antong, Saouaf J, Zhou Bo, et al. A deep learning
+facilitated radiomics solution for the prediction of lung lesion
+shrinkage in non-small cell lung cancer trials [C] / / 2020 IEEE
+17th International Symposium on Biomedical Imaging. Iowa City:
+IEEE,2020: 678-682.
+[63] Peng Jie, Kang Shuai, Ning Zhengyuan, et al. Residual
+convolutional neural network for predicting response of
+transarterial chemoembolization in hepatocellular carcinoma from
+CT imaging [J]. European Radiology,2020,30( 1) : 413-424.
+[64] Le WT,Vorontsov E,Romero FP,et al. Cross-institutional
+outcome prediction for head and neck cancer patients using self
+attention neural networks [J]. Scientific Reports,2022,12( 1) :
+1-17.
+[65] Wang R, Guo J, Zhou Z, et al. Locoregional recurrence
+prediction in head & neck cancer based on multi-modality and
+multi-view feature expansion[J]. Physics in Medicine & Biology,
+2022,67: 125004.
+[66] Anaka S,Kadoya N,Sugai Y,et al. A deep learning-based
+radiomics approach to predict head and neck tumor regression for
+adaptive radiotherapy [J]. Scientific Reports,2022,12( 1) : 1-13.
+[67] Peng Hao,Dong Di,Fang Mengjie,et al. Prognostic value of
+deep learning PET / CT-based radiomics: potential role for future
+individual induction chemotherapy in advanced nasopharyngeal
+carcinoma [J]. Clinical Cancer Research,2019,25 ( 14 ) :
+4271-4279.
+[68] Ypsilantis PP,Siddique M,Sohn HM,et al. Predicting response
+to neoadjuvant chemotherapy with PET imaging using
+convolutional neural networks [J]. PLoS ONE,2015,10 ( 9) :
+e0137036.
+757
+
+
+中 国 生 物 医 学 工 程 学 报 41 卷
+[69] Hu Yihuai, Xie Chenyi, Yang Hong, et al. Computed
+tomography-based deep-learning prediction of neoadjuvant
+chemoradiotherapy treatment response in esophageal squamous
+cell carcinoma [J]. Radiotherapy Oncology,2021,154: 6-13.
+[70] Watson M,Baimas-George M,Murphy K,et al. Use of deep
+learning to predict tumor response to neoadjuvant therapy in
+pancreatic adenocarcinoma: pure and hybrid modelling [J].
+HPB,2020,22: S38.
+[71] Wang Li, Wang Lihui, Chen Qijian, et al. Convolutional
+restricted boltzmann machine based-radiomics for prediction of
+pathological complete response to neoadjuvant chemotherapy in
+breast cancer [OL]. https: / / arxiv. org / pdf /1905. 13312. pdf,
+2019-05-23 / 2020-11-16.
+[72] Ravichandran K, Braman N, Janowczyk A, et al. A deep
+learning classifier for prediction of pathological complete response
+to neoadjuvant chemotherapy from baseline breast DCE-MRI
+[C]/ / SPIE Medical Imaging. Houston: SPIE,2018: 105750C.
+[73] Huynh BQ,Antropova N,Giger ML. Comparison of breast DCE
+MRI contrast time points for predicting response to neoadjuvant
+chemotherapy using deep convolutional neural network features
+with transfer learning [C] / / SPIE Medical Imaging. Orlando:
+SPIE,2017: 101340U.
+[74] Jiang Meng,Li Changli,Luo Xiaomao,et al. Ultrasound-based
+deep learning radiomics in the assessment of pathological
+complete response to neoadjuvant chemotherapy in locally
+advanced breast cancer [J]. European Journal of Cancer,2021,
+147: 95-105.
+[75] Duanmu H, Huang PB, Brahmavar S, et al. Prediction of
+pathological complete response to neoadjuvant chemotherapy in
+breast cancer using deep learning with integrative imaging,
+molecular and demographic data [C] / / International Conference
+on Medical Image Computing and Computer-Assisted Intervention.
+Lima: Springer-Cham,2020: 242-252.
+[76] Qu Yuhong, Zhu Haitao, Cao Kun, et al. Prediction of
+pathological complete response to neoadjuvant chemotherapy in
+breast cancer using a deep learning ( DL) method [J]. Thoracic
+Cancer,2020,11( 3) : 651-658.
+[77] Bibault JE,Giraud P,Housset M,et al. Deep learning and
+radiomics predict complete response after neo-adjuvant
+chemoradiation for locally advanced rectal cancer [J]. Scientific
+Reports,2018,8( 1) : 1-8.
+[78] Braman N,Adoui ME,Vulchi M,et al. Deep learning-based
+prediction of response to HER2-targeted neoadjuvant
+chemotherapy from pre-treatment dynamic breast MRI: a multi
+institutional validation study [OL]. https: / / arxiv. org / pdf /
+2001. 08570.pdf,2020-06-22 /2020-11-16.
+[79] Zhang Xiaoyan,Wang Lin,Zhu Haitao,et al. Predicting rectal
+cancer response to neoadjuvant chemoradiotherapy using deep
+learning of diffusion kurtosis MRI [J]. Radiology,2020,296
+( 1) : 56-64.
+[80] Zhu Haibin,Xu Da,Ye Meng,et al. Deep learning-assisted
+magnetic resonance imaging prediction of tumor response to
+chemotherapy in patients with colorectal liver metastases [J].
+International Journal of Cancer,2021,148( 7) : 1717-1730.
+[81] Fu Jie,Zhong Xinran,Li Ning, et al. Deep learning-based
+radiomic features for improving neoadjuvant chemoradiation
+response prediction in locally advanced rectal cancer [J].
+Physics in Medicine Biology,2020,65( 7) : 075001.
+[82] Jang B-S,Lim YJ,Song C,et al. Image-based deep learning
+model for predicting pathological response in rectal cancer using
+post-chemoradiotherapy magnetic resonance imaging [ J ].
+Radiotherapy Oncology,2021,161: 183-190.
+[83] Jin C,YuH,Ke J,et al. Predicting treatment response from
+longitudinal images using multi-task deep learning [J]. Nature
+Communications,2021,12( 1) : 1-11.
+[84] Cha KH, Hadjiiski L, Chan H-P, et al. Bladder cancer
+treatment response assessment in CT using radiomics with deep
+learning [J]. Scientific Reports,2017,7( 1) : 1-12.
+758
