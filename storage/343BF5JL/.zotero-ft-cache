@@ -1,0 +1,1679 @@
+圉
+`
+Introduction to Scientific Data
+Visualization and Analytics
+Han-Wei Shen
+The Ohio State University
+竺
+
+
+What is Visualization?
+• A process of transforming numerical data to
+ima 贮
+• The goal is to extraction information from the
+data, or data analytics
+• lnterdisciolinar
+ne Le
+Compu t er
+Graph ics
+an Co
+action
+igh Perform
+mputin
+Geometry &
+Topology
+mputa
+
+
+resample
+dneoise
+Ttrative
+Visual Analysis Pipeline
+Data Acquisition/Generation
+Data Preparation I畛呻也
+如N处
+Feature Extraction and Visual Mapping
+Rendering
+氓rdtl 扎
+三
+Image and Animation
+
+
+• SpatiaI Data
+- Medical imaging
+- Numerical simulations
+- Sensor data (Radar,LiDAR, etc.)
+一 lt,l,Y泌}
+仁习 比如m立出 皿 `
+一 切"叩
+,,.,,,,.
+?O"""
+...0
+..OO
+伽.幽. ....
+.出立 `` ,,一~
+r...mo~ ,..“
+` 真.由
+-C
+`心 Cu...c -C
+(一一书
+• `c ..,.J
+一 •Oo啊 '0-....一'
+.一”“'
+. .丘 T t
+.......
+"的妯力. c
+五 r...,.,l. . . .
+`嗣贰 0孽鹹 r 屾呵喟"偏工心
+
+
+. Data Acquisition and Generation
+Non-Spatial Data
+醒
+- Network Data (Graphs and Trees)
+- Text Data (Documents)
+- Matrix Data (Spreadsheets)
+「 c -4
+叩加~-"· 压七, - - - - Bangladesh -...- ...
+Brazil
+Ch S<ffllo--··-·.c....,
+ina
+切叩 " C叨0 的心飞e
+"''",`忆 寸飞心C _ _ r'T1any.,.,_ 
+J-·a >dr\ ..
+_ . India1ndonesi卧
+', ]. Kot. & 
+Mexico ,l.I . ..一· N1gena
+Pakistan _ 让 Ph1li
+节如and. 一Y ~ -·屯?秏冶屯了,心 上 U5SIa
+一山戏y- - . .. t加.,心 dn1心心叩om
+.: United States _c·-..' v,elnam ,一厂_,_
+'>··
+- -=- - - - - - 
+- - - - - -
+三足酰文言
+户
+^
+、一 ~、
+
+
+tohigherresolution
+Data Preparation
+• Reconstruction
+• Smoothing/De-noising
+• Re-sampling to h扣闷的ovi
+• Transformation (wavelet, Fourier, etc. transforms)
+• Projections (to lower dimensions)
+• Compression/down-sampling
+• Partitioning/Bricking
+• Multi-resolution
+• Data distribution and file layout
+.
+•••
+
+
+Feature Extraction
+• Generic features: isosurfaces, streamlines,
+critica I points etc.
+• Specific features: vortices, material
+boundaries, flow separation, etc
+位
+、·
+一 ,.二,二七. r 
+主 ' r : 才
+:' . · ·.- 
+
+
+imgl
+Visual Mapping and Rendering
+• The process of converting features to visual
+forms 气) I(D) = Ioexp- J,。气) d' + J J.1'r(e) dt
+,I
+• Volume rendering J(s, \i's)= (r,g, b, a)
+- Optical models
+- Transfer functions
+• Polygon rendering
+- Raster graphics
+- Ray tracing
+• Advanced illumination and stylized rendering
+
+
+retrieve Tformation fromdata
+畛仪 T如今{加屿
+Analysis
+The goal of analysis is to extract/prioritize features and raw data
+• Topological
+- Surface topology: contour trees, reeb graphs
+- Vector field topology (sink, source, saddle)
+• Geometry
+- Surfaces and curves: first and second fundamental forms,
+various types of curvatures
+• Statistical
+- First, second, or higher order moments
+- Distribution, histograms
+- Entropy, information theory
+
+
+Image and Animation 圉
+• Often the final output of the visualization pipeline
+• The quality of the output is affected by the
+visualization algorithm parameters
+• Many metrics are available to evaluate the
+images and in turn to optimize the visualization
+algorithm paremters
+• Visualization algorithms can also be optimized if
+the property of the images are considered
+(visibility, object size etc)
+
+
+VTK: The Visualization Toolkit
+Part I: Overview and Graphics Models
+Han-Wei Shen
+The Ohio State University
+
+
+What is VTK?
+• An open source, freely available
+software system for 3D
+graphics, image processing, and
+visualization.
+• Support for hundreds of
+algorithms in visualization and
+image processing
+• Object-oriented design with
+different interpreted language
+wrappers.
+
+
+System Architecture
+Interpreted Wrapper(Tcl, Java, Python)
+,
+•Tel/Tk shell ,``. •Tcl/Tk source
+•Java interpreter ` •JavaJDK
+`.
+•Python interpreter ` •Python source
+```.
+c++ :core
+,``.
+Libraries and includes : (dll and.h files)
+Or
+(.a and.h files)
+Binary Installation: if you will use The classes to build your applicatoin
+,,,,````````````........
+All class source code (could take hours to
+compile)
+Source code Installation: If you want to extend vtk
+
+
+VTK Object Models
+• Graphics and Visualization Models
+- Graphics objects: rendering
+- Visualization objects: generating graphical
+objects to represent the data
+Data Flow System: Pipeline execution
+Data source Visualization Graphics
+
+
+I
+data Ygomti.gl 齒品
+aittangle
+Pipeline Execution
+Direction of data flow
+Visualization model Graphics model
+`
+t\is你心地 t\1 叩 U
+(o 如s
+Direction of'update'
+叶吁L
+
+
+a lollectionof
+triangles
+VTK Mappers
+• Mappers convert data into graohical orimitives or write to a
+file (writer)
+- Mappers req ui re one or more input data objects
+- Mappers te rminate t he visual ization pipeline
+• Example: vtkPolyDataMapper, which takes geometry such as
+cylinder or cone as input and convert it to ~ e geometry 仪业(四`l/l Oj
+如勺懿
+Visualization model Graphics model
+
+
+triangles
+VTK Actors
+• Actors represent graphical data or objects
+• A VTK actor contains
+- object properties (color, shading type, etc)
+- geometry "-叭宁
+- transformations
+• VTK actors need to work together with lights (vtklight) and
+camera (vtkCamera) to make a scene
+• The scene is then rendered to an image by a renderer
+(vtkRenderer)
+Visualization model Graphics model
+
+
+VTK Renderer
+• The Renderer in VTK, vtkRenderer, is to coordinate
+the rendering process that involves lights, cameras,
+and actors
+•· vtkRenderer creates a default camera and lights if
+not present, but needs to have at least one示tor
+• vtkRenderer needs to be connected with a
+vtkRenderWindow
+Visualization model Graphics model
+
+
+VTK Render Window
+• The class, vtkRenderWindow ties the entire
+rendering process together
+• It manages all the platform dependent window
+management issues and hide the details from the
+user
+• It also stores graphics specific info.rmation such as
+window size, position, title, frame buffer depth, etc.
+厂刊' l, —厂I ,嘈,习删簪l帮“和,目
+Visualization Graphics model
+Render window
+
+
+The Graphics Model
+The purpose is to render the geometry (volume) on the screen
+camera
+SC 汜en
+vtkRenderWindow
+vtkRenderWindowlnteractor
+Actor
+vtkActor •vtkProperty
+•vtkMapper •vtkTransform
+Viewer
+Light
+vtklight
+vtkRenderer
+
+
+VTK Simple Pseudo Code
+Ma i n位{
+}
+create geometry; create a mapper; give the geometry to the mapper; create an actor; give the mapper to the actor; create a renderer; give the actor to the renderer; create a window; give the renderer to the window;
+!window-> render();
+Geometry
+Mapper
+Actor
+Renderer
+Window
+
+
+VTK Render a Cone
+#include "vtk.h"
+Ma in()
+{
+vtkConeSource *cone= vtkConeSource::New(); cone->SetResolution(8);
+vtkPolyDataMapper *mapper = vtkPolyDataMapper: :New(); mapper ->Setlnput(cone->GetOutput());
+vtkActor *coneActor = vtkActor::New(); coneActor->SetMapper(Mapper);
+vtkRenderer * ren = vtkRenderer::New(); ren->AddActor(conActor);
+Geometry
+Mapper
+Actor
+Renderer
+vtKRenderWindow *renWindow = vtkRenderWindow ::New(); renWindow->AddRenderer(ren);
+renWindow->render();
+Window
+}
+
+
+vtkRenderWindow Output
+1 vtkRenderWindow
+/
+佃Illl ` • -,Il .. Il ~口 , 叫憬l , l
+「
+2 vtkRen! erer -[ ;;~~ra
+vtkActor (property, geometry(mapper), transformation, etc)
+
+
+VTK: The Visualization Toolkit
+Part II: Visualization Model
+Han-Wei Shen
+The Ohio State University
+
+
+2
+img
+VTK Visualization Model
+• Graphics and Visualization Model
+- Graphics model: rendering
+- Visualization model: transformation and
+representation
+Data Flow System: P'ipeline execution
+Data source Visualization Graphics
+心3
+
+
+nylon
+The Role of Visualization Model
+• Converting data from its orig.inal form into graphical form
+• Deal with the issues of transformation and representation
+• Representation: internal data structures
+• Transformation: data to graphics
+Example: stock price display
+Dow Jones Industrial Avera哗
+Jon 睬吓加铲 OJI· Sep 为 3伪 PMEl
+17,057.03 + 56 12 (0.33%)
+1 心 t 5 如 t nlCI心 3 ' 叩".,. l'eet 5~啊 m
+”,”“;
+iHl_ili 1 了 197 16,934
+,.“'.
+“·``3.“
+0) Internal (computational) representation:
+Arrays of stock prices
+rice[i] = 17100, 16950, 17073, 17050,...
+Time[i) = 10, 10:30, 11, 11:30, 12,...
+-
+缸ra邑环epresentation:-x.:-y plot
+
+
+data
+回
+3D Plot Example
+Quadric function:
+f(x,y,z) = a。 x + a1 y + a2 z + a3 .xy + a4 yz + a5 xz + a6 记+ a7 y2 + a8 丑
+.
+.
+• Evaluate the function at a
+pre-determined x,y,z
+sample-s
+• Store the function values
+into a 30 array 扭权
+Generate a 3D surface
+correspondingto二c
+(this is called an ~ )
+Display ~
+沪心勺
+II
+。。。
+1。。
+2。。
+... ... ...
+F[x][y] [z] = f(x,y,z)
+` .I,I Transformation (visualization)
+Find all (x,y,z)
+f(x,y,z) = c
+
+
+VTK Visualization Model
+How is a visualization process described in VTK?
+Visualization pipeline: It describes the flow of data from its
+original form to the final image output
+Visualiza廿 on Pipeline=
+Fune廿 on Model + Object Model
+• Fune廿 on model: Transforma廿on
+- steps to create visualiza廿 on (how data flow through
+the system)
+• Object model: objects that participate in the function
+model
+- processes and internal data structures
+
+
+o
+VTK Function Model
+• Functio·n model is to Illustrate
+the steos to create visualization
+_
+.. 儿
+
+
+VTK Object Model
+Describe which objects operate on the functional
+model (visualization pipeline)
+• Process Object: Operates on (transform) the data objects
+- Example : generating surfaces from F(x,y,z)
+• Data Object: Represent information and methods to create,
+access, and delete the information
+- Example: the 3D point array F(x,y,z)
+
+
+files
+geometry engl
+i
+Process Objects
+• Source: Interface to external data sources f1 奶
+or generate data procedurally
+• Filter: Transform the data input
+• Mapper: The sink of the functional mode,,
+interface with the graphics fTlOdel
+叩叭
+9Q0沁巧 T
+Visualization mode/ 个 Graphics model
+
+
+Process Objects (cont'd)
+Sample F(x,y,z)
+Point Array
+Extract Surface
+Polygon
+Display
+Source
+Filter
+Mapper + Graphics Model Objects
+
+
+te 𦦨lls
+Data Objects
+Data Object: Dataset
+• Structures: how the tnformation is organized
+- Topology 如 心如`
+- Geometry 哗
+• Attributes: store the information we want
+to visualize. e.g. function values
+
+
+一
+seqof onnationinto
+T
+P Pills allData
+ticangleonneltionsC.to
+Uettx
+能
+nge
+Pilxiyllzlxi921Pslxiysl trianglestrip
+317 loordinatsl
+Data Objects: structures
+s列 of 叩n如OT中
+T
+~ Topology: p,今` `沁钰呼
+匕
+竺点on5 - - Invariant under geometric transformation
+(n卜 (rotation, translation, scaling etc)
+- Topological structures : 硒 归 归
+气也
+• Geometry: 叭碍) P2(吵)阳吁) 加呥吟
+-The
+- Geometric structures: cells with
+驴 c60如心 匹 ~ in 30 space
+
+
+ii
+悲器品
+ready
+ph
+cytology
+U(S叫
+T
+VTK Data Attributes
+• The information stored at each corner of the cell J (如心砰啊
+陑 cavrtolAl
+归m 归 - Scalars: temperature, pressure, etc
+-户 Vector: velocitys
+
+- _Normals: surface directions
+勺h 仁 - Texture coordinates: graphics specific
+- Tensors: matrices
+/T吨3
+
+
+Organizing sttuiture
+9
+Geometry
+Attis i Point
+all
+O
+xoYo
+vtklmagellataOlmtnlYiiign.in
+n
+敷着 straight
+Olmxnliiiiii.gg
+计算几何
+有限天分希 多边形 hatinship betweenpointsisnot
+尸nl气珈屾/\ 如皿K
+VTK Datasets 计气 3
+\ )Att尺 /
+\)创 1
+A Collection of structures and attributes
+沁,丫。
+Ol() 心\勹呼人权 的tn) m,n
+比,丫。 Td泊J,1
+w, n 枢盯
+h” .
+...
+.
+..
+.
+,
+.
+一
+.
+••
+丫
+Rectilinear Grid
+0 [沁亦 M,n
+[P 立闷
+Structu户 Grid
+邸g商甘
+,
+Polygonal Grid 軞矶
+Unstructured Points
+句:.次
+l . ` ]诮呵
+Unstructured Grid
+乙
+扣也砂·lp 切妇n p.lh七 Ts 总
+Ot 伈n(tion
+
+
+11
+品体流动
+热量传输
+商铎劝 蚊岱品
+Scientific Data Model
+an-Wei Snen
+The Ohio State University
+
+
+What is a Data Model? 瞪
+CCSMC
+How do you describe the data represented by this image?
+
+
+Data Model 圉
+v Temperature
+Pressure Cloud density
+u
+• Describe the objects represented by the data
+- Structures of the objects
+- Properties of the objects
+- Rel ationships between the objects
+
+
+.
+Scientific Data Model
+二
+Data set - a sin gle or
+multiple valued
+function Temperature
+Pressure
+Cloud density
+I Data Mode| 1
+』
+m dependent variables X; (i=l..m) n independent variable vi (j = l..n)
+Y1I= f1 ~ 妇 ,妇, .. . , x九 }
+沁j = f2(X1,X2,X扣. .. , x气)
+Ym ...
+jm (工 1, 心,巧, ... , 立?, )
+Each dependent variable Y; can have a tensor rank k
+- k =0 : scalar; k = 1: vector; k = 2; 2D matrix, etc.
+圉
+
+
+Scientific Data Model 圉
+v Temperature
+Pressure
+Clou d density
+.
+Data set - a single or
+multiple va lued
+function
+.u
+Independent variables • (d imensions)
+Spatial coord inates (longitude, latitude, height)
+Time
+Zone ID
+• Dimensional ity - number of independent variables
+Dependent variables
+The function values of independent variables
+The number of values associated with each dependent variable can be described by its tensor rank
+0: scalar
+1: vector
+2: n x n matrix ...
+
+
+Domain Discretization
+v
+圉
+Continuous Domain [二》
+ls u
+v
+国U
+ij compute values
+v
+,,
+哇U
+
+
+Scientific Data Set 圉
+Scientific Data Set 
+Domain Structure +
+Attributes
+vv
+宝
+血
+严
+u 哩u
+Domain Structure
+- Topology: property invariant
+under transformation - Geometry: instantiation of topology with specific
+positions - Consists of Ppints and Cells, which define the Mesh
+Attributes
+One or multiple
+values (scalars, vectors, tensors) defined at points or cells
+
+
+Domain Structure - Cell 圉
+v
+宜
+u
+• Cells are the fundamental building blocks of scientific data sets
+• Cells define how points are connected together to form the basis for interpolation
+• Cells can be of different dimensiona lity - O D: Vertices - 1 D: Line; Polylines;
+- 2 D: Triangle; Quadrilateral; Polygon - 3 D: Tetrahedron; Hexahedron; Voxel;
+
+
+Attributes
+• Scalars (e.g. density), Vectors (e.g.
+momentum),, Tensors (e.g. stress tensor)
+蠲
+
+
+Scientific Dataset Types
+• Data sets are categorized into different types
+based on their underlying grid (domain
+structures)
+- Structured Grid
+圉
+- Consisting of a collection of points and cells arranged on a regular
+lattice
+- Every point in the structured grid can be indexed by (i,j} in 20, (i,j,k} in 30, etc.
+- The position of the points, and hence the geometry of the cells, can be either implicitly defined (Cartesian gird}, or explicitly specified (rectilinear or curvilinear grid}
+
+
+Scientific Dataset Types
+• Data sets are categorized into different types
+based on their underlying grid (domain
+structures)
+- Structured Grid
+• Cartesian mesh
+• Rectilinear mesh
+• Curvilinear mesh Rectilinear Grid
+Cartesian Grid
+圉
+
+
+Scientific Dataset Types 圉
+.
+Data sets are categorized into different types
+based on their underlying grid (domain
+structure)
+- Unstructured Grid
+• Also called irregular grid data
+• Unstructured grid points are irregular
+located in space
+• It is often a result of space tessellation
+.....
+、.
+r.;1
+"."了...
+琴穿
+¥..."
+2.“·2. 止..
+?2.3二.,
+with simple shapes
+• Explicit connectivity information to form cells is
+necessary
+
+
+Scientific Dataset Types
+• Data sets are categorized into different types
+based on their underlying grid (domain
+structure)
+- Unstructured Grid
+• Polygonal mesh
+• Tetrahedral mesh
+• Hybrid M es h
+Polygonal mesh Tetrahedral mesh
+Hybrid mesh
+圉
+
+
+圆
+Scientific Data File Formats
+Han-Wei Shen
+The Ohio State University
+
+
+Scientific File Format
+• Common scientific data file formats
+- VTK
+- NetCDF
+- Plot3D
+■■■
+■ netCDF
+(-—.. \
+NASA
+、 ._)
+• Similar conceptual data models, but with different
+瞪
+- organizations for storing domain structures, attributes, and meta-data
+- degrees of extensibility to store one, multiple, or groups of data objects
+- Application Program Interfaces (API} to read/write the data
+
+
+The Visualization Toolkit (VTK)
+• The Visualization Toolkit (VTK) is an open-source, freely
+available software system for visualization, 3D computer
+graphics, and image processing
+• Produced by the company Kitware (www.kitware.com)
+Upcoming Kltware Course
+灿1W那已 b叩叩"•-Inca,中m.NC
+加 cou咬喊中啊 VT又 Par刻仰. “hon 矶iC愉ke Ea心 R`出1门也n En 祁 Oc:l 心“8小. 201 4
+Kltware offers adva"岱cl software R&O so1uuo11s and
+setv,ces. Flnd out hOw we can help wilh your next pro伶ct _
+_
+Provkllng Advanc~d R&D So你“'e Solutions
+_
+比 1切 I 包c.压"'购.认ettem
+......,均 l4 切动畸,七L-4.. 印气,..........邓咧," ...,鱼沁`` '减`` « .,扛 l l ,「1u t.. 亡. ."立正,
+......,."匕忆易心 ”mo六"c.心',“'d 呤,......,. |\了 Co;p`飞` A: I
+霾
+
+
+VTK Simple Legacy Format 圉
+• Contains two different style : Legacy and XML
+M y_Fi le .v t k
+File version and identifier
+# vtkDataFile Version x,x
+卜
+Header: comment, 256 char max
+This is where I put my comments \n
+尸一一-- - - - ----一一一一一一 ------ --e一___ _
+Type: type of dat a
+ASCII (or BINARY)
+Structure: describes domain
+Structure
+... (more in the following slides)
+卜
+Attributes
+... (more in the following slides)
+
+
+Specifying Domain Structure
+• Specifies the structure of the domain
+DATASETSTRUCTUREO_POINTS o r
+STRUCTURED_ GRID
+UNSTRUCTURED_ GRID
+RECTILINEAR_ GRID
+POLYDATA
+FIELD
+". ., .,~ it
+File version and Identifier 付邓吵血 Vemon 心
+............今. . 一 · 今...............
+Heoder:<omm如 l56c叩rmax This”wherelputmycommen叭a
+.........
+Type: rvp,,ofdata 冬II j or 81NAf!: Structure: describes domain
+Stro如九
+... (more ln the following slides)
+Attribvtes
+... (more.In th,.follo叫ng,lldes)
+• Then give the information related to the type of the
+structure
+- Dimensions
+- Spacing
+- Coordinates
+圉
+
+
+Specifying Domain Structure
+• Specifies the structure of the domain
+DATASET STRUCTURED POINTS or
+STRUCTURED GRID
+UNSTRUCTURED GRID
+RECTILINEAR_GRID
+POLYDATA
+FIELD
+| VTK Structured PointType |
+DATASET STRUCTURED_POINTS
+DIMENSIONS nx n乃
+ORIGIN X YZ
+I
+SPACING sx 硒 ny
+sX
+•....•
+nz
+,..人心-“习 · 久`
+File version and Identifier 付 "kP叩FIIgV叩on”
+. - . . . - - `.一· -- 
+Header: rnmm,叽 256charm如 This Is where Iput my comments\a
+Type: ryp• ofdata
+应Il (or B旧AI\Y)
+一..
+Strvctvre: de幻fbesdomafn
+SI几比“ff/
+... (more In 小e following slides)
+Attributes ... (moreln 由• followln& slldes)
+"七{气x..~``'```\···
+(X,Y,Z) nX
+...
+圆
+
+
+Specifying Domain Structure
+• Specifies the structure of the domain
+醒
+”“一,一 .,广_“一
+DATASET STRUCTURED_POINTS or
+STRUCTURED_ GRID
+UNSTRUCTURED GRID
+RECTILINEAR_GRID
+POLYDATA
+FIELD
+FileverS/onondiden 沛er 付出吐妖肚 V"寸on”
+令· - · • • ·全...
+Header: cqmmem 256 叩rmox
+面s Is where_ Iput my commonts \!1
+...
+Type: IV位 a/ data ASCII (or BINARY)
+Structure: describes domain
+Srroctur, ... (more Inthe followfng slides)
+I VTK Recti1inear Grid Type |
+DATASET RECTILINEAR_POINTS
+| DIMENSIONS nx nv n2 1
+X_COORDINATES nx dataType
+| X。 X1... xnx-1 1
+Y_COORDINATES ny dataType
+| y。为.. ynx-1 1
+Z_COORDINATES n1dataType
+[ z。 Z1... Znx-1
+ny
+Attributes
+... (moreintlte 问lowrnasll中s)
+nz
+04
+r4
+e4
+46
+A4
+..
+01234
+zzzzzx
+n
+X。 X1 X2X3X4...
+
+
+Specifying Domain Structure 圆
+• Specifies the structure of the domain
+, nt,. ..~· , ..,
+DATASETSTRUCTURED_pOINTS or File version and identifier
+付出丑亟 Venlonw
+STRUCTURED GRID
+UNSTRUCTURED_ GRID
+RECTILINEAR_ GRID
+哑 雪畸雪.一千 • l 金,一一一 一一 , 一一 + - - • 一一 l • 一 一·一一平争·一
+Heoderco叩""nt 256~初Imox
+1hlsls where Iputmy comments\o.
+一千 . , • •
+Type:"归 ofd血
+ASCII (or B旧ARY)
+POLYDATA Structure: de5Cribes domain
+s”uctum
+FIELD ... (morein the followlngslldes)
+Attributes
+| VTK Unstructured Grid Type | - lmon,tn 由efollowing slld釭)
+dataType can be unsigned_char, char, unsigned_short, short, unsigned_int, int, DATASEl._UNSTRUCTURE_GRID unsined_/ong, long, float, double
+ataType
+ppp
+Ox 'Oy ' Oz ppp
+lx'ly'lz
+ppp
+(n-l)x'(n-l)y ' (n-l)z
+CELL
+l umP.oi计'ts匡 (first cell)
+numPoints1 i,j,k,I ... (second ce ll)
+numPoints仆1 i,j, k,I ,.... (n-lth cell)
+CELL TYPES n
+-1
+Type 。
+Type1
+Type2
+Typen
+..
+
+
+奥㸑鼻囇stiip
+VTK Cell Types
+.
+..
+. ...
+.
+VTK_ VERTEX (=l) VTK_POLY_VERTEX (=2) VTK LINE (=3)
+租砃諒咱戏荷,
+码酰加乎-响
+。 n-1 . 4 n+1
+.
+邑 n 。上 1 。
+VTK POLY_LINE (=4) VTK_TRIANGLE(=S) VTK_TRIANGLE STRIP (=6)
+3
+n-1 _/ 、 . . 仁 3
+\ 矗1
+0 .- _.. 1 。 _ _ 1
+VTK POLYGON {=7) VTK_PIXEL (=8) VTK_QUAD (=9)
+
+
+VTK Data Attributes
+• Attributes: the values stored at the grid points
+MyFl9.vtk
+File version ond identifier
+#wkP叩 fIIeVe面on”
+... --........... Header: comment, 256 charmo~
+This Is where I put my comments\!l
+霎
+• Supported types : ··---··············寻......-·-··················
+scalars, vectors, 3x3 tensors, normals, t exture coordinates (1/2/3D), and fields.
+Type: ty匹 ofdoto
+ASClI 入tor BINARY)
+.. .,...... ··•···················
+• Format:
+attributeType dataName
+SCALARS Any name you like VECTORS TENSORS NORMALS TEXTURE COORDINATES
+dataType
+unsigned_char char unsigned_short short unsigned_int int unsined_long long float double
+Structure: de父ri妇sdomoln
+Structure
+.,. (more In the following slides)
+Attributes
+... (more In thefollowingslides)
+attributeValues
+Described in the following slides
+
+
+
+VTK Data Attributes
+..
+.
+Attributes: the values stored at the grid points
+Supported types:
+- scalars, vectors, normals, texture coordinates (1/2/3D), 3x3 tensors, and fields .
+Scalar Attribute
+,,. Optional, default = 1
+三 勹:taType
+LOOKUP_TABLa default
+S
+。
+S1
+s
+n1
+圉
+M yF阳 ,w k
+File version and identifier
+付 立也呻 Version 凶
+一噜.- ·一... 一 .. ... ••••••••••• ·•••·
+Header: :omment. 2S6 char ma片
+This Is where Iput mv comments\o.
+····••·••· ..... .... 一 ..
+Type IJIPP ofdata
+ASCII .t~'. B!NARY)
+..... .....................
+Structure: des"/besdomam
+Stroctul?
+... (more In the following slides)
+Attributes
+... (more In the followfng slides)
+
+
+VTK Data Attributes 圉
+• Attributes: the values stored at the grid points
+• Supported types:
+scalars (with optional RGB lookup table) vectors, normals, texture coordinates (1/2/3D), 3x3 tensors, and fields.
+• Vector attribute
+巨巨
+II
+Vox Voy V。1
+V1xv1y v1z
+Vv v
+(n-1)~•(n-l)y • 1n-l)z
+• Tensors attribute
+TENSORS dataName data Type
+too to1 to2
+如压压
+t20 t21 t22
+□l
+□J
+n 3 x 3 tensors
+MvFi | e 汛k
+Fife vers;on and identifier "也迪抇leVe丙on” ....
+Header; comm印t, 256char mo~
+This is where Iput my comments \n
+.............
+Type: type of doro ASCII (or BINARY)
+········.... ,.....................
+Structure. describes domain
+Stn兀切m
+... (more In the following slides)
+J云喊.玉 罩· 呵 l
+Attributes ... (more In the following slides)
+
+
+VTK Data Attributes 圆
+• Attributes: the values stored at the grid points
+• Supported types:
+scalars (with optional RGB lookup table)
+vectors, normals, texture coordinates
+(1/2/3D), 3x3 tensors, and fields .
+• Normals
+NORMALS dataName dataType
+N。x nOy 如
+n1x n1v n iz
+n(n•l)x n(n•l)y n(n•l)z
+n
+. , Texture Coordinates
+MvFile.Wk
+File version and ;dentifter
+#WkD叩f.!k Version 立
+··•··· ······ ... ············ Header. commenc, 256charmo,c
+This Is where Iput my comments \!l
+.................... ···························
+Type: rype ofdata ASCII(orBINARY)
+... 气 .. ·····•·.,......................
+Structure: descr/妇 domain 5tnlCture ... (more In the following slides)
+1
+Attributes ... (more In the following slides)
+TEXTURE COORDINDATES dataNam
+t oo to1 to(dim-t)
+ttt
+10 ' 11 ' l(dim-1)
+Dimensions of the texture
+Tt t
+(n•l)O ' (n·l)l '(n•l)(dim•l)
+
+
+Direct Volume Rendering
+Optical Model
+Han-Wei Shen
+The Ohio State University
+圉
+
+
+Volume Rendering 蠲
+• A method to visualize the entire 3D data set by
+simulating light transport across the volume
+• A 2D projection of 3D discrete samples
+
+
+Direct Volume Rendering 圉
+• Simulate light transport through a continuous volume
+• Data are interpolated from the samples at the grid points
+• Optical properties such as colors and opacities are assigned to
+the interpolated data
+• Optical properties must be integrated along each viewing ray
+7
+: ,... _LO - - - 1- - 
+冬气 --C: -3-tc1
+, ',',
+
+
+Optical Model
+Participating medium (the voxels) can absorb,
+emit, or both absorb and emit light
+How much light will reach the eye?
+• Absorption Model
+• Emission Model
+• Absorption+ Emission
+o :o 0 0
+。。
+。。 。
+O'氏i OOo
+', - -6一一一一 一一一一一十--一
+,0 0 0 。
+',
+圆
+
+
+Absorption Only
+• The simplest participating medium
+• Consists of perfectly black particles that absorb all
+the light that they intercept
+• Assume
+- each particle has an area of A =兀r2
+- Number of particles per unit volume= p
+- A small cylindrical slab with a base area E and thickness ~ s
+As
+E
+蠲
+• Tot al number of particles= E l::i.s p • Tota l area occluded by particles= A E Asp
+A = 兀r2 • The fraction of occluded area= AEl!l.sp / E= A D.s p
+哑 I = - l(s) ~ s p(s) = - A p (s) l(s)
+ds 飞
+
+
+Absorption Only 圉
+• The simplest participating medium
+• Consists of perfectly black particles that absorb all
+the light that they intercept
+• Assume
+- each particle has an area of A= 兀r2
+- Number of particles per unit volume= p
+- A small cylindrical slab with a base area E and thickness ~s
+As di
+E A= 兀r2 ds = - A p (s) l(s) Solve th is ODE
+匠 =丿叶 e— J。$p(t)Adt | = I。 xe-J。气 (t)dt
+
+
+Absorption Only 蠲
+As
+A =兀r2 I (s) = I。 X e-f巨严1t = I。 X e-J。$匠扣
+。 p(t)A = T(t) ]: extinction coefficient
+1 。 =Initial light intensity
+、
+e-J。~ r(t)dt Can be seen as the transparency, or
+1- opacity of the medium from Oto s
+
+
+Emission Only
+• Each particle will glow diffusively with an intensity C
+• In a small cylindrical slab, the
+total area occupied by the
+par廿 des is AE!isp
+• So the glow flux will be CAE!isp
+• So the glow per unit area is CAE!isp /E = CA!isp
+As
+E
+圉
+A = 兀r2
+di
+ds = C(s) A p(s) = C(s)-r(s) = g(s) Solve this ODE
+I(s)=lo+fo~矿(t)dt
+
+
+Emission plus Absorption 蠲
+• Simply add emission and absorption together
+As
+$ = 三- 三 = g(s) 一本) i(s) E A= 兀r2
+| solvethis ODE | em1ss1on absorption
+I(D) =|I。 xe—二十二r(t)d~ds
+S=O 0%。 言$言o, 0
+S=D
+➔7
+
+
+A
+、 <I
+Put It All Together 圉
+S=O
+`C> —千言: 3 心 ° s心
+• Absorption only:
+I (s) = l。 x e- J。~ p(t)Adt = 1。 x e- J。s 'T (t)dt
+• Emission only:
+I (s) = Io+ [ g(t)dt = Io+ [ C(t片 (t)dt
+0 JO
+• Emission plus absorption:
+
+
+Look More Closely
+Io : background light
+T (t) : extinction coefficient at t, related to the rate that light
+is occluded
+D : total distance light will travel
+e-J。~ T(t)dt : transparency of medium between O and D
+1 - e- fnD T(t)dt
+o'\.,1 U,(J == a : opacity of medium between O and D
+g(s) : source term at points, typically derived from the data value
+S=O 0%工。 言$言 o° S=D
+➔~
+圉
+
+
+Direct Volume Rendering
+Discrete Implementation
+Han-Wei Shen
+The Ohio State University
+霎
+
+
+Discrete Implementation
+. Numerical integration:
+X。 X1 X2 X3 X4 Xs ... llx = X; - X;.1
+foD h(x)dx = ~ h(x;)6.x
+(Riemann Sum)
+圉
+e-f。~ T(t)dt == l e -立言 T(t i 心t
+= e:口尸(国) Ax 」 rr e 气心) Ax
+i=n
+== IT (1 — 们
+i=l
+(Remember ll - e- ~。~ T(t)dt == a `I'
+
+
+Discrete Implementation 瞪
+'l,= n 'l,= n n
+I o IT ( 1 -叫 区 9i X II (1 - O'.i)
+i=l i= l j = i+l
+\= gn + (1-(又n){gn-1+{1-(又n-l){gn-2+ {1-(又n-2(.... {1-(又2Hg2+(l-a1Hg1+I 。)))))...)))))
+This is called - Back to Front Compositing
+S=O o 一 o
+S= D 7'
+妇
+gl g2 g3 g4 gs g6 g7 g8 g9 glO...
+气气 a3 a4 a5 a 6 a7 a8 a9 也o ...
+
+
+Ray Casting Algorithm 圉
+• For each pixel
+- Cast a ray into the volume
+- Linearly interpolate data values from cell (voxel) corners
+- Convert the data values to optical properties (color and opacity)
+- Composite the optical properties
+- Return the final color
+•
+冬 -一了三 一色尸一产
+',',' ,'','
+- - - -- - - - - - ~ -- `合 - - - - - ~
+7.
+,
+-g
+.
+,
+
+
+Shading and Classiftcaton
+• Shading: computer a color for every sample in the
+volume
+• Classification: computer an opacity for every
+sample in the volume
+二 c(xi), a(xJ
+• This is often done through a table (transfer
+function) lookup
+圆
+
+
+Shading 翻
+• Use the Phong illumination model
+illumination =ambient+ diffuse+ specular
+= 1 C百五]十 1C(x1) x |d x(N.L) 1 寸 c(x1) x |s x (R.V)n
+C(x;) : color of sample i
+18, Id, 15: light's ambient, diffuse, and specular colors (usually set as white)
+N: normal at sample i V: vector from sample point to eye
+L: light vector, from sample to light source
+R: reflection vector of light vector
+n: shininess
+|\: L
+NR
+v刃
+
+
+.
+1.
+2.
+Normal Estimation 醒
+How to compute the sample normal N?
+- Normal: a vector that is perpendicular to the local
+surface, which is the gradient of the sample point
+Compute the gradient G at the cell corners using central
+difference
+Linearly interpolate the gradients
+_
+, G(x,y,z) = (J(x +l,y,z) - J(x -1,y,z) J(x, y+1,z) - J(x,y - l,z) J(x, y1z +1)- J(x,y1z - 1)
+222
+' ,'
+.,
+·'',
+勹
+)
+
+
+Classification 醒
+• Classification: mapping from data values to opacities
+I(D) = I。 x e-l。气(t)dt + J 灼 (s)e- f,Dr(t)dt ds
+t= 九 t= 九 九
+Io IT(1 - 叫
+..
+i=l
+区 9i x IT (1 - 叫
+i=l j=i + l
+- Region of interest: high opacity
+- Rest: translucent or transparent
+• The opacity function, or called transfer function, is given by the user
+
+
+Ray Sampling 圉
+• Sample the volume at discrete
+points along the ray
+• Perform tri-linear interpolation to get
+the sample values
+• Look up the transfer function to
+get the color and opacity
+• Compositing the color/opacity
+(front-to-back or back-to-front)
+7
+才
+2
+c
+
+,
+..
+,,
+`, 分 , , ',
+
+
+Back-to-Front Compositing 圆
+The initial pixel color= Black
+Back-to-Front compositing:
+use'under'operator
+C = Cl'under'background
+C = C2 ' under C
+C = C3'under C
+T
+才
+c2
+
+.
+,
+,3
+C
+,,' , ',
+...
+C。 ut = Cin * (1-a(x)) + C(x) *a(x)
+{this is the alpha blending formula)
+
+
+Front-to-Back Compositing
+Front-to-Back compositing: use'over'operator
+C= background'over'Cl
+C= C'over'C2
+C= C'over'C3
+...
+Cout = Cin + C(x) a(x) *(1- a」
+G。ut = ain + a(x) *(1饥 n)
+: c2
+. "".. , .“"""""“-...干......
+,',' , ,','
+圉
+
+
+Direct Volume Rendering
+Transfer Function Design
+Han-Wei Shen
+The Ohio State University
+圉
+
+
+Transfer Function
+• Map a data sample to color and opacity
+fcolor (S) == (r, g, b)
+fopacity(S) == a
+RGR
+f
+• The sample could be
+- A single value (scalar)
+~---亡
+...
+- Multiple values (scalar, gradient magnitude, etc)
+蠲
+
+
+Transfer Function in Rendering Equation
+.圆
+t= 九
+Io IT (1 — 叫
+i=l
+t=n n
+I)gi x II (1 -叫)
+i=l j=i+l
+g RGR
+f
+
+
+Transfer Function in Front-to-Back Compos 巾 ng
+.. 圉
+Front-to-Back compositing: use'over'operator
+C= background'over'Cl
+C= C'over'C2
+C = C'over'C3
+T
+丁
+2
+c
+
+,
+..
+,' ,,
+,, ' ,
+...
+Cout = Cin+ C(x) * (1- ain);
+a。ut = a in+ a(x) *(1-ain)
+
+
+Color in Transfer Function
+• Color
+- Distinguish different materials
+圉
+255 t
+:::200
+.户.. 200
+li
+2岛
+匕
+100 
+』 =l
+0 -
+100
+. :l- rF'l-一二
+.一
+。
+• All Materials uses same
+color • See no features
+• Muscle: orange
+• Bone: yellow • Tooth: red
+
+
+Opacity in Transfer Function 圉
+.
+Opacity - Opacity (transparency) of each sample - That multiple materials is showh in the rendered image provides more context
+200
+l
+每
+。
+a
+一 1 00
+a
+For Muscle
+-二二。 2。 。
+l
+二仁 一
+」一
+255
+Low Opacity For Muscle 息
+。。
+i-E--一- -iLL』-l
+1
+。
+v
+• Material inside the
+muscle is occlude
+• See no features
+• Make the muscle
+transparent
+• See the bone and
+tooth
+
+
+它
+Transfer Function Design
+• Goal
+- Using transfer function to emphasize salient structures and de
+emphasize other
+• Challenges
+- Without knowing the data how to design a good transfer
+function?
+- A small difference in the transfer function could produce very
+different images
+- Some features are not easy to show without a lot of tweaking
+圉
+Need algorithms and strateg'ies to assist users to find the desired transfer function in a huge transfer function search space
+
+
+Trial and Error
+• Manually control the color and opacity of each scalar value using graphical user interface (GUI) Very tedious work and inefficient - Small transfer function change can produce very different images
+圆
+It could be difficult to get a good image without enough prior knowledge
+255-- A -- 1 , \
+1 200
+_
+,I、 l
+仁 I
+,
+卜 'v" , 二
+I
+七4
+一 100 l, 二 1 00
+"、一下 t — 卜 ;.', 一、 。 I
+O·上 | r / I 队- .., I' \
+,\
+
+
+Paraview 蠲
+,JP¥屯V.,..4,1/)”比
+f•• 炉" g~,沁,"s 秒'""知!$怂"『m 巳dp
+e 仑豁令 “ Fi 守 ? ·气 阳 <l9 ~ 01> 凶它 吐·0 0 『3
+.4匕·- - [ - - . 琴 比 迳 斗比比斗斗比 西e
+”“釭妇 L.. j尸
+sm.,.,
+9 比如:
+o 0C了它日
+8. Select'Volum~ 也阳如
+固恒回句
+Control Opacity of Transfer
+I
+二又一 l 园OO乙l
+闷""""' I m如示云1
+夕 XJ
+的 O!!.e..t IP O O 知中,』心E丈句...一 匝] [ 一呤哗 妇UIU岭) !
+吐沁众 叭心...女l陇心.“;; c
+呤 P以比m "'
+叩迎叩 匕 心严i心言
+;
+硒 8yt,Or如石王石
+闷伪氏心山如 1 ,
+-U
+OOOO心 。 。 。
+伪切众3叩
+伪,_Ex如t 。 中
+。 2SS
+。 2SS
+,“
+J 、 ..,
+unction
+*
+口 归loo女必喊屯W心心飞山切 IO“' 巳 O却 0叩~”m 妇釭抎.. 凶 心虹心丈沁 t6d社心心估妇口灯01061 心切
+空如屯吵竺9巨空屯也一、SetDifferentL
+n 血 S必&心罕
+Colot 沈论 芦 ==::)I 心磁 贮
+切 压吓立
+芯 °fT心. 0
+心""h廿
+v,,心
+ex
+Ann” “ion
+E
+坞
+图巳@
+l
+[IQr Map
+
+
+圉
+Histogram Assisted Transfer Function Design
+• Histogram
+- Divide the data range
+into finite
+intervals{bins)
+- Frequency of a bin is
+the number of samples
+whose values are in the
+interval
+gl
+Olg
+Auuanba
+LLJ
+。
+矿已,遍 I I i. I I i 匮
+。 2 4 6 8 10 12
+Data Value
+*http://en.wikipe dia.org/wiki/Histogram
+
+
+圉
+Histogram Assisted Transfer Function Design
+• Different features in the data set sometimes have values in different scalar
+ranges
+• If this is the case, value clusters can be seen from the histogram
+• Different value clusters can be assigned with different colors and opacities
+Air Muscle
+255l2。。
+一 100
+_ EEt
+。 Bone & Tooth
+
+
+Multi-Dimensional Transfer Functions
+.圉
+• Certain features cannot be captured by 1D histograms
+boundary between two materials
+• Ex: emphasize the boundary between sinuses and tissue
+`
+*Interactive Volume Rendering Using Multi-Dimensional Transfer. Functions and Direct Manipulation Widgets. Joe Kniss. Gordon Kindlmann. Charles Hansen. 2001
+
+
+.翻
+Multi-Di1mensional Transfer Functions
+• How to detect/capture the boundaries
+Values: step function
+Gradients: local maximum
+2nd deri'vatives: zero crossing
+V5 V4
+V3
+v2 V1
+· f' (江) ■ !衣) ■ !(动 point
+X
+* Interactive Volume Rendering Using Multi-Dimensional Transfer. Functions and Direct Manipulation Widgets. Joe Kniss. Gordon Kindlmann. Charles Hansen. 2001
+
+
+Multi-Dimension Transfer Function 圉
+Design
+• 2D Histogram
+- X-axis - data value
+- Y-axis - gradient
+- Color intensity- frequency of the histogram (darker means
+more here) 个
+f
+
+Data Value A
+*Interactive Volume Rendering Using Multi-Dimensional Transfer. Functions and Direct Manipulation Widgets. oe Kniss. Gordon Kindlmann. Charles Hansen鲁 2001
+
+
+Multi-Dimensional Transfer Functions
+.瞪
+• 1D histogram can capture
+homogeneous region only
+- A: air
+- B: tissue
+- C: bone ` f
+• 2D histogram can capture
+- D: air and tissue boundary
+- E: tissue and bone boundary
+- F : air and bone boundary
+,
+个
+f
+|
+e
+*Interactive Volume Rendering Using Multi-Dimensional Transfer. Functions and Direct Manipulation Widgets. 司oe Kniss. Gordon Kindlmann. Charles Hansen. 2001
+
+
+Interface for Transfer Function Design
+.瞪
+• Use graphical interface to map 3D points back
+to the transfer function domain
+• Move the probe and interact in the volume space • Indicate where the point is in the transfer function domain
+tf
+
+.
+Data Value
+* Interactive Volume Rendering Using Multi-Dimensional Transfer. Functions and Direct Manipulation Widgets. oe Kniss. Gordon Kindl mann. Charles Hansen. 2001
