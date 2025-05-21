@@ -1,0 +1,1837 @@
+LEARNING
+FROM
+DATA
+
+
+The book website AMLbook. com contains supporting material for instructors and readers.
+
+
+LEARNING FROM DATA
+A SHORT COURSE
+Yaser S . Abu-Mostafa
+California Institute of Technology
+Malik Magdon-Ismail
+Rensselaer Polytechnic Institute
+Hsuan-Tien Lin
+National Taiwan University
+AMLbook.com
+
+
+Yaser S. Abu 1/fostafa Departments of Electrical Engineering and Computer Science California Institute of Technology Pasadena, CA 9 1 125, USA yaser©caltech.edu
+Hsuan Tien Lin Department of Computer Science and Information Engineering National Taiwan University Taipei, 106, Taiwan
+htlin©csie.ntu.edu.tw
+ISBN 1 0:1 60049 006 9 ISBN 13:978 1 60049 006 4
+Malik Magdon Ismail Department of Computer Science
+Rensselaer Polytechnic Institute Troy, NY 12180, USA magdon@cs.rpi.edu
+@20 1 2 Yaser S. Abu Mostafa, Malik Magdon Ismail, Hsuan Tien Lin. 1.10
+All rights reserved. This work may not be translated or copied in whole or in part without the written permission of the authors. No part of this publication may be reproduced, stored in a retrieval system, or transmitted in any form or by any means-electronic, mechanical, photocopying, scanning, or otherwise-without prior written permission of the authors, except as permitted under Section 107 or 108 of the 1976 United States Copyright Act.
+Limit of Liability/Disclaimer of Warranty: While the authors have used their best efforts in preparing this book, they make no representation or warranties with re spect to the accuracy or completeness of the contents of this book and specifically disclaim any implied warranties ofmerchantability or fitness for a particular purpose. No warranty may be created or extended by sales representatives or written sales materials. The advice and strategies contained herein may not be suitable for your situation. You should consult with a professional where appropriate. The authors shall not be liable for any loss of profit or any other commercial damages, including but not limited to special, incidental, consequential, or other damages.
+The use in this publication of tradenames, trademarks, service marks, and similar terms, even if they are not identified as such, is not to be taken as an expression of opinion as to whether or not they are subject to proprietary rights.
+This book was typeset by the authors and was printed and bound in the United States of America.
+
+
+To our teachers) and to our students
+
+
+
+
+P reface
+This book is designed for a short course on machine learning. It is a short course, not a hurried course. From over a decade of teaching this material, we have distilled what we believe to be the core topics that every student of the subject should know. We chose the title 'learning from data' that faithfully describes what the subject is about, and made it a point to cover the topics in a story-like fashion. Our hope is that the reader can learn all the fundamentals of the subject by reading the book cover to cover. Learning from data has distinct theoretical and practical tracks. If you read two books that focus on one track or the other, you may feel that you are reading about two different subjects altogether. In this book, we balance the theoretical and the practical, the mathematical and the heuristic. Our criterion for inclusion is relevance. Theory that establishes the conceptual framework for learning is included, and so are heuristics that impact the per formance of real learning systems. Strengths and weaknesses of the different parts are spelled out . Our philosophy is to say it like it is: what we know, what we don't know, and what we partially know. The book can be taught in exactly the order it is presented. The notable exception may be Chapter 2, which is the most theoretical chapter of the book. The theory of generalization that this chapter covers is central to learning from data, and we made an effort to make it accessible to a wide readership. However, instructors who are more interested in the practical side may skim over it, or delay it until after the practical methods of Chapter 3 are taught. You will notice that we included exercises (in gray boxes) throughout the text. The main purpose of these exercises is to engage the reader and enhance understanding of a particular topic being covered. Our reason for separating the exercises out is that they are not crucial to the logical flow. Nevertheless, they contain useful information, and we strongly encourage you to read them, even if you don't do them to completion. Instructors may find some of the exercises appropriate as 'easy' homework problems, and we also provide ad ditional problems of varying difficulty in the Problems section at the end of each chapter. To help instructors with preparing their lectures based on the book, we
+provide supporting material on the book's website (AMLbook. corn) . There is also a forum that covers additional topics in learning from data. We will
+vii
+
+
+P REFACE
+discuss these further in the Epilogue of this book.
+Acknowledgment (in alphabetical order for each group) : We would like to express our gratitude to the alumni of our Learning Systems Group at Caltech who gave us detailed expert feedback: Zehra Cataltepe, Ling Li, Amrit Pratap, and Joseph Sill. We thank the many students and colleagues who gave us useful feedback during the development of this book, especially Chun-Wei Liu. The Caltech Library staff, especially Kristin Buxton and David McCaslin, have given us excellent advice and help in our self-publishing effort. We also thank Lucinda Acosta for her help throughout the writing of this book. Last, but not least, we would like to thank our families for their encourage ment, their support, and most of all their patience as they endured the time demands that writing a book has imposed on us.
+Yaser S. Abu-Mostafa, Pasadena, California.
+Malik Magdon-Ismail, Troy, New York.
+Hsuan-Tien Lin, Taipei, Taiwan.
+March, 2012.
+viii
+
+
+Contents
+Prefae vii
+1TheLearningProblem 1
+1.1ProblemSetup........................... 1
+1.1.1ComponentsofLearning.................. 3
+1.1.2ASimpleLearningModel................. 5
+1.1.3LearningversusDesign.................. 9
+1.2 TypesofLearning ......................... 11
+1.2.1 SupervisedLearning .................... 11
+1.2.2 ReinforementLearning .................. 12
+1.2.3 UnsupervisedLearning................... 13
+1.2.4 OtherViewsofLearning.................. 14
+1.3 IsLearningFeasible?........................ 15
+1.3.1 OutsidetheDataSet.................... 16
+1.3.2 ProbabilitytotheResue ................. 18
+1.3.3 FeasibilityofLearning................... 24
+1.4 ErrorandNoise........................... 27
+1.4.1 ErrorMeasures....................... 28
+1.4.2 NoisyTargets........................ 30
+1.5 Problems .............................. 33
+2TrainingversusTesting 39
+2.1 TheoryofGeneralization...................... 39
+2.1.1 E etiveNumberofHypotheses ............. 41
+2.1.2 BoundingtheGrowthFuntion.............. 46
+2.1.3 TheVCDimension..................... 50
+2.1.4 TheVCGeneralizationBound .............. 53
+2.2 InterpretingtheGeneralizationBound .............. 55
+2.2.1 SampleComplexity..................... 57
+2.2.2 PenaltyforModelComplexity .............. 58
+2.2.3 TheTestSet ........................ 59
+2.2.4 OtherTargetTypes .................... 61
+2.3Approximation-GeneralizationTradeo .............62
+ix
+
+
+Content2s.3.1 BiasandVariane ..................... 62
+2.3.2 TheLearningCurve .................... 66
+2.4 Problems .............................. 69
+3TheLinearModel 77
+3.1 LinearClassi ation ........................ 77
+3.1.1 Non-SeparableData .................... 79
+3.2 LinearRegression.......................... 82
+3.2.1 TheAlgorithm ....................... 84
+3.2.2 GeneralizationIssues.................... 87
+3.3 Logisti Regression......................... 88
+3.3.1 PreditingaProbability.................. 89
+3.3.2 GradientDesent...................... 93
+3.4 NonlinearTransformation ..................... 99
+3.4.1 TheZSpae ........................ 99
+3.4.2 ComputationandGeneralization ............. 104
+3.5 Problems . . .. .. .. . .. .. .. . .. .. .. . .. .. .. . 109
+4Overtting 119
+4.1 WhenDoesOver ttingO ur? . .. . .. .. .. . .. .. .. . 119
+4.1.1 ACaseStudy:OverttingwithPolynomials ...... 120
+4.1.2 CatalystsforOvertting.................. 123
+4.2 Regularization . .. .. . .. .. .. . .. .. .. . .. .. .. . 126
+4.2.1 ASoftOrderConstraint.................. 128
+4.2.2 WeightDeayandAugmentedError........... 132
+4.2.3 ChoosingaRegularizer:PillorPoison? ......... 134
+4.3 Validation. . .. .. .. . .. .. .. . .. .. .. . .. .. .. . 137
+4.3.1 TheValidationSet..................... 138
+4.3.2 ModelSeletion....................... 141
+4.3.3 CrossValidation ...................... 145
+4.3.4 TheoryVersusPratie .................. 151
+4.4 Problems . . .. .. .. . .. .. .. . .. .. .. . .. .. .. . 154
+5ThreeLearningPriniples 167
+5.1 O am'sRazor . .. .. . .. .. .. . .. .. .. . .. .. .. . 167
+5.2 SamplingBias.. .. .. . .. .. .. . .. .. .. . .. .. .. . 171
+5.3 DataSnooping . .. .. . .. .. .. . .. .. .. . .. .. .. . 173
+5.4 Problems . . .. .. .. . .. .. .. . .. .. .. . .. .. .. . 178
+Epilogue 181
+FurtherReading 183
+x
+
+
+Contents
+AppendixProofoftheVCBound 187
+A.1RelatingGeneralizationErrortoIn-SampleDeviations.....188
+A.2BoundingWorstCaseDeviationUsingtheGrowthFuntion..190
+A.3BoundingtheDeviationbetweenIn-SampleErrors.......191
+Notation 193
+Index 197
+xi
+
+
+NOTATION
+A complete table of the notation used in
+this book is included on page 193, right before the index of terms. We suggest referring to it as needed.
+xii
+
+
+Chapter 1
+The Learning P roblem
+If you show a picture to a three-year-old and ask if there is a tree in it, you will likely get the correct answer. If you ask a thirty-year-old what the definition of a tree is, you will likely get an inconclusive answer. We didn't learn what a tree is by studying the mathematical definition of trees. We learned it by looking at trees. In other words, we learned from 'data'. Learning from data is used in situations where we don't have an analytic solution, but we do have data that we can use to construct an empirical solu tion. This premise covers a lot of territory, and indeed learning from data is one of the most widely used techniques in science, engineering, and economics, among other fields. In this chapter, we present examples of learning from data and formalize the learning problem. We also discuss the main concepts associated with learning, and the different paradigms of learning that have been developed.
+1.1 Problem Setup
+What do financial forecasting, medical diagnosis, computer vision, and search engines have in common? They all have successfully utilized learning from data. The repertoire of such applications is quite impressive. Let us open the discussion with a real-life application to see how learning from data works. Consider the problem of predicting how a movie viewer would rate the various movies out there. This is an important problem if you are a company that rents out movies, since you want to recommend to different viewers the movies they will like. Good recommender systems are so important to business that the movie rental company Netflix offered a prize of one million dollars to anyone who could improve their recommendations by a mere 103. The main difficulty in this problem is that the criteria that viewers use to rate movies are quite complex. Trying to model those explicitly is no easy task, so it may not be possible to come up with an analytic solution. However, we
+1
+
+
+1 . THE LEARNING PROBLEM
+viewer
+movie
+l
+:t\fatch movie and viewer factors
+1 . 1 . PROBLEM SETUP
+add contributions from each factor
+Figure 1 . 1: A model for how a viewer rates a movie
+know that the historical rating data reveal a lot about how people rate movies, so we may be able to construct a good empirical solution. There is a great deal of data available to movie rental companies, since they often ask their viewers to rate the movies that they have already seen.
+Figure 1 . 1 illustrates a specific approach that was widely used in the million-dollar competition. Here is how it works. You describe a movie as a long array of different factors, e.g. , how much comedy is in it, how com plicated is the plot, how handsome is the lead actor, etc. Now, you describe each viewer with corresponding factors; how much do they like comedy, do they prefer simple or complicated plots, how important are the looks of the lead actor, and so on. How this viewer will rate that movie is now estimated based on the match/mismatch of these factors. For example, if the movie is pure comedy and the viewer hates comedies, the chances are he won't like it. If you take dozens of these factors describing many facets of a movie's content and a viewer's taste, the conclusion based on matching all the factors will be a good predictor of how the viewer will rate the movie.
+The power of learning from data is that this entire process can be auto mated, without any need for analyzing movie content or viewer taste. To do so, the learning algorithm 'reverse-engineers' these factors based solely on pre
+2
+
+
+1 . THE LEARNING PROBLEM 1 . 1 . PROBLEM SETUP
+vious ratings. It starts with random factors, then tunes these factors to make them more and more aligned with how viewers have rated movies before, until they are ultimately able to predict how viewers rate movies in general. The factors we end up with may not be as intuitive as 'comedy content', and in fact can be quite subtle or even incomprehensible. After all, the algorithm is only trying to find the best way to predict how a viewer would rate a movie, not necessarily explain to us how it is done. This algorithm was part of the winning solution in the million-dollar competition.
+1. 1. 1 Components of Learning
+The movie rating application captures the essence of learning from data, and so do many other applications from vastly different fields. In order to abstract the common core of the learning problem, we will pick one application and use it as a metaphor for the different components of the problem. Let us take credit approval as our metaphor. Suppose that a bank receives thousands of credit card applications every day, and it wants to automate the process of evaluating them. Just as in the case of movie ratings, the bank knows of no magical formula that can pinpoint when credit should be approved, but it has a lot of data. This calls for learning from data, so the bank uses historical records of previous customers to figure out a good formula for credit approval. Each customer record has personal information related to credit, such as annual salary, years in residence, outstanding loans, etc. The record also keeps track of whether approving credit for that customer was a good idea, i.e . , did the bank make money on that customer. This data guides the construction of a successful formula for credit approval that can be used on future applicants. Let us give names and symbols to the main components of this learning problem. There is the input x (customer information that is used to make a credit decision) , the unknown target function f: X -- Y (ideal formula for
+credit approval) , where X is the input space (set of all possible inputs x) , and Y is the output space (set of all possible outputs, in this case just a yes/no deci
+sion) . There is a data set D of input-output examples (x1 , Y1 ) , · · · , (xN , YN) , where Yn = f(xn ) for n = 1 , . . . , N (inputs corresponding to previous customers and the correct credit decision for them in hindsight). The examples are often referred to as data points. Finally, there is the learning algorithm that uses the data set D to pick a formula g: X -- Y that approximates f. The algorithm chooses g from a set of candidate formulas under consideration, which we call the hypothesis set 1-l. For instance, 1-l could be the set of all linear formulas from which the algorithm would choose the best linear fit to the data, as we will introduce later in this section. When a new customer applies for credit, the bank will base its decision on g (the hypothesis that the learning algorithm produced) , not on f (the ideal target function which remains unknown) . The decision will be good only to the extent that g faithfully replicates f. To achieve that , the algorithm
+3
+
+
+1 . THE LEARNING PROBLEM
+UNKNOWN TARGET FUNCTION
+f :X Y
+(ideal cred'il approval forrn'Ulo)
+TRAINING EXAMPLES
+· · · , (xN, YN)
+HYPOTHESIS SET
+1-
+(set of cand,idate form'alas)
+1 . 1 . PROBLEM SETUP
+FINAL HYPOTHESIS
+g� f
+(learned credit approval forrn'Ula)
+Figure 1 . 2: Basic setup of the learning problem
+chooses g that best matches f on the training examples of previous customers, with the hope that it will continue to match f on new customers. Whether or not this hope is justified remains to be seen. Figure 1.2 illustrates the components of the learning problem.
+Exercise 1.1
+Express each o fthe following tasks i n t h e framework o f learning from d ata by specifying the i nput space X, output space Y, target function f: Y. a n d the specifics of the data set that we will learn from.
+(a) Med ica l diagnosis: A patient wal ks i n with a medical h istory and some symptoms, a n d you want to identify the problem.
+(b) H andwritten digit recognition (for example postal zip code recognition for m a i l sorting) .
+(c) Determi ning if a n email is spam or not.
+(d) P redicting how an electric load varies with price, temperature, and day of the week.
+(e) A problem of i nterest to you for which there is no a n alytic sol ution, but you have data from which to construct an empirica l sol ution .
+4
+
+
+1 . THE LEARNING PROBLEM 1 . 1 . PROBLEM SETUP
+We will use the setup in Figure 1 . 2 as our definition of the learning problem. Later on, we will consider a number of refinements and variations to this basic setup as needed. However, the essence of the problem will remain the same. There is a target to be learned. It is unknown to us. We have a set of examples generated by the target. The learning algorithm uses these examples to look for a hypothesis that approximates the target.
+1. 1.2 A Simple Learning Model
+Let us consider the different components of Figure 1 . 2 . Given a specific learn ing problem, the target function and training examples are dictated by the problem. However, the learning algorithm and hypothesis set are not. These are solution tools that we get to choose. The hypothesis set and learning algorithm are referred to informally as the learning model. Here is a simple model. Let X =]Rd be the input space, where JRd is the d-dimensional Euclidean space, and let Y = {+1 , -1} be the output space, denoting a binary (yes/no) decision. In our credit example, different coor dinates of the input vector x E JRd correspond to salary, years in residence, outstanding debt, and the other data fields in a credit application. The bi nary output y corresponds to approving or denying credit. We specify the hypothesis set 1{ through a functional form that all the hypotheses h E 1{ share. The functional form h(x) that we choose here gives different weights to the different coordinates of x, reflecting their relative importance in the credit decision. The weighted coordinates are then combined to form a 'credit score' and the result is compared to a threshold value. If the applicant passes the threshold, credit is approved; if not, credit is denied:
+d
+Approve credit if I: WiXi > threshold,
+i=dl
+Deny credit if I: WiXi < threshold.
+i=l
+This formula can be written more compactly as
+(1.1)
+where xi ,··· , xd are the components of the vector x; h(x) = + 1 means 'ap prove credit' and h(x) = - 1 means 'deny credit'; sign(s) = +1 if s > 0 and sign(s) = - 1 if s < 0. 1 The weights are w1, ··· , wd, and the threshold is determined by the bias term b since in Equation ( 1 . 1) , credit is approved if
+I::=l WiXi > -b.
+This model of 1{ is called the perceptron, a name that it got in the context
+of artificial intelligence. The learning algorithm will search 1{ by looking for
+1 The value of sign(s) whens 0 is a simple technicality that we ignore for the moment.
+5
+
+
+1 . THE LEARNING PROBLEM 1 . 1 . PROBLEM SETUP
+(a) Misclassified data (b) Perfectly classified data
+Figure 1 .3: Perceptron classification of linearly separable data in a two
+dimensional input space (a) Some training examples will be misclassified
+(blue points in red region and vice versa) for certain values of the weight
+parameters which define the separating line. (b) A final hypothesis that classifies all training examples correctly. is + 1 and is - 1 . )
+weights and bias that perform well o n the data set. Some o f the weights w1, · · · , Wd may end up being negative, corresponding to an adverse effect on credit approval. For instance, the weight of the 'outstanding debt' field should come out negative since more debt is not good for credit. The bias value b may end up being large or small, reflecting how lenient or stringent the bank should be in extending credit. The optimal choices of weights and bias define the final hypothesis g E 1-l that the algorithm produces.
+Exercise 1.2
+S uppose that we use a perceptron to detect spam messages. Let's say that each email message is represented by the frequency of occurrence of keywords, a nd the output is if the message is considered spa m .
+(a) Can you t h i n k o f some keywords that wil l e n d u p with a large positive weight in the perceptron?
+( b) H ow a bout keywords that wil l get a negative weight?
+(c) What parameter in the perceptron d i rectly affects how many border line messages end up being classified as spam ?
+Figure 1.3 illustrates what a perceptron does in a two-dimensional case (d = 2) . The plane is split by a line into two regions, the +1 decision region and the -1 decision region. Different values for the parameters w1, w2, b correspond to different lines w1x1 + w2x2 + b = 0. If the data set is linearly separable, there will be a choice for these parameters that classifies all the training examples correctly.
+6
+
+
+1 . THE LEARNING PROBLEM 1 . 1 . PROBLEM S ETUP
+To simplify the notation of the perceptron formula, we will treat the bias b as a weight wo = b and merge it with the other weights into one vector
+w = [w0, w1 , · · · , wd]T, where T denotes the transpose of a vector, so w is a column vector. We also treat x as a column vector and modify it to become x =
+[
+x0, xi, · · · , xd]T, where the added coordinate x0 is fixed at x0 = 1 . Formally speaking, the input space is now
+With this convention, wTx = ��=O WiXi, and so Equation (1.1) can be rewrit
+ten in vector form as
+h(x) = sign(wTx) . (1 .2)
+We now introduce the perceptron learning algorithm (PLA) . The algorithm will determine what w should be, based on the data. Let us assume that the data set is linearly separable, which means that there is a vector w that makes ( 1 . 2) achieve the correct decision h(xn) = Yn on all the training exam ples, as shown in Figure 1.3.
+Our learning algorithm will find this w using a simple iterative method. Here is how it works. At iteration t, where t = 0, 1 , 2, . . . , there is a current value of the weight vector, call it w(t) . The algorithm picks an example from (x1 , Y1 ) · · · (xN , YN) that is currently misclassified, call it (x(t) , y (t) ) , and
+uses it to update w(t) . Since the example is misclassified, we have y (t) sign(wT(t)x(t) ) . The update rule is
+w(t + 1) = w(t) + y(t)x(t) . (1.3)
+This rule moves the boundary in the direction of classifying x(t) correctly, as depicted in the figure above. The algorithm continues with further iterations until there are no longer misclassified examples in the data set .
+7
+
+
+1 . THE LEARNING PROBLEM 1 . 1 . PROBLEM SETUP
+Exercise 1.3
+The weight u pdate rule i n {1.3) has the n ice interpretation that it moves in the direction of classifying x(t) correctly.
+(a) Show that y(t)wT(t)x(t) < 0. [Hint: x(t) is misclassified by w(t).]
+(b) S how that y(t)wT(t l)x(t) > y(t)wT(t)x(t). [Hint: Use (1.3).]
+(c) As far as classifying x(t) is concerned, argue that the move from w(t)
+to w(t + 1) is a move ' i n the right direction ' .
+Although the update rule in ( 1 . 3) considers only one training example at a time and may 'mess up' the classification of the other examples that are not involved in the current iteration, it turns out that the algorithm is guaranteed to arrive at the right solution in the end. The proof is the subject of Prob lem 1.3. The result holds regardless of which example we choose from among
+the misclassified examples in (x1, Y1) · · · (xN, YN) at each iteration, and re gardless of how we initialize the weight vector to start the algorithm. For simplicity, we can pick one of the misclassified examples at random (or cycle through the examples and always choose the first misclassified one) , and we can initialize w(O) to the zero vector. Within the infinite space of all weight vectors, the perceptron algorithm manages to find a weight vector that works, using a simple iterative process. This illustrates how a learning algorithm can effectively search an infinite hypothesis set using a finite number of simple steps. This feature is character istic of many techniques that are used in learning, some of which are far more sophisticated than the perceptron learning algorithm.
+Exercise 1.4
+Let us create our own target function f a nd data set 1) a n d see how the perceptron learning a lgorithm works. Take d = 2 so you can visua lize the problem , a nd choose a random l i ne i n the plane as you r target function ,
+where o ne side of the line m a ps to 1 a nd the other m a ps to - 1. Choose the i n puts Xn of the data set as random points in the pla ne, a n d eval u ate the target function on each Xn to get the corresponding output Yn ·
+Now, generate a data set of size 20. Try the perceptron learning a lgorithm on you r data set a n d see how long it takes to converge a n d how wel l the fin a l hypothesis g matches you r target f. You can find other ways to play with this experiment in Problem 1.4.
+The perceptron learning algorithm succeeds in achieving its goal; finding a hy
+pothesis that classifies all the points in the data set V = { (x1, y1) · · · (xN, yN)} correctly. Does this mean that this hypothesis will also be successful in classi fying new data points that are not in V? This turns out to be the key question in the theory of learning, a question that will be thoroughly examined in this book.
+8
+
+
+1 . THE LEARNING PROBLEM 1 . 1 . PROBLEM S ETUP
+Size Size
+(a) Coin data (b) Learned classifier
+Figure 1 .4: The learning approach to coin classification (a) Training data of
+pennies, nickels, dimes, and quarters ( 1 , 5, 10, and 25 cents) are represented
+in a size mass space where they fall into clusters. (b) A classification rule is learned from the data set by separating the four clusters. A new coin will be classified according to the region in the size mass plane that it falls into.
+1. 1. 3 Learning versus Design
+So far, we have discussed what learning is. Now, we discuss what it is not. The goal is to distinguish between learning and a related approach that is used for similar problems. While learning is based on data, this other approach does not use data. It is a 'design' approach based on specifications, and is often discussed alongside the learning approach in pattern recognition literature. Consider the problem of recognizing coins of different denominations, which is relevant to vending machines , for example. We want the machine to recog nize quarters, dimes, nickels and pennies. We will contrast the 'learning from data' approach and the 'design from specifications' approach for this prob lem. We assume that each coin will be represented by its size and mass, a two-dimensional input. In the learning approach, we are given a sample of coins from each of the four denominations and we use these coins as our data set . We treat the size and mass as the input vector, and the denomination as the output. Figure 1 .4(a) shows what the data set may look like in the input space. There is some variation of size and mass within each class, but by and large coins of the same denomination cluster together. The learning algorithm searches for a hypothesis that classifies the data set well. If we want to classify a new coin, the machine measures its size and mass, and then classifies it according to the learned hypothesis in Figure l .4(b) . In the design approach, we call the United States Mint and ask them about the specifications of different coins. We also ask them about the number
+9
+
+
+1 . THE LEARNING P ROBLEM 1 . 1 . P ROBLEM SETUP
+Size Size (a) Probabilistic model of data (b) Inferred classifier
+Figure 1 .5: The design approach to coin classification (a) A probabilistic model for the size, mass, and denomination of coins is derived from known specifications. The figure shows the high probability region for each denom ination ( 1 , 5, 10, and 25 cents) according to the model. (b) A classification rule is derived analytically to minimize the probability of error in classifying a coin based on size and mass. The resulting regions for each denomination are shown.
+of coins of each denomination in circulation, in order to get an estimate of the relative frequency of each coin. Finally, we make a physical model of the variations in size and mass due to exposure to the elements and due to errors in measurement. We put all of this information together and compute the full joint probability distribution of size, mass, and coin denomination (Figure 1 . 5 (a) ) . Once we have that joint distribution, we can construct the optimal decision rule to classify coins based on size and mass (Figure 1 .5 (b) ) . The rule chooses the denomination that has the highest probability for a given
+size and mass, thus achieving the smallest possible probability of error.2
+The main difference between the learning approach and the design ap proach is the role that data plays. In the design approach, the problem is well specified and one can analytically derive f without the need to see any data. In the learning approach, the problem is much less specified, and one needs data to pin down what f is.
+Both approaches may be viable in some applications, but only the learning approach is possible in many applications where the target function is un known. We are not trying to compare the utility or the performance of the two approaches. We are just making the point that the design approach is distinct from learning. This book is about learning.
+2This is called Bayes optimal decision theory. Some learning models are based on the same theory by estimating the probability from data.
+10
+
+
+1 . THE LEARNING PROBLEM 1 . 2 . TYPES OF LEARNING
+Exercise 1. 5
+Which of the following problems a re more suited for the learning a pproach and which a re more suited for the d esign approach?
+(a) Determining the a ge at which a particular med ica l test should be p e rformed
+(b) Classifying n u m bers into primes a n d non-primes
+(c) Detecting potentia l fraud i n credit card charges
+(d) Determi ning the time it wou ld ta ke a fal l i ng object to h it the ground
+(e) Determining the optima l cycle for traffic lights i n a busy intersection
+1. 2 Types of Learning
+The basic premise of learning from data is the use of a set of observations to uncover an underlying process. It is a very broad premise, and difficult to fit into a single framework. As a result, different learning paradigms have arisen to deal with different situations and different assumptions. In this section, we introduce some of these paradigms. The learning paradigm that we have discussed so far is called supervised learning. It is the most studied and most utilized type of learning, but it is not the only one. Some variations of supervised learning are simple enough to be accommodated within the same framework. Other variations are more profound and lead to new concepts and techniques that take on lives of their own. The most important variations have to do with the nature of the data set.
+1.2. 1 Supervised Learning
+When the training data contains explicit examples of what the correct output should be for given inputs, then we are within the supervised learning set ting that we have covered so far. Consider the hand-written digit recognition
+problem (task (b) of Exercise 1 . 1) . A reasonable data set for this problem is a collection of images of hand-written digits, and for each image, what the
+digit actually is. We thus have a set of examples of the form ( image , digit ) . The learning is supervised in the sense that some 'supervisor' has taken the trouble to look at each input, in this case an image, and determine the correct output, in this case one of the ten categories {O, 1 , 2, 3, 4, 5, 6 , 7, 8, 9}. While we are on the subject of variations, there is more than one way that a data set can be presented to the learning process. Data sets are typically cre ated and presented to us in their entirety at the outset of the learning process. For instance, historical records of customers in the credit-card application, and previous movie ratings of customers in the movie rating application, are already there for us to use. This protocol of a 'ready' data set is the most
+11
+
+
+1 . THE LEARNING PROBLEM 1 .2. TYPES OF LEARNING
+common in practice, and it is what we will focus on in this book. However, it is worth noting that two variations of this protocol have attracted a significant body of work. One is active learning, where the data set is acquired through queries that
+we make. Thus, we get to choose a point x in the input space, and the
+supervisor reports to us the target value for x. As you can see, this opens
+the possibility for strategic choice of the point x to maximize its information value, similar to asking a strategic question in a game of 20 questions. Another variation is called online learning, where the data set is given to the algorithm one example at a time. This happens when we have stream ing data that the algorithm has to process 'on the run'. For instance, when the movie recommendation system discussed in Section 1 . 1 is deployed, on line learning can process new ratings from current users and movies. Online learning is also useful when we have limitations on computing and storage that preclude us from processing the whole data as a batch. We should note that online learning can be used in different paradigms of learning, not just in supervised learning.
+1. 2.2 Reinforcement Learning
+When the training data does not explicitly contain the correct output for each input, we are no longer in a supervised learning setting. Consider a toddler learning not to touch a hot cup of tea. The experience of such a toddler would typically comprise a set of occasions when the toddler confronted a hot cup of tea and was faced with the decision of touching it or not touching it. Presumably, every time she touched it, the result was a high level of pain, and
+every time she didn't touch it, a much lower level of pain resulted (that of an
+unsatisfied curiosity) . Eventually, the toddler learns that she is better off not touching the hot cup. The training examples did not spell out what the toddler should have done, but they instead graded different actions that she has taken. Nevertheless , she uses the examples to reinforce the better actions, eventually learning what she should do in similar situations. This characterizes reinforcement learning, where the training example does not contain the target output, but instead contains some possible output together with a measure of how good that out put is. In contrast to supervised learning where the training examples were of
+the form ( input , correct output ) , the examples in reinforcement learning are
+of the form ( input , some output , grade for this output ) .
+Importantly, the example does not say how good other outputs would have been for this particular input. Reinforcement learning is especially useful for learning how to play a game. Imagine a situation in backgammon where you have a choice between different actions and you want to identify the best action. It is not a trivial task to ascertain what the best action is at a given stage of the game, so we cannot
+12
+
+
+1 . THE LEARNING PROBLEM 1. 2. TYPES OF LEARNING
+0
+0
+Size Size
+(a) Unlabeled Coin data (b) Unsupervised learning
+Figure 1 .6 : Unsupervised learning of coin classification (a) The same data
+set of coins in Figure 1.4(a) is again represented in the size mass space, but
+without being labeled. They still f all into clusters. (b) An unsupervised classification rule treats the four clusters as different types. The rule may be somewhat ambiguous, as type 1 and type 2 could be viewed as one cluster
+easily create supervised learning examples. If you use reinforcement learning instead, all you need to do is to take some action and report how well things went, and you have a training example. The reinforcement learning algorithm is left with the task of sorting out the information coming from different ex amples to find the best line of play.
+1.2.3 Unsupervised Learning
+In the unsupervised setting, the training data does not contain any output information at all. We are just given input examples xi, · · · , XN. You may wonder how we could possibly learn anything from mere inputs. Consider the coin classification problem that we discussed earlier in Figure 1 .4. Suppose that we didn't know the denomination of any of the coins in the data set. This unlabeled data is shown in Figure l .6(a) . We still get similar clusters , but they are now unlabeled so all points have the same 'color' . The decision regions in unsupervised learning may be identical to those in supervised learning, but without the labels (Figure 1 .6 (b) ) . However, the correct clustering is less obvious now, and even the number of clusters may be ambiguous. Nonetheless, this example shows that we can learn something from the inputs by themselves. Unsupervised learning can be viewed as the task of spontaneously finding patterns and structure in input data. For instance, if our task is to categorize a set of books into topics, and we only use general properties of the various books, we can identify books that have similar prop erties and put them together in one category, without naming that category.
+13
+
+
+1 . THE LEARNING P ROBLEM 1 .2. TYPES OF LEARNING
+Unsupervised learning can also be viewed as a way to create a higher level representation of the data. Imagine that you don't speak a word of Spanish, but your company will relocate you to Spain next month. They will arrange for Spanish lessons once you are there, but you would like to prepare yourself a bit before you go. All you have access to is a Spanish radio station. For a full month, you continuously bombard yourself with Spanish; this is an unsupervised learning experience since you don't know the meaning of the words. However, you gradually develop a better representation of the language in your brain by becoming more tuned to its common sounds and structures. When you arrive in Spain, you will be in a better position to start your Spanish lessons. Indeed, unsupervised learning can be a precursor to supervised learning. In other cases, it is a stand-alone technique.
+Exercise 1.6
+For each of the following tasks, identify which type of learning is involved (supervised , reinforcement, or u nsupervised) and the tra in ing data to be used . I f a task can fit more tha n one type, explain how a nd describe the tra i n i n g data for each type.
+(a) Recommending a book to a user in an online bookstore
+(b) Playing tic tac toe
+(c) Categorizing movies i nto d ifferent types
+(d) Learning to play m usic
+(e) Credit l i m it: Deciding the m axi m u m a llowed debt for each ban k cus tome r
+Our main focus in this book will be supervised learning, which is the most popular form of learning from data.
+1.2.4 Other Views of Learning
+The study of learning has evolved somewhat independently in a number of fields that started historically at different times and in different domains, and these fields have developed different emphases and even different jargons. As a result, learning from data is a diverse subject with many aliases in the scientific literature. The main field dedicated to the subject is called machine learning, a name that distinguishes it from human learning. We briefly mention two other important fields that approach learning from data in their own ways. Statistics shares the basic premise of learning from data, namely the use of a set of observations to uncover an underlying process. In this case, the process is a probability distribution and the observations are samples from that distribution. Because statistics is a mathematical field, emphasis is given to situations where most of the questions can be answered with rigorous proofs. As a result, statistics focuses on somewhat idealized models and analyzes them in great detail. This is the main difference between the statistical approach
+14
+
+
+1. THE LEARNING PROBLEM 1. 3. Is LEARNING FEASIBLE?
+f -1
+f +1
+f?
+Figure 1 .7: A visual learning problem. The first two rows show the training
+examples (each input x is a 9 bit vector represented visually as a 3 x 3 black
+and white array) . The inputs in the first row have f(x) = - 1 , and the inputs in the second row have f(x) = +1. Your task is to learn from this data set what f is, then apply f to the test input at the bottom. Do you get - 1 or +1?
+to learning and how we approach the subject here. We make less restrictive assumptions and deal with more general models than in statistics. Therefore, we end up with weaker results that are nonetheless broadly applicable. Data mining is a practical field that focuses on finding patterns, correla tions, or anomalies in large relational databases. For example, we could be looking at medical records of patients and trying to detect a cause-effect re lationship between a particular drug and long-term effects. We could also be looking at credit card spending patterns and trying to detect potential fraud. Technically, data mining is the same as learning from data, with more empha sis on data analysis than on prediction. Because databases are usually huge, computational issues are often critical in data mining. Recommender systems, which were illustrated in Section 1 . 1 with the movie rating example, are also considered part of data mining.
+1. 3 Is Learning Feasible?
+The target function f is the object of learning. The most important assertion about the target function is that it is unknown. We really mean unknown. This raises a natural question. How could a limited data set reveal enough information to pin down the entire target function? Figure 1 . 7 illustrates this
+15
+
+
+1 . THE LEARNING P ROBLEM 1 . 3. Is LEARNING FEASIBLE?
+difficulty. A simple learning task with 6 training examples of a ±1 target function is shown. Try to learn what the function is then apply it to the test input given. Do you get - 1 or + 1? Now, show the problem to your friends and see if they get the same answer. The chances are the answers were not unanimous, and for good reason. There is simply more than one function that fits the 6 training examples, and some of these functions have a value of - 1 on the test point and others have a value of + 1 . For instance, if the true f is + 1 when the pattern is symmetric,
+the value for the test point would be + 1 . If the true f is + 1 when the top left square of the pattern is white, the value for the test point would be - 1 . Both functions agree with all the examples in the data set, so there isn't enough information to tell us which would be the correct answer. This does not bode well for the feasibility of learning. To make matters worse, we will now see that the difficulty we experienced in this simple problem is the rule, not the exception.
+1. 3 . 1 Outside the Data Set
+When we get the training data V, e.g. , the first two rows of Figure 1 . 7, we know the value of f on all the points in V. This doesn't mean that we have learned f, since it doesn't guarantee that we know anything about f outside of V. We know what we have already seen, but that's not learning. That 's memorizing. Does the data set V tell us anything outside of V that we didn't know before? If the answer is yes, then we have learned something. If the answer is no, we can conclude that learning is not feasible. Since we maintain that f is an unknown function, we can prove that f remains unknown outside of V. Instead of going through a formal proof for the general case, we will illustrate the idea in a concrete case. Consider a Boolean target function over a three-dimensional input space X = {O, 1 }3. We are given a data set V of five examples represented in the table below. We denote the binary output by o/• for visual clarity,
+Xn Yn
+000 0 001 • 010 • 011 0 100 •
+where Yn = f(xn) for n = 1 , 2, 3, 4, 5. The advantage of this simple Boolean case is that we can enumerate the entire input space (since there are only 23 = 8 distinct input vectors) , and we can enumerate the set of all possible target functions (since f is a Boolean function on 3 Boolean inputs, and there are only 223 = 256 distinct Boolean functions on 3 Boolean inputs) .
+16
+
+
+1 . THE LEARNING PROBLEM 1 . 3. ls LEARNING FEASIBLE?
+Let us look at the problem of learning i. Since i is unknown except inside D, any function that agrees with D could conceivably be i. The table
+below shows all such functions Ji, · · · , is. It also shows the data set D (in blue) and what the final hypothesis g may look like.
+x f4 f5 f6 fs
+0000000 0
+••••••• •
+••••••• •
+0000000 0
+••••••• •
+0000••• •
+00••00• •
+0•0•0•0 •
+The final hypothesis g is chosen based on the five examples in D. The table shows the case where g is chosen to match i on these examples. If we remain true to the notion of unknown target, we cannot exclude any of Ji, · · · , is from being the true i· Now, we have a dilemma. The whole purpose of learning i is to be able to predict the value of f on points that we haven't seen before. The quality of the learning will be determined by how close our prediction is to the true value. Regardless of what g predicts on the three points we haven't seen before (those outside of D, denoted by red question marks) , it can agree or disagree with the target, depending on which of Ji , · · · , is turns out to be the true target. It is easy to verify that any 3 bits that replace the red question marks are as good as any other 3 bits.
+Exercise 1.7
+For each of the following learning scenarios in the a bove problem, eval uate the performa nce of g on the three points in outside V. To measure the performa nce, compute how m a ny of the 8 possible target fun ctions agree with g on a l l three points, on two of them, on one of them, a nd on none of them.
+(a) 1-l has on ly two hypotheses, one that a lways returns ' •' a nd one that a lways returns 'o'. The learn ing a lgorithm picks the hypothesis that m atches the data set the most.
+(b) The same 1-l, but the learni ng a lgorith m now picks the hypothesis that matches the data set the least.
+(c) 1-l = {XOR} (only one hypothesis which is a lways picked) , where XOR is defined by XOR(x) = • if the n um ber of l's in x is odd a nd XOR(x) = o if the n um ber is even .
+(d) 1-l contai ns a l l possible hypotheses (a l l Boolean functions on th ree
+varia bles) , a nd the lea rn i ng a lgorith m picks the hypothesis that agrees with a l l tra i n i ng exa mples, but otherwise disagrees the most with the XOR.
+17
+
+
+1 . THE LEARNING PROBLEM 1 . 3. Is LEARNING FEASIBLE?
+BIN
+SAMPLE
+μ=probability of red marbles
+Figure 1 .8: A random sample is picked from a bin ofred and green marbles. The probability μ of red marbles in the bin is unknown. What does the fraction v of red marbles in the sample tell us about μ?
+It doesn't matter what the algorithm does or what hypothesis set 1-l is used.
+Whether 1-l has a hypothesis that perfectly agrees with V (as depicted in the table) or not, and whether the learning algorithm picks that hypothesis or picks another one that disagrees with V (different green bits) , it makes no difference whatsoever as far as the performance outside of V is concerned. Yet the performance outside V is all that matters in learning! This dilemma is not restricted to Boolean functions, but extends to the general learning problem. As long as f is an unknown function, knowing V cannot exclude any pattern of values for f outside of V. Therefore, the pre dictions of g outside of V are meaningless. Does this mean that learning from data is doomed? If so, this will be a
+very short book @. Fortunately, learning is alive and well, and we will see why. We won't have to change our basic assumption to do that. The target function will continue to be unknown, and we still mean unknown.
+1. 3 .2 Probability to the Rescue
+We will show that we can indeed infer something outside V using only V, but in a probabilistic way. What we infer may not be much compared to learning a full target function, but it will establish the principle that we can reach outside V. Once we establish that, we will take it to the general learning problem and pin down what we can and cannot learn. Let's take the simplest case of picking a sample, and see when we can say something about the objects outside the sample. Consider a bin that contains red and green marbles, possibly infinitely many. The proportion of red and green marbles in the bin is such that if we pick a marble at random, the probability that it will be red is μ and the probability that it will be green is 1 - μ. We assume that the value of μ is unknown to us.
+18
+
+
+1 . THE LEARNING PROBLEM 1 . 3. Is LEARNING FEASIBLE?
+We pick a random sample of N independent marbles (with replacement) from this bin, and observe the fraction v of red marbles within the sample (Figure 1.8). What does the value of v tell us about the value of μ? One answer is that regardless of the colors of the N marbles that we picked, we still don't know the color of any marble that we didn't pick. We can get mostly green marbles in the sample while the bin has mostly red marbles. Although this is certainly possible, it is by no means probable.
+Exercise 1.8
+If μ = 0 .9, what is the probability that a sam ple of 10 marbles wil l h ave
+v :: 0 . 1 ? [Hints: 1. Use binomial distribution. 2. The answer is a very
+small number.]
+The situation is similar to taking a poll. A random sample from a population tends to agree with the views of the population at large. The probability distribution of the random variable v in terms of the parameter μ is well
+understood, and when the sample size is big, v tends to be close to μ. To quantify the relationship between v and μ, we use a simple bound called the Hoeffding Inequality . It states that for any sample size N,
+for any E > 0. (1.4)
+Here, JP>[·] denotes the probability of an event, in this case with respect to
+the random sample we pick, and E is any positive value we choose. Putting Inequality (1.4) in words, it says that as the sample size N grows, it becomes
+exponentially unlikely that v will deviate from μ by more than our 'tolerance' E. The only quantity that is random in ( 1 .4) is v which depends on the random sample. By contrast, μ is not random. It is just a constant, albeit unknown to us. There is a subtle point here. The utility of ( 1 .4) is to infer the value of μ using the value of v, although it is μ that affects v, not vice versa. However, since the effect is that v tends to be close to μ, we infer that μ 'tends' to be close to v. Although JP> [ Iv μI > E] depends on μ, as μ appears in the argument and also affects the distribution of v, we are able to bound the probability by 2e-2E2N which does not depend on μ. Notice that only the size N of the sample affects the bound, not the size of the bin. The bin can be large or small, finite or infinite, and we still get the same bound when we use the same sample size.
+Exercise 1. 9
+If μ = 0 .9, use the Hoeffding I neq u a l ity to bound the probabil ity that a sample of 10 marbles will have v :: 0 . 1 a nd compare the a nswer to the previous exercise.
+If we choose E to be very small in order to make v a good approximation of μ, we need a larger sample size N to make the RHS of lnequality ( 1 .4) small. We
+19
+
+
+1 . THE LEARNING PROBLEM 1 . 3 . Is LEARNING FEASIBLE?
+can then assert that it is likely that v will indeed be a good approximation of μ. Although this assertion does not give us the exact value of μ, and doesn't even
+guarantee that the approximate value holds, knowing that we are within ±E of μ most of the time is a significant improvement over not knowing anything at all. The fact that the sample was randomly selected from the bin is the reason we are able to make any kind of statement about μ being close to v. If the sample was not randomly selected but picked in a particular way, we would lose the benefit of the probabilistic analysis and we would again be in the dark outside of the sample. How does the bin model relate to the learning problem? It seems that the unknown here was just the value of μ while the unknown in learning is an entire function f : X -+ Y. The two situations can be connected. Take any single hypothesis h E 'H and compare it to f on each point x E X . If h (x) = f (x) , color the point x green. If h(x) =/- f (x) , color the point x red. The color that each point gets is not known to us, since f is unknown. However, if we pick x at random according to some probability distribution P over the input space X, we know that x will be red with some probability, call it μ, and green with probability 1 - μ. Regardless of the value of μ, the space X now behaves like the bin in Figure 1 .8. The training examples play the role of a sample from the bin. If the
+inputs xi , · · · , XN in V are picked independently according to P, we will get a random sample of red (h(xn) =/- J(xn ) ) and green (h(xn) = f (xn)) points. Each point will be red with probability μ and green with probability 1 - μ. The color of each point will be known to us since both h(xn) and f (xn) are known
+for n = 1 , · · · , N (the function h is our hypothesis so we can evaluate it on any point, and f (xn ) = Yn is given to us for all points in the data set V). The learning problem is now reduced to a bin problem, under the assumption that the inputs in V are picked independently according to some distribution P on X . Any P will translate to some μ in the equivalent bin. Since μ is allowed to be unknown, P can be unknown to us as well. Figure 1 .9 adds this probabilistic component to the basic learning setup depicted in Figure 1.2. With this equivalence, the Hoeffding Inequality can b e applied to the learn ing problem, allowing us to make a prediction outside of V. Using v to pre dict μ tells us something about f, although it doesn't tell us what f is. What μ tells us is the error rate h makes in approximating f. If v happens to be close to zero, we can predict that h will approximate f well over the entire input space. If not , we are out of luck. Unfortunately, we have no control over v in our current situation, since v is based on a particular hypothesis h. In real learning, we explore an entire hypothesis set 'H, looking for some h E 'H that has a small error rate. If we have only one hypothesis to begin with, we are not really learning, but rather 'verifying' whether that particular hypothesis is good or bad. Let us see if we can extend the bin equivalence to the case where we have multiple hypotheses in order to capture real learning.
+20
+
+
+1 . THE LEARNING PROBLEM
+UNKNOWN TARGET FUNCTION
+f : ,Y r-t Y
+TRAINING EXAMPLES
+HYPOTHESIS SET
+H
+1 . 3. Is LEARNING FEASIBLE?
+FINAL HYPOTHESIS
+g
+Figure 1 . 9 : Probability added to the basic learning setup
+To do that, we start by introducing more descriptive names for the dif ferent components that we will use. The error rate within the sample, which corresponds to v in the bin model, will be called the in-sample error,
+(fraction of 'D where f and h disagree)
+1 N [h(xn) f f(xn)] ,
+n=l
+where [statement] = 1 if the statement is true, and = 0 if the statement is
+false. We have made explicit the dependency of Ein on the particular h that we are considering. In the same way, we define the out-of-sample error
+Eout (h) = JPl [h(x) f f(x)] ,
+which corresponds to μ in the bin model. The probability is based on the distribution P over X which is used to sample the data points x.
+21
+
+
+1 . THE LEARNING PROBLEM 1. 3. Is LEARNING FEASIBLE?
+Figure 1 . 10: Multiple bins depict the learning problem with M hypotheses
+Substituting the new notation Ein for v and Eout for μ, the Hoeffding Inequality ( 1.4) can be rewritten as
+for any E > 0, ( 1 . 5)
+where N is the number of training examples. The in-sample error Ein , just like v, is a random variable that depends on the sample. The out-of-sample error Eout , just like μ, is unknown but not random.
+Let us consider an entire hypothesis set H instead of just one hypothesis h,
+and assume for the moment that H has a finite number of hypotheses
+We can construct a bin equivalent in this case by having M bins as shown in Figure 1 . 10 . Each bin still represents the input space X , with the red marbles
+in the mth bin corresponding to the points x E X where hm (x) -f f(x) . The
+probability of red marbles in the mth bin is Eout (hm ) and the fraction of
+red marbles in the mth sample is Ein (hm ) , for m = 1 , · · · , M. Although the Hoeffding Inequality ( 1 . 5) still applies to each bin individually, the situation becomes more complicated when we consider all the bins simultaneously. Why is that? The inequality stated that
+for any E > 0,
+where the hypothesis h is fixed before you generate the data set, and the probability is with respect to random data sets V; we emphasize that the assumption "h is fixed before you generate the data set" is critical to the
+validity of this bound. If you are allowed to change h after you generate the data set, the assumptions that are needed to prove the Hoeffding Inequality
+no longer hold. With multiple hypotheses in H, the learning algorithm picks
+22
+
+
+1 . THE LEARNING PROBLEM 1 . 3. Is LEARNING FEASIBLE?
+the final hypothesis g based on D, i.e. after generating the data set. The statement we would like to make is not
+"JP>[IEin(hm) - Eout (hm) I > E] is small"
+(for any particular, fixed hm E 1-l) , but rather
+"JP>[IEin (g) - Eout (g) I > E] is small" for the final hypothesis g.
+The hypothesis g is not fixed ahead o f time before generating the data, because which hypothesis is selected to be g depends on the data. So, we cannot just
+plug in g for h in the Hoeffding inequality. The next exercise considers a simple
+coin experiment that further illustrates the difference between a fixed h and the final hypothesis g selected by the learning algorithm.
+Exercise 1.10
+Here is a n experiment that i l lustrates the d ifference between a single bin and m u ltiple bins. Run a computer simulation for flipping 1, 000 fair coins. Flip each coi n independently times. Let's focus on 3 coins as follows: c1 is the fi rst coin flipped ; Crand is a coin you choose at ra ndom ; Cmin is the coi n that had the m i n i m u m frequency of heads (pick the earlier one in case of a tie) . Let v1 , Vrand a n d Vmin be the fraction of heads you obta i n for the respective three coins.
+(a) What is μ for the th ree coins selected?
+( b) Repeat this entire experiment a large n um ber of times (e.g. , 100, 000 ru n s of the entire experiment) to get severa l insta nces of v1 , Vrand a n d Vmin a nd plot the histogra ms of the d istri butions of v1 , Vrand a nd Vmin · Notice that which coins end u p being Crand a n d Cmin may d iffer from one run to a n other.
+(c) Using (b), plot estimates for JP[j v - μj > E] as a function of E, together
+with the Hoeffd i ng bound 2e-2c:2N (on the same graph) .
+(d) Which coins obey the Hoeffding bound, a n d which ones do not? Ex plain why.
+(e) Relate part (d) to the m u ltiple bins in Figure 1. 10.
+The way to get around this is to try to bound JP>[IEin (g) - Eout (g) I > E] in a way that does not depend on which g the learning algorithm picks. There
+is a simple but crude way of doing that. Since g has to be one of the hm 's regardless of the algorithm and the sample, it is always true that
+" IEin(g) - Eout(g) I > E" == "
+23
+IEin(h1) - Eout(h1) I > E or IEin(h2) - Eout (h2) I > E
+
+
+1 . THE LEARNING PROBLE!VI 1 . 3. Is LEARNING FEASIBLE?
+where B1 ==:;:. B2 means that event B1 implies event B2 . Although the events on the RHS cover a lot more than the LHS, the RHS has the property we want ;
+the hypotheses hm are fixed. We now apply two basic rules in probability;
+and, if B1 , B2 , · · · , BM are any events, then
+The second rule is known as the union bound. Putting the two rules together, we get
+IP'[ IEin(g) - Eout (g) I > E ] < JP'[ IEin (h1 ) - Eout (h1) I > E or IEin (h2) - Eout (h2) I > E
+or IEin(hM) - Eout(hM) I > E ]
+M
+< L IP' [IEin(hm) Eout(hm) I > E] .
+m=l
+Applying the Hoeffding Inequality ( 1 .5) to the M terms one at a time, we can bound each term in the sum by 2e-2E2N . Substituting, we get
+(1.6)
+Mathematically, this is a 'uniform' version of ( 1 .5) . We are trying to simul
+taneously approximate all Eout (hm ) 's by the corresponding Ein (hm) 's. This
+allows the learning algorithm to choose any hypothesis based on Ein and ex
+pect that the corresponding Eout will uniformly follow suit, regardless of which hypothesis is chosen. The downside for uniform estimates is that the probability bound 21\lfe-2E2N is a factor of ]\If looser than the bound for a single hypothesis, and will only be meaningful if ]\If is finite. We will improve on that in Chapter 2.
+1. 3 . 3 Feasibility of Learning
+We have introduced two apparently conflicting arguments about the feasibility of learning. One argument says that we cannot learn anything outside of V, and the other says that we can. We would like to reconcile these two arguments and pinpoint the sense in which learning is feasible:
+1 . Let us reconcile the two arguments. The question of whether V tells us anything outside of V that we didn't know before has two different answers. If we insist on a deterministic answer, which means that V tells us something certain about f outside of V, then the answer is no. If we accept a probabilistic answer, which means that V tells us something likely about f outside of V, then the answer is yes.
+24
+
+
+1 . THE LEARNING PROBLEM 1 . 3. ls LEARNING FEASIBLE?
+Exercise 1.11
+We a re given a data set 'D o f 2 5 t ra i ning exam ples from a n u nknown target
+fun ction j : Y, where = JR and = {-1, +1}. learn f, we use
+a simple hypothesis set = {h1 , h2} where h1 is the constant function a n d h2 is the consta nt -1.
+We consider two learning a lgorithms, S (smart) and (crazy). S chooses the hypothesis that agrees the most with and chooses the other hy pothesis deliberately. Let us see how these a lgorithms perform out of sam ple from the deterministic a n d probabilistic points of view. Assume i n t h e probabilistic view that there i s a probability distribution on X, a n d let
+JID[f(x) = = p.
+(a) Can S produce a hypothesis that is guaranteed to perform better than random on a ny point outside 'D?
+(b) Assume for the rest of the exercise that a l l the exam ples in have
+Yn = 1. Is it possible that the hypothesis that produces turns out to be better than the hypothesis that S produces?
+(c) If p = 0.9, what is the probability that S wil l produce a better hy pothesis than C?
+(d) Is there any val ue of p for which it is more likely than not that C wil l produce a better hypothesis than S?
+By adopting the probabilistic view, we get a positive answer to the feasibility question without paying too much of a price. The only assumption we make in the probabilistic framework is that the examples in V are generated inde pendently. We don't insist on using any particular probability distribution, or even on knowing what distribution is used. However, whatever distribu tion we use for generating the examples, we must also use when we evaluate
+how well g approximates f (Figure 1 .9) . That's what makes the Hoeffding Inequality applicable. Of course this ideal situation may not always happen in practice, and some variations of it have been explored in the literature.
+2 . Let us pin down what we mean by the feasibility of learning. Learning pro
+duces a hypothesis g to approximate the unknown target function f. If learning
+is successful, then g should approximate f well, which means Eout (g) Rj 0. However, this i s not what we get from the probabilistic analysis. What we
+get instead is Eout (g) Rj Ein(g) . We still have to make Ein (g) Rj 0 in order to
+conclude that Eout (g) Rj 0.
+We cannot guarantee that we will find a hypothesis that achieves Ein (g) Rj 0,
+but at least we will know if we find it. Remember that Eout (g) is an unknown
+quantity, since f is unknown, but Ein (g) is a quantity that we can evaluate.
+We have thus traded the condition Eout (g) Rj 0, one that we cannot ascertain,
+for the condition Ein (g) Rj 0, which we can ascertain. What enabled this is the Hoeffding Inequality (1.6) :
+lP[JEin (g) Eout (g) J > E] :S 2Me 2E2N
+25
+
+
+1 . THE LEARNING PROBLEM 1 . 3. Is LEARNING FEASIBLE?
+that assures us that Eout (g) � Ein(g) so we can use Ein as a proxy for Eout .
+Exercise 1.12
+friend comes to you with a l earning problem . She says the target func tion is completely u nknown , but she has 4, 000 data points. She is wil ling to pay you to solve her problem a n d produce for her a g which a pproximates f. What is the best that you can promise her a mong the fo l lowi n g:
+(a) After learning you wil l provide her with a g that you wil l guarantee a pproximates wel l out of sample.
+(b) After learn i ng you wil l provide her with a g, and with h igh probabil ity the g which you produce will a pproximate wel l out of sample.
+(c) One of two things wil l h a ppen.
+(i) You will produce a hypothesis g;
+(ii) You wil l decla re that you failed .
+If you d o return a hypothesis g, then with h igh proba bility the g which you produce wil l a pproxim ate wel l out of sample.
+One should note that there are cases where we won't insist that Ein (g) � 0. Financial forecasting is an example where market unpredictability makes it impossible to get a forecast that has anywhere near zero error. All we hope for is a forecast that gets it right more often than not. If we get that, our bets will win in the long run. This means that a hypothesis that has Ein (g) somewhat below 0.5 will work, provided of course that Eout (g) is close enough to Ein (g) .
+The feasibility of learning is thus split into two questions:
+1 . Can we make sure that Eout (g) is close enough to Ein (g) ?
+2. Can we make Ein (g) small enough?
+The Hoeffding Inequality (1 .6) addresses the first question only. The second question is answered after we run the learning algorithm on the actual data and see how small we can get Ein to be. Breaking down the feasibility of learning into these two questions provides further insight into the role that different components of the learning problem play. One such insight has to do with the 'complexity' of these components.
+The complexity of }{. If the number of hypotheses ]VJ goes up, we run more risk that Ein (g) will be a poor estimator of Eout (g) according to In equality (1.6). ]VJ can be thought of as a measure of the 'complexity' of the
+26
+
+
+1 . THE LEARNING PROBLEM 1 . 4. ERROR AND NOISE
+hypothesis set 1{ that we use. If we want an affirmative answer to the first question, we need to keep the complexity of 1{ in check. However, if we want an affirmative answer to the second question, we stand a better chance if 1{ is more complex, since g has to come from 1{. So, a more complex 1{ gives us more flexibility in finding some g that fits the data well, leading to small Ein (g) . This tradeoff in the complexity of 1{ is a major theme in learning theory that we will study in detail in Chapter 2.
+The complexity of f. Intuitively, a complex target function f should be harder to learn than a simple f . Let us examine if this can be inferred from the two questions above. A close look at Inequality (1 .6) reveals that the
+complexity of f does not affect how well Ein (g) approximates Eout (g) . If we fix the hypothesis set and the number of training examples, the inequality provides the same bound whether we are trying to learn a simple f (for instance a constant function) or a complex f (for instance a highly nonlinear function) . However, this doesn't mean that we can learn complex functions as easily as we learn simple functions. Remember that (1.6) affects the first question only. If the target function is complex, the second question comes into play since the data from a complex f are harder to fit than the data from a simple f . This means that we will get a worse value for Ein (g) when f i s complex. We might try to get around that by making our hypothesis set more complex so that we can fit the data better and get a lower Ein (g) , but then Eout won't be as close to Ein per (1.6) . Either way we look at it, a complex f is harder to learn as we expected. In the extreme case, if f is too complex, we may not be able to learn it at all.
+Fortunately, most target functions in real life are not too complex; we can
+learn them from a reasonable V using a reasonable H. This is obviously a practical observation, not a mathematical statement. Even when we cannot learn a particular f, we will at least be able to tell that we can't. As long as we make sure that the complexity of 1{ gives us a good Hoeffding bound, our success or failure in learning f can be determined by our success or failure in fitting the training data.
+1 . 4 Error and Noise
+We close this chapter by revisiting two notions in the learning problem in order to bring them closer to the real world. The first notion is what approximation means when we say that our hypothesis approximates the target function well. The second notion is about the nature of the target function. In many situations, there is noise that makes the output of f not uniquely determined by the input . What are the ramifications of having such a 'noisy' target on the learning problem?
+27
+
+
+1 . THE LEARNING PROBLEM 1 .4. ERROR AND NOISE
+1.4 . 1 Error Measures
+Learning is not expected to replicate the target function perfectly. The final hypothesis g is only an approximation of f. To quantify how well g approxi mates f, we need to define an error measure3 that quantifies how far we are from the target. The choice of an error measure affects the outcome of the learning process. Different error measures may lead to different choices of the final hypothesis, even if the target and the data are the same, since the value of a particular error measure may be small while the value of another error measure in the same situation is large. Therefore, which error measure we use has consequences for what we learn. What are the criteria for choosing one error measure over another? We address this question here. First, let's formalize this notion a bit. An error measure quantifies how well each hypothesis h in the model approximates the target function f,
+Error = E(h, f) .
+While E(h, f) is based on the entirety of h and f, it is almost universally de fined based on the errors on individual input points x. If we define a pointwise error measure e(h(x) , f(x) ) , the overall error will be the average value of this pointwise error. So far, we have been working with the classification error e(h(x) , f(x) ) = [h(x) f- J(x)] .
+In an ideal world, E(h, J) should be user-specified. The same learning task in different contexts may warrant the use of different error measures. One may view E(h, J) as the 'cost' of using h when you should use f. This cost depends on what h is used for, and cannot be dictated just by our learning techniques. Here is a case in point.
+Example 1 . 1 (Fingerprint verification) . Consider the problem of verifying that a fingerprint belongs to a particular person. What is the appropriate error measure?
+f {-+11 you
+The target function takes as input a fingerprint, and returns + 1 if it belongs
+to the right person, and - 1 if it belongs to an intruder.
+3This measure is also called an error function in the literature, and sometimes the error is referred to as cost, objective, or risk.
+28
+
+
+1 . THE LEARNING PROBLEM 1 .4 . ERROR AND NOISE
+There are two types of error that our hypothesis h can make here. If the
+correct person is rejected (h = -1 but f = +1) , it is called false reject , and if
+an incorrect person is accepted (h = +1 but f = - 1 ) , it is called false accept .
+h -+11
++1
+no error false reject
+f -1
+false accept no error
+How should the error measure be defined in this problem? If the right person is accepted or an intruder is rejected, the error is clearly zero. We need to specify the error values for a false accept and for a false reject. The right values depend on the application. Consider two potential clients of this fingerprint system. One is a super market who will use it at the checkout counter to verify that you are a member of a discount program. The other is the CIA who will use it at the entrance to a secure facility to verify that you are authorized to enter that facility. For the supermarket, a false reject is costly because if a customer gets wrongly rejected, she may be discouraged from patronizing the supermarket in the future. All future revenue from this annoyed customer is lost. On the other hand, the cost of a false accept is minor. You just gave away a discount to someone who didn't deserve it, and that person left their fingerprint in your system they must be bold indeed. For the CIA, a false accept is a disaster. An unauthorized person will gain access to a highly sensitive facility. This should be reflected in a much higher cost for the false accept. False rejects, on the other hand, can be tolerated since authorized persons are employees (rather than customers as with the supermarket) . The inconvenience of retrying when rejected is just part of the job , and they must deal with it . The costs of the different types of errors can be tabulated in a matrix. For our examples, the matrices might look like:
+ff
++1 -1 +1 -1
+h +1 0 1 h +1 0 1000
+-1 10 0 -1 1 0
+Supermarket CIA
+These matrices should be used to weight the different types of errors when we compute the total error. When the learning algorithm minimizes a cost weighted error measure, it automatically takes into consideration the utility of the hypothesis that it will produce. In the supermarket and CIA scenarios, this could lead to two completely different final hypotheses. D
+The moral of this example is that the choice of the error measure depends on how the system is going to be used, rather than on any inherent criterion
+29
+
+
+1 . THE LEARNING PROBLEM
+I x)
+TRAINING EXAMPLES
+HYPOTHESIS SET
+1 .4. ERROR AND NOISE
+UNKNOWN INPUT DISTRIBUTION
+Figure 1 . 1 1 : The general (supervised) learning problem
+that we can independently determine during the learning process. However, this ideal choice may not be possible in practice for two reasons. One is that the user may not provide an error specification, which is not uncommon. The other is that the weighted cost may be a difficult objective function for optimizers to work with. Therefore, we often look for other ways to define the error measure, sometimes with purely practical or analytic considerations in mind. We have already seen an example of this with the simple binary error used in this chapter, and we will see other error measures in later chapters.
+1.4.2 Noisy Targets
+In many practical applications, the data we learn from are not generated by a deterministic target function. Instead, they are generated in a noisy way such that the output is not uniquely determined by the input. For instance,
+in the credit-card example we presented in Section 1 . 1 , two customers may have identical salaries, outstanding loans, etc. , but end up with different credit behavior. Therefore, the credit 'function' is not really a deterministic function,
+30
+
+
+1 . THE LEARNING PROBLEM 1 . 4 . ERROR AND NOISE
+but a noisy one. This situation can be readily modeled within the same framework that we have. Instead of y = f(x) , we can take the output y to be a random variable that is affected by, rather than determined by, the input x. Formally, we have
+a target distribution P(y I x) instead of a target function y = f(x) . A data
+point (x, y) is now generated by the joint distribution P (x, y) = P(x)P (y I x) . One can think of a noisy target as a deterministic target plus added noise. If y is real-valued for example, one can take the expected value of y given x to be the deterministic f(x) , and consider y - f(x) as pure noise that is added to f. This view suggests that a deterministic target function can be considered a special case of a noisy target, just with zero noise. Indeed, we can formally
+express any function f as a distribution P(y I x) by choosing P(y I x) to be zero for all y except y = f (x) . Therefore, there is no loss of generality if we consider the target to be a distribution rather than a function. Figure 1 . 1 1 modifies the previous Figures 1 .2 and 1 . 9 to illustrate the general learning problem, covering both deterministic and noisy targets.
+Exercise 1.13
+Consider the bin model for a hypothesis h that makes a n error with prob a b i lity μ in a pproximating a deterministic target function ( both h a nd ar� binary fu nctions). If we use the same h to a pproximate a noisy version of f given by
+P(y I x) = y = f(x) ,
+1 - .A y f(x) .
+( a ) What i s t h e probability o f error that h makes i n a pproxim ating y?
+(b) At what val ue of A wil l the performance of h be independent of μ? [Hint: The noisy target will look completely random.]
+There is a difference between the role of P(y I x) and the role of P (x) in the learning problem. While both distributions model probabilistic aspects
+of x and y, the target distribution P(y I x) is what we are trying to learn, while the input distribution P (x) only quantifies the relative importance of the point x in gauging how well we have learned. Our entire analysis of the feasibility of learning applies to noisy target functions as well. Intuitively, this is because the Hoeffding Inequality (1 .6) applies to an arbitrary, unknown target function. Assume we randomly picked
+all the y's according to the distribution P(y I x) over the entire input space X .
+This realization of P(y I x ) i s effectively a target function. Therefore, the inequality will be valid no matter which particular random realization the 'target function' happens to be. This does not mean that learning a noisy target is as easy as learning a deterministic one. Remember the two questions of learning? With the same learning model, Eout may be as close to Ein in the noisy case as it is in the
+31
+
+
+1 . THE LEARNING PROBLEM 1 . 4 . ERROR AND NOISE
+deterministic case, but Ein itself will likely be worse in the noisy case since it is hard to fit the noise. In Chapter 2, where we prove a stronger version of ( 1 . 6) , we will assume the target to be a probability distribution P(y I x) , thus covering the general case.
+32
+
+
+1 . THE LEARNING PROBLEM 1 . 5 . PROBLEMS
+1 . 5 Problems
+Problem 1 . 1 We have 2 opaque bags, each containing 2 ba l ls. One bag has 2 black ba l ls and the other has a black and a white ba l l . You pick a bag at ra ndom a nd then pick one of the ba lls in that bag at random. When you look at the ba l l it is black. You now pick the second ba l l from that same bag. What is the pro bability that this ba l l is also black? {Hint: Use Bayes ' Theorem: JID[A and B] = JID[A I B] JID [BJ = JID[B I A] JID [A] .]
+Problem 1 . 2 Consider the perceptron in two dimensions: h(x) = sign(wTx) where w = [wo , w1 , w2r and x = [1, x1 , x2r . Technical ly, x has three coordi nates, but we cal l this perceptron two-dimensional beca use the fi rst coord inate is fixed at 1 .
+(a) Show that the regions o n the plane where h(x) = + 1 a nd h(x) = - 1 are separated by a l ine. If we express t h is line by the eq uation x2 = ax1 + b, what are the slope a a nd intercept b in terms of wo , w1 , w2 ?
+(b) Draw a pictu re for the cases w = [1 , 2, 3r and w = - [1 , 2, 3r .
+I n more tha n two d i mensions, the +1 and - 1 regions are separated by a hy perplane, the genera l ization of a line.
+Problem 1 . 3 P rove that the P LA eventua lly converges to a l inear separator for separa ble data . The fol lowing steps wil l guide you through the proof. Let w* be a n optim a l set of weights (one which separates the data ) . T h e essenti a l idea i n this proof i s t o show that t h e P LA weights w (t) get "more a ligned" with w* with every iteration . For simplicity, assume that w(O) = 0.
+(a) Let p = min1::n::N Yn (wnxn ) . Show that p > 0.
+(b) Show that wT (t)w* � wT (t- l)w* +p, and conclude that wT (t)w* � tp. [Hint: Use induction.]
+(c)
+S
+h
+ow
+t
+h
+a
+t
+l
+l
+w
+(
+t
+)
+l
+l
+2
+::
+l
+l
+w
+(
+t
+- 1) 112 + llx(t - 1) 112.
+{Hint: y(t - 1) · (wT (t - l)x(t - 1 ) ) :: 0 because x(t - 1) was misclas sified by w (t - 1 ) .j
+(d) Show by induction that llw(t) ll2 :: tR2 , where R = max1::n::N llxn ll ·
+(continued on next page)
+33
+
+
+1 . THE LEARNING PROBLEM
+(e) Using (b) a nd (d) , show that
+and hence prove that
+WT (t) * Vt p llw(t) ll w � t · R '
+[J
+Hint: llw(t) l/ llw* ll :: 1 . Why?
+1 . 5 . PROBLEMS
+In practice, PLA converges more q uickly tha n the bound suggests.
+p
+Nevertheless, beca use we do not know p in advance, we ca n 't determine the n u m ber of iterations to convergence, wh ich does pose a problem if the data is non-separable.
+Problem 1 .4 I n Exercise 1 .4, we use a n artificial data set to study the perceptron learning algorith m . This problem leads you to explore the algorith m fu rther with data sets of d ifferent sizes a n d dimensions.
+(a) Generate a linearly separa ble data set of size 20 as indicated in Exer cise 1.4. Plot the exa m ples { (xn , Yn ) } as wel l as the target function f on a plane. Be sure to mark the exa m ples from different classes d ifferently, and add la bels to the axes of the plot.
+(b) Run the perceptron lea rning a lgorith m on the data set a bove. Report the n u m ber of u pdates that the a lgorith m ta kes before converging. P lot the exa mples { (xn , Yn) } , the target fu nction f, and the fin a l hypothesis g in the same figu re. Com ment on whether f is close to g.
+(c) Repeat everyth i ng in (b) with a nother ra ndomly generated data set of
+size 20. Compare you r resu lts with (b) .
+(d) Repeat everythi ng i n (b) with a nother randomly generated data set of
+size 100. Compare you r results with (b) .
+(e) Repeat everyth ing in ( b) with a nother ra ndomly generated data set of
+size 1 , 000. Com pare you r resu lts with (b) .
+(f) Mod ify the a lgorith m such that it takes Xn E JR10 instead of JR2 . Ra n
+dom ly generate a linea rly separa ble data set of size 1, 000 with Xn E JR10 and feed the data set to the a lgorithm. How many u pdates does the a lgorithm ta ke to converge?
+(g) Repeat the a lgorithm on the same data set as (f) for 100 experi ments. I n t h e iterations of each experiment, pick x(t) ra ndomly instead of determ i n istica lly. Plot a histogra m for the n u m ber of u pdates that the a lgorith m takes to converge.
+(h ) S u m ma rize your concl usions with respect to accu racy a nd run n ing time as a fu nction of N a n d d.
+34
+
+
+1 . THE LEARNING PROBLEM 1 . 5 . PROBLEMS
+Problem 1 . 5 The perceptron learning algorithm works like this: In each it eration t, pick a random (x(t) , y(t)) and compute the 'signa l ' s(t) = wT(t)x(t). If y(t) · s(t) ::=:; 0, u pdate w by
+w(t + 1) +- w(t) + y(t) · x(t) ;
+One may a rgue that this algorithm does not ta ke the 'closeness' between s(t) and y(t) into consideratio n . Let's look at a nother perceptron learning algo rithm: I n each iteration, pick a ra ndom (x(t) , y(t)) a nd com pute s(t) . If y(t) · s(t) ::; 1, update w by
+w(t + 1) +- w(t) + 'T/ • (y(t) s(t)) · x(t) ,
+where 'T/ is a constant. That is, if s(t) agrees with y(t) wel l (their prod uct is > 1 ) , the a lgorithm does nothing. On the other hand, if s(t) is further from y(t) , the a lgorithm cha nges w(t) more. In this problem , you a re asked to im plement this algorithm a n d study its performa nce.
+(a) Generate a tra in i ng data set of size 100 similar to that used in Exercise 1 .4. Generate a test data set of size 10, 000 from the same process. To get g, run the a lgorith m a bove with 'T/ = 100 on the training data set, u nti l a maximum of 1 , 000 u pdates has been reached . Plot the training data set, the target function f, and the final hypothesis g on the same figu re. Report the error on the test set.
+(b) Use the data set in (a) and redo everything with 'T/ = 1 .
+( c ) Use t h e data set in (a) and redo everything with 'T/ = 0 . 0 1 .
+( d ) Use the data set in (a) and redo everything with 'T/ = 0. 0001.
+(e) Com pare the resu lts that you get from (a) to (d ) .
+T h e algorithm a bove i s a variant of the so ca l led Adaline (Adaptive Linear Neuron) a lgorithm for perceptron learn ing.
+Problem 1.6 Consider a sa m ple of 10 marbles d rawn i ndependently from a bin that holds red a nd green marbles. The probability of a red marble is μ. For μ = 0.05, μ = 0.5, and μ = 0.8, com pute the probability of getting no red
+marbles (v = 0) in the fol lowing cases.
+(a) We d raw only one such sample. Com pute the proba bility that v = 0.
+( b) We d raw 1 , 000 independent sa mples. Com pute the proba bility that ( at least) one of the sa m ples has v = 0.
+(c) Repeat (b) for 1, 000, 000 independent samples.
+35
+
+
+1 . THE LEARNING PROBLEM 1 . 5 . PROBLEMS
+Problem 1. 7 A sample of heads a nd tails is created by tossing a coin a n u m ber of times independently. Assume we have a n u mber of coins that generate different sa m ples independently. For a given coin , let the probability of heads ( proba bility of error) be μ. The proba bility of obtaining k heads in N tosses of this coin is given by the binomial distribution :
+Remem ber that the training error v is � .
+(a) Assume the sam ple size (N) is 10. I f a l l the coins have μ = 0.05 compute the proba bility that at least one coin wil l have v = 0 for the case of 1 coi n , 1 , 000 coi ns, 1 , 000, 000 coins. Repeat for μ = 0.8.
+(b) For the case N = 6 and 2 coins with μ = 0.5 for both coins, plot the pro b a b i l ity
+P[m�x I Vi - μi i > E]
+i
+for E in the range [O, 1] (the max is over coins) . On the same plot show the bound that wou ld be obtained usi ng the Hoeffding I neq u a lity . Remember that for a single coin , the Hoeffd i n g bound is
+[Hint: Use P[A or B] = P[A] + P[B] P[A and BJ = P[A] + P[B] P[A] P[B] , where the last equality follows by independence, to evaluate P[max . . .]}
+Problem 1 . 8 The Hoeffding I nequality is one form of the law of large numbers. One of the sim plest forms of that law is the Chebyshev Inequality, which you wil l prove here.
+(a) If t is a non negative random varia ble, prove that for a ny a > 0, JP'[t � a] :S; JE(t)/a.
+( b) If u is a ny ra ndom variable with mean μ a nd variance 0"2 , prove that for a ny a > 0, JP'[(u μ)2 2: a] :S; [Hint: Use (a)]
+(c) If u1 , · • • , UN a re iid ra ndom varia bles, each with mean μ and varia nce 0"2 , and u = tr l.:�=l Un , prove that for any a > 0,
+(]"2
+JP'[(u μ)2 2: a] :S; Na .
+Notice that the RHS of this Chebyshev I nequality goes down linearly in N, while the cou nterpart in Hoeffding's I neq uality goes down exponenti a lly. In P roblem 1 .9, we develop an exponential bound using a similar a pproach.
+36
+
+
+1 . THE LEARNING PROBLEM 1 . 5 . PROBLEMS
+Problem 1 . 9 In this problem , we derive a form of the law of large n u mbers that has a n exponential bound, cal led the Chernoff bound. We focus on the simple case of flipping a fair coin , a nd use an a pproach similar to P roblem 1 .8.
+(a) Let t be a (finite) ra ndom variable, a be a positive consta nt, a nd s be a positive para meter. If T(s) = Et (est) , prove that
+[Hint: est is monotonically increasing in t.]
+(b) Let u1 , · · · , uN be iid random varia bles, and let u = if L::=l Un . If
+U(s) = lEun (esun ) (for any n), prove that
+(c) Suppose lP'[un = O] = IP[un = 1] = � (fa i r coin ) . Evaluate U(s) as a fun ction of s, and minim ize e-sa u(s) with respect to s for fixed a, O < a < l.
+(d) Conclude in (c) that, for 0 < E < � .
+JP'[u � JE(u) + E] :: Tf3N ,
+where (3 = 1 + ( � + E) log2 ( � + E) + ( � - E) log2 ( � - E) and E(u) = � ·
+Show that (3 > 0, hence the bound is exponentia l ly decreasing in N .
+Problem 1 . 10 Assume that X = {x1 , x2 , . . . , xN , XN+1 , . . . , xN+M } a nd Y = { - 1, + 1 } with an u nknown target function f : X --+ Y. The tra i n i ng
+data set V is (x1 , y1 ) , . . · , (xN , YN) . Define the off-training-set error of a hypothesis h with respect to f by
+1M
+Eoff (h, f) = M I: [h (xN+m) -I f(XN+m)] .
+m=l (a) Say f (x) = +1 for all x a nd
+h(x) = { +1, for x = Xk a nd k is odd and 1 :: k :: M + N
+-1, otherwise
+What is Eoff (h, f)?
+(b) We say that a target function f can 'generate' V in a noiseless setting
+if Yn = f (xn ) for a l l (xn , Yn) E D. For a fixed V of size N, how many possible f : X --+ Y can generate V in a noiseless setting?
+(c) For a given hypothesis h a nd a n i nteger k between 0 a nd M, how many
+of those f i n (b) satisfy Eoff (h, f) = -it ?
+(d) For a given hypothesis h, if a l l those f that generate V in a noiseless setting are equ a l ly l i kely in proba bility, what is the expected off training set error E1 [Eoff (h, !)] ?
+(continued on next page)
+37
+
+
+1 . THE LEARNING PROBLEM 1 . 5 . PROBLEMS
+(e) A d eterministic a l gorithm A is defined as a procedu re that takes V as an i nput, and outputs a hypothesis h = A(V) . Argue that for a ny two deterministic a lgorithms Ai a nd A2 ,
+You have now proved that i n a noiseless setting, for a fixed V, if a l l possible f a re equ a l l y likely, any two deterministic algorithms a re eq u iva lent in terms of the expected off tra ining set error. Similar results can be proved for more genera l sett i ngs.
+Problem 1 . 1 1 The matrix which tabulates the cost of various errors for the C I A a nd Supermarket a pplications in Exa mple 1 . 1 is ca l led a risk or loss matrix.
+For the two risk matrices in Exa mple 1 . 1 , explicitly write down the in sa m ple error Ein that one shou ld minimize to obta in g . This in-sa mple error should weight the different types of errors based on the risk matrix. [Hint: Consider Yn = +1 and Yn = - 1 separately.]
+Problem 1 . 12 This problem i nvestigates how changing the error measu re ca n cha nge the result of the learning process. You have N data points y1 :: · · · :: YN and wish to estimate a ' representative' val ue.
+(a) If you r a lgorith m is to find the hypothesis h that minimizes the in sa mple sum of sq uared deviations,
+N
+Ein (h) = L (h - Yn)2 ,
+n=l
+then show that you r estimate wil l be the in sa mple mea n ,
+1N
+hmean = N L Yn ·
+n=l
+(b) If your a lgorith m is to find the hypothesis h that minimizes the in sa mple su m of absol ute deviations,
+N
+Ein (h) = L lh - Yn l ,
+n=l
+then show that you r estimate will be the in sa mple median hmed . which is any va lue for which half the data points are at most hmed and h a lf the data points are at least hmed ·
+(c) S u ppose YN is pertu rbed to YN + E, where E -+ oo . So, the single data point YN becomes a n outl ier. What happens to you r two estimators hmean and hmed?
+38
+
+
+Chapter 2
+Training versus Testing
+Before the final exam, a professor may hand out some practice problems and solutions to the class. Although these problems are not the exact ones that will appear on the exam, studying them will help you do better. They are the 'training set' in your learning. If the professor's goal is to help you do better in the exam, why not give
+out the exam problems themselves? Well, nice try @. Doing well in the exam is not the goal in and of itself. The goal is for you to learn the course material. The exam is merely a way to gauge how well you have learned the material. If the exam problems are known ahead of time, your performance on them will no longer accurately gauge how well you have learned. The same distinction between training and testing happens in learning from data. In this chapter, we will develop a mathematical theory that characterizes this distinction. We will also discuss the conceptual and practical implications of the contrast between training and testing.
+2 . 1 Theory of Generalization
+The out-of-sample error Eout measures how well our training on D has gener
+alized to data that we have not seen before. Eout is based on the performance over the entire input space X . Intuitively, if we want to estimate the value of Eout using a sample of data points, these points must be 'fresh' test points that have not been used for training, similar to the questions on the final exam that have not been used for practice. The in sample error Ein , by contrast, is based on data points that have been used for training. It expressly measures training performance, similar to your performance on the practice problems that you got before the final exam. Such performance has the benefit of looking at the solutions and adjusting accordingly, and may not reflect the ultimate performance in a real test . We began the analysis of in-sample error in Chapter 1 , and we will extend this
+39
+
+
+2 . TRAINING VERSUS TESTING 2 . 1 . THEORY OF GENERALIZATION
+analysis to the general case in this chapter. We will also make the contrast between a training set and a test set more precise. A word of warning: this chapter is the heaviest in this book in terms of mathematical abstraction. To make it easier on the not-so-mathematically inclined, we will tell you which part you can safely skip without 'losing the plot'. The mathematical results provide fundamental insights into learning from data, and we will interpret these results in practical terms.
+Generalization error. We have already discussed how the value of Ein does not always generalize to a similar value of Eout . Generalization is a key issue in learning. One can define the generalization error as the discrepancy
+between Ein and Eout · 1 The Hoeffding Inequality (1.6) provides a way to
+characterize the generalization error with a probabilistic bound,
+for any E > 0. This can be rephrased as follows. Pick a tolerance level 8, for
+example o = 0.05 , and assert with probability at least 1 o that
+2M.
+2N o (2.1)
+We refer to the type of inequality in (2. 1) as a generalization bound because
+it bounds Eout in terms of Ein . To see that the Hoeffding Inequality implies
+this generalization bound, we rewrite (1.6) as follows: with probability at least
+1 21Vle 2NE2 , IEout Einl ::; E, which implies Eout ::; Ein + E. We may now
+identify o = 2Me 2NE2 , from which E = ln and (2.1) follows.
+Notice that the other side of I Eout Ein l ::; E also holds, that is, Eout 2: Ein - E for all h E 1-l . This is important for learning, but in a more subtle way. Not only do we want to know that the hypothesis g that we choose (say the one with the best training error) will continue to do well out of sample (i.e. ,
+Eout ::; Ein + E) , but we also want to be sure that we did the best we could
+with our 1-l (no other hypothesis h E 1-l has Eout (h) significantly better than
+Eout (g) ) . The Eout (h) 2: Ein (h) - E direction of the bound assures us that
+we couldn't do much better because every hypothesis with a higher Ein than
+the g we have chosen will have a comparably higher Eout .
+The error bound ln in (2. 1) , or 'error bar' if you will, depends
+on IV!, the size of the hypothesis set 1-l. If 1-l is an infinite set, the bound goes to infinity and becomes meaningless. Unfortunately, almost all interesting learning models have infinite 1-l, including the simple perceptron which we
+discussed in Chapter 1 .
+In order t o study generalization in such models, we need t o derive a coun
+terpart to (2. 1) that deals with infinite 1-l. We would like to replace M with
+1 Sometimes 'generalization error' is used as another name for Eout , but not in this book.
+40
+
+
+2. TRAINING VERSUS TESTING 2. 1 . THEORY OF GENERALIZATION
+something finite, so that the bound is meaningful. To do this, we notice that the way we got the M factor in the first place was by taking the disjunction of events:
+" J Ein (h1 ) Eout (h1 ) J > E" or " JEin (h2 ) Eout (h2) J > E" or
+(2.2)
+which is guaranteed to include the event " JEin (g) Eout (g) J > E" since g is al
+ways one of the hypotheses in 1-l . We then over-estimated the probability using
+the union bound. Let Bm be the (Bad) event that " J Ein (hm) Eout (hm ) J > E" . Then,
+If the events B1 , B2 , · · · , BM are strongly overlapping, the union bound becomes par ticularly loose as illustrated in the figure to the right for an example with 3 hypotheses; the areas of different events correspond to their probabilities. The union bound says that the total area covered by 81 , B2 , or Bs is smaller than the sum of the individual ar eas, which is true but is a gross overestimate when the areas overlap heavily as in this ex
+ample. The events " JEin (hm) Eout (hm) J >
+E" ; m = 1 , · · · , JV[, are often strongly overlap ping. If h1 is very similar to h2 for instance,
+the two events " JEin (h1 ) Eout (h1 ) J > E" and " JEin (h2 ) Eout (h2) J > E" are
+likely to coincide for most data sets. In a typical learning model, many hy potheses are indeed very similar. If you take the perceptron model for instance, as you slowly vary the weight vector w, you get infinitely many hypotheses that differ from each other only infinitesimally. The mathematical theory of generalization hinges on this observation. Once we properly account for the overlaps of the different hypotheses, we will be able to replace the number of hypotheses M in (2. 1 ) by an effective number which is finite even when ]\If is infinite, and establish a more useful condition under which Eout is close to Ein .
+2. 1. 1 Effective Number o f Hypotheses
+We now introduce the growth function, the quantity that will formalize the effective number of hypotheses. The growth function is what will replace 11/f
+41
+
+
+2. TRAINING VERSUS TESTING 2 . 1 . THEORY OF GENERALIZATION
+in the generalization bound (2. 1 ) . It is a combinatorial quantity that cap tures how different the hypotheses in 1-l are, and hence how much overlap the different events in (2. 2) have. We will start by defining the growth function and studying its basic prop erties. Next, we will show how we can bound the value of the growth function. Finally, we will show that we can replace M in the generalization bound with the growth function. These three steps will yield the generalization bound that we need, which applies to infinite 1-l. We will focus on binary target functions for the purpose of this analysis, so each h E 1-l maps X to { - 1 , + 1 } . The definition o f the growth function i s based on the number o f different hypotheses that 1-l can implement, but only over a finite sample of points rather than over the entire input space X. If h E 1-l is applied to a finite sample x1 , . . . , xN E X , we get an N-tuple h(x1 ) , . . . , h(xN) of ±l's. Such an N-tuple is called a dichotomy since it splits x1 , · · · , XN into two groups: those points for which h is - 1 and those for which h is + 1 . Each h E 1-l generates a dichotomy on x1 , · · · , XN , but two different h's may generate the same dichotomy if they happen to give the same pattern of ±1 's on this particular sample.
+Definition 2 . 1 . Let x1 , · · · , XN E X . The dichotomies generated by 1-l on these points are defined by
+1-l(x1 , . . · , XN) = { (h(x1 ) , . . · , h(xN )) I h E 1-l} . (2.3)
+One can think of the dichotomies 1-l(xi , · · · , XN) as a set of hypotheses just like 1-l is, except that the hypotheses are seen through the eyes of N points only. A larger 1-l(x1 , · · · , XN ) means 1-l is more 'diverse' generating more dichotomies on x1 , · · · , XN . The growth function is based on the number of dichotomies .
+Definition 2.2. The growth function is defined for a hypothesis set 1-l by
+where I · I denotes the cardinality (number of elements) of a set.
+In words, mti (N) is the maximum number of dichotomies that can be gen erated by 1-l on any N points. To compute mH (N) , we consider all possible choices of N points x1 , · · · , XN from X and pick the one that gives us the most dichotomies. Like ]\![, mH (N) is a measure of the number of hypotheses in 1-l, except that a hypothesis is now considered on N points instead of the entire X. For any 1-l , since 1-l (x1 , · · · , xN ) � { - 1 , +l}N (the set of all possible
+dichotomies on any N points) , the value of mH (N) is at most l { - 1 , + l }N I , hence mH (N) ::; 2N .
+If 1-l is capable of generating all possible dichotomies on x1 , · · · , XN , then 1-l (x1 , · · · , XN) = { - 1 , +1 }N and we say that 1-l can shatter x1 , · · · , XN . This signifies that 1-l is as diverse as can be on this particular sample.
+42
+
+
+2. TRAINING VERSUS TESTING 2 . 1. THEORY OF GENERALIZATION
+•
+(a) (b) (c)
+Figure 2 . 1 : Illustration of the growth function for a two dimensional per ceptron. The dichotomy of red versus blue on the 3 colinear points in part
+(a) cannot be generated by a perceptron, but all 8 dichotomies on the 3
+points in part (b) can. By contrast, the dichotomy of red versus blue on
+the 4 points in part (c) cannot be generated by a perceptron. At most 14 out of the possible 16 dichotomies on any 4 points can be generated.
+Example 2 . 1 . If X is a Euclidean plane and 1-l is a two-dimensional percep
+tron, what are m1-l (3) and m1-l (4)? Figure 2 . l (a) shows a dichotomy on 3 points
+that the perceptron cannot generate, while Figure 2 . l (b) shows another 3 points that the perceptron can shatter, generating all 23 = 8 dichotomies. Because the definition of m1-l (N) is based on the maximum number of di
+chotomies, m1-l (3) = 8 in spite of the case in Figure 2.l (a) .
+In the case of 4 points, Figure 2. 1 (c) shows a dichotomy that the perceptron cannot generate. One can verify that there are no 4 points that the perceptron can shatter. The most a perceptron can do on any 4 points is 14 dichotomies out of the possible 16, where the 2 missing dichotomies are as depicted in
+Figure 2 . l (c) with blue and red corresponding to - 1 , +1 or to + 1 , - 1 . Hence, m1-l (4) = 14. D
+Let us now illustrate how to compute mH (N) for some simple hypothesis sets. These examples will confirm the intuition that m1-l (N) grows faster when the hypothesis set 1-l becomes more complex. This is what we expect of
+a quantity that is meant to replace l\!f in the generalization bound (2 .1) .
+Example 2 . 2 . Let us find a formula for mH (N) in each of the following cases.
+1. Positive rays : 1-l consists of all hypotheses h : R -7 { - 1 , + 1} of the form
+h(x) = sign(x - a) , i.e. , the hypotheses are defined in a one-dimensional input space, and they return -1 to the left of some value a and +1 to the right of a.
+43
+
+
+2 . TRAINING VERSUS TESTING 2. 1 . THEORY OF GENERALIZATION
+To compute m1-l (N) , we notice that given N points, the line is split by
+the points into N + 1 regions. The dichotomy we get on the N points
+is decided by which region contains the value a. As we vary a, we will get N + 1 different dichotomies. Since this is the most we can get for
+any N points, the growth function is
+Notice that if we picked N points where some of the points coincided
+(which is allowed) , we will get less than N + 1 dichotomies. This does
+not affect the value of m1-l (N) since it is defined based on the maximum
+number of dichotomies.
+2. Positive intervals : 1-l consists of all hypotheses in one dimension that return +1 within some interval and -1 otherwise. Each hypothesis is specified by the two end values of that interval.
+To compute m1-l (N) , we notice that given N points, the line is again
+split by the points into N + 1 regions. The dichotomy we get is decided
+by which two regions contain the end values of the interval, resulting
+in ( Nil ) different dichotomies. If both end values fall in the same
+region, the resulting hypothesis is the constant -1 regardless of which region it is. Adding up these possibilities, we get
+(N+l) 1 1
+m1-l(N) = 2 + 1 = 2N2 + 2N + 1.
+Notice that m1-l (N ) grows as the square of N , faster than the lin
+ear m1-l (N) of the 'simpler' positive ray case.
+3. Convex sets : 1-l consists of all hypotheses in two dimensions h : JR2 -+
+{ - 1 , + 1} that are positive inside some convex set and negative elsewhere
+(a set is convex if the line segment connecting any two points in the set
+lies entirely within the set) .
+To compute m1-l (N) in this case, we need to choose the N points care
+fully. Per the next :figure, choose N points on the perimeter of a circle. Now consider any dichotomy on these points, assigning an arbitrary pat
+tern of ±1 's to the N points. If you connect the +1 points with a polygon,
+the hypothesis made up of the closed interior of the polygon (which has
+to be convex since its vertices are on the perimeter of a circle) agrees
+with the dichotomy on all N points. For the dichotomies that have less
+than three +1 points, the convex set will be a line segment, a point, or
+an empty set.
+44
+
+
+2 . TRAINING VERSUS TESTING 2 . 1 . THEORY OF GENERALIZATION
+This means that any dichotomy on these N points can be realized using a convex hypothesis, so 1-l manages to shatter these points and the growth function has the maximum possible value
+Notice that if the N points were chosen at random in the plane rather than on the perimeter of a circle, many of the points would be 'internal' and we wouldn't be able to shatter all the points with convex hypotheses as we did for the perimeter points. However, this doesn't matter as far as mH (N) is concerned, since it is defined based on the maximum (2N in this case) . D
+It is not practical to try to compute m11 (N) for every hypothesis set we use. Fortunately, we don't have to. Since mH (N) is meant to replace ]\If in (2. 1 ) , we can use an upper bound o n m 1l(N ) instead of the exact value, and the inequality in (2. 1) will still hold. Getting a good bound on mH (N) will prove much easier than computing m1l (N) itself, thanks to the notion of a break point.
+Definition 2 . 3. If no data set of size k can be shattered by 1-l, then k is said to be a break point for 1-l .
+If k is a break point, then mH (k) < 2k . Example 2 . 1 shows that k = 4 is a break point for two-dimensional perceptrons. In general, it is easier to find a break point for 1-l than to compute the full growth function for that 1-l .
+Exercise 2.1
+B y i nspection , find a break point k for each hypothesis set in Example 2 . 2
+(if there i s one) . Verify that m11, ( k) < 2k using the form u las derived i n that Example.
+We now use the break point k to derive a bound on the growth function m11 (N) for all values of N. For example, the fact that no 4 points can be shattered by
+45
+
+
+2. TRAINING VERSUS TESTING 2. 1 . THEORY OF GENERALIZATION
+the two-dimensional perceptron puts a significant constraint on the number of dichotomies that can be realized by the perceptron on 5 or more points. We will exploit this idea to get a significant bound on m1-l (N) in general.
+2. 1.2 Bounding the Growth Function
+The most important fact about growth functions is that if the condition m1-l (N) = 2N breaks at any point, we can bound m1-l (N) for all values of N by a simple polynomial based on this break point. The fact that the bound is polynomial is crucial. Absent a break point (as is the case in the convex
+hypothesis example) , m1-l (N) = 2N for all N. If m1-l (N) replaced M in Equa
+tion (2. 1 ) , the bound ln on the generalization error would not go to
+zero regardless of how many training examples N we have. However, if m1-l (N) can be bounded by a polynomial any polynomial , the generalization error will go to zero as N -- oo. This means that we will generalize well given a sufficient number of examples.
+safe skip: If you trust our math, you can the following part without compromising the sequence. A similar green box will tell you when rej oin .
+To prove the polynomial bound, we will introduce a combinatorial quantity that counts the maximum number of dichotomies given that there is a break point, without having to assume any particular form of 1-l. This bound will therefore apply to any 1-l.
+Definition 2.4. B (N, k) is the maximum number of dichotomies on N points such that no subset of size k of the N points can be shattered by these di chotomies.
+The definition of B (N, k} assumes a break point k, then tries to find the most dichotomies on N points without imposing any further restrictions. Since B (N, k) is defined as a maximum, it will serve as an upper bound for any m1-l (N) that has a break point k;
+m1-l(N) ::; B (N, k) if k is a break point for 1-l .
+The notation B comes from ' Binomial' and the reason will become clear shortly. To evaluate B (N, k) , we start with the two boundary conditions k = 1 and N = 1 .
+B (N, 1)
+B(l, k)
+1
+2 for k > 1 .
+46
+
+
+2 . TRAINING VERSUS TESTING 2 . 1 . THEORY OF GENERALIZATION
+B (N, 1) = 1 for all N since if no subset of size 1 can be shattered, then only one dichotomy can be allowed. A second different dichotomy must differ on at least one point and then that subset of size 1 would be shattered. B ( l , k) = 2 for k > 1 since in this case there do not even exist subsets of size k; the constraint is vacuously true and we have 2 possible dichotomies (+1 and - 1 ) o n the one point . We now assume N 2: 2 and k 2: 2 and try t o develop a recursion. Consider the B (N, k) dichotomies in definition 2 .4, where no k points can be shattered. We list these dichotomies in the following table,
+# of rows X1 X2 XN-1 XN
++1 +1 +1 +1 -1 +1 +1 -1
+S1
++1 -1 -1 -1 -1 +1 -1 +1
++1 -1 +1 -1 -1 +1
+(3
++1 -1 +1 -1 -1 -1
+S2 + 1 - 1 + 1 -1 -1 +1
+(3
++1 -1 +1 -1 -1 -1
+where x1 , · · · , XN in the table are labels for the N points of the dichotomy. We have chosen a convenient order in which to list the dichotomies, as follows.
+Consider the dichotomies on xi , · · · , XN-l · Some dichotomies on these N - l
+points appear only once (with either + 1 or - 1 in the XN column, but not
+both) . We collect these dichotomies in the set S1 . The remaining dichotomies on the first N - 1 points appear twice, once with +1 and once with - 1 in
+the XN column. We collect these dichotomies in the set S2 which can be
+divided into two equal parts, St and S-;; (with +1 and - 1 in the XN column,
+respectively) . Let S1 have a rows, and let st and s-;; have (3 rows each. Since the total number of rows in the table is B (N, k) by construction, we have
+B (N, k) = a + 2(3. (2.4)
+The total number of different dichotomies on the first N - 1 points is given
+by a + (3; since st and S2 are identical on these N - 1 points, their di chotomies are redundant. Since no subset of k of these first N - 1 points can
+47
+
+
+2 . TRAINING VERSUS TESTING 2 . 1 . THEORY OF GENERALIZATION
+be shattered (since no k-subset of all N points can be shattered) , we deduce
+that a + ,B ::; B(N 1 , k) (2.5)
+by definition of B . Further, no subset of size k - 1 of the first N - 1 points can
+be shattered by the dichotomies in st . If there existed such a subset, then taking the corresponding set of dichotomies in 82 and adding XN to the data points yields a subset of size k that is shattered, which we know cannot exist in this table by definition of B (N, k) . Therefore,
+,8 ::; B(N - 1, k 1) . (2.6)
+Substituting the two Inequalities (2.5) and (2.6) into (2.4) , we get
+B(N, k) ::; B (N - 1 , k) + B (N 1 , k 1). (2.7)
+We can use (2 .7) to recursively compute a bound on B (N, k) , as shown in the following table.
+k
+12 3 4 5 6 112 2 2 2 2 213 4 4 4 4 314 7 8 8 8
+N \i+
+4 1 5 11
+5 16
+617
+where the first row (N = 1) and the first column (k = 1) are the bound ary conditions that we already calculated. We can also use the recursion to bound B (N, k) analytically.
+Lemma 2 . 3 (Sauer's Lemma) .
+B(N, k) '.O (�)
+Proof. The statement is true whenever k = 1 or N = 1 , by inspection. The proof is by induction on N. Assume the statement is true for all N ::; N0
+and all k . We need to prove the statement for N = N0 + 1 and all k . Since the statement is already true when k = 1 (for all values of N) by the initial condition, we only need to worry about k 2: 2. By (2. 7) ,
+B(No + 1 , k) ::; B (No, k) + B (No , k - 1) .
+48
+
+
+2 . TRAINING VERSUS TESTING 2 . 1 . THEORY OF GENERALIZATION
+Applying the induction hypothesis to each term on the RHS , we get
+B(No + l, k) < � (�0) + � ( �0 )
+1 + � (�o) + � c�o1)
+1 + � [(�0) + (;�"1)]
+where the combinatorial identity ( N°t1 ) ( 1:0 ) + ( i1!_01 ) has been used.
+This identity can be proved by noticing that to calculate the number of ways to pick i objects from N0 + 1 distinct objects, either the first object is included,
+in ( i1!_01 ) ways, or the first object is not included, in ( 1:0 ) ways. We have
+thus proved the induction step, so the statement is true for all N and k. II
+It turns out that B (N, k) in fact equals 2=7:� ( � ) (see Problem 2.4) , but
+we only need the inequality of Lemma 2.3 to bound the growth function. For
+a given break point k, the bound 2=7:� ( � ) is polynomial in N, as each term
+in the sum is polynomial (of degree i :: k - 1 ) . Since B(N, k) is an upper bound on any mH (N) that has a break point k, we have proved
+End safe skip: Those who skipped are now rejoining us. The next theorem states that any growth function m1l (N) with a break point is bounded by a polyno mial.
+Theorem 2 . 4. If m1l (k) < 2k for some value k, then
+for all N. The RHS is polynomial in N of degree k - 1 .
+(2.8)
+The implication of Theorem 2.4 is that if H has a break point, we have what we want to ensure good generalization; a polynomial bound on mH (N) .
+49
+
+
+2 . TRAINING VERSUS TESTING 2 . 1 . THEORY OF GENERALIZATION
+Exercise 2.2
+(a) Verify the bound of Theorem 2.4 i n the three cases of Exa mple 2.2:
+(i) Positive rays: 1-l consists of all hypotheses i n one dimension of the form h(x) = sign(x - a) .
+( ii) Positive i ntervals: 1-l consists of a l l hypotheses in one dim ension that a re positive withi n some i nterval a nd negative elsewhere.
+( iii) Convex sets: 1-l consists of a l l hypotheses in two dimensions that a re positive i nside some convex set a nd negative elsewhere.
+(Note: you can use the break points you found in Exercise 2.1.)
+(b) Does there exist a hypothesis set fo r which m1i (N) = N 2 LN/2J
+(whe re LN/2j is the largest integer � N/2)?
+2. 1. 3 The VC Dimension
+Theorem 2.4 bounds the entire growth function in terms of any break point. The smaller the break point, the better the bound. This leads us to the fol lowing definition of a single parameter that characterizes the growth function.
+Definition 2.5. The Vapnik- Chervonenkis dimension of a hypothesis set ti,
+denoted by dvc (ti) or simply dvc , is the largest value ofN for which mH (N) =
+2N . If mH (N) = 2N for all N, then dvc (ti) = oo.
+If dvc i s the VC dimension o f ti, then k = dvc + 1 i s a break point for m1-l
+since m1-l (N) cannot equal 2N for any N > dvc by definition. It is easy to see that no smaller break point exists since ti can shatter dvc points, hence it can also shatter any subset of these points.
+Exercise 2.3
+Compute the VC dimension of 1-l for the hypothesis sets in parts (i), (ii), (iii) of Exercise 2.2(a).
+Since k = dvc + 1 is a break point for m1-l , Theorem 2.4 can be rewritten in terms of the VC dimension:
+dvc (N)
+mH (N) � � i . (2.9)
+Therefore, the VC dimension is the order of the polynomial bound on m1-l (N) . It is also the best we can do using this line of reasoning, because no smaller break point than k = dvc + 1 exists. The form of the polynomial bound can be further simplified to make the dependency on dvc more salient. We state a
+useful form here, which can be proved by induction (Problem 2 . 5) .
+(2.10)
+50
+
+
+2 . TRAINING VERSUS TESTING 2 . 1 . THEORY OF GENERALIZATION
+Now that the growth function has been bounded in terms of the VC dimen sion, we have only one more step left in our analysis, which is to replace the number of hypotheses JV[ in the generalization bound (2.1) with the growth function m1-l (N) . If we manage to do that, the VC dimension will play a pivotal role in the generalization question. If we were to directly replace M by mH (N) in (2. 1 ) , we would get a bound of the form
+Unless dvc (H) = oo , we know that mH (N) is bounded by a polynomial in N; thus, lnm1-l(N) grows logarithmically in N regardless of the order of the poly
+nomial, and so it will be crushed by the -k factor. Therefore, for any fixed
+tolerance 8, the bound on Eout will be arbitrarily close to Ein for sufficiently large N.
+Only if dvc (H) = oo will this argument fail, as the growth function in this
+case is exponential in N. For any finite value of dvc , the error bar will converge
+to zero at a speed determined by dvc , since dvc is the order of the polynomial.
+The smaller dvc is, the faster the convergence to zero. It turns out that we cannot just replace M with m1-l (N) in the generaliza tion bound (2. 1) , but rather we need to make other adjustments as we will see
+shortly. However, the general idea above is correct, and dvc will still play the role that we discussed here. One implication of this discussion is that there
+is a division of models into two classes. The 'good models' have finite dvc , and for sufficiently large N, Ein will be close to Eout ; for good models, the in-sample performance generalizes to out of sample. The 'bad models' have
+infinite dvc . With a bad model, no matter how large the data set is, we cannot
+make generalization conclusions from Ein to Eout based on the VC analysis.2
+Because of its significant role, it is worthwhile to try to gain some insight about the VC dimension before we proceed to the formalities of deriving the
+new generalization bound. One way to gain insight about dvc is to try to compute it for learning models that we are familiar with. Perceptrons are one
+case where we can compute dvc exactly. This is done in two steps. First,
+we show that dvc is at least a certain value, then we show that it is at most
+the same value. There is a logical difference in arguing that dvc is at least a certain value, as opposed to at most a certain value. This is because
+dvc 2. N � there exists D of size N such that }{ shatters D,
+hence we have different conclusions in the following cases.
+1 . There is a set of N points that can be shattered by }{ . In this case, we
+can conclude that dvc 2. N.
+2 In some cases with infinite dvc , such as the convex sets that we discussed, alternative analysis based on an ' average' growth function can establish good generalization behavior.
+51
+
+
+2 . TRAINING VERSUS TESTING 2 . 1 . THEORY OF GENERALIZATION
+2. Any set of N points can be shattered by 1-l. In this case, we have more than enough information to conclude that dvc � N.
+3. There is a set of N points that cannot be shattered by 1-l. Based only on this information, we cannot conclude anything about the value of dvc ·
+4. No set of N points can be shattered by 1-l . In this case, we can conclude that dvc < N.
+Exercise 2.4
+Consider the i n put space x ]Rd (including the constant coordinate
+xo = 1) . Show that the dimension of the perceptron (with d 1
+para m eters, counting wo ) is exactly 1 by showing that it is at lea st d 1 and at most d 1, a s follows.
+(a) To show that dvc 1 , find 1 points i n that the perceptron
+can shatter. [Hint: Construct a nonsingular 1) x 1) matrix whose rows represent the d 1 points, then use the nonsingu/arity to argue that the perceptron can shatter these points.]
+( b) To show that dvc d 1, show that no set of d 2 points i n can be shattered by the perceptron. [Hint: Represent each point in as a vector of length d 1, then use the fact that any d 2 vectors of length d 1 have to be linearly dependent. This means that some vector is a linear combination of all the other vectors. Now, ifyou choose the class of these other vectors carefully, then the classification of the dependent vector will be dictated. Conclude that there is some dichotomy that cannot be implemented, and therefore
+that for N d 2, m1-l (N) < 2N .J
+The VC dimension of a d-dimensional perceptron3 is indeed d + 1 . This is consistent with Figure 2 . 1 for the case d = 2 , which shows a VC dimension of 3. The perceptron case provides a nice intuition about the VC dimension, since d + 1 is also the number of parameters in this model. One can view the VC dimension as measuring the 'effective' number of parameters. The more parameters a model has, the more diverse its hypothesis set is, which is reflected in a larger value of the growth function mH (N) . In the case of perceptrons, the effective parameters correspond to explicit parameters in
+the model, namely wo,wi, · · · , Wd · In other models, the effective parameters may be less obvious or implicit. The VC dimension measures these effective parameters or 'degrees of freedom' that enable the model to express a diverse set of hypotheses. Diversity is not necessarily a good thing in the context of generalization. For example, the set of all possible hypotheses is as diverse as can be, so
+mH (N) = 2N for all N and dvc (H) = oo. In this case, no generalization at all is to be expected, as the final version of the generalization bound will show.
+3 X { 1 } x JRd is considered d dimensional since the first coordinate xo 1 is fixed.
+52
+
+
+2 . TRAINING VERSUS TESTING 2 . 1 . THEORY OF GENERALIZATION
+2. 1.4 The VC Generalization Bound
+If we treated the growth function as an effective number of hypotheses, and replaced M in the generalization bound (2. 1) with m1-l (N) , the resulting bound would be
+? 1 l 2m1-l (N)
+Eout (g) :s; Ein (g) + 2N n 8 . (2.11)
+It turns out that this i s not exactly the form that will hold. The quantities in red need to be technically modified to make (2.1 1 ) true. The correct bound, which is called the VC generalization bound, is given in the following theorem; it holds for any binary target function f, any hypothesis set 1-l, any learning algorithm A, and any input probability distribution P.
+Theorem 2.5 (VC generalization bound) . For any tolerance 8 > 0,
+8 l 4m1-l (2N)
+Eout (g) :s; Ein(g) + N n 8
+with probability 2 1 - 8 .
+(2.12)
+If you compare the blue items in (2. 12) to their red counterparts in (2. 1 1 ) , you notice that all the blue items move the bound in the weaker direction. How ever, as long as the VC dimension is finite, the error bar still converges to zero
+(albeit at a slower rate) , since m1-l (2N) is also polynomial of order dvc in N, just like m1-l (N) . This means that, with enough data, each and every hypoth
+esis in an infinite 1-l with a finite VC dimension will generalize well from Ein
+to Eout . The key is that the effective number of hypotheses, represented by the finite growth function, has replaced the actual number of hypotheses in the bound. The VC generalization bound is the most important mathematical result in the theory of learning. It establishes the feasibility of learning with infinite hypothesis sets. Since the formal proof is somewhat lengthy and technical, we illustrate the main ideas in a sketch of the proof, and include the formal proof as an appendix. There are two parts to the proof; the justification that the growth function can replace the number of hypotheses in the first place, and the reason why we had to change the red items in (2. 1 1 ) into the blue items in (2.12) .
+Sketch of the proof. The data set V is the source of randomization in the original Hoeffding Inequality. Consider the space of all possible data sets. Let us think of this space as a 'canvas' (Figure 2 . 2(a) ) . Each V is a point on that canvas. The probability of a point is determined by which Xn 's in X happen to be in that particular V, and is calculated based on the distribution P over X . Let 's think of probabilities of different events as areas on that canvas, s o the total area of the canvas is 1 .
+53
+
+
+2 . TRAINING VERSUS TESTING
+•
+space of
+data sets
+(a) Hoeffding Inequality
+2. 1 . THEORY OF GENERALIZATION
+(b) Union Bound (c) VC Bound
+Figure 2 . 2 : Illustration of the proof of the VC bound, where the 'canvas' represents the space ofall data sets, with areas corresponding to probabili
+ties. (a) For a given hypothesis, the colored points correspond to data sets
+where Ein does not generalize well to Eout · The Hoeffding Inequality guar
+antees a small colored area. (b) For several hypotheses, the union bound
+assumes no overlaps, so the total colored area is large. (c) The VC bound keeps track of overlaps, so it estimates the total area of bad generalization to be relatively small.
+For a given hypothesis h E 1-i , the event " IEin (h) Eout (h) I > E" consists of all points V for which the statement is true. For a particular h, let us paint all these 'bad' points using one color. What the basic Hoeffding Inequality
+tells us is that the colored area on the canvas will be small (Figure 2.2(a) ) . Now, if we take another h E 1-i, the event " IEin (h) Eout (h) I > E" may contain different points, since the event depends on h. Let us paint these points with a different color. The area covered by all the points we colored will be at most the sum of the two individual areas, which is the case only if the two areas have no points in common. This is the worst case that the union bound considers. If we keep throwing in a new colored area for each h E 1-i, and never overlap with previous colors, the canvas will soon be mostly covered in color
+(Figure 2.2 (b) ) . Even if each h contributed very little, the sheer number of hypotheses will eventually make the colored area cover the whole canvas. This was the problem with using the union bound in the Hoeffding Inequality ( 1 . 6 ) , and not taking the overlaps o f the colored areas into consideration. The bulk of the VC proof deals with how to account for the overlaps. Here is the idea. If you were told that the hypotheses in 1-i are such that each
+point on the canvas that is colored will be colored 100 times (because of 100
+different h's), then the total colored area is now 1/100 of what it would have been if the colored points had not overlapped at all. This is the essence of
+the VC bound as illustrated in (Figure 2.2(c) ) . The argument goes as follows.
+54
+
+
+2 . TRAINING VERSUS TESTING 2 . 2. INTERPRETING THE BOUND
+Many hypotheses share the same dichotomy on a given D, since there are finitely many dichotomies even with an infinite number of hypotheses. Any statement based on D alone will be simultaneously true or simultaneously
+false for all the hypotheses that look the same on that particular D. What the growth function enables us to do is to account for this kind of hypothesis redundancy in a precise way, so we can get a factor similar to the ' 100' in the above example.
+When 1-l is infinite, the redundancy factor will also be infinite since the hypotheses will be divided among a finite number of dichotomies. Therefore, the reduction in the total colored area when we take the redundancy into consideration will be dramatic. If it happens that the number of dichotomies is only a polynomial, the reduction will be so dramatic as to bring the total probability down to a very small value. This is the essence of the proof of Theorem 2.5.
+The reason m 1-l(2N) appears i n the VC bound instead o f m 1-l (N ) i s that the proof uses a sample of 2N points instead of N points. Why do we need 2N points? The event " IEin (h) Eout (h) J > E" depends not only on D, but also on
+the entire X because Eout (h) is based on X. This breaks the main premise of
+grouping h's based on their behavior on D, since aspects of each h outside of D
+affect the truth of " JEin (h) Eout (h) J > E." To remedy that, we consider the
+artificial event " I Ein (h) E{n (h) J > E" instead, where Ein and E{n are based
+on two samples D and D' each of size N. This is where the 2N comes from.
+It accounts for the total size of the two samples D and D' . Now, the truth of
+the statement " IEin (h) E{n (h) J > E" depends exclusively on the total sample of size 2N, and the above redundancy argument will hold.
+Of course we have to justify why the two-sample condition " J Ein (h)
+E{n (h) J > E" can replace the original condition " JEin (h) Eout (h) J > E." In doing so, we end up having to shrink the E's by a factor of 4, and also end up with a factor of 2 in the estimate of the overall probability. This accounts for
+the � instead of in the VC bound and for having 4 instead of 2 as the multiplicative factor of the growth function. When you put all this together, you get the formula in (2.12). D
+2 . 2 Int erpreting t he Generalizat ion Bound
+The VC generalization bound (2. 12) is a universal result in the sense that it applies to all hypothesis sets, learning algorithms, input spaces, probability distributions, and binary target functions. It can be extended to other types of target functions as well. Given the generality of the result, one would suspect that the bound it provides may not be particularly tight in any given case, since the same bound has to cover a lot of different cases. Indeed, the bound is quite loose.
+55
+
+
+2 . TRAINING VERSUS TESTING 2 . 2 . INTERPRETING THE BOUND
+Exercise 2.5
+S uppose we h ave a simple learning m o d e l whose growth function i s
+m1l (N) = N 1 , hence dvc = Use the VC bound (2. 12) to esti mate the probability that Eout wil l be within 0.1 of Ein given 100 tra in i ng exam ples. [Hint: The estimate will be ridiculous.}
+Why is the VC bound so loose? The slack in the bound can be attributed to a number of technical factors. Among them,
+1 . The basic Hoeffding Inequality used in the proof already has a slack. The inequality gives the same bound whether Eout is close to 0.5 or
+close to zero. However, the variance of Ein is quite different in these two cases. Therefore, having one bound capture both cases will result in some slack.
+2. Using mH (N) to quantify the number of dichotomies on N points, re gardless of which N points are in the data set, gives us a worst-case estimate. This does allow the bound to be independent of the prob ability distribution P over X. However, we would get a more tuned
+bound if we considered specific x1 , · · · , XN and used IH (x1 , · · · , XN) I or its expected value instead of the upper bound mH (N) . For instance, in the case of convex sets in two dimensions, which we examined in Exam ple 2.2, if you pick N points at random in the plane, they will likely have far fewer dichotomies than 2N , while mH (N) = 2N .
+3. Bounding mH (N) by a simple polynomial of order dvc , as given in (2. 10) , will contribute further slack t o the V C bound.
+Some effort could be put into tightening the VC bound, but many highly technical attempts in the literature have resulted in only diminishing returns. The reality is that the VC line of analysis leads to a very loose bound. Why did we bother to go through the analysis then? Two reasons. First, the VC analysis is what establishes the feasibility of learning for infinite hypothesis sets, the only kind we use in practice. Second, although the bound is loose, it tends to be equally loose for different learning models, and hence is useful for comparing the generalization performance of these models. This is an observation from practical experience, not a mathematical statement . In real
+applications, learning models with lower dvc tend to generalize better than
+those with higher dvc · Because of this observation, the VC analysis proves useful in practice, and some rules of thumb have emerged in terms of the VC
+dimension. For instance, requiring that N be at least 10 x dvc to get decent generalization is a popular rule of thumb. Thus, the VC bound can be used as a guideline for generalization, relatively if not absolutely. With this understanding, let us look at the different ways the bound is used in practice.
+56
+
+
+2 . TRAINING VERSUS TESTING 2 . 2 . INTERPRETING THE BOUND
+2.2. 1 Sample Complexity
+The sample complexity denotes how many training examples N are needed to achieve a certain generalization performance. The performance is specified by two parameters, E and 8. The error tolerance E determines the allowed
+generalization error, and the confidence parameter 8 determines how often the error tolerance E is violated. How fast N grows as E and 8 become smaller4 indicates how much data is needed to get good generalization. We can use the VC bound to estimate the sample complexity for a given learning model. Fix 8 > 0, and suppose we want the generalization error to be at most E. From Equation (2.12), the generalization error is bounded by
+ln and so it suffices to make ln ::; E. It follows that
+N > � ln ( 4m1-l (2N) )
+- E2 8
+suffices to obtain generalization error at most E (with probability at least 1 -8) . This gives an implicit bound for the sample complexity N, since N appears on both sides of the inequality. If we replace m1-l (2N) in (2. 12) by its polynomial upper bound in (2. 10) which is based on the the VC dimension, we get a
+similar bound 8 ( 4((2N)dvc + l) )
+N � E2 ln 8 ' (2.13)
+which is again implicit in N. We can obtain a numerical value for N using simple iterative methods.
+Example 2.6. Suppose that we have a learning model with dvc = 3 and would like the generalization error to be at most 0.1 with confidence 90% (so
+E = 0.1 and 8 = 0.1). How big a data set do we need? Using (2.13), we need
+N > 1n + .
+- 0.12 0.1
+Trying an initial guess of N = 1, 000 in the RHS, we get
+N
+>
+l
+n
+x
+1
+0
+0
+0
+)
+3
++
+�
+2
+1
+1
+9
+3
+.
+- 0.12 0.1 '
+We then try the new value N = 21 , 193 in the RHS and continue this iterative
+process, rapidly converging to an estimate of N � 30, 000. If dvc were 4, a
+similar calculation will find that N � 40, 000. For dvc = 5, we get N � 50, 000. You can see that the inequality suggests that the number of examples needed is approximately proportional to the VC dimension, as has been observed in practice. The constant of proportionality it suggests is 10,000, which is a gross overestimate; a more practical constant of proportionality is closer to 10. D
+4The term 'complexity' comes from a similar metaphor in computational complexity.
+57
+
+
+2 . TRAINING VERSUS TESTING 2 . 2 . INTERPRETING THE BOUND
+2.2.2 Penalty for Model Complexity
+Sample complexity fixes the performance parameters E (generalization error)
+and 8 (confidence parameter) and estimates how many examples N are needed. In most practical situations, however, we are given a fixed data set V, so N is also fixed. In this case, the relevant question is what performance can we expect given this particular N. The bound in (2.12) answers this question: with probability at least 1 - 8,
+N8 ln .
+Eout (g) � Ein(g) +
+If we use the polynomial bound based on dvc instead of m1-l (2N) , we get another valid bound on the out-of-sample error,
+( ) ( ) � l ( 4((2N)dvc + 1) )
+Eout g � Ein g + N n 8 (2.14)
+Example 2 .7. Suppose that N = 100 and we have a 903 confidence require
+ment (8 = 0.1). We could ask what error bar can we offer with this confidence,
+if 1{ has dvc = 1. Using (2.14) , we have
+8 (4(201) )
+Eout (g) � Ein(g) + lOO ln Q:-1 � Ein(g) + 0.848 (2. 15)
+with confidence � 903. This is a pretty poor bound on Eout · Even if Ein = 0, Eout may still be close to 1. IfN = 1, 000, then we get Eaut(g) � Ein (g)+0.301, a somewhat more respectable bound. D
+Let us look more closely at the two parts that make up the bound on Eout in (2. 12) . The first part is Ein, and the second part is a term that increases as the VC dimension of 1{ increases.
+where
+Eout (g) � Ein (g) + fl(N, 1-l, 8) ,
+rl(N, 1-l , 8)
+< �l +
+Nn 8 .
+(2.16)
+One way to think of rl(N, 1{, 8) is that it is a penalty for model complexity. It penalizes us by worsening the bound on Eout when we use a more complex 1{
+(larger dv0). If someone manages to fit a simpler model with the same training
+58
+
+
+2 . TRAINING VERSUS TESTING 2 . 2 . INTERPRETING THE BOUND
+d�c VC dimension, dvc
+Figure 2 . 3 : When we use a more complex learning model, one that has higher VC dimension dvc , we are likely to fit the training data better re sulting in a lower in sample error, but we pay a higher penalty for model complexity. A combination of the two, which estimates the out of sample error, thus attains a minimum at some intermediate d�0 •
+error, they will get a more favorable estimate for Eout · The penalty O(N, 1-i , o)
+gets worse if we insist on higher confidence (lower o) , and it gets better when we have more training examples, as we would expect.
+Although O(N, 1-i, o) goes up when 1i has a higher VC dimension, Ein is likely to go down with a higher VC dimension as we have more choices within 1{ to fit the data. Therefore, we have a tradeoff: more complex models help Ein
+and hurt O(N, 1-i, o) . The optimal model is a compromise that minimizes a combination of the two terms, as illustrated informally in Figure 2.3.
+2.2. 3 The Test Set
+As we p.ave seen, the generalization bound gives us a loose estimate of the out-of-sample error Eout based on Ein . While the estimate can be useful as a guideline for the training process, it is next to useless if the goal is to get an accurate forecast of Eout . If you are developing a system for a customer, you need a more accurate estimate so that your customer knows how well the system is expected to perform. An alternative approach that we alluded to in the beginning of this chapter is to estimate Eout by using a test set, a data set that was not involved in the training process. The final hypothesis g is evaluated on the test set, and the result is taken as an estimate of Eout · We would like to now take a closer look at this approach. Let us call the error we get on the test set Etest . When we report Etest as
+our estimate of Eout , we are in fact asserting that Etest generalizes very well
+to Eout . After all, Etest is just a sample estimate like Ein . How do we know
+59
+
+
+2 . TRAINING VERSUS TESTING 2 . 2 . INTERPRETING THE BOUND
+that Etest generalizes well? We can answer this question with authority now that we have developed the theory of generalization in concrete mathematical terms. The effective number of hypotheses that matters in the generalization be havior of Etest is 1 . There is only one hypothesis as far as the test set is concerned, and that's the final hypothesis g that the training phase produced. This hypothesis would not change if we used a different test set as it would if we used a different training set. Therefore, the simple Hoeffding Inequality is valid in the case of a test set. Had the choice of g been affected by the test set in any shape or form, it wouldn't be considered a test set any more and the simple Hoeffding Inequality would not apply. Therefore, the generalization bound that applies to Etest is the simple Hoeffding Inequality with one hypothesis. This is a much tighter bound than the VC bound. For example, if you have 1 , 000 data points in the test set, Etest
+will be within ±53 of Eout with probability � 983. The bigger the test set
+you use, the more accurate Etest will be as an estimate of Eout .
+Exercise 2.6
+A d ata set has 600 exam ples. To properly test the performa nce of the fin a l hypothesis, you set aside a randomly selected subset of 200 exa mples which are never used in the tra in i ng phase; these form a test set. You use a learning model with 1, 000 hypotheses a n d select the fin a l hypothesis g based on the 400 tra i n ing exam ples. We wish to estimate Eout (g) . We have access to two estimates: Ein (g) , the i n sample error on the 400 t raining exa mples; and, Etest (g) , the test error on the 200 test exam ples that were set aside.
+(a) Using a 53 error tolera nce (8 = 0.05), which estimate has the h igher 'error bar' ?
+(b) Is there a ny reason why you shouldn 't reserve even more exam ples for testi n g?
+Another aspect that distinguishes the test set from the training set is that the test set is not biased. Both sets are finite samples that are bound to have some variance due to sample size, but the test set doesn't have an optimistic or pessimistic bias in its estimate of Eout . The training set has an optimistic bias, since it was used to choose a hypothesis that looked good on it. The VC generalization bound implicitly takes that bias into consideration, and that's why it gives a huge error bar. The test set just has straight finite-sample variance, but no bias. When you report the value of Etest to your customer and they try your system on new data, they are as likely to be pleasantly surprised as unpleasantly surprised, though quite likely not to be surprised at all. There is a price to be paid for having a test set. The test set does not affect the outcome of our learning process, which only uses the training set. The test set just tells us how well we did. Therefore, if we set aside some
+60
+
+
+2 . TRAINING VERSUS TESTING 2 . 2 . INTERPRETING THE BOUND
+of the data points provided by the customer as a test set, we end up using fewer examples for training. Since the training set is used to select one of the hypotheses in 1-l, training examples are essential to finding a good hypothesis. If we take a big chunk of the data for testing and end up with too few examples for training, we may not get a good hypothesis from the training part even if we can reliably evaluate it in the testing part. We may end up reporting to the customer, with high confidence mind you, that the g we are delivering is
+terrible © . There is thus a tradeoff to setting aside test examples. We will address that tradeoff in more detail and learn some clever tricks to get around it in Chapter 4. In some of the learning literature, Etest is used as synonymous with Eout . When we report experimental results in this book, we will often treat Etest based on a large test set as if it was Eout because of the closeness of the two quantities.
+2.2.4 Other Target Types
+Although the VC analysis was based on binary target functions, it can be extended to real-valued functions, as well as to other types of functions. The proofs in those cases are quite technical, and they do not add to the insight that the VC analysis of binary functions provides. Therefore, we will introduce an alternative approach that covers real-valued functions and provides new insights into generalization. The approach is based on bias-variance analysis, and will be discussed in the next section. In order to deal with real-valued functions, we need to adapt the definitions of Ein and Eout that have so far been based on binary functions. We defined Ein
+and Eout in terms of binary error; either h(x) = f(x) or else h(x) -/= f(x) . If f and h are real-valued, a more appropriate error measure would gauge how far f(x) and h(x) are from each other, rather than just whether their values are exactly the same. An error measure that is commonly used in this case is the squared error e(h(x) , J(x)) = (h(x) - f(x))2 . We can define in-sample and out-of-sample versions of this error measure. The out-of-sample error is based on the ex pected value of the error measure over the entire input space X ,
+Eout (h) = lE [(h(x) - J(x))2] ,
+while the in-sample error is based on averaging the error measure over the data set,
+1N
+Ein (h) = N L(h(xn) - f(xn))2. n=l
+These definitions make Ein a sample estimate of Eout just as it was in the case of binary functions. In fact, the error measure used for binary functions can also be expressed as a squared error.
+61
+
+
+2 . TRAINING VERSUS TESTING 2 . 3 . APPROXIMATION GENERALIZATION
+Exercise 2.7
+For binary target functions, show that JP>[h(x) f(x)] can be written as a n expected val ue of a mean sq u a red error measure in the following cases.
+(a) The convention used for the binary function is 0 or
+(b) The convention used for the binary function is ±1.
+[Hint: The difference between (a) and (b) is just a scale.}
+Just as the sample frequency of error converges to the overall probability of error per Hoeffding's Inequality, the sample average of squared error converges to the expected value of that error (assuming finite variance) . This is a man ifestation of what is referred to as the 'law of large numbers' and Hoeffding's Inequality is just one form of that law. The same issues of the data set size and the hypothesis set complexity come into play just as they did in the VC analysis.
+2 . 3 Approximat ion- Generalization Tradeoff
+The VC analysis showed us that the choice of 1-l needs to strike a balance between approximating f on the training data and generalizing on new data. The ideal 1-l is a singleton hypothesis set containing only the target function. Unfortunately, we are better off buying a lottery ticket than hoping to have this 1-l. Since we do not know the target function, we resort to a larger model hoping that it will contain a good hypothesis, and hoping that the data will pin down that hypothesis. When you select your hypothesis set, you should balance these two conflicting goals; to have some hypothesis in 1-l that can approximate f, and to enable the data to zoom in on the right hypothesis. The VC generalization bound is one way to look at this tradeoff. If 1-l is too simple, we may fail to approximate f well and end up with a large in sample error term. If 1-l is too complex, we may fail to generalize well because of the large model complexity term. There is another way to look at the approximation-generalization tradeoff which we will present in this section. It is particularly suited for squared error measures, rather than the binary error used in the VC analysis. The new way provides a different angle; instead of
+bounding Eout by Ein plus a penalty term 0, we will decompose Eout into two different error terms.
+2 . 3 . 1 Bias and Variance
+The bias-variance decomposition of out-of-sample error is based on squared error measures. The out-of-sample error is
+(2. 1 7)
+62
+
+
+2 . TRAINING VERSUS TESTING 2 . 3 . APPROXIMATION GENERALIZATION
+where lEx denotes the expected value with respect to x (based on the probabil ity distribution on the input space X) . We have made explicit the dependence
+of the final hypothesis g on the data V, as this will play a key role in the cur
+rent analysis. We can rid Equation (2. 17) of the dependence on a particular data set by taking the expectation with respect to all data sets. We then get the expected out-of-sample error for our learning model, independent of any particular realization of the data set,
+lEv [lEx [(g(D) (x) - f(x))2J]
+lEx [lEv [(g(D) (x) - f(x))2J]
+lEx [lEv[g(D) (x)2] - 2 lEv [g(D) (x)]f(x) + f(x)2J .
+The term lEv [g(D) (x)] gives an 'average function', which we denote by g (x) .
+One can interpret g(x) in the following operational way. Generate many data sets V1 , . . . , VK and apply the learning algorithm to each data set to produce final hypotheses 91 , . . . , 9K . We can then estimate the average function for
+any x by g(x) � -k 1=�=l gk (x) . Essentially, we are viewing g(x) as a random variable, with the randomness coming from the randomness in the data set;
+g(x) is the expected value of this random variable (for a particular x) , and g is a function, the average function, composed of these expected values. The
+function g is a little counterintuitive; for one thing, g need not be in the model's hypothesis set, even though it is the average of functions that are.
+Exercise 2.8
+(a) Show that if 1-l i s closed u nder l inear combination (any l inear combi n ation of hypotheses i n 1-l is a lso a hypothesis in 1-l), then g E 1-l.
+( b) Give a model for which the average function g is not i n the model's hypothesis set. [Hint: Use a very simple model.]
+(c) For binary classification, do you expect g to be a binary function?
+We can now rewrite the expected out-of-sample error in terms of g:
+lEv [Eout (g (V) ) ]
+lEx [lEv[gCD) (x)2] - 2g(x)f(x) + f(x)2J ,
+lEx [ lEv [gCD) (x)2] - g(x)2 + g(x)2 - 2g(x)f(x) + f(x)2
+lEv [(g(D) (x) - g(x))2] (g(x) - f(x))2
+where the last reduction follows since g(x) is constant with respect to V.
+The term (g(x) - f(x))2 measures how much the average function that we would learn using different data sets V deviates from the target function that
+generated these data sets. This term is appropriately called the bias:
+bias(x) = (g(x) - f(x))2,
+63
+
+
+2 . TRAINING VERSUS TESTING 2 . 3 . APPROXIMATION GENERALIZATION
+as it measures how much our learning model is biased away from the target
+function.5 This is because g has the benefit of learning from an unlimited number of data sets, so it is only limited in its ability to approximate f by
+the limitation in the learning model itself. The term 1Ev [(g(V) (x) g(x))2] is the variance of the random variable g(V) (x) ,
+var(x) = 1Ev [(g('.D) (x) - g(x))2] ,
+which measures the variation in the final hypothesis, depending on the data set. We thus arrive at the bias-variance decomposition of out-of-sample error,
+1Ex[bias(x) + var(x)] bias + var,
+where bias = 1Ex[bias(x)] and var = 1Ex[var(x)]. Our derivation assumed that the data was noiseless. A similar derivation with noise in the data would lead to an additional noise term in the out-of-sample error (Problem 2.22) . The noise term is unavoidable no matter what we do, so the terms we are interested
+in are really the bias and var. The approximation-generalization tradeoff is captured in the bias-variance decomposition. To illustrate, let's consider two extreme cases: a very small model (with one hypothesis) and a very large one with all hypotheses.
+Very small model. Since there is only one hypothesis, both the av erage function g and the f nal hy pothesis g(D) will be the same, for any data set. Thus, var = 0. The bias will depend solely on how well this single hypothesis approximates the target f, and unless we are ex tremely lucky, we expect a large bias.
+Very large model. The target function is in 1-i. Different data sets will lead to different hypotheses that agree with f on the data set, and are spread around f in the red region. Thus, bias � 0 because g is likely to be close to f. The var is large (heuristically represented by the size of the red region in the figure) .
+One can also view the variance as a measure of 'instability' in the learning model. Instability manifests in wild reactions to small variations or idiosyn crasies in the data, resulting in vastly different hypotheses.
+5What we call bias is sometimes called bias2 in the literature.
+64
+
+
+2 . TRAINING VERSUS TESTING 2 . 3 . APPROXIMATION GENERALIZATION
+Example 2.8. Consider a target function f(x) = sin(nx) and a data set of size N = 2. We sample x uniformly in [- 1, 1) to generate a data set
+(x1 , Y1 ) , (x2 , Y2 ) ; and fit the data using one of two models:
+Ho : Set of all lines of the form h(x) = b; H1 : Set of all lines of the form h(x) = ax + b.
+For Ho , we choose the constant hypothesis that best fits the data (the hori zontal line at the midpoint, b = For H1 , we choose the line that passes
+through the two data points (x1 , Y1 ) and (x2 , y2) . Repeating this process with many data sets, we can estimate the bias and the variance. The figures which follow show the resulting fits on the same (random) data sets for both models.
+xx
+1-lo
+With H1 , the learned hypothesis is wilder and varies extensively depending on the data set. The bias-var analysis is summarized in the next figures.
+x
+1-lo
+bias = 0.50; var = 0.25.
+x
+1-l1
+bias = 0.21;
+var = 1.69.
+Average hypothesis g (red) with var(x) indicated by the gray shaded
+region that is g(x) ±
+For Hi , the average hypothesis g (red line) is a reasonable fit with a fairly small bias of 0.21. However, the large variability leads to a high var of 1 .69 resulting in a large expected out-of-sample error of 1 .90. With the simpler
+65
+
+
+2 . TRAINING VERSUS TESTING 2 . 3 . APPROXIMATION GENERALIZATION
+model 1-lo , the fits are much less volatile and we have a significantly lower var of 0.25, as indicated by the shaded region. However, the average fit is now the zero function, resulting in a higher bias of 0.50. The total out-of-sample error has a much smaller expected value of 0.75. The simpler model wins by significantly decreasing the var at the expense of a smaller increase in bias.
+Notice that we are not comparing how well the red curves (the average hy
+potheses) fit the sine. These curves are only conceptual, since in real learning we do not have access to the multitude of data sets needed to generate them. We have one data set, and the simpler model results in a better out-of-sample error on average as we fit our model to just this one data. However, the var term decreases as N increases, so if we get a bigger and bigger data set, the bias term will be the dominant part of Eout , and 1-l1 will win. D
+The learning algorithm plays a role in the bias-variance analysis that it did not play in the VC analysis. Two points are worth noting.
+1. By design, the VC analysis is based purely on the hypothesis set 1-l , in dependently of the learning algorithm A. In the bias-variance analysis, both 1-l and the algorithm A matter. With the same 1-l, using a differ ent learning algorithm can produce a different g(V) . Since g (V) is the building block of the bias-variance analysis, this may result in different bias and var terms.
+2. Although the bias-variance analysis is based on squared-error measure, the learning algorithm itself does not have to be based on minimizing the squared error. It can use any criterion to produce g(V) based on V.
+However, once the algorithm produces gCTJ) , we measure its bias and variance using squared error.
+Unfortunately, the bias and variance cannot be computed in practice, since
+they depend on the target function and the input probability distribution (both
+unknown) . Thus, the bias-variance decomposition is a conceptual tool which is helpful when it comes to developing a model. There are two typical goals when we consider bias and variance. The first is to try to lower the variance without significantly increasing the bias, and the second is to lower the bias without significantly increasing the variance. These goals are achieved by different techniques, some principled and some heuristic. Regularization is one of these techniques that we will discuss in Chapter 4. Reducing the bias without increasing the variance requires some prior information regarding the target function to steer the selection of 1-l in the direction of f, and this task is largely application-specific. On the other hand, reducing the variance without compromising the bias can be done through general techniques.
+2.3.2 The Learning Curve
+We close this chapter with an important plot that illustrates the tradeoffs that we have seen so far. The learning curves summarize the behavior of the
+66
+
+
+2 . TRAINING VERSUS TESTING 2 . 3 . APPROXIMATION GENERALIZATION
+in-sample and out-of-sample errors as we vary the size of the training set. After learning with a particular data set ]) of size N, the final hypothe
+sis gCD) has in-sample error Ein(g(TJ) ) and out-of-sample error Eout(g(TJ) ) , both of which depend on JJ. As we saw in the bias-variance analysis, the expectation
+with respect to all data sets of size N gives the expected errors: 1Ev [Ein (g(TJ) )]
+and 1Ev [Eout(g('D) )] . These expected errors are functions of N, and are called the learning curves of the model. We illustrate the learning curves for a simple learning model and a complex one, based on actual experiments.
+Number of Data Points, N
+Simple Model
+0H
+μ:it:
+'"O<!)
+t)<!)
+Number of Data Points, N
+Complex Model
+Notice that for the simple model, the learning curves converge more quickly but to worse ultimate performance than for the complex model. This behavior is typical in practice. For both simple and complex models, the out-of-sample learning curve is decreasing in N, while the in-sample learning curve is in creasing in N. Let us take a closer look at these curves and interpret them in terms of the different approaches to generalization that we have discussed.
+In the VC analysis, Eout was expressed as the sum of Ein and a generaliza tion error that was bounded by n, the penalty for model complexity. In the
+bias-variance analysis, Eaut was expressed as the sum of a bias and a variance. The following learning curves illustrate these two approaches side by side.
+Number of Data Points, N Number of Data Points, N
+VC Analysis Bias-Variance Analysis
+67
+
+
+2 . TRAINING VERSUS TESTING 2 . 3 . APPROXIMATION GENERALIZATION
+The VC analysis bounds the generalization error which is illustrated on the left.6 The bias-variance analysis is illustrated on the right. The bias-variance illustration is somewhat idealized, since it assumes that, for every N, the aver age learned hypothesis g has the same performance as the best approximation to f in the learning model. When the number of data points increases, we move to the right on the learning curves and both the generalization error and the variance term shrink, as expected. The learning curve also illustrates an important point about Ein · As N increases, Ein edges toward the smallest error that the learning model can achieve in approximating f. For small N, the value of Ein is actually smaller than that 'smallest possible' error. This is because the learning model has an easier task for smaller N; it only needs to approximate f on the N points regardless of what happens outside those points. Therefore, it can achieve a superior fit on those points, albeit at the expense of an inferior fit on the rest of the points as shown by the corresponding value of Eaut .
+6 For the learning curve, we take the expected values of all quantities with respect to 'D of size N.
+68
+
+
+2 . TRAINING VERSUS TESTING 2 . 4 . PROBLEMS
+2.4 Problems
+Problem 2 . 1 I n Equ ation (2. 1 ) , set 8 = 0.03 a nd let
+(a) For M = 1 , how m a ny exam ples do we need to m a ke E � 0.05?
+(b) For M = 100, how m a ny exa m ples do we need to m a ke E � 0.05?
+(c) For M = 10, 000, how many exam ples do we need to m a ke E � 0.05?
+Problem 2.2 Show that for the learning model of positive rectangles (aligned horizonta l ly or vertical ly) , mH (4) = 24 a n d mH (5) < 25 . Hence, give a bound for mH (N) .
+Problem 2 . 3 Compute the maxi m u m n um ber of dichotomies, mH (N) , for these learni ng models, a nd consequently com pute dvc , the VC d i mensio n .
+( a ) Positive or negative ray: 1-l contai ns the functions which are +1 on [a, oo)
+(for some a) together with those that are +1 on (-oo, a] (for som e a) .
+(b) Positive or negative i nterval : 1-l contains the functions which a re + 1 on a n i nterval [a, b] and - 1 elsewhere or -1 on a n i nterval [a, b] a nd + 1 e l sew h e r e .
+(c) Two concentric spheres in JRd : 1-l contains the functions which are +1 for
+a � xf + . . . + x� � b.
+Problem 2.4 Show that B (N, k) = I::==-i ( � ) by showing the other d irection to Lemma 2.3, namely that
+B(N, k) � � (�)
+To do so, construct a specific set o f I::==-i ( � ) dichotomies that does not shatter any subset of k varia bles. [Hint: Try limiting the number of - 1 's in each dichotomy.]
+D
+Problem 2 . 5 P rove by induction that 'I: ( � ) � ND + 1 , hence
+i=O
+m'H (N) � Ndvc + 1 .
+69
+
+
+2 . TRAINING VERSUS TESTING
+Problem 2 . 6 P rove that fo r N ;: d,
+We suggest you first show the following i ntermediate steps.
+(a) t ( �) � t (1:) (Jt) d i � (Jt) d t (1:) (1J) i.
+i=O i=O i=O N.
+2 . 4 . PROBLEMS
+(b) I: ( � ) (1Jf � ed. {Hints: Binomial theorem; (1 + �r � e for x > O.j
+i=O ( )dvc
+Hence, a rgue that m11, (N) � .
+Problem 2 . 7 Plot the bou nds for m11, (N) given in Problems 2.5 and 2.6 for dva = 2 a nd dvc = 5. When do you prefer one bound over the other?
+Problem 2.8 Which of the following a re possible growth functions m11, (N) for some hypothesis set:
+l+N·, 1 N N(N - 1) 2N · 2 l v'NJ . 2 L N/2 J . 1 N N(N - l)(N - 2)
+++ 2 ; ' ' ' ++ 6 .
+Problem 2.9 [hard] For the perceptron in d dimensions, show that
+d (N 1)
+m11, (N) = 2 t; � . {Hint: Cover(1965) in Further Reading.}
+Use this formu l a to verify that dvc = d + 1 by eva luating m11, (d + 1) a n d
+m11, (d + 2) . Plot m11, (N)/2N for d = 10 and N E [1, 40] . If you gen erate a random d ichotomy on N points i n 10 dimensions, give a n u pper bound on the probability that the dichotomy wil l be separable for N = 10, 20, 40.
+Problem 2.10 Show that m11, (2N) � m11, (N)2 , and hence obtain a
+genera Iization bound which only i nvolves m11, (N) .
+Problem 2 . 1 1 S uppose m11, (N) = N + 1 , so dva = 1 . You have 100 tra ining exam ples. Use the gen era lization bound to give a bound for Eaut with confidence 90%. Repeat for N = 10, 000.
+70
+
+
+2 . TRAINING VERSUS TESTING 2 . 4 . PROBLEMS
+Problem 2. 12 For an 1-l with dvc = 10, what sample size do you need (as prescri bed by the genera lization bound) to have a 95% confidence that you r genera l ization error i s a t most 0.05?
+Problem 2.13
+(a ) Let 1-l = {h1 , h2 , . . . , hM } with some finite M. Prove that dvc (1-l) ::; log2 M.
+(b) For hypothesis sets 1-l 1, 1-l2 , · · · , 1-lK with finite VC dimensions dvc (1-lk) , derive and prove the tightest u pper a n d lower bound that you can get on dvc (n�11-lk) ·
+(c) For hypothesis sets 1-l1 , 1-l2 , · · · , 1-lK with finite VC dimensions dvc(1-lk ) , derive a n d prove t h e tightest u pper a n d lower bounds that you c a n get on dvc (uf;=11-lk) ·
+Problem 2 . 14 Let 1-l1 , 1-l2 , . . . , 1-lK be K hypothesis sets with fin ite VC dimension dvc · Let 1-l = 1-l1 U 1-l2 U · · · U 1-lK be the union of these models.
+(a ) Show that dvc (1-l) < K(dvc + 1 ) .
+( b) S u ppose that f satisfies 2£ > 2Kfdvc . Show that dvc (1-l) ::; £.
+(c) Hence, show that
+dvc (1-l) =S; min (K(dvc + 1), 7(dvc + K) log2 (dvcK)) .
+That is, dvc (1-l) = O (max(dvc , K) log2 max(dvc , K)) is not too bad .
+Problem 2. 15 The monotonica l ly increasing hypothesis set is
+where x1 ;: x2 if a nd only if the ineq u a l ity is satisfied for every com ponent.
+(a ) G ive an example of a monotonic classifier in two dimensions, clearly show ing the +1 a nd -1 regions.
+( b) Compute m1-1. (N) a nd hence the VC dimension. {Hint: Consider a set ofN points generated by first choosing one point, and then generating the next point by increasing the first component and decreasing the second component until N points are obtained.}
+71
+
+
+2 . TRAINING VERSUS TESTING 2 . 4 . PROBLEMS
+Problem 2 . 16 I n this problem , we wil l consider X = R That is, x x is a one d imensional variable. For a hypothesis set
+prove that the VC d imension of 1-l is exactly (D + 1) by showing that
+(a) There a re (D + 1) points which are shattered by 1-l.
+(b) There a re no (D + 2) points which are shattered by 1-l.
+Problem 2 . 1 7 The VC d imension depends on the in put space as wel l a s 1-l. For a fixed 1-l, consider two i n put spaces X1 s:;:; X2 . Show that the VC dimension of 1-l with respect to i n put space X1 is at most the VC dimension of 1-l with respect to i nput space X2 .
+How can the result of this problem be used to a nswer part (b) i n Problem 2 . 16?
+[Hint: How is Problem 2. 16 related to a perceptron in D dimensions?}
+Problem 2 . 18 The VC d imension of the perceptron hypothesis set corresponds to the n u m ber of para meters (w0 , w1 , • · · , wd) of the set, and this observation is ' usua l ly' true for other hypothesis sets. However, we wil l present
+a cou nter exam ple here. Prove that the fol lowing hypothesis set for x E IR has an infinite VC dimension :
+1-l = { ha I ha (x) = (-l) LaxJ , where a E IR} ,
+where LAJ is the biggest integer � A (the floor function ) . This hypothesis has o n ly one para meter a but 'enjoys' a n infi n ite VC dimensio n . [Hint: Con sider x1 , . . . , xN , where Xn 10n , and show how to implement an arbitrary dichotomy Y1 , . . . , YN .J
+Problem 2 . 1 9 This problem derives a boun d for the VC dimension of a com plex hypothesis set that is built from sim pler hypothesis sets via com posi tio n . Let 1-l1 , . . . , 1-LK be hypothesis sets with VC d imension d1 , . . . , dK . Fix
+hi , . . . , hK , where hi E 1-Li . Define a vector z obtained from x to have com
+ponents hi (x) . Note that x E JRd, but z E { - 1 , + l }K . Let fl be a hypothesis set of functions that ta ke i nputs in IRK . So
+h E fl: z E IRK 1- {+l , - 1} ,
+a n d suppose that il has V C dimension J.
+72
+
+
+2 . TRAINING VERSUS TESTING 2 .4 . PROBLEMS
+We can a pply a hypothesis in iL to the z constructed from (hi , . . . , hK) . This is the composition of the hypothesis set iL with (Hi , . . . , 1-LK ) . More formal ly,
+the com posed hypothesis set 1l = iL o (Hi , . . . , 1-LK) is defi ned by h E 1l if
+h(x) = h(hi (x) , . . . , hK (x) ) ,
+(a ) Show that K
+m1i (N) :: mi{ (N) IT m1ii (N) . (2. 18)
+i=i
+{Hint: Fix N points xi , . . . , XN and fix hi , . . . , hK . This generates N
+transformed points zi , . . . , ZN . These zi , . . . , ZN can be dichotomized in at most mi{ (N) ways, hence for fixed (hi , . . . , hK), (xi , . . . , xN ) can be dichotomized in at most mi{ (N) ways. Through the eyes of xi , . . . , XN , at most how many hypotheses are there (effectively) in 1-Li ? Use this bound to bound the effective number of K-tuples (hi , . . . , hK) that need to be considered. Finally, argue that you can bound the number of dichotomies that can be implemented by the product of the number of possible K-tuples (hi , . . . , hK ) and the number of dichotomies per K-tuple.j
+(b) Use the bound m(N) :: rvc to get a bound for m1i (N) i n terms of
+d, di , . . . , dK .
+(c) Let D = d + 2=�i di , a nd assume that D > 2e log2 D . Show that
+(d) If 1-Li a nd iL are all perceptron hypothesis sets, show that
+dvc (H) = O (dK log(dK) ) .
+I n t h e next cha pter, we w i l l further develop t h e sim ple linear mode l . Th is l inear model is the build ing block of many other models, such as neu ra l networks. The resu lts of this problem show how to bound the VC d i mension of the more com plex models built in this manner.
+Problem 2 . 20 There are a n u mber of bounds on the general ization
+error E, a l l hold i ng with proba bility at least 1 - 8.
+(a ) Origin a l VC-bound :
+<
+!}_
+1
+4
+m
+1i
+(
+2
+N
+)
+8.
+(b) Rademacher Penalty Bound:
+(continued o n next page)
+73
+
+
+2 . TRAINING VERSUS TESTING 2 . 4 . PROBLEMS
+(c) Parrondo a nd Van den B roek:
+E _< 1 (2 1 6m1-l (2N) )
+N E+ 11 b .
+(d) Devroye:
+Note that (c) and (d) are implicit bounds in E. Fix dvc = 50 and b = 0.05 and plot these bou nds as a function of N. Which is best?
+Problem 2 . 2 1 Assume t h e fol lowing theorem t o hold
+Theorem
+JP>
+[
+E
+ou
+t
+(
+g
+)
+
+E
+i
+n
+(
+g
+)
+>
+lE
+::;
+c
+.
+m
+1-
+l
+(
+2
+N
+)
+e
+x
+p
+(
+
+E
+24N
+)
+'
+where c is a constant that is a little bigger than 6.
+This bound is usefu l because sometimes what we care a bout is not the a bsolute genera l ization error but instead a relative genera l ization error (one ca n imagine that a genera lization error of 0.01 is more sign ifica nt when Eout = 0.01 than when Eout = 0.5). Convert this to a genera lization bound by showing that with probability at least 1 - b,
+( ) ( ) � [ l 4Ein(g) l
+Eout g ::; Ein g + 2 1 + + � '
+where � = ft log (2N) .
+Problem 2.22 When there is noise in the data , Eout (g(D) ) = lEx,y [(g(D) (x) - y(x)) 2] , where y(x) = J(x) + E. If E is a zero mean noise random variable with variance o-2 , show that the bias varia nce decom position becomes
+lEv [Eout (/D) )] = o-2 + bias + var.
+Problem 2 . 2 3 Consider the lea rning problem i n Exam ple 2.8, where the i n put space is X = [-1 , + 1] , the target fu nction is f (x) = sin(?rx) , and the i n put probability distribution is u n iform on X . Assu me that the training set V has only two data poi nts ( picked i ndependently) , a n d that the learning a lgorith m picks the hypothesis that m i n i m izes t h e i n sa mple m e a n squared error. I n this problem, we wil l d ig deeper i nto this case.
+74
+
+
+2 . TRAINING VERSUS TESTING 2 .4 . PROBLEMS
+For each of the following learn i ng models, find (a n alytica l ly or n umerical ly)
+(i) the best hypothesis that a pproximates f i n the mea n sq uared error sense
+(assume that f is known for this part) , (ii) the expected va l ue (with respect
+to 'D) of the hypothesis that the learn ing a l gorith m produces, and (iii) the expected out of sample error a n d its bias and var com ponents.
+(a) The learn ing model consists of a l l hypotheses of the form h(x) = ax + b
+(if you need to dea l with the infi n itesima l proba bility case of two identica l data points, choose the hypothesis ta ngentia l to f) .
+( b) The learn ing model consists of a l l hypotheses of the form h (x) = ax. This case was not covered in Exa m ple 2 . 8 .
+(c) The learning model consists of a l l hypotheses of the form h(x) = b.
+Problem 2 . 24 Consider a simplified learn ing scenario. Assume that the in put dimension is one. Assume that the input varia ble x is uniform ly distributed in the interva l [- 1 , 1] . The data set consists of 2 points {x1 , x2 } and assume that the target fu nction is f(x) = x2 . Th us, the fu ll data set is
+'D = { (x1 , xt) , (x2 , x§ ) } . The lea rning a lgorith m returns the line fitting these two points as g (1-l consists of functions of the form h(x) = ax + b). We are interested in the test performa nce (Bout ) of our learn ing system with respect to the sq uared error measu re, the bias and the var.
+(a) Give the ana lytic expression for the average function g(x) .
+(b) Describe a n experiment that you could run to determine (numerically) g(x) , Bout , bias, and var.
+(c) Run you r experiment and report the resu lts. Com pare Bout with bias+var.
+P rovide a plot of you r g (x) and f(x) (on the same plot) .
+(d) Compute ana lytica l ly what Bout . bias and var should be.
+75
+
+
+76
+
+
+Chapter 3
+The Linear Model
+We often wonder how to draw a line between two categories; right versus wrong, personal versus professional life, useful email versus spam, to name a few. A line is intuitively our first choice for a decision boundary. In learning, as in life, a line is also a good first choice. In Chapter 1, we (and the machine @) ) learned a procedure to 'draw a line' between two categories based on data (the perceptron learning algorithm) . We started by taking the hypothesis set 1{ that included all possible lines (actually hyperplanes) . The algorithm then searched for a good line in 1{ by iteratively correcting the errors made by the current candidate line, in an attempt to improve Ein. As we saw in Chapter 2, the linear model set of lines has a small VC dimension and so is able to generalize well from Ein to Eout . The aim of this chapter is to further develop the basic linear model into a powerful tool for learning from data. We branch into three important prob lems: the classification problem that we have seen and two other important problems called regression and probability estimation. The three problems come with different but related algorithms, and cover a lot of territory in learning from data. As a rule of thumb, when faced with learning problems, it is generally a winning strategy to try a linear model first.
+3 . 1 Linear C lassificat ion
+The linear model for classifying data into two classes uses a hypothesis set of linear classifiers, where each h has the form
+h(x) = sign(wTx) ,
+for some column vector w E JR.d+l , where d is the dimensionality of the input space, and the added coordinate x0 = 1 corresponds to the bias 'weight' w0 (recall that the input space X = { 1 } x JR.d is considered d-dimensional since
+the added coordinate x0 = 1 is fixed) . We will use h and w interchangeably
+77
+
+
+3 . THE LINEAR MODEL 3 . 1 . LINEAR C LASSIFICATION
+to refer to the hypothesis when the context is clear. When we left Chapter 1 , we had two basic criteria for learning:
+1 . Can we make sure that Eout (g) is close to Ein (g)? This ensures that what we have learned in sample will generalize out of sample.
+2. Can we make Ein (g) small? This ensures that what we have learned in sample is a good hypothesis.
+The first criterion was studied in Chapter 2. Specifically, the VC dimension of the linear model is only d + 1 (Exercise 2.4) . Using the VC generalization bound (2. 12), and the bound (2. 10) on the growth function in terms of the VC dimension, we conclude that with high probability,
+Eout(g) = E;n (9) + 0 ( � . (3. 1)
+Thus, when N is sufficiently large, Ein and Eout will be close to each other (see the definition of 0(-) in the Notation table) , and the first criterion for learning is fulfilled. The second criterion, making sure that Ein is small, requires first and foremost that there is some linear hypothesis that has small Ein . If there isn't such a linear hypothesis, then learning certainly can't find one. So, let's suppose for the moment that there is a linear hypothesis with small Ein . In fact, let's suppose that the data is linearly separable, which means there is some hypothesis w* with Ein (w*) = 0. We will deal with the case when this is not true shortly. In Chapter 1 , we introduced the perceptron learning algorithm (PLA) . Start with an arbitrary weight vector w(O) . Then, at every time step t 2: 0, select any misclassified data point (x(t) , y (t) ) , and update w(t) as follows:
+w(t + 1) = w(t) + y(t)x(t).
+The intuition is that the update is attempting to correct the error in classify ing x(t) . The remarkable thing is that this incremental approach of learning based on one data point at a time works. As discussed in Problem 1 . 3 , it can be proved that the PLA will eventually stop updating, ending at a solution wPLA
+with Ein (wPLA) = 0. Although this result applies to a restricted setting (lin early separable data) , it is a significant step. The PLA is clever it doesn't na1vely test every linear hypothesis to see if it (the hypothesis) separates the data; that would take infinitely long. Using an iterative approach, the PLA manages to search an infinite hypothesis set and output a linear separator in (provably) finite time. As far as PLA is concerned, linear separability is a property of the data, not the target. A linearly separable V could have been generated either from a linearly separable target, or (by chance) from a target that is not linearly separable. The convergence proof of PLA guarantees that the algorithm will
+78
+
+
+3 . THE LINEAR MODEL 3 . 1 . LINEAR CLASSIFICATION
+(a) Few noisy data. (b) Nonlinearly separable.
+Figure 3 . 1 : Data sets that are not linearly separable but are (a) linearly separable after discarding a few examples, or (b) separable by a more so phisticated curve.
+work in both these cases, and produce a hypothesis with Ein = 0. Further, in both cases, you can be confident that this performance will generalize well out of sample, according to the VC bound.
+Exercise 3.1
+Wil l PLA ever stop u pdating i f t h e data i s n ot l inearly separable?
+3 . 1. 1 Non-Separable Data
+We now address the case where the data is not linearly separable. Figure 3.1 shows two data sets that are not linearly separable. In Figure 3. l (a) , the data becomes linearly separable after the removal of just two examples, which could be considered noisy examples or outliers. In Figure 3.l(b) , the data can be separated by a circle rather than a line. In both cases, there will always be a misclassified training example if we insist on using a linear hypothesis, and hence PLA will never terminate. In fact, its behavior becomes quite unstable, and can jump from a good perceptron to a very bad one within one update; the quality of the resulting Ein cannot be guaranteed. In Figure 3 . l (a) , it seems appropriate to stick with a line, but to somehow tolerate noise and output a hypothesis with a small Ein , not necessarily Ein = 0. In Figure 3 . l (b) , the linear model does not seem to be the correct model in the first place, and we will discuss a technique called nonlinear transformation for this situation in Section 3.4.
+79
+
+
+3 . THE LINEAR MODEL 3 . 1 . LINEAR CLASSIFICATION
+The situation in Figure 3.l (a) is actually encountered very often: even though a linear classifier seems appropriate, the data may not be linearly sep arable because of outliers or noise. To find a hypothesis with the minimum Ein , we need to solve the combinatorial optimization problem:
+1N
+m
+i
+n
+[ s
+i
+g
+n
+(
+w
+T
+x
+n
+)
+#
+Yn
+]
+.
+wE�d+1 n=l
+(3.2)
+The difficulty in solving this problem arises from the discrete nature of both sign(·) and [-] . In fact, minimizing Ein (w) in (3.2) in the general case is known to be NP-hard, which means there is no known efficient algorithm for it, and
+if you discovered one, you would become really, really famous © . Thus, one has to resort to approximately minimizing Ein . One approach for getting an approximate solution is to extend PLA through a simple modification into what is called the pocket algorithm. Essentially, the pocket algorithm keeps 'in its pocket' the best weight vector encountered up to iteration t in PLA. At the end, the best weight vector will be reported as the final hypothesis. This simple algorithm is shown below.
+The pocket algorithm:
+1: Set the pocket weight vector w to w(O) of PLA.
+2: for t = 0, . . . , T 1 do
+3: Run PLA for one update to obtain w(t + 1) . 4: Evaluate Ein (w(t + 1 ) ) . 5 : If w(t + 1) is better than w in terms o f Ein , set w to w(t + 1). 6: Return w.
+The original PLA only checks some of the examples using w(t) to identify (x(t) , y (t) ) in each iteration, while the pocket algorithm needs an additional step that evaluates all examples using w(t + 1) to get Ein (w(t + 1)) . The additional step makes the pocket algorithm much slower than PLA. In addi tion, there is no guarantee for how fast the pocket algorithm can converge to a good Ein . Nevertheless, it is a useful algorithm to have on hand because of its simplicity. Other, more efficient approaches for obtaining good approximate solutions have been developed based on different optimization techniques, as shown later in this chapter.
+Exercise 3.2
+Take d = 2 a nd create a data set 'D of size N = 100 that is not linearly separab le. You can do so by first choosing a random line in the plane as you r target function and the i n p uts Xn of the data set as random points in the pla ne. Then, eval uate the target function on each Xn to get the
+corresponding output Yn · Fin a lly, fli p the la bels of ft random ly selected Yn 's a n d the data set will l i kely become non separable.
+80
+
+
+3 . THE LINEAR MODEL 3 . 1 . LINEAR CLASSIFICATION
+Now, try the pocket a lgorith m on you r data set using = 1 , 000 iterations.
+Repeat the experiment 20 times. Then, plot the average Ein (w(t)) and the
+average Ein (w) (which is a lso a function of t) on the same figure a nd see how they behave when t i ncreases. Similarly, use a test set of size 1, 000 and plot a figure to show how Eout (w(t)) a nd Eout (w) behave.
+Example 3.1 (Handwritten digit recognition) . We sample some digits from the US Postal Service Zip Code Database. These 16 x 16 pixel images are preprocessed from the scanned handwritten zip codes. The goal is to recognize
+the digit in each image. We alluded to this task in part (b) of Exercise 1 . 1 .
+A quick look at the images reveals that this is a non-trivial task (even for a
+human) , and typical human Eout is about 2.5%. Common confusion occurs between the digits {4, 9} and {2, 7} . A machine-learned hypothesis which can achieve such an error rate would be highly desirable.
+ITl
+Let's first decompose the big task of separating ten digits into smaller tasks of separating two of the digits. Such a decomposition approach from multiclass to binary classification is commonly used in many learning algorithms. We will focus on digits {1, 5} for now. A human approach to determining the digit
+corresponding to an image is to look at the shape (or other properties) of the black pixels. Thus, rather than carrying all the information in the 256 pixels, it makes sense to summarize the information contained in the image into a few features. Let's look at two important features here: intensity and symmetry. Digit 5 usually occupies more black pixels than digit 1 , and hence the average pixel intensity of digit 5 is higher. On the other hand, digit 1 is symmetric while digit 5 is not. Therefore, if we define asymmetry as the average absolute difference between an image and its flipped versions, and symmetry as the negation of asymmetry, digit 1 would result in a higher symmetry value. A scatter plot for these intensity and symmetry features for some of the digits is shown next.
+81
+
+
+3 . THE LINEAR MODEL 3 . 2 . LINEAR REGRESSION
+While the digits can be roughly separated by a line in the plane representing these two features, there are poorly written digits (such as the '5' depicted in the top-left corner) that prevent a perfect linear separation. We now run PLA and pocket on the data set and see what happens. Since the data set is not linearly separable, PLA will not stop updating. In fact, as can be seen in Figure 3.2(a) , its behavior can be quite unstable. When it is forcibly terminated at iteration 1, 000, PLA gives a line that has a poor Ein = 2.243 and Eout = 6.373. On the other hand, if the pocket algorithm is applied to the same data set, as shown in Figure 3.2(b) , we can obtain a line that has a better Ein = 0.453 and a better Eout = 1 .893. D
+3 . 2 Linear Regression
+Linear regression is another useful linear model that applies to real-valued target functions.1 It has a long history in statistics, where it has been studied in great detail, and has various applications in social and behavioral sciences. Here, we discuss linear regression from a learning perspective, where we derive the main results with minimal assumptions. Let us revisit our application in credit approval, this time considering a regression problem rather than a classification problem. Recall that the bank has customer records that contain information fields related to personal credit, such as annual salary, years in residence, outstanding loans, etc. Such variables can be used to learn a linear classifier to decide on credit approval. Instead of just making a binary decision (approve or not) , the bank also wants to set a proper credit limit for each approved customer. Credit limits are traditionally determined by human experts. The bank wants to automate this task, as it did with credit approval.
+1 Regression, a term inherited from earlier work in statistics, means y is real valued.
+82
+
+
+3 . THE LINEAR MODEL
+50%
+250 500 750 1000
+Iteration Number, t
+Average Intensity (a) PLA
+50%
+3 . 2 . LINEAR REGRESSION
+250 500 750 1000
+Iteration Number, t
+Average Intensity
+(b) Pocket
+Figure 3 . 2 : Comparison of two linear classification algorithms for sep arating digits 1 and 5 . Ein and Bout are plotted versus iteration number
+and below that is the learned hypothesis g. (a) A version ofthe PLA which
+selects a random training example and updates w ifthat example is misclas
+sified (hence the fiat regions when no update is made) . This version avoids
+searching all the data at every iteration. (b) The pocket algorithm.
+This is a regression learning problem. The bank uses historical records to
+construct a data set 'D of examples (xi , Y1 ) , (x2 , Y2) , . . . , (xN , YN) , where Xn
+is customer information and Yn is the credit limit set by one of the human
+experts in the bank. Note that Yn is now a real number (positive in this case) instead of just a binary value ±1. The bank wants to use learning to find a hypothesis g that replicates how human experts determine credit limits.
+Since there is more than one human expert, and since each expert may not be perfectly consistent, our target will not be a deterministic function y = f(x) . Instead, it will be a noisy target formalized as a distribution of the
+random variable y that comes from the different views of different experts as
+well as the variation within the views of each expert. That is, the label Yn comes from some distribution P(y I x) instead of a deterministic function f(x) . Nonetheless, as we discussed in previous chapters, the nature of the problem is not changed. We have an unknown distribution P(x, y) that generates
+83
+
+
+3 . THE LINEAR MODEL 3 . 2 . LINEAR REGRESSION
+each (Xn , Yn) , and we want to find a hypothesis g that minimizes the error
+between g(x) and y with respect to that distribution. The choice of a linear model for this problem presumes that there is a linear combination of the customer information fields that would properly approx imate the credit limit as determined by human experts. If this assumption does not hold, we cannot achieve a small error with a linear model. We will deal with this situation when we discuss nonlinear transformation later in the chapter.
+3 .2. 1 The Algorithm
+The linear regression algorithm is based on minimizing the squared error be tween h(x) and y.2
+Eout (h) = lE [(h(x) y)2] ,
+where the expected value is taken with respect to the joint probability distri bution P(x, y) . The goal is to find a hypothesis that achieves a small Eout (h) .
+Since the distribution P(x, y) is unknown, Eout (h) cannot be computed. Sim ilar to what we did in classification, we resort to the in-sample version instead,
+1N 2
+Ein (h) = N L (h(xn ) Yn) .
+n=l
+In linear regression, h takes the form of a linear combination of the components of x. That is, d
+h (x) = L WiXi = wTx,
+i=O
+where x0 = 1 and x E { 1 } x .!Rd as usual, and w E JRd+1 . For the special case of linear h , it is very useful to have a matrix representation of Ein ( h) . First,
+define the data matrix X E JRNx (d+l) to be the N x (d + 1) matrix whose rows
+are the inputs Xn as row vectors, and define the target vector y E JRN to be
+tlie column vector whose components are the target values Yn · The in-sample
+error is a function of w and the data X, y:
+N
+�
+L (wTXn yn)2
+n=l
+12
+N JJXw - y ll
+1N (wTXTXw - 2wTXTy + yTy) ,
+(
+3
+.
+3
+)
+(3.4)
+where I I · II is the Euclidean norm of a vector, and (3.3) follows because the nth
+component of the vector Xw - y is exactly wTXn Yn . The linear regression
+2 The term 'linear regression' has been historically confined to squared error measures.
+84
+
+
+3 . THE LINEAR MODEL 3 . 2 . LINEAR REGRESSION
+x
+(a) one dimension (line) (b) two dimensions (hyperplane)
+Figure 3 .3 : The solution hypothesis (in blue) of the linear regression algo rithm in one and two dimensions. The sum of squared errors is minimized.
+algorithm is derived by minimizing Ein(w) over all possible w E JRd+l , as formalized by the following optimization problem:
+WHn = argminEin (w) .
+wEJRd+1 (3.5)
+Figure 3.3 illustrates the solution in one and two dimensions. Since Equa
+tion (3.4) implies that Ein (w) is differentiable, we can use standard matrix
+calculus to find the w that minimizes Ein (w) by requiring that the gradient
+of Ein with respect to w is the zero vector, i.e. , '\!Ei11 (w) = 0. The gradient is
+a (column) vector whose ith component is ['\!Ein (w)]i = B y explicitly computing the reader can verify the following gradient identities,
+These identities are the matrix analog of ordinary differentiation of quadratic and linear functions. To obtain the gradient of Ein , we take the gradient of each term in (3.4) to obtain
+Note that both w and '\!Ei11 (w) are column vectors. Finally, to get '\!Ei11 (w) to be 0, one should solve for w that satisfies
+If XTX is invertible, w = xty where xt = (XTx) -1XT is the pseudo-inverse
+of X. The resulting w is the unique optimal solution to (3.5) . If XTX is not
+85
+
+
+3 . THE LINEAR MODEL 3 . 2 . LINEAR REGRESSION
+invertible, a pseudo-inverse can still be defined, but the solution will not be
+unique (see Problem 3. 15) . In practice, XTX is invertible in most of the cases
+since N is often much bigger than d + 1 , so there will likely be d + 1 linearly independent vectors Xn . We have thus derived the following linear regression algorithm.
+Linear regression algorithm:
+1: Construct the matrix X and the vector y from the data set
+(x1 , Y1 ) , · · · , (xN , YN ) , where each x includes the xo = 1 bias coordinate, as follows
+X= [
+l' y=[:tl
+'-
+input data matrix target vector
+2: Compute the pseudo-inverse xt of the matrix x. If XTX is invertible,
+3: Return Wlin = xty.
+This algorithm is sometimes referred to as ordinary least squares (OLS) . It may seem that, compared with the perceptron learning algorithm, linear regression doesn't really look like 'learning', in the sense that the hypothesis Wiin comes from an analytic solution (matrix inversion and multiplications) rather than from iterative learning steps. Well, as long as the hypothesis Wlin has a decent out-of-sample error, then learning has occurred. Linear regression is a rare case where we have an analytic formula for learning that is easy to evaluate. This is one of the reasons why the technique is so widely used. It should be noted that there are methods for computing the pseudo-inverse directly without inverting a matrix, and that these methods are numerically more stable than matrix inversion. Linear regression has been analyzed in great detail in statistics. We would like to mention one of the analysis tools here since it relates to in-sample and out-of-sample errors, and that is the hat matrix H. Here is how H is defined.
+The linear regression weight vector W!in is an attempt to map the inputs X
+to the outputs y. However, wlin does not produce y exactly, but produces an estimate y = XW!in
+which differs from y due to in-sample error. Substituting the expression
+for Wiin (assuming XTX is invertible) , we get
+y- = x(xTx)-1XTy.
+86
+
+
+3 . THE LINEAR MODEL 3 . 2 . LINEAR REGRESSION
+Therefore the estimate y is a linear transformation of the actual y through
+matrix multiplication with H, where
+(3.6)
+Since y = Hy, the matrix H 'puts a hat' on y, hence the name. The hat
+matrix is a very special matrix. For one thing, H2 = H, which can be verified
+using the above expression for H. This and other properties of H will facilitate the analysis of in-sample and out-of-sample errors of linear regression.
+Exercise 3.3
+Consider t h e h a t matrix H = X(XTX) 1XT, where X i s a n N by d 1 matrix, and XTX is i nvertible.
+(a) S how that H is sym metric.
+(b) Show that HK = H for a ny positive i nteger K.
+(c) If I is the identity matrix of size N, show that (I - H)K = I - H for any positive integer K.
+(d) Show that trace(H) = d 1, where the trace is the sum of diagonal elements. {Hint: trace(AB) = trace(BA) .J
+3 .2.2 Generalization Issues
+Linear regression looks for the optimal weight vector in terms of the in-sample error Ein , which leads to the usual generalization question: Does this guarantee
+decent out-of-sample error Eout? The short answer is yes. There is a regression
+version of the VC generalization bound (3.1) that similarly bounds Eout · In the case of linear regression in particular, there are also exact formulas for the expected Eout and Ein that can be derived under simplifying assumptions. The general form of the result is
+Eout(g) = E,n(g) + o (�) ,
+where Eout (g) and Ein (g) are the expected values. This is comparable to the
+classification bound in (3. 1 ) .
+Exercise 3.4
+Consider a noisy target y = w*Tx + E fo r generating the data , where E is a noise term with zero mean and 0"2 variance, independently generated for every exam ple (x, y) . The expected error of the best possible linear fit to this target is thus 0"2 .
+For the d ata 'D = { (x1 , y1 ) , . . . , (xN , YN) } , denote the noise in Yn as En and let E = [E1 , E2 , . . . , ENr; assume that XTX is invertible. By following
+(continued o n next page)
+87
