@@ -1,0 +1,929 @@
+Robert S Laramee
+Data Visualization:
+An Introduction
+
+
+2
+Robert S. Laramee
+The Big Data Story
+Sally discovers that she can collect
+data cheaply
+Sally collects a LOT of data, likely
+years worth
+Sally eventually wants to derive
+knowledge and extract insight from
+the data
+She discovers what a challenge this
+is due to the size and complexity of
+the data
+Sally passed a magic threshold and
+a special gap appears
+
+
+3
+Robert S. Laramee
+The Universal Big Data Story
+Computational Fluid Dynamics (CFD)
+Engineers: simulation data
+Physicists and Astronomers:
+experiments & images
+Marine Biologists and Bio-Chemists:
+accelerometers, simulations
+Psychologists, Sociologists,
+Criminologists: EEG, Surveys
+Sports Scientists: video & events
+Journalists, Humanities: writing & text
+data
+Governments and Councils: public
+sector data
+Banks etc: customer and finance data
+Call Centers: customer and employee data
+Retail: customers, sales, financial, stock data
+Web sites: Web traffic data, internet data
+Transportation: air traffic, trains, automobile,
+cycling, walking data
+You: photos, videos, and files
+Everyone and Everywhere
+People like to collect
+But there's a catch...
+
+
+4
+Robert S. Laramee
+The Visual Cortex
+ Visualization exploits our powerful
+visual system
+ 2 million nerve fibers coming from optic
+nerves
+ Several billion neurons devoted to
+analyzing visual information (30%
+cortex)
+ 8% for touch, 3% for hearing (Discover,
+1993, Ware, 2013)
+ Enables massively parallel processing
+of the visual field, i.e., incoming color, motion, texture, shapes etc.
+
+
+5
+Robert S. Laramee
+Visualization Background
+ Manual Visualization is very old
+ Often an intuitive step to make
+something clearer, e.g., a graph
+ Classical (easy) approaches known
+from business graphics (Spreadsheet
+software...)
+ Classical approaches are very limited
+ Computer-Aided Visualization is its own
+scientific discipline since 1987
+ First visualization conference in 1990
+Leonardo da Vinci (1452-1519)
+1997
+
+
+6
+Robert S. Laramee
+Major Visualization Subtopics
+Medical Data uses Volume Visualization (VolViz) Vector Data uses Flow Visualization (FlowViz) Abstract Data uses Information Visualization (InfoViz) Geographical Information Systems (GIS) Data Historical data (Archeology, Cultural Heritage) Microscopic data (Molecular Physics), Macroscopic Data (Astronomy) Visual Analytics
+
+
+7
+Robert S. Laramee
+Volume Visualization Examples
+Medical Data
+
+
+8
+Robert S. Laramee
+Flow Visualization Examples
+Vector Data
+
+
+9
+Robert S. Laramee
+Information Visualization Examples
+Abstract
+Data
+
+
+10
+Robert S. Laramee
+Visualization Goals
+Visualization, in order to:
+ Explore
+no a-priori knowledge about the data,
+Visualization serves to explore the data
+ Analyze
+There is a hypothesis,
+Visualization Serves to Confirm/Refute (Disprove)
+ Present
+The data characteristics are well known, Visualization.
+Serves to communicate the results
+
+
+11
+Robert S. Laramee
+Visualization Foci
+Three main sub-fields:
+ Volume Visualization
+ Flow Visualization
+ Information Visualization
+Scientific Visualization
+3D
+nD
+Inherent
+geometry
+Usually no inherent geometry
+
+
+12
+Robert S. Laramee
+The Visualization Pipeline
+Standard processing stages in
+Visualization: A data centric
+view
+
+
+13
+Robert S. Laramee
+Visualization Pipeline Overview
+Data acquisition
+Data enhancement
+Visualization mapping
+Rendering (3D or 2D)
+Data is produced or
+acquired
+Data is prepared (or
+preprocessed)
+Data is mapped to
+geometric primitives
+Data is transformed
+into images
+
+
+14
+Robert S. Laramee
+Visualization Pipeline Phase 1
+Data acquisition Data is generated
+(or acquired)
+Data is produced and archived. This is what everyone is good at.
+ Measurement, e.g., CT, MRI
+ Written down, scanned in as text
+ User Input, into databases or spreadsheets
+ Simulation, e.g., Computational Fluid Dynamics
+Simulation (CFD).
+ Modeling, e.g., Computer Aided Design (CAD),
+dynamical systems
+ Videos or images are recorded
+
+
+15
+Robert S. Laramee
+Visualization Pipeline Phase 2
+Data enhancement
+1. Data is acquired
+(or produced)
+2. Data is prepared
+(or “preprocessed”)
+Data enhancement = Data preparation/preprocessing
+ Filtering, e.g. smoothing (noise filtering)
+ Errors are discovered and corrected
+ Missing values may be handled
+ Resampling or modify grid representation
+ Derive new data, e.g., gradients
+ Data interpolation
+
+
+16
+Robert S. Laramee
+Visualization Pipeline Phase 3
+Visualization mapping
+2. Preprocessed data
+3. Data is mapped to
+geometry
+Visualization mapping results in Data being visible
+Data is represented by geometric primitives: points, lines,
+triangles, polygons, cubes, tetrahedra, of varying size, shape,
+color, transparency
+ Compute isosurface
+ Compute glyphs or icons
+ Compute graph layout
+ Compute voxel attributes: color, transparency, ...
+
+
+17
+Robert S. Laramee
+Visualization Pipeline Phase 4
+Rendering (3D or 2D)
+3. Data is mapped to
+geometry
+4. Data becomes an
+image(s)
+Rendering involves representation with Computer Graphics (CG)
+ Projection (3D → 2D)
+ Visibility calculation
+ Shading
+ Compositing (accumulate transparency and color values)
+ Animation
+
+
+18
+Robert S. Laramee
+References and Further Reading
+• Interactive Data Visualization: Foundations, Techniques and Applications by Matthew O. Ward, Georges Grinstein, and Daniel Keim, AK Peters/CRC Press, 2010
+• Data Visualization Principles and Practice, Second Edition by Alexandru Telea, AK Peters/CRC Press, 2015
+• Information Visualization: Perception for Design, Third Edition by Colin Ware, Morgan Kaufman Publishers, 2013
+
+
+19
+Robert S. Laramee
+Acknowledgements
+We thank the following people:
+Daniel Archambault, R Daniel Bergeron, Guoning
+Chen, Nick Croft, Zhao Geng, M. Eduard Gröller,
+Edward Grundy, Charles D Hansen, Helwig Hauser,
+Bruno Jobard, Mark W Jones, Rami Malki, Ian
+Masters, Tony McLoughlin, Michael Nicholas,
+Zhenmin Peng, Jonathan C Roberts, Rick Walker,
+Rory Wilson
+
+
+Robert S Laramee 1
+Visualization, Introduction
+Lecture Part II
+About data
+
+
+Robert S. Laramee
+Previous Lecture
+Summary of Previous Lecture
+§ The Data Story
+§ Visualization – Definition
+§ Application Examples
+§ Visualization Goals: Presentation, Analysis,
+Exploration
+§ Scientific Visualization versus Information
+Visualization
+§ The Visualization pipeline
+
+
+Robert S. Laramee
+Overview of This Lecture
+Preview of this Lecture:
+§ About Data
+§ Data Characteristics and types
+§ Data Dimensionality
+§ Visualization Examples
+§ Some tips on color
+
+
+Robert S. Laramee
+About Data
+Data characteristics,
+Data attributes, Data dimensionality
+
+
+Robert S. Laramee
+A Data Centric Point of View
+Data is:
+§ The focal point of visualization: visualization starts with
+data
+§ Data: a “driving factor” (along with the user) with respect
+to the choice and attributes of the visualization method
+Important questions:
+§ What is the dimensionality of the data?
+§ Where does the data come from?
+§ Which visualization methods make sense?
+§ Why did the user collect the data?
+§ What would the user of the data like to learn?
+
+
+Robert S. Laramee
+Data Dimensionality
+What dimensionality is the data?
+§ Scientific Visualization: inherent spatial domain (SciVis):
+§ 1D, 2D, 2.5D or 3D dimensionality given
+§ instantaneous or time-dependent (+1D)
+§ examples: medical data, data from flow simulation, GIS
+data...
+§ Represents a physical phenomenon
+§ Information Visualization: no inherent spatial reference
+(InfoVis):
+§ abstract data,
+spatial arrangement is designed or derived for
+visualization
+§ examples: databases, text, spreadsheets, surveys,
+monetary, call center, images, sound
+
+
+Robert S. Laramee
+Data Characteristics
+What characteristics does the data have?
+Data types:
+§ Scalar: numeric e.g. natural, integer, rational, real
+numbers, complex numbers
+§ Vectors and tensors
+§ non-numeric: nominal, ordinal values, text
+§ multi-dimensional or multi-attribute values: n
+dimensional, columns in a spreadsheet, e.g. car type,
+manufacturer, year of manufacture, country of origin, mpg,
+horsepower, number of cylinders, retail price...
+Characteristics: dimensionality, domain (upper and lower bounds), distribution, scale, size, resolution
+
+
+Robert S. Laramee
+Data Presentation
+How can data be presented?
+§ Is there an inherent spatial domain?
+§ If yes then use inherent domain?
+§ If no then which spatial domain?
+§ Which dimensions are used for what purpose?
+§ What is relationship between dimensionality and
+data characteristics
+§ Available Presentation Space (2D/3D/4D)
+§ Where is the Focus?
+§ Is some data more important than other?
+§ What can be left out?
+
+
+Robert S. Laramee
+Data Dimensionality versus Visualization
+Dimensionality Examples
+Data Description Visualization Example
+N1→R1 Series of Values bar chart, pie chart,
+histogram, bubble chart
+
+
+Robert S. Laramee
+Data Dimensionality versus Visualization
+Dimensionality Examples
+Data Description Visualization Examples
+R1→R1 Function Graph
+
+
+Robert S. Laramee
+Data Dimensionality versus Visualization
+Dimensionality Examples
+Data Description Visualization Examples
+R2→R1 Function over R2 2D Height fields in 3D, Contour lines in 2D
+
+
+Robert S. Laramee
+Data Dimensionality versus Visualization
+Dimensionality Examples
+Data Description Visualization Examples
+R2→R2 2D vector field vector glyphs, texture-based
+flow visualization, streamlines
+
+
+Robert S. Laramee
+Data Dimensionality versus Visualization
+Dimensionality Examples
+Data Description Visualization Examples
+R3→R3 3D Flow Streamlines, Stream surfaces
+
+
+Robert S. Laramee
+Data Dimensionality versus Visualization
+Dimensionality Examples
+Data Description Visualization Examples
+R3→R1 3D-Density Isosurfaces in 3D, Values volume rendering
+
+
+Robert S. Laramee
+Visualization Examples
+Data Description Visualization Example
+(N1→)Rn Tuple Quantities parallel coordinates, (multi-attribute data) glyphs, icons
+
+
+Robert S. Laramee
+Visualization and Color
+Tips for the Application of
+Color in the Visualization
+
+
+Robert S. Laramee
+Application of Colors
+Consider:
+§ color can strengthen information
+§ the maximum number of colors to use for categorical
+data 7±2
+§ approximately 50–300 distinguishable color shades
+(different depending on color)
+§ rainbow of colors ≠ linear
+§ color perception is depends strongly on context
+§ some users are color blind
+§ colors have associations
+
+
+Robert S. Laramee
+Choosing Colors with Color Brewer
+
+
+Robert S. Laramee
+Mach-Band Effect
+Characteristics:
+§ Eyes strengthen
+boundaries
+§ This can
+introduce
+mistakes in
+discretion
+§ Attention should
+be paid to color
+intensity
+
+
+Robert S. Laramee
+Color Gamuts
+Display devices are
+non-uniform:
+§ Color space
+non-uniform
+§ Color
+correction
+
+
+Robert S. Laramee
+Tips for Application of Color
+Useful:
+§ gray scale lines as color boundaries
+§ avoid dark blue for details, animations
+§ dark blue and red do not mix
+(Why? That’s why.)
+§ avoid high color frequency
+§ context, association is important
+§ good: color for qualitative visualization (as opposed
+to quantitative
+§ color can be used to strengthen boundaries
+
+
+Robert S. Laramee
+Further Reading
+Interactive Data Visualization: Foundations, Techniques and Applications by Matthew O. Ward, Georges Grinstein, and Daniel Keim, 2010, AK Peters/CRC Press
+Data Visualization Principles and Practice, Second
+Edition by Alexandru Telea, AK Peters/CRC Press, 2015
+Information Visualization: Perception for Design, Third
+Edition by Colin Ware, Morgan Kaufman Publishers, 2013
+
+
+Robert S. Laramee
+Acknowledgements
+We thank the following:
+R Daniel Bergeron, Rhodri Bown, Guoning Chen, Min Chen,
+David Chung, Nick Croft, Iwan Griffiths, M. Eduard
+Gröller, Edward Grundy, Helwig Hauser, Mark Jones,
+Phillip A Legg, Matthew L Parry, Zhenmin Peng, Juergen
+Schneider, Inge Tastl, Daniel Weiskopf, Rory Wilson,
+Eugene Zhang
+
+
+Robert S. Laramee 1
+Data Visualization Lecture
+Focus on Information Visualization,
+Part 1
+
+
+Robert S. Laramee 2
+Review of Previous Lecture
+Data Visualization Introduction:
+§ Data characteristics
+§ Data dimensionality
+§ Visualization dimensionality
+§ Examples
+§ Guidelines on Color
+
+
+Robert S. Laramee 3
+Overview of Current Lecture
+Information visualization, part 1:
+§ introduction
+§ examples
+§ hierarchical data
+§ trees, conventional and standard
+representations
+§ tree maps, modern approaches, examples,
+linking with other views
+§ Focus and Context (F+C) visualization
+§ conventional approaches
+§ state of the art approaches
+§ examples from various applications
+
+
+Robert S. Laramee 4
+Introduction to Information
+Visualization
+Context, General Remarks
+
+
+Robert S. Laramee 5
+Recall: Visualization
+Three main fields:
+§ Volume
+Visualization
+§ Flow
+Visualization
+§ Information
+Visualization
+Scientific
+Visualization
+3D
+nD
+inherent
+spatial relation
+no inherent spatial relation
+
+
+Robert S. Laramee 6
+Information Visualization versus Scientific
+Visualization
+• Abstract Data
+• n-dimensional
+• Very important:
+– visual metaphor
+– user interaction
+– exploration, analysis
+(visual analytics),
+presentation
+• Spatial data
+• 1, 2- or 3-dimensional,
+time-dependent
+• Very important:
+– 3D rendering
+– fast rendering
+– analysis, exploration,
+presentation
+
+
+Robert S. Laramee 7
+Two Important Goals
+An intuitive visual metaphor:
+§ How can abstract information be represented
+visually?
+§ How can high-dimensional data be depicted?
+§ 2D or 3D visualization?
+§ How can we position or place the data in space?
+§ Integration of Focus and Context?
+A proper interaction scheme:
+§ Modification of visual parameters and metaphors
+§ Change of focus
+
+
+Robert S. Laramee 8
+Special Challenges
+Often large amounts of data. How can we enable
+visualization and:
+§ selection of data subsets
+§ aggregation of data
+§ extraction of meta data
+Extended data structures, complex data inter-dependencies
+§ deep hierarchies, large graphs,
+multi-modal data
+§ different kinds of inter-dependencies, i.e.,
+relationships
+§ pattern finding capabilities are very important
+
+
+Robert S. Laramee 9
+Dealing with Large Amounts of Data e.g., Big
+Data
+Subsampling/Subsetting techniques
+§ sampling
+§ querying
+Segmentation techniques
+§ segmentation: separation into subsets
+Aggregation techniques
+§ aggregation:
+sum, count, minimum, maximum, average...
+§ frequency-based techniques
+
+
+Robert S. Laramee 10
+Information and Scientific Visualization
+Examples
+
+
+Robert S. Laramee 11
+Hierarchical Data
+Visualization of Hierarchies
+
+
+Robert S. Laramee 12
+Hierarchical Data
+Visualization techniques:
+§ conventional approaches such as
+Trees, File System Windows, Venn Diagrams
+§ Tree maps
+§ Examples
+
+
+Robert S. Laramee 13
+Hierarchical Data
+Trees:
+§ ordered
+§ acyclic
+§ hierarchical
+
+
+Robert S. Laramee 14
+Horizontal Versus Vertical Layout
+Vertical is traditional (previous slide). Horizontal aligns well with text.
+
+
+Robert S. Laramee 15
+Word Tree Hierarchy
+An interactive hierarchy of text (Geng et al., 2011)
+
+
+Robert S. Laramee 16
+Venn Diagrams
+Author: Christopher J. Wells
+Website: TechnologyUK
+Page title: Mathematics - About Numbers - Real Numbers
+URL: http://www.technologyuk.net/mathematics/about_numbers/real_numbers.shtml
+Accessed: 2015
+
+
+Robert S. Laramee 17
+Tree Map (Improved Venn-Diagram)
+
+
+Robert S. Laramee 18
+Treemap Construction
+§ Construction demo
+
+
+Robert S. Laramee 19
+Tree Map: File System Example (Demo)
+
+
+Robert S. Laramee 20
+Ordered Treemap Layout (Demo)
+Wattenberg, 2001,
+interaction
+§ semantic
+aggregation
+§ time dependent
+
+
+Robert S. Laramee 21
+Treemaps Combined with Flow
+Visualization
+§ Treemaps support cluster selection (Edmunds et al, 2014)
+
+
+Robert S. Laramee 22
+Word Tree Combined and Linked with
+Treemap
+§ Snapshots from interaction (Geng et al, 2011)
+
+
+Robert S. Laramee 23
+Focus and Context (F+C)
+Visualization
+Emphasize Features,
+Visualize the Rest as Context
+
+
+Robert S. Laramee 24
+Focus+Context Visualization
+Problem and Motivation:
+§ large amounts of data, i.e. number of data samples
+exceeds display space
+§ varying importance and focus
+§ if only data in focus is shown, then
+problems stem from orientation and navigation
+§ if only overview is provided then
+no details can be obtained
+Can both be included?
+§ multiple views, view linking
+§ Focus + context techniques, combinations of
+colormapping, varying opacity, varying zoom levels
+
+
+Robert S. Laramee 25
+F+C for Time-Series Data
+§ Focus is shown bottom left and right. Context is
+shown above (Grundy et al., 2009)
+
+
+Robert S. Laramee 26
+F+C for Visualizing Flow
+§ F+C streamlines (McLoughlin et al, 2013)
+
+
+Robert S. Laramee 27
+Event-based Glyphs
+F+C Glyphs for visualizing rugby events (Chung et al, forthcoming)
+
+
+Robert S. Laramee 28
+F+C Parallel Coordinates
+F+C parallel coordinates and glyphs for visualizing time-series data (Geng et al, 2011)
+
+
+Robert S. Laramee 29
+F+C Graphs
+Context and focus graph edges (Blaas et al 2009)
+
+
+Robert S. Laramee 30
+F+C Vector Glyphs
+Focus vector glyphs with surface geometry context (Laramee 2003)
+
+
+Robert S. Laramee 31
+F+C Flow Visualization (Flow Topology)
+Focus on flow features with surface flow context (Chen et al, 2007)
+
+
+Robert S. Laramee 32
+F+C Flow Visualization (Stream Surface)
+Focus on flow features with surface geometry context (Garth et al, 2005)
+
+
+Robert S. Laramee 33
+F+C Foam Visualization (Foam Topology)
+Focus on foam topology
+with bubbles as
+context (Lipsa et al, 2013)
+
+
+Robert S. Laramee 34
+Further Reading
+For more information, see:
+Interactive Data Visualization: Foundations, Techniques, and Applications, Chapter 8: Visualization Techniques for Trees, Graphs, and Networks, by Ward et al, 2010, A K Peters
+All available online:
+Zhao Geng, Gaurav Gathania, Robert S.Laramee, Zhenmin Peng, Visual Analysis of Hierarchical Management Data, EUROGRAPHICS 2011 Posters, 11-15 April 2011, Llandudno, Wales
+Matthew Edumunds, Robert S. Laramee, Rami Malki, Ian Masters, Yunai Wang, Guoning Chen, Eugene Zhang, and Nelson Max, Interactive Stream Surface Placement: A Hybrid Clustering Approach Supported by
+Treemaps, International Conference on Information Visualization Theory and Applications (IVAPP) 2014, pages 347-355, 5-8 January, 2014, Lisbon, Portugal
+Edward Grundy, Mark W. Jones, Robert S. Laramee, Rory P. Wilson, and Emily L. C. Shepard, Visualisation of Sensor Data from Animal Movement, Computer Graphics Forum (CGF), Vol. 28, No. 3, 2009, pages 815-822
+Tony McLoughlin, Mark W Jones, Robert S. Laramee, Rami Malki, Ian Masters, and Charles D. Hansen, Similarity
+Measures for Enhancing Interactive Streamline Seeding, IEEE Transactions on Visualization and Computer
+Graphics (IEEE TVCG), Vol 19, No 8, pages 1342-1353 (August 2013)
+David H.S. Chung, Phillip A. Legg, Matthew L. Parry, Rhodri Bown, Iwan W Griffiths, Robert S. Laramee, and Min Chen,
+Glyph Sorting: Interactive Visualization for Multi-dimensional Data, Information Visualization, forthcoming
+
+
+Robert S. Laramee 35
+Further Reading
+Zhao Geng, Zhenmin Peng, Robert S.Laramee, Rick Walker, and Jonathan C. Roberts, Angular Histograms:
+Frequency-Based Visualizations for Large, High-Dimensional Data, IEEE Transactions on
+Visualization and Computer Graphics (IEEE TVCG), Vol. 17, No. 12, December 2011, pages 2572-2580
+Jorik Blaas, Charl Botha, Edward Grundy, Mark W. Jones, Robert S. Laramee, and Frits H. Post, Smooth Graphs for Visual Exploration of Higher-Order State Transitions, IEEE Transactions on Visualization and Computer Graphics (IEEE TVCG), Vol. 15, No. 6, November/December 2009, pages 969-976
+Robert S. Laramee, FIRST: A Flexible and Interactive Resampling Tool for CFD Simulation Data in Computers & Graphics, Vol. 27, No. 6, pages 905-916, 2003
+Guoning Chen, Robert S. Laramee, and Eugene Zhang, Advanced Visualization of Engine Simulation Data Using Texture Synthesis and Topological Analysis, NAFEMS World Congress (NWC) Conference Proceedings, The International Association for the Engineering Analysis Community
+Robert S. Laramee, Christoph Garth, Helmut Doleisch, Juergen Schneider, Helwig Hauser, and Hans Hagen, Visual Analysis and Exploration of Fluid Flow in a Cooling Jacket, in Proceedings of IEEE Visualization (IEEE Vis 2005), pages 623-630, October 23-28, 2005, Minneapolis, Minnesota
+Dan R. Lipşa, Robert S. Laramee, Tudur Davies, and Simon Cox, Visualizing 3D, Time-dependent Foam Simulation Data, Advances in Visual Computing, Lecture Notes in Computer Science LNCS, Volume
+8033 (Proceedings of the 9th International Symposium on Visual Computing (ISVC) 2013 29-31 July 2013, Crete, Greece), pages 255-265
+
+
+Robert S. Laramee 36
+Acknowledgements
+We thank the following:
+Jorik Blaas, Charl Botha, Rhodri Bown, Guoning Chen, Min Chen, David
+Chung, Simon Cox, Tudur Davies, Helmut Doleisch, Matthew Edmunds,
+Christoph Garth, Zhao Geng, Gaurav Gathania, Eduard Grundy, Hans Hagen,
+Iwan Griffiths, Charles Hansen, Helwig Hauser, Daniel Keim, Mark Jones,
+Phillip Legg, Dan Lipsa, Rami Malki, Ian Masters, Nelson Max, Tony
+McLoughlin, Wolfgang Meyer, Matthew Parry, Frits Post, Jonathan Roberts,
+Juergen Schneider, Rick Walker, Yunai Wang, Rory Wilson, Eugene Zhang
+
+
+Robert S. Laramee 1
+Visualization Lecture
+With a Focus on Information Visualization, Part 2
+
+
+Robert S. Laramee 2
+Review of Previous Lecture
+Focus on Information Visualization, part 1:
+§ Introduction + examples
+§ Hierarchical data
+§ Conventional representations, venn diagrams
+§ Tree maps, word trees
+§ Various examples and applications
+
+
+Robert S. Laramee 3
+Overview of Current Lecture
+Information visualization, part 2:
+§ graphs
+§ optimizations, high-order transitions, examples
+§ n-dimensional data
+§ scatterplots, scatterplot-matrices, parallel coordinates, chord diagrams and visualizations
+§ icons
+§ Chernoff-faces, high-dimensional glyphs
+§ examples from event-based data
+§ interaction techniques
+§ Filtering, brushing, selection
+
+
+Robert S. Laramee 4
+Graphs: A Short and Convenient Introduction
+
+
+Robert S. Laramee 5
+Graph Optimizations and Challenges
+Maximize Graph Legibility
+• Optimize Length of Edges
+• Minimize Edge Crossings
+• Maximize Edge Crossing Angles (right angles)
+Some Challenges:
+• Large Graphs
+• Time-Dependent Graphs
+• Hierarchcical Graphs
+• Label Placement
+• Multivariate Graphs
+
+
+Robert S. Laramee 6
+A Famous Graph, Manual Layout
+
+
+Robert S. Laramee 7
+London, Satellite View
+
+
+Robert S. Laramee 8
+Graph Layout Algorithms
+Automatic layout from ManyEyes: node labels and interaction
+
+
+Robert S. Laramee 9
+Graph Layout Algorithms
+Automatic layout from Doxygen with node and edge labels
+
+
+Robert S. Laramee 10
+Example from VLSI
+Very Large Scale Integration
+
+
+Robert S. Laramee 11
+Example and Application to Flow Visualization
+Graphs and Flow Topology (Chen et al., 2008)
+
+
+Robert S. Laramee 12
+Higher Order Graphs
+Higher Order edge transitions (Blaas et al., 2009)
+
+
+Robert S. Laramee 13
+Case Study: Higher Order Graphs for Marine Biology
+Applied to Penguin Dive. Case study from Blaas et al 2009.
+
+
+Robert S. Laramee 14
+Texture Mapped Graph Edges
+Different texture maps add
+information.
+Width mapped to transition frequency
+Animation shows direction of movement
+
+
+Robert S. Laramee 15
+Interactive Selection of Graph Nodes
+Edges connecting
+selected nodes in
+order become
+part of selection,
+and are visually
+highlighted
+
+
+Robert S. Laramee 16
+Comparison of First and Third Order
+
+
+Robert S. Laramee 17
+BioExplorer System
+(1) Graph view, (2) selection view: x-axis-->time, y-axis-->transition, (3) scatter plot /
+heat map: x-axis-->y acceleration, y-axis-->x acceleration, (4) time-series view
+
+
+Robert S. Laramee 18
+BioExplorer System
+A typical transition cycle lasts about 15-20 seconds
+Demo video on YouTube: https://youtu.be/XRtGaiYZyTA
+
+
+Robert S. Laramee 19
+n-dimensional Data
+Also called multi-variate data high-dimensional data
+
+
+Robert S. Laramee 20
+Scatterplot
+2-3 variables, one ellipse per data item
+
+
+Robert S. Laramee 21
+Scatterplot-Matrix
+All variables versus all others (matrix)
+
+
+Robert S. Laramee 22
+Scatterplot-Matrix
+With details on demand
