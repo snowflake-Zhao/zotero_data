@@ -1,0 +1,544 @@
+Min et al. Journal of Translational Medicine (2022) 20:560 https://doi.org/10.1186/s12967-022-03719-7
+
+Journal of Translational Medicine
+
+RESEARCH
+
+Open Access
+
+Survival outcomes following treatment delays among patients with early‑stage female cancers: a nationwide study
+Yu Min1†, Zheran Liu1†, Rendong Huang2†, Ruidan Li1, Jing Jin1, Zhigong Wei1, Ling He1, Yiyan Pei1, Ning Li3, Yongllin Su4*, Xiaolin Hu5* and Xingchen Peng1*   
+
+Abstract 
+Background:  The coronavirus disease 2019 (COVID-19) severely hindered the timely receipt of health care for patients with cancer, especially female patients. Depression and anxiety were more pronounced in female patients than their male counterparts with cancer during treatment wait-time intervals. Herein, investigating the impact of treatment delays on the survival outcomes of female patients with early-stage cancers can enhance the rational and precise clinical decisions of physicians.
+Methods:  We analyzed five types of cancers in women from the Surveillance, Epidemiology, and End Results (SEER) program between Jan 2010 and Dec 2015. Univariate and multivariate Cox regression analyses were used to determine the impacts of treatment delays on the overall survival (OS) and cancer-specific survival (CSS) of the patients.
+Results:  A total of 241,661 females with early-stage cancer were analyzed (12,617 cases of non-small cell lung cancer (NSCLC), 166,051 cases of infiltrating breast cancer, 31,096 cases of differentiated thyroid cancer, 23,550 cases of colorectal cancer, and 8347 cases of cervical cancer). Worse OS rates were observed in patients with treatment delays ≥ 3 months in stage I NSCLC (adjustedHazard ratio (HR) = 1.11, 95% Confidence Interval (CI): 1.01–1.23, p = 0.044) and stage I infiltrating breast cancer (adjustedHR = 1.23, 95% CI 1.11–1.37, p < 0.001). When the treatment delay intervals were analyzed as continuous variables, similar results were observed in patients with stage I NSCLC (adjustedHR = 1.04, 95% CI 1.01–1.06, p = 0.010) and in those with stage I breast cancer (adjustedHR = 1.03, 95% CI 1.00–1.06, p = 0.029). However, treatment delays did not reduce the OS of patients with differentiated thyroid cancer, cervical cancer, or colorectal cancer in the early-stage. Only intermediate treatment delays impaired the CSS of patients with cervical cancer in stage I (adjustedHR = 1.31, 95% CI 1.02–1.68, p = 0.032).
+
+†Yu Min, Zheran Liu, and Rendong Huang contributed equally to this work
+*Correspondence: scuhxsyl@163.com; huxiaolin@wchscu.cn; pxx2014@163.com
+1 Department of Biotherapy and National Clinical Research Center for Geriatrics, Cancer Center, West China Hospital, Sichuan University, Chengdu 610041, Sichuan, China 4 Department of Rehabilitation, Cancer Center, West China Hospital, Sichuan University, Chengdu 610041, Sichuan, China 5 West China School of Nursing, West China Hospital, Sichuan University, Chengdu 610041, Sichuan, China Full list of author information is available at the end of the article
+© The Author(s) 2022. Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article’s Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article’s Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/. The Creative Commons Public Domain Dedication waiver (http://creativecommons.org/publicdomain/zero/1.0/) applies to the data made available in this article, unless otherwise stated in a credit line to the data.
+
+Min et al. Journal of Translational Medicine (2022) 20:560
+
+Page 2 of 14
+
+Conclusion:  After adjusting for confounders, the prolonged time from diagnosis to the initiation of treatment (< 6 months) showed limited negative effects on the survival of most of the patients with early-stage female cancers. Whether our findings serve as evidence supporting the treatment deferral decisions of clinicians for patients with different cancers in resource-limited situations needs further validation.
+Keywords:  Treatment delay intervals, Risk factors, Female cancer, SEER, Survival, Marital status
+
+Introduction Cancer has become a critical public health concern worldwide, and the social burden of cancer will continue to increase along with the aging population [1]. The coronavirus disease 2019 (COVID-19) pandemic caused major disruptions in healthcare delivery worldwide, putting patients with cancer at higher risk for negative outcomes from prolonged delays in their diagnosis and treatment [2, 3]. Delays in the treatment of patients with localized cancers after their initial diagnoses increased their likelihood of developing locally advanced and even metastatic disease. Continuous updates of evidence derived from systematic reviews and meta-analyses show that discrepancies in the impacts of prolonged wait times from diagnosis to treatment on clinical outcomes were observed in patients with various types of cancers [4–6].
+Before the COVID-19 pandemic, several studies reported that delays in treatment increased the probability of all-cause mortality in patients with different types of cancers, including but not limited to, endometrial cancer [7], liver cancer [8], breast cancer [9], and oral cavity squamous cell carcinoma [10]. However, accumulative evidence showed that a prolonged delay in treatment was not associated with an increased risk of adverse outcomes in patients with some cancers, such as a 15-day delay for patients with acute myeloid leukemia [11] and 2 month delays for patients with curable gastric cancer [12] and advanced pancreatic cancer [13]. Therefore, the length of time that is acceptable (i.e., safe from disease progression) within the interval between the diagnosis and treatment of cancer is debatable. More populationbased studies from different regions could help healthcare providers rethink the impact of prolonged time from diagnosis to treatment initiation on the progression of cancers and patients’ survival.
+Current evidence shows that the incidence of cancer among women has increased (0.2% per year) annually in recent years, whereas cancer rates among men have generally decreased since the early 1990s. This change has resulted in the narrowing of the sex gap in incidence, with the male-to-female incidence ratio declining from 1.39 in 1995 to 1.14 in 2018 [14]. Recent data show that depression and anxiety were more pronounced among female patients during the COVID-19 pandemic [15, 16]. Unfortunately, female patients were more likely than
+
+their male counterparts to experience prolonged wait times between symptom presentation and diagnosis, as well as the initiation of treatment [17–19]. Frequent sex disparities with a predominance of women have been reported in some cancers, such as differentiated thyroid carcinomas (DTC) [20]. Yet few studies have investigated this topic in samples with female-specific cancers, such as cervical cancer [21, 22]. Thus, a deep understanding of the association between treatment delay intervals and survival outcomes could provide useful and rational guidance for clinical practice.
+Thus, we aim to investigate the impact of treatment delays on the long-term overall survival (OS) and cancerspecific survival (CSS) of patients with one of the five female cancers with the highest incidence rates, using a nationwide population-based dataset. We also analyze the 10-year predictions of OS patterns in patients with one of the five types of cancers and different treatment delay intervals.
+Materials and methods
+Data source In this retrospective observational study, we evaluated the five most common cancers diagnosed in women (breast cancer, lung cancer, colorectal cancer, cervical cancer, and thyroid cancer) [1]. Patients’ monthly records from diagnosis to treatment were added to the list of data, in accordance with the latest version of the Surveillance, Epidemiology, and End Results (SEER) program. The data were derived from the SEER program, which covers 17 states of the United States of America and approximately 28% of its population consisting of various races and ethnicities. The period of data collection was from 2010 to 2015. The present study followed the checklist of the Strengthening the Reporting of Observational Studies in Epidemiology (STROBE) statement [23].
+Patient selection We included females with early-stage cancer because these patients could derive more survival benefits from the different treatment modalities. Tumor staging was based on the guidelines of the American Joint Committee on Cancer Manual (Seventh edition) for tumors diagnosed from 2010 to 2015 and the International Federation of Gynecology and Obstetrics (FIGO) staging
+
+Min et al. Journal of Translational Medicine (2022) 20:560
+
+Page 3 of 14
+
+classification for cervical cancer. Female patients diagnosed between 2010 and 2015 with the following cancers were included in the analyses: stages I–II breast cancer, stages I–II non-small cell lung cancer (NSCLC), stages I– II colorectal cancer, stages I–II cervical cancer, and stages I–II differentiated thyroid cancer. These cancers were selected because they were the top five cancers with the highest incidence rates among women worldwide when the study was conducted. Patients who were eligible for definitive therapy using a variety of modalities were selected [1, 14]. Patients with the following characteristics were excluded from the study: age < 18 and ≥ 85 years old, diagnosed with other primary cancers, diagnosed with a T0 or Tis due to an unknown primary tumor site, a recipient of adequate treatment via tumor removal at the
+
+initial meeting [24], unknown race, unknown treatment history after the diagnosis was performed, or abnormal histology or presentation, such as inflammatory breast cancer, lost to follow-up, or incomplete medical records. Patients with treatment delays longer than 6 months were also excluded from the analysis because of the study’s small sample size and validity concerns. The flowchart of the patient selection process is presented in Fig. 1.
+Variables of interest Demographic information Basic information about the five cancers was reviewed before they were selected for the analyses. Patient’s demographic information, included age (calculated as a continuous variable), race (Hispanic, Non-Hispanic
+
+Fig. 1  The patients’ selection process. SEER Surveillance, Epidemiology, and End Results, SCLC small cell lung cancer
+
+Min et al. Journal of Translational Medicine (2022) 20:560
+
+Page 4 of 14
+
+American Indian or Alaska Native, Non-Hispanic Asian or Pacific Islander, or Non-Hispanic Black or Non-Hispanic White), and year of diagnosis.
+Clinicopathological information The histological characteristics of the cancers were classified in accordance with the International Classification of Diseases for Oncology (Third Edition) (ICD-O-3) (Additional file 1: Table S1) and the Adolescents and Young Adults (AYA) site recode [25]. Five variables were collected and defined: (1) histological classification: NSCLC: adenocarcinoma and other subtypes; infiltrating breast cancer: infiltrating ductal carcinoma, infiltrating lobular carcinoma, and infiltrating duct mixed with lobular carcinoma; differentiated thyroid cancer: papillary thyroid carcinoma, follicular thyroid carcinoma, and follicular variant of papillary carcinoma; colorectal cancer: colon adenocarcinoma and rectum adenocarcinoma; cervical cancer: squamous carcinoma, adenocarcinoma, and adenosquamous carcinoma. (2) The differentiation grade: Grade I: well differentiated, Grade II: moderate differentiated, and Grade III/IV: poorly differentiated and undifferentiated, and unknown grade. (3) Tumor location: NSCLC: (i) upper lobe, (ii) middle lobe, (iii) lower lobe, and (iv) lung NOS; Infiltrating breast cancer: (i) nipple and center of the breast, (ii) upper and lower inner quadrant of the breast, (iii) upper and lower outer quadrant of the breast (iv) axillary tail of the breast, overlapping lesions of the breast and breast NOS; Colorectal carcinoma: (i) right-sided colon cancer including ascending colon, cecum, hepatic flexure, and the transverse colon, (ii) left-sided colon cancer including splenic flexure, descending colon, and sigmoid colon, (iii) the rectosigmoid junction and rectum, and (iv) large intestine, NOS. (4) TNM stage: T stage, N stage (N1a and N1b remained separated in differentiated thyroid cancer). (5) The cancer-associated treatment: surgery information, radiation therapy information, chemotherapy information.
+Definitions of delays to treatment No guidelines or consensus panels were available to define the cutoffs for delayed treatment following a diagnosis. Thus, an interval from diagnosis to the beginning of the initial treatment ≥ 1 month was considered a treatment delay, and an interval ≥ 3 months was considered a severe treatment delay, as defined in prior studies [21, 26]. Based on their monthly records, patients were stratified into three groups showing the lengths of their intervals from diagnosis to treatment: immediate treatment (< 1 month after diagnosis), intermediate delay (1–2 months delay), and prolonged delay (≥ 3 months) groups.
+
+Supporting information Supporting information is listed below: marital status at diagnosis was classified as (i) married, (ii) single, (iii) other, including divorced, separated, unmarried, domestic partner, or widowed, and (iv) unknown; the median household income was classified as (i) < $35,000, (ii) ≥ $35,000 and < $55,000, (iii) ≥ $55,000 and < $75,000, and (iv) ≥ $75,000); a facility or county was classified as (i) a county in a metropolitan area, (ii) a suburban or rural county adjacent to a metropolitan area, (iii) a suburban or rural county not adjacent to a metropolitan area, and (iv) an unknown area.
+Study outcomes The primary purpose of this study was to evaluate the impact of prolonged delay intervals for treatment on the OS of female patients with cancer and an early tumor stage, given that the recurrence data on cancer was not available in the SEER program. The CSS and other variables accounting for basic information, socio-economic, and cancer-associated variables were further analyzed and served as secondary outcomes of this study.
+Statistical analysis The Chi-square test was used to compare differences in categorical data among the three treatment interval groups of patients. Univariate and multivariate Cox regression analyses were performed to identify the independent prognostic factors in the OS of female patients with cancer. Based on the results of the multivariate Cox analysis, we extracted the hazard ratio coefficients of each variable to compute the predicted mean mortality outcomes of the female patients with early-stage cancers in the three subgroups, from the time of diagnosis to treatment. We analyzed the linear combination of the model’s estimate for each subgroup from the time of diagnosis to treatment, the mean age, and the highest proportion of other categorical confounders. The survival curves were estimated to determine the 10-year predicted mortality probabilities of each subgroup. A two-tailed p-value < 0.05 was considered significant. The results of the Kaplan–Meier analyses were plotted using the “survival,” “rms,” “survminer,” “ggplot,” and “foreign” packages of R software (R Foundation, Vienna, Austria, version 4.0.3, http://​www.r-​proje​ct.​org).
+Results
+Demographic characteristics of the study population with different cancers The study population from the SEER program between 2010 and 2015 consisted of 241,661 female patients with early-stage cancers, including 12,617 cases of NCSLC
+
+Min et al. Journal of Translational Medicine (2022) 20:560
+
+Page 5 of 14
+
+(5.2%), 166,051 cases of infiltrating breast cancer (68.7%), 31,096 cases of DTC (12.9%), 23,550 cases of colorectal cancer (9.7%), and 8347 cases of cervical cancer (3.5%). The mean ages of the study populations of five cancer cohorts were 68.11 years for the patients with NSCLC, 59.03 years for the patients with breast cancer, 45.3 years for the patients with DTC, 64.88 years for the patients with colorectal cancer, and 46.45 years for the patients with cervical cancer. The patients who identified their race as white accounted for a predominant proportion of the patients in the five cancer groups (ranging from 77.9 to 83.6%). A longer median follow-up (i.e., 1 month) was observed among patients with DTC (78 months, ranging from 0 to 119 months), whereas the shortest median follow-up time was observed in patients with NSCLC (57 months, ranging from 0 to 119 months). Most of the patients received surgical treatment, and less than half of them elected chemotherapy. A majority of patients started treatment within 1 month of their diagnosis for colorectal and DTC, but not for NSCLC, breast cancer, or cervical cancer. A detailed report of the clinical characteristics of patients across cancers is summarized in Table 1, and their cancer-specific characteristics are summarized in Additional file 1: Table S2.
+Trends in the times from diagnosis to treatment of patients with different cancers The intervals showing the times from diagnosis to treatment of patients with different cancers are presented in Table 2. More than half of the patients in the study with DTC (70.8% in stage I and 69.2% in stage II) or NSCLC (54.7% in stage I and 62.4% in stage II) experienced intermediate delays in treatment initiation after they were diagnosed with cancer. Moreover, the treatment delay was universal among the patients diagnosed with NSCLC, compared to the patients with the other four types of cancers. Overall, only a small proportion of early-stage patients experienced long delays in receiving treatment for cancer (ranging from 1.6 to 12.0%), except for the patients with NSCLC.
+Impact of treatment delays on OS: results of the multivariate Cox analysis After adjusting for other confounders, significantly worse survival patterns were observed in patients with stage I NSCLC ­[adjustedHazard Ratio (HR) = 1.11, 95% Confidence Interval (CI): 1.01–1.23, p = 0.044]. Long delays in the initiation of treatment were associated with worse survival, compared with no delays in the immediate initiation of treatment (adjustedHR = 1.23, 95% CI 1.11–1.37, p < 0.001). In contrast, better survival outcomes were observed in patients with intermediate delays, compared with patients who received immediate treatment,
+
+regardless of their stage at presentation (HR = 0.92, 95% CI 0.87–0.97, p = 0.003 in stage I patients and adjustedHR = 0.93, 95% CI 0.88–0.97, p = 0.002 in stage II patients). Moreover, a positive association was found with the OS of patients with early-stage colorectal cancer and intermediate delays in treatment (adjustedHR = 0.83, 95% CI 0.75–0.92, p < 0.001 in stage I patients and adjustedHR = 0.70, 95% CI 0.65–0.75, p < 0.001 in stage II patients). However, no significant association was found between the treatment delays and OS in patients with early-stage DTC or cervical cancer (Table 3). Similar results were observed when the treatment delay intervals were treated as continuous variables (adjustedHR = 1.04, 95% CI 1.01–1.06, p = 0.010 in stage I NSCLC and adjustedHR = 1.03, 95% CI 1.00–1.06, p = 0.029 in stage I breast cancer) (Additional file 1: Table S3-1).
+Impact of treatment delays on CSS: results of the multivariate Cox analysis Similarly, a protective role of intermediate delays was observed in the treatment of stage I breast cancer (adjustedHR = 0.88, 95% CI 0.79–0.98, p = 0.018) and stage II breast cancer (adjustedHR = 0.91, 95% CI 0.85–0.96, p = 0.002). The beneficial role of delays in treatment was only observed in patients with stage II colorectal cancer with intermediate delays (adjustedHR = 0.64, 95% CI 0.57–0.71, p < 0.001) and those with prolonged delays (adjustedHR = 0.67, 95% CI 0.51–0.86, p = 0.002). However, intermediate delays significantly impaired the CSS of patients with stage I cervical cancer (adjustedHR = 1.31, 95% CI 1.02–1.68, p = 0.032). No association was found between the treatment delays and CSS of patients with NSCLC or DTC (p > 0.05) (Table 4). When the treatment delay intervals were calculated as continuous variables, the protective role of delayed treatment initiation was found only in patients with stage II colorectal cancer (adjustedHR = 0.83, 95% CI 0.78–0.88, p < 0.001) (Additional file 1: Table S3-2).
+Prediction of the 10‑year OS of patients with different treatment delay intervals Based on the results of the multivariate Cox analysis, we further analyzed the 10-year predicted OS patterns of the three groups of patients with different treatment delay intervals (i.e., the immediate treatment, intermediate delay, and prolonged delay groups). The 10-year OS probabilities were 63.5%, 62.4%, and 60.3% in the immediate treatment, intermediate delay, and long delay groups with stage I NSCLC, respectively (Fig. 2A). The 10-year OS probabilities were 41.1%, 41.9%, and 41.1% in the immediate treatment, intermediate delay, and prolonged delay groups with stage II NSCLC, respectively (Fig. 2B). The predicted 10-year OS was 95.1%, 95.5%, and 94.0% in the
+
+Min et al. Journal of Translational Medicine (2022) 20:560
+
+Page 6 of 14
+
+Table 1  The demographic characteristics of early-stage female cancer patients with different time delay intervals
+
+Variables
+
+Subgroup
+
+No. (%) of patients or median (range)
+
+Lung (n = 12,617)
+
+Breast (n = 166,051)
+
+Thyroid (n = 31,096)
+
+Colorectal (n = 23,550)
+
+Cervical (n = 8347)
+
+Follow-up time (m) – Time intervals (m) – Age, mean (SD), y –
+
+57 (0–119) 1 (0–6) 68.11 ± 9.67
+
+75 (0–119) 1 (0–6) 59.03 ± 12.17
+
+Race
+
+White
+
+10,543 (83.6)
+
+132,670 (79.9)
+
+Grade
+
+Black Othera Otherb I II III/IV
+
+1158 (9.2) 916 (7.2) 344 (2.7) 2249 (17.8) 4936 (39.1) 3603 (28.5)
+
+16,277 (9.8) 17,105 (10.3) 54,565 (32.9) 39,305 (23.7) 72,688 (43.8) 49,759 (29.9)
+
+Stagec
+
+Unknown I
+
+1829 (14.6) 9321 (73.9)
+
+4299 (2.6) 99,026 (59.6)
+
+II
+
+T stage
+
+T1
+
+T2
+
+T3
+
+T4
+
+3296 (26.1) 6569 (52.1) 4645 (36.8) 1403 (11.1) –
+
+67,025 (40.4) 112,311 (67.6) 50,609 (30.5) 3131 (1.9) –
+
+N stage
+
+N0
+
+11,300 (89.6)
+
+127,287 (76.7)
+
+N1
+
+1317 (10.4)
+
+38,764 (23.3)
+
+Surgery Radiotherapy
+
+Performed Not performed Performed No/unknown
+
+9731 (77.1) 2886 (22.9) 3171 (25.1) 9446 (74.9)
+
+163,955 (98.7) 2096 (1.3) 98,254 (59.2) 67,797 (40.8)
+
+Chemotherapy
+
+Performed
+
+2564 (20.3)
+
+65,930 (39.7)
+
+No/unknown
+
+10,053 (79.7)
+
+100,121 (60.3)
+
+Diagnosis year
+
+2010
+
+2011
+
+2012
+
+2013
+
+2014
+
+1955 (15.5) 2033 (16.1) 2046 (16.2) 2168 (17.2) 2136 (16.9)
+
+24,126 (14.5) 25,978 (15.7) 27,234 (16.4) 28,304 (17.0) 29,409 (17.7)
+
+2015
+
+2280 (18.1)
+
+31,000 (18.7)
+
+Marital status
+
+Married
+
+5505 (43.6)
+
+98,063 (59.0)
+
+Incomed, $
+
+Single Otherc Unknown < 35k 35k to < 55k 55k to < 75k
+
+1546 (12.3) 4953 (39.3) 613 (4.8) 342 (2.7) 3358 (26.6) 5621 (44.6)
+
+23,370 (14.1) 36,892 (22.2) 7726 (4.7) 2481 (1.5) 34,663 (20.9) 78,176 (47.1)
+
+> 75k
+
+3296 (26.1)
+
+50,731 (30.5)
+
+County
+
+Metropolitan
+
+10,887 (86.3)
+
+149,035 (89.8)
+
+Near metropolitan Not near metropolitan Unknown
+
+960 (7.6) 748 (5.9)
+22 (0.2)
+
+9785 (5.9) 6997 (4.2)
+234 (0.1)
+
+a Other: defined as the Asian/Pacific Islander and American Indian/Alaska Native b Stage: 7th edition of TNM stage classification by the American Joint Committee on Cancer c Other: Divorced, separated, windowed, unmarried or domestic partner d Income: median household income inflation adj to 2019 e FIGO stage
+
+78 (0–119) 0 (0–6) 45.30 ± 13.87 25,190 (81.0) 2285 (7.4) 3621 (11.6) 31,096 (100.0) 6939 (22.3) 1018 (3.3) 117 (0.4) 23,022 (74.0) 28,776 (92.5) 2320 (7.5) 22,350 (71.9) 5593 (18.0) 2911 (9.3) 242 (0.8) 26,818 (86.2) 4278 (13.8) 31,096 (100.0) 0 (0.0) 12,347 (39.7) 18,749 (60.3) – – 4669 (15.0) 4921 (15.8) 5142 (16.5) 5279 (17.0) 5481 (17.7) 5604 (18.0) 18,735 (60.2) 6958 (22.4) 3713 (12.0) 1690 (5.4) 483 (1.6) 6275 (20.2) 15,033 (48.2) 9305 (30.0) 28,127 (90.5) 1628 (5.2) 1302 (4.2)
+39 (0.1)
+
+71 (0–119) 0 (0–6) 64.88 ± 12.41 18,477 (78.5) 2732 (11.6) 2341 (9.9) 284 (1.2) 2517 (10.7) 16,964 (72.0) 2813 (11.9) 1256 (5.3) 11,229 (47.7) 12,321 (52.3) 6448 (27.4) 4781 (20.3) 10,304 (43.8) 2017 (8.6) 23,550 (100.0) – 23,100 (98.1) 450 (1.9) 2703 (11.5) 20,847 (88.5) 4531 (19.2) 19,019 (80.8) 3981 (16.9) 3891 (16.5) 4020 (17.1) 3827 (16.2) 4012 (17.0) 3819 (16.2) 11,321 (48.1) 3452 (14.7) 7267 (30.9) 1510 (6.4) 548 (2.3) 5868 (24.9) 10,973 (46.6) 6161 (26.2) 20,315 (86.3) 1764 (7.5) 1399 (5.9)
+72 (0.3)
+
+71 (0–119) 1 (0–6) 46.45 ± 13.11 6504 (77.9) 906 (10.9) 936 (11.2) 8346 (100.0) 1410 (16.9) 2929 (35.1) 2005 (24.0) 2002 (24.0) 6566 (78.7)e 1780 (21.3)e 6566 (78.7) 1780 (21.3) – – 8346 (100.0) 0 (0.0) 6592 (79.0) 1754 (21.0) 3529 (42.3) 4817 (557.7) 2799 (33.5) 5547 (66.5) 1434 (17.2) 1353 (16.2) 1399 (16.8) 1307 (15.7) 1401 (16.9) 1452 (17.4) 3824 (45.8) 2441 (29.2) 1610 (19.3) 471 (5.6) 173 (2.1) 2057 (24.6) 4000 (47.9) 2116 (25.3) 7403 (88.7) 518 (6.2) 412 (4.9)
+13 (0.2)
+
+Min et al. Journal of Translational Medicine (2022) 20:560
+
+Page 7 of 14
+
+Table 2 Trends in time from diagnosis to treatment in female cancer patients with different stages
+
+Variables No. (%) of patients
+
+< 1 month (immediate treatment)
+
+1–2 months (intermediate delay)
+
+P*
+3–6 months (long delay)
+
+NSCLC Stage I 2896 (31.1) Stage II 764 (23.2)
+IBC Stage I 23,424 (23.7) Stage II 16,576 (24.7)
+DTC Stage I 19,172 (66.6) Stage II 1589 (68.5)
+Colorectal cancer Stage I 6791 (60.5) Stage II 6491 (52.7)
+Cervical cancer Stage I 3369 (51.3) Stage II 425 (23.9)
+
+5104 (54.7) 2056 (62.4)
+70,132 (70.8) 46,367 (69.2)
+7994 (27.8) 590 (25.4)
+4099 (36.5) 5474 (44.4)
+2652 (40.4) 1141 (64.1)
+
+1321 (14.2) < 0.001 476 (14.4)
+
+5470 (5.5) 4082 (6.1)
+
+< 0.001
+
+1610 (5.6) 141 (6.1)
+
+0.043
+
+339 (3.0) 356 (2.9)
+
+< 0.001
+
+545 (8.3) 214 (12.0)
+
+< 0.001
+
+The tumor stage refers to the TNM stage classification in the 7th edition NSCLC non-small cell lung cancer, IBC infiltrating breast cancer, DTC differentiated thyroid carcinoma Bold values indicate statistical significance (p < 0.05) *Pearson’s Chi-squared test
+
+immediate treatment, intermediate delay, and prolonged delay groups with stage I breast cancer, respectively, (Fig. 2C) and 86.0%, 86.9%, and 84.8% in the immediate treatment, intermediate delay, and long delay groups with stage II breast cancer, respectively (Fig. 2D). A favorable OS rate was found in the three subgroups with DTC (the predicted 10-year OS was 99.0%, 99.3%, and 98.9% in the immediate treatment, intermediate delay, and long delay groups with stage I cancer, respectively, and 99.0%, 99.3%, and 99.8% in the immediate treatment, intermediate delay, and long delay groups with stage II cancer, respectively) (Fig. 3A, B). The predicted 10-year OS of patients with stage I colorectal cancer was 85.6%, 87.9%, and 82.8% in the immediate treatment, intermediate delay, and long delay groups, respectively, (Fig. 3C) and 75.6%, 82.3%, and 78.5% in the immediate treatment, intermediate delay, and long delay groups with stage II cancer (Fig. 3D), respectively. The 10-year OS probabilities (93.7%, 93.2%, and 94.5%) were similar among the immediate treatment, intermediate delay, and long delay groups in stage I patients, respectively, and the OS probabilities (71.2%, 73.2%, and 71.0%) were similar among the immediate treatment, intermediate delay, and long delay groups in stage II patients, respectively (Fig. 3E, F).
+
+Discussion Cancer-associated treatment delays were not uncommon during the COVID-19 pandemic, especially in patients with high incidence cancers [15, 27–29]. Treatment delays increased anxiety and depression in patients with cancer, especially female patients, due to concerns about becoming infected with COVID-19 or because of strict nationwide policies [15]. Our model predicted an increasing number of deaths among patients with cancers, such as breast cancer, colorectal cancer, lung cancer, and esophageal cancer in the beginning and after the end of the COVID-19 pandemic [30]. Therefore, we thought an investigation of the impact of treatment delays on the long-term survival of patients with the most common female cancers could help physicians develop interventions for this population that were more rational. In the present study, we examined discrepancies in the impact of delays in the initiation of treatment on the survival of females with five different cancers.
+In this large population-based study, the probability of OS was found to be worse (adjustedHR = 1.23, p < 0.001) among patients with stage I breast cancer. Unlike patients whose treatment initiation was timely, a borderline negative association was found between long-term treatment delays and OS among patients with stage II cancer (adjustedHR = 1.09, 95% CI 0.99–1.19, p = 0.059). However, treatment delays did not impair the CSS of this population, regardless of the cancer stage at diagnosis. An observational study conducted using the National Cancer Database (NCDB) determined that the outcomes of even stage I patients could be influenced by a delay in the initiation of treatment. A delay in treatment from 61 to 120 days after diagnosis was associated with a 1.3% and 2.3% increased mortality after 5 years and 10 years, respectively [24]. In contrast, the results of a study conducted in Singapore by Ho et al. did not find any significant differences in long-term survival between patients with non-invasive breast cancer who received treatment after a 90-day wait-time interval and those who received treatment within the 90-day interval. Notably, the ethnic composition of the participants was different in the two studies (White and Asian). Recent studies have confirmed inconsistent survival patterns among patients with cancer of different ethnicities and races [14, 31]. Specifically, the survival probability of Black patients has been reported to be relatively lower than the survival of Asian/ Pacific Islanders. Although underlying mechanisms of survival are under investigation, factors such as lifestyle and socioeconomic status are thought to play a pivotal role in survival [31, 32]. Nevertheless, the results of our analysis support the importance of timely definitive treatment, even for early-stage breast cancer. Patients with
+
+Min et al. Journal of Translational Medicine (2022) 20:560
+
+Page 8 of 14
+
+Table 3  Univariate and Multivariable analyses of the association of treatment delay intervals with overall survival
+
+Cancer
+
+Subgroupd
+
+Model 1
+
+Model ­2a
+
+HRb (95% CI)
+
+P
+
+HR (95% CI)
+
+P
+
+NSCLC Stage I
+Stage II
+IBC Stage I
+Stage II
+DTC Stage I
+Stage II
+Colorectal cancer Stage I
+Stage II
+Cervical cancer Stage I
+Stage II
+
+Intermediate Long Intermediate Long
+Intermediate Long Intermediate Long
+Intermediate Long Intermediate Long
+Intermediate Long Intermediate Long
+Intermediate Long Intermediate Long
+
+1.47 (1.36–1.58) 2.05 (1.85–2.25) 1.20 (1.07–1.33) 1.48 (1.28–1.70)
+0.91 (0.86–0.96) 1.20 (1.08–1.34) 0.86 (0.82–0.90) 1.10 (1.01–1.20)
+0.43 (0.33–0.57) 0.76 (0.49–1.19) 0.74 (0.43–1.29) 0.21 (0.03–1.50)
+0.97 (0.88–1.06) 1.60 (1.29–2.00) 0.71 (0.66–0.76) 1.32 (1.11–1.57)
+1.75 (1.48–2.08) 1.70 (1.28–2.26) 1.04 (0.85–1.27) 1.15 (0.86–1.54)
+
+< 0.001 < 0.001
+0.001 < 0.001
+0.001 < 0.001 < 0.001
+0.038
+< 0.001 0.236 0.295 0.120
+0.503 < 0.001 < 0.001
+0.001
+< 0.001 < 0.001
+0.713 0.340
+
+1.04 (0.95–1.13) 1.11 (1.01–1.23) 0.97 (0.87–1.09) 1.00 (0.86–1.16)
+0.92 (0.87–0.97) 1.23 (1.11–1.37) 0.93 (0.88–0.97) 1.09 (0.99–1.19)
+0.70 (0.53–0.93) 1.09 (0.70–1.70) 0.73 (0.41–1.31) 0.22 (0.03–1.61)
+0.83 (0.75–0.92) 1.21 (0.97–1.52) 0.70 (0.65–0.75) 0.87 (0.72–1.04)
+1.08 (0.90–1.30) 0.84 (0.63–1.14) 0.92 (0.74–1.14) 1.01 (0.75–1.37)
+
+0.349 0.044 0.699 0.995
+0.003 < 0.001
+0.002 0.059
+0.012 0.711 0.300 0.138
+< 0.001 0.090
+< 0.001 0.120
+0.421 0.282 0.436 0.949
+
+HR hazard ratio, CI confidence interval, NSCLC non-small cell lung cancer, IBC infiltrating breast cancer, DTC differentiated thyroid carcinoma a Model 2 was adjusted by the age, race, tumor location (exception of DTC, cervical cancer), differentiated grade; histology (exception of colorectal cancer), T stage, N stage (exception of NSCLC in stage I, DTC in stage II, colorectal cancer), surgery (exception of DTC), radiotherapy, chemotherapy (exception of DTC), marital status, income, and molecular subtype (only for breast cancer) b HR: compared with immediate treatment initiation c Cervical cancer: FIGO stage d Subgroup: immediate: < 1 month, intermediate delayed: ≥ 1 and ≤ 2 months, and long-delayed: ≥ 3 months
+Bold values indicate statistical significance (p < 0.05)
+
+ductal carcinoma in situ breast cancer (DCIS) were not included in this study because of their limited number of cases and most of these patients had a satisfactory prognosis after surgical intervention. Minami et al. found that prolonged wait times for operations to treat DCIS were associated with a slight increase in pathological upstaging in the patients, although this delay did not affect their OS [33].
+To date, the conclusions of investigations of the association between prolonged wait times and the survival of patients with NSCLC are still debatable [6, 34–36]. As one review concluded, the impact of treatment delays was lowest for subcentimeter nodules, and probably the highest in stage II disease. However, in an
+
+evidence-based large-scale study from Taiwan (42,962 cases), the authors reported a negative impact of treatment delays on patients with whole-stage NSCLC; those with late-stage tumors or longer wait-time intervals showed even larger increases in mortality [37]. Compared with the Taiwan cohort, the females in our study with NSCLC showed a paradoxical result. An increased risk of mortality due to treatment delays was observed in the stage I patients with NSCLC (adjustedHR = 1.11, 95% CI 1.01–1.23, p = 0.044), compared with the patients who were treated immediately. These results were found for the OS group but not for CSS. Cone et al. found an increased risk of all-cause mortality among patients with stage I NSCLC from a large cancer database in the
+
+Min et al. Journal of Translational Medicine (2022) 20:560
+
+Page 9 of 14
+
+Table 4  Univariate and Multivariable analyses of the association of treatment delay intervals with cancer-specific survival (CSS)
+
+Cancer
+
+Subgroupd
+
+Model 1
+
+Model ­2a
+
+HRb (95% CI)
+
+P
+
+HR (95% CI)
+
+P
+
+NSCLC Stage I
+Stage II
+IBC Stage I
+Stage II
+DTC Stage I
+Stage II
+Colorectal cancer Stage I
+Stage II
+Cervical cancer Stage I
+Stage II
+
+Intermediate Long Intermediate Long
+Intermediate Long Intermediate Long
+Intermediate Long Intermediate Long
+Intermediate Long Intermediate Long
+Intermediate Long Intermediate Long
+
+1.47 (1.32–1.63) 2.03 (1.78–2.33) 1.17 (1.04–1.32) 1.32 (1.12–1.56)
+0.86 (0.77–0.95) 0.97 (0.82–1.21) 0.81 (0.76–0.86) 0.96 (0.86–1.08)
+1.21 (0.36–4.00) 1.56 (0.19–12.54) 0.03 (0.00–174.28) 0.03 (0.00–2.17 × ­106)
+1.30 (1.07–1.56) 2.50 (1.70–3.67) 0.71 (0.64–0.78) 1.26 (0.99–1.61)
+2.20 (1.75–2.77) 2.30 (1.61–3.30) 1.10 (0.86–1.40) 1.18 (0.83–1.68)
+
+< 0.001 < 0.001
+0.011 0.001
+0.004 0.798 < 0.001 0.546
+0.759 0.676 0.420 0.698
+0.006 < 0.001 < 0.001
+0.059
+< 0.001 < 0.001
+0.451 0.345
+
+0.98 (0.88–1.10) 1.04 (0.90–1.20) 0.96 (0.85–1.09) 0.91 (0.77–1.08)
+0.88 (0.79–0.98) 0.96 (0.77–1.20) 0.91 (0.85–0.96) 1.02 (0.91–1.15)
+1.10 (0.28–4.33) 1.28 (0.14–11.22) 0.03 (0.00–19.91) 0.10 (0.00–1.19 × ­107)
+0.87 (0.71–1.07) 1.13 (0.75–1.71) 0.64 (0.57–0.71) 0.67 (0.51–0.86)
+1.31 (1.02–1.68) 1.25 (0.85–1.82) 1.01 (0.78–1.32) 1.09 (0.75–1.57)
+
+0.793 0.575 0.525 0.292
+0.018 0.729 0.002 0.703
+0.890 0.820 0.293 0.664
+0.192 0.555 < 0.001 0.002
+0.032 0.255 0.918 0.649
+
+HR hazard ratio, CI confidence interval, NSCLC non-small cell lung cancer, IBC infiltrating breast cancer, DTC differentiated thyroid carcinoma a Model 2 was adjusted by the age, race, tumor location (exception of DTC, cervical cancer), differentiated grade; histology (exception of colorectal cancer), T stage, N stage (exception of NSCLC in stage I, DTC in stage II, colorectal cancer), surgery (exception of DTC), radiotherapy, chemotherapy (exception of DTC), marital status, income, and molecular subtype (only for breast cancer) b HR: compared with immediate treatment initiation c Cervical cancer: FIGO stage d Subgroup: immediate: < 1 month, intermediate delayed: ≥ 1 and ≤ 2 months, and long-delayed: ≥ 3 months
+Bold values indicate statistical significance (p < 0.05)
+
+US [24], regardless of sex. However, this phenomenon was not present in stage II patients because the survival curves did not show a significant discrete distribution among the different treatment delays of the subgroups, as described. The explanations for this difference could reflect a potential bias. First, the definitions of treatment delays varied among existing studies, which could have led to inconsistencies in reported trends. The study populations and sample sizes among the various studies might have also contributed to this difference. Although existing studies have limitations, their results mostly support the association of timely treatment and better OS in patients with non-metastatic stage NSCLC [34]. Whether this finding applies to CSS requires further evaluation.
+
+Recommendations derived from more robust evidence could improve future research, policies, and healthcare practices.
+Although different strategies to treat stages I-II DTC can be implemented, surgical intervention is the pivotal first-line treatment modality. Thus, we only included patients who underwent surgical resection in the present study. As expected, we observed no significant effects of treatment delays on the long-term survival of patients with early-stage cancer. In contrast, a significantly higher probability of survival was observed in stage I patients with intermediate delays in treatment (adjustedHR = 0.70, 95% CI 0.53–0.93, p = 0.012). In recent years, DTC has been regarded as a type of indolent cancer and the
+
+Min et al. Journal of Translational Medicine (2022) 20:560
+
+Page 10 of 14
+
+Fig. 2  The predicted 10-year survival in female cancer patients with different time intervals to treatment. A stage I NSCLC, B stage II NSCLC, C stage I infiltrating breast cancer, D stage II infiltrating breast cancer, NSCLC non-small cell lung cancer
+
+consensus of experts in developed countries suggests that active surveillance could be a safe and effective strategy for dealing with DTC in low-risk patients [38]. Up to now, few studies have evaluated the influence of treatment delays on DTC survival. However, a study on this topic by Fligor et al. determined that delayed surgery among patients with papillary thyroid carcinoma was associated with reduced OS [39]. Some differences among these studies should be acknowledged. First, the median follow-up time in the study by Fligor et al. was 55 months, which was relatively shorter than the follow-up of our study (78 months). Second, longer intervals were examined in their study (90 days), whereas 90 days was further divided into two subgroups in our study. In addition, their subgroup analysis was based on the T stage, while our study was based on the tumor stage. Our results support the application of an acceptable wait time that is safe for the initiation of treatment for early-stage female patients with cancer. Future studies should be conducted to analyze the impact of treatment delays on the risk of
+
+disease progression and recurrence-free survival in this population, which could enhance the evidence supporting the use of active surveillance for these patients.
+No significant difference among patients with stage I colorectal cancer was found between those with prolonged treatment delays and their counterparts who received immediate treatment. However, a trend persisted (unadjustedHR = 1.60, p < 0.001; adjustedHR = 1.21, p = 0.090): two studies on patients from the NCDB with different cutoffs for wait-time intervals (40 days and 60 days) revealed significantly worse outcomes among the patients with curable-stage colorectal cancer and a delay in the initiation of treatment [24, 40]. However, a recent high-volume single-center study in China did not find any negative effects of prolonged preoperative wait times on the prognosis of outcomes (including OS and disease-free survival) of patients with stages I-III colorectal cancer [41]. However, an earlier meta-analysis reported that inconsistent findings were frequent in studies on colorectal cancer, with the majority of findings showing
+
+Min et al. Journal of Translational Medicine (2022) 20:560
+
+Page 11 of 14
+
+Fig. 3  The predicted 10-year survival in female cancer patients with different time intervals to treatment. A stage I DTC, B stage II DTC, C stage I colorectal cancer, D stage II colorectal cancer, E stage I cervical cancer, F stage II cervical cancer. DTC differentiated thyroid carcinoma
+
+“no association” [6]. Of note, when our study population was further divided into two subgroups (immediate treatment: < 1 month and intermediate delay: ≥ 1 and < 3 months), intermediate delays in treatment was associated with better OS (adjustedHR = 0.83, 95% CI 0.75–0.92, p < 0.001) in stage I patients and (adjustedHR = 0.70, 95% CI 0.65–0.75, p < 0.001) in stage II patients, and CSS rates (adjustedHR = 0.64, 95% CI 0.57–0.71, p < 0.001) in stage II patients. Nevertheless, we cannot interpret this association as presented, because whether an intermediate delay was caused by a pre-treatment evaluation or a referral to a specialized center providing better clinical care remains unknown. Thus, delaying treatment of the patients with colorectal cancer for relatively prolonged time intervals is questionable by deserves further exploration.
+Recent systematic reviews and meta-analyses have been conducted on the association between delayed initiation of treatment and the survival time of patients with cervical cancer [42]. To the best of our knowledge, this is the largest nationwide cohort to examine the impact of treatment delay intervals on the long-term survival of patients with early-stage cervical cancer. Our results showed that delayed initiation of treatment did not adversely affect the OS of patients with early-stage cervical cancer, but it increased the risk of CSS in stage I patients with intermediate treatment delays. In a review of the recent literature on cervical cancer, the disparity in survival patterns was
+
+found to be an effect of prolonged wait times for different treatment modalities [21, 22, 43–45]. Most of the studies on this topic were limited to single-centers or had small samples. For instance, Umezu et al. [44] (n = 177 cases), Perri et al. [45] (n = 321 cases), and Matsuo et al. 41 (n = 217 cases) found that a delayed time from the initial visit (and diagnosis) to the intervention did not impair outcomes of patients with cervical cancer. However, evidence from a large population-based study in Asia [21] showed that patients with early-stage cervical cancer and longer wait-time intervals (especially those exceeding 180 days) exhibited a significantly lower probability of OS than the patients who received treatment within 90 days did. Hence, the different cutoffs of the wait-time intervals (which ranged from 14 to 90 days) might have contributed to this divergence in OS rates.
+The conclusions drawn inform the evaluations of the impact of delayed adjuvant therapy initiation on the survival of patients with cervical cancer were consistent. Noh et al. [43] reported that wait-time intervals for definitive concurrent chemoradiation had a significant influence on the OS of patients with cervical cancer when the cutoff wait-time interval was 14 days (as a categorical variable: HR = 1.53, p = 0.018; and as a continuous variable: HR = 1.023/per day, p = 0.007). Similarly, the delayed initiation of adjuvant radiotherapy also impaired the OS of patients with early-stage cervical cancer [22]. Thus,
+
+Min et al. Journal of Translational Medicine (2022) 20:560
+
+Page 12 of 14
+
+delayed time to treatment may have had a greater impact on the postoperative adjuvant therapy prior to the initial treatment. Robust evidence derived from comprehensive analyses in the future (such as uniform cutoffs of intervals, longer follow-ups, and multicenter datasets) should be considered to help clinicians improve their therapeutic plans for patients with cervical cancer.
+Although some of the cancers and stages mentioned in the current study showed better OS and CSS patterns in the intermediate treatment delay group, the results need to be interpreted carefully and evaluated further. A relatively prolonged time from diagnosis to treatment might not impair the prognosis of most patients with cancer after adjusting for numerous confounders, revealing that cancer-specific characteristics are more pivotal prognostic factors than wait-time intervals between diagnosis and treatment.
+Accumulative evidence suggests that a multi-level social network is associated with improved survival among patients with cancer. To date, many scholars believe that the connection between marital status and cancer survival reflects social support. Spouses motivate patients to seek regular medical care, which can lead to an earlier diagnosis and treatment of a disease. Patients with cancer receive encouragement from their spouses to continue to follow up with their treatment and to seek support from other survivors of cancer [46–49], and previous studies have examined the association of marital status with breast cancer risk and survival [49–51]. In an earlier study, researchers showed that unmarried women were at increased risk for death from breast cancer, which might be attributed to their decreased social support and social networks [52]. According to a report by Parise et al., the survival patterns of married white women and female Asian/Pacific Islanders with triple-negative breast cancer improved after adjusting for confounders such as age, stage, tumor grade, and treatment [53].
+In the present study, married patients also had shorter wait-time intervals from diagnosis to treatment, regardless of their cancer stage and subtype. Furthermore, a significantly higher probability of long-term OS was found in married patients with stage I NSCLC (Additional file 1: Table S4), breast cancer (Additional file 1: Table S5), differentiated thyroid cancer (Additional file 1: Table S6), and colorectal cancer (Additional file 1: Table S7), compared with single or divorced patients. However, this effect was not observed in patients with early-stage cervical cancer (Additional file 1: Table S8). The insurance data in our study was missing; therefore, the median household income was used as a reference for an indirect measure of insurance status. Similar to the findings of marital status, early-stage patients with high incomes (> $75,000/year) showed significantly better
+
+survival outcomes, compared with low-income patients (< $35,000/year), especially patients with NSCLC, breast cancer, and colorectal cancer. The underlying mechanisms in the associations between socioeconomic status and cancer outcomes, as well as its clinical influence, need further exploration. Nevertheless, our results showed that appropriate psychosocial care and support helped female patients cope with their cancer diagnosis and treatment, especially low-income, divorced, and unmarried subpopulations.
+The present study has strengths that should be mentioned. First, it was conducted using a nationwide large-scale database. Our results partially confirmed the conclusions of previous studies in the field of breast cancer, NSCLC, and colorectal cancer, and our study provides new findings on cervical and thyroid cancers among female patients. Second, we focused on cancers with the highest incidence rates among females worldwide to help researchers understand the impact of wait-time intervals on the prognosis of patients with early-stage cancers, especially female-specific or predominate cancers.
+To date, most of the evidence supporting the association between the time to treatment initiation and survival is based on data from cancer registries from developed countries. Thus, future research should be conducted in the middle- or low-income countries, where patients with cancer are more vulnerable to disease progression due to treatment delays. Careful scrutiny and comprehensive evaluations of the time from diagnosis to the initiation of treatment within institutions are likely to have farreaching effects, which could help public health administrators make tailored decisions on treatment deferral in resource-limited regions due to pandemics and facilitate the process of global health missions.
+The present study has several limitations that need to be addressed. First, this is a retrospective observational study with selection bias, unbalanced baseline characteristics, and other potential confounders. Second, information about the patient’s characteristics, including lifestyle, educational level, insurance status, Charlson-Deyo comorbidity index, mental health, and medical knowledge, which might have affected their prognosis [15, 28, 54], were not available in the SEER database. Third, we only included cancers with the highest incidence rates in females for the analysis. Thus, future studies should include more cancer subtypes to reach more comprehensive and robust conclusions for clinical decision-making. Furthermore, a detailed record of the reasons for the treatment delays was unavailable in the present database. This information is crucial for research on this important topic and for reducing the progression of cancers due to treatment delays.
+
+Min et al. Journal of Translational Medicine (2022) 20:560
+
+Page 13 of 14
+
+Conclusion Our findings indicate that prolonged delays in treatment initiation (within 6 months) have a limited negative impact on the survival of patients with early-stage NCSLC, infiltrating breast cancer, DTC, colorectal cancer, and cervical cancer. Whether these results can be used as evidence supporting a more comprehensive pre-treatment evaluation needs further exploration and validation, and patients’ preferences and anxiety levels should be considered.
+Supplementary Information
+The online version contains supplementary material available at https://​doi.​ org/​10.​1186/​s12967-​022-​03719-7.
+Additional file 1: Table S1. The code for International Classification of Disease for Oncology third edition of the present study. Table S2. The cancer-specific characteristics of five different cancers. Table S3. Univariate and Multivariable Cox analyses of the association of treatment delay intervals with overall survival and cancer-specific survival (treatment delay intervals were calculated as continuous variables). Tables S4–S8. Multivariable analyses of the association of treatment delay intervals with overall survival in five different cancers.
+Acknowledgements We acknowledged the contributions of the Surveillance, Epidemiology, and End Results (SEER) Program registries for creating and updating the SEER database.
+Author contributions XH, YS, and XP were responsible for the study’s concept and design. YM, ZL, and RH did the data and project management. RH and YM did the data cleaning and analysis. YM, ZL, RH, RL, NL, ZW, LH, JJ, and YP interpreted the data. YM, ZL, and XP drafted the manuscript. All the authors agree to be accountable for all aspects of the work. All authors read and approved the final manuscript.
+Funding The work was supported by the National Key Research and Development Program of China (2021YFE0206600), the National Natural Science Foundation of China (82172842 and 81672386), the Sichuan Province Science and Technology Support grant, and TianFu Laboratory (2022SYSX0064, 2021YFSY0008, 2020YFS0276), West China Nursing Discipline Development Special Fund Project (HXHL21008), the Post-Doctor Research Project, West China Hospital, Sichuan University (2020HXBH119), Translational medicine fund of West China Hospital (2020HXBH119 and CGZH19002). The funders had no role in study design, data collection, and analysis, decision to publish, or preparation of the manuscript.
+Availability of data and materials The data that support the findings of this study are available on request from the corresponding author. These data were derived from the following resources available in the public domain: the Surveillance, Epidemiology, and End Results (SEER) Program at (https://​seer.​cancer.​gov/​data-​softw​are/).
+Declarations
+Ethics approval and consent to participate Data analysis from this database is considered to be non-human subjects by the Office for Human Research Protection as part of the US Department of Health and Human Services because patient data was anonymized and publicly available. For these reasons, the need for ethics approval was waived by West China Hospital Ethics Committee.
+Consent for publication Not applicable.
+
+Competing interests The authors declare that they have no competing interests.
+Author details 1 Department of Biotherapy and National Clinical Research Center for Geriatrics, Cancer Center, West China Hospital, Sichuan University, Chengdu 610041, Sichuan, China. 2 School of Nursing, Hangzhou Medical College, Hangzhou, Zhejiang, China. 3 Affiliated Hospital of Nanjing University of Chinese Medicine, Nanjing, Jiangsu, China. 4 Department of Rehabilitation, Cancer Center, West China Hospital, Sichuan University, Chengdu 610041, Sichuan, China. 5 West China School of Nursing, West China Hospital, Sichuan University, Chengdu 610041, Sichuan, China.
+Received: 25 July 2022 Accepted: 21 October 2022
+References 1. Sung H, Ferlay J, Siegel RL, Laversanne M, Soerjomataram I, Jemal A, et al.
+Global cancer statistics 2020: GLOBOCAN estimates of incidence and mortality worldwide for 36 cancers in 185 countries. CA Cancer J Clin. 2021;71(3):209–49. 2. Sud A, Jones ME, Broggio J, Loveday C, Torr B, Garrett A, et al. Collateral damage: the impact on outcomes from cancer surgery of the COVID-19 pandemic. Ann Oncol. 2020;31(8):1065–74. 3. Effect of COVID-19 pandemic lockdowns on planned cancer surgery for 15 tumour types in 61 countries: an international, prospective, cohort study. Lancet Oncol. 2021;22(11):1507–17. 4. Hanna TP, King WD, Thibodeau S, Jalink M, Paulin GA, Harvey-Jones E, et al. Mortality due to cancer treatment delay: systematic review and meta-analysis. BMJ. 2020;371: m4087. 5. Brand NR, Qu LG, Chao A, Ilbawi AM. Delays and barriers to cancer care in low- and middle-income countries: a systematic review. Oncologist. 2019;24(12):e1371–80. 6. Neal RD, Tharmanathan P, France B, Din NU, Cotton S, Fallon-Ferguson J, et al. Is increased time to diagnosis and treatment in symptomatic cancer associated with poorer outcomes? Systematic review. Br J Cancer. 2015;112(Suppl 1):S92–107. 7. AlHilli MM, Elson P, Rybicki L, Khorana AA, Rose PG. Time to surgery and its impact on survival in patients with endometrial cancer: a national cancer database study. Gynecol Oncol. 2019;153(3):511–6. 8. Tsai WC, Kung PT, Wang YH, Kuo WY, Li YH. Influence of the time interval from diagnosis to treatment on survival for early-stage liver cancer. PLoS ONE. 2018;13(6): e0199532. 9. Ho PJ, Cook AR, Binte Mohamed Ri NK, Liu J, Li J, Hartman M. Impact of delayed treatment in women diagnosed with breast cancer: a population-based study. Cancer Med. 2020;9(7):2435–44. 10. Fujiwara RJ, Judson BL, Yarbrough WG, Husain Z, Mehra S. Treatment delays in oral cavity squamous cell carcinoma and association with survival. Head Neck. 2017;39(4):639–46. 11. Röllig C, Kramer M, Schliemann C, Mikesch JH, Steffen B, Krämer A, et al. Does time from diagnosis to treatment affect the prognosis of patients with newly diagnosed acute myeloid leukemia? Blood. 2020;136(7):823–30. 12. Brenkman HJF, Visser E, van Rossum PSN, Siesling S, van Hillegersberg R, Ruurda JP. Association between waiting time from diagnosis to treatment and survival in patients with curable gastric cancer: a population-based study in the Netherlands. Ann Surg Oncol. 2017;24(7):1761–9. 13. Kruger S, Schirle K, Haas M, Crispin A, Schirra J, Mayerle J, et al. Prolonged time to treatment initiation in advanced pancreatic cancer patients has no major effect on treatment outcome: a retrospective cohort study controlled for lead time bias and waiting time paradox. J Cancer Res Clin Oncol. 2020;146(2):391–9. 14. Siegel RL, Miller KD, Fuchs HE, Jemal A. Cancer statistics, 2022. CA Cancer J Clin. 2022;72(1):7–33. 15. Yildirim OA, Poyraz K, Erdur E. Depression and anxiety in cancer patients before and during the SARS-CoV-2 pandemic: association with treatment delays. Qual Life Res. 2021;30(7):1903–12.
+
+Min et al. Journal of Translational Medicine (2022) 20:560
+
+Page 14 of 14
+
+16. Özdin S, Bayrak ÖŞ. Levels and predictors of anxiety, depression and health anxiety during COVID-19 pandemic in Turkish society: the importance of gender. Int J Soc Psychiatry. 2020;66(5):504–11.
+17. Cohn JA, Vekhter B, Lyttle C, Steinberg GD, Large MC. Sex disparities in diagnosis of bladder cancer after initial presentation with hematuria: a nationwide claims-based investigation. Cancer. 2014;120(4):555–61.
+18. Garg T, Pinheiro LC, Atoria CL, Donat SM, Weissman JS, Herr HW, et al. Gender disparities in hematuria evaluation and bladder cancer diagnosis: a population based analysis. J Urol. 2014;192(4):1072–7.
+19. Azap RA, Hyer JM, Diaz A, Tsilimigras DI, Mirdad RS, Pawlik TM. Sex-based differences in time to surgical care among pancreatic cancer patients: a national study of medicare beneficiaries. J Surg Oncol. 2021;123(1):236–44.
+20. Shobab L, Burman KD, Wartofsky L. Sex differences in differentiated thyroid cancer. Thyroid. 2022;32(3):224–35.
+21. Chen CP, Kung PT, Wang YH, Tsai WC. Effect of time interval from diagnosis to treatment for cervical cancer on survival: a nationwide cohort study. PLoS ONE. 2019;14(9): e0221946.
+22. Matsuo K, Shimada M, Matsuzaki S, Enomoto T, Mikami M. Wait-time for adjuvant radiotherapy and oncologic outcome in early-stage cervical cancer: a treatment implication during the coronavirus pandemic. Eur J Cancer. 2021;148:117–20.
+23. von Elm E, Altman DG, Egger M, Pocock SJ, Gøtzsche PC, Vandenbroucke JP. The strengthening the reporting of observational studies in epidemiology (STROBE) statement: guidelines for reporting observational studies. Lancet. 2007;370(9596):1453–7.
+24. Cone EB, Marchese M, Paciotti M, Nguyen DD, Nabi J, Cole AP, et al. Assessment of time-to-treatment initiation and survival in a cohort of patients with common cancers. JAMA Netw Open. 2020;3(12): e2030072.
+25. Barr RD, Holowaty EJ, Birch JM. Classification schemes for tumors diagnosed in adolescents and young adults. Cancer. 2006;106(7):1425–30.
+26. Bleicher RJ, Ruth K, Sigurdson ER, Beck JR, Ross E, Wong YN, et al. Time to surgery and breast cancer survival in the United States. JAMA Oncol. 2016;2(3):330–9.
+27. He S, Wang Y, Zhao X, Xu F, Li J, Huang T, et al. Factors influencing delayed treatment in patients with breast cancer during COVID-19 pandemic. Front Public Health. 2022;10: 808873.
+28. Padilla-Ruiz M, Zarcos-Pedrinaci I, Rivas-Ruiz F, Téllez T, García-Gutiérrez S, González N, et al. Factors that influence treatment delay for patients with breast cancer. Ann Surg Oncol. 2021;28(7):3714–21.
+29. Eijkelboom AH, de Munck L, VranckenPeeters M, Broeders MJM, Strobbe LJA, Bos M, et al. Impact of the COVID-19 pandemic on diagnosis, stage, and initial treatment of breast cancer in the Netherlands: a population-based study. J Hematol Oncol. 2021;14(1):64.
+30. Maringe C, Spicer J, Morris M, Purushotham A, Nolte E, Sullivan R, et al. The impact of the COVID-19 pandemic on cancer deaths due to delays in diagnosis in England, UK: a national, population-based, modelling study. Lancet Oncol. 2020;21(8):1023–34.
+31. Zhang C, Zhang C, Wang Q, Li Z, Lin J, Wang H. Differences in stage of cancer at diagnosis, treatment, and survival by race and ethnicity among leading cancer types. JAMA Netw Open. 2020;3(4): e202950.
+32. Siegel DA, O’Neil ME, Richards TB, Dowling NF, Weir HK. Prostate cancer incidence and survival, by stage and race/ethnicity—United States, 2001–2017. MMWR Morb Mortal Wkly Rep. 2020;69(41):1473–80.
+33. Minami CA, Kantor O, Weiss A, Nakhlis F, King TA, Mittendorf EA. Association between time to operation and pathologic stage in ductal carcinoma in situ and early-stage hormone receptor-positive breast cancer. J Am Coll Surg. 2020;231(4):434-47.e2.
+34. Hall H, Tocock A, Burdett S, Fisher D, Ricketts WM, Robson J, et al. Association between time-to-treatment and outcomes in non-small cell lung cancer: a systematic review. Thorax. 2021;77:762–8.
+35. Zuniga PVS, Ost DE. Impact of delays in lung cancer treatment on survival. Chest. 2021;160(5):1934–58.
+36. Anggondowati T, Ganti AK, Islam KMM. Impact of time-to-treatment on overall survival of non-small cell lung cancer patients-an analysis of the national cancer database. Transl Lung Cancer Res. 2020;9(4):1202–11.
+37. Tsai CH, Kung PT, Kuo WY, Tsai WC. Effect of time interval from diagnosis to treatment for non-small cell lung cancer on survival: a national cohort study in Taiwan. BMJ Open. 2020;10(4): e034351.
+38. Sugitani I, Ito Y, Takeuchi D, Nakayama H, Masaki C, Shindo H, et al. Indications and strategy for active surveillance of adult low-risk papillary thyroid microcarcinoma: consensus statements from the Japan Association of
+
+Endocrine Surgery Task Force on management for papillary thyroid microcarcinoma. Thyroid. 2020;31(2):183–92. 39. Fligor SC, Lopez B, Uppal N, Lubitz CC, James BC. Time to surgery and thyroid cancer survival in the United States. Ann Surg Oncol. 2021;28(7):3556–65. 40. Grass F, Behm KT, Duchalais E, Crippa J, Spears GM, Harmsen WS, et al. Impact of delay to surgery on survival in stage I–III colon cancer. Eur J Surg Oncol. 2020;46(3):455–61. 41. Liu XY, Li ZW, Kang B, Cheng YX, Tao W, Zhang B, et al. Does preoperative waiting time affect the short-term outcomes and prognosis of colorectal cancer patients? A retrospective study from the West of China. Can J Gastroenterol Hepatol. 2022;2022:8235736. 42. Shimels T, Gashaw B, Gedif T. Association between delayed initiation of treatment indications and survival in patients with cervical cancer: a systematic review and meta-analysis protocol. PLoS ONE. 2022;17(7): e0271604. 43. Noh KW, Kim B, Choi CH, Kim TJ, Lee JW, Kim BG, et al. Effect of waiting time from pathological diagnosis to definitive concurrent chemoradiation for cervical cancer on overall survival. Cancer Res Treat. 2022;54(1):245–52. 44. Umezu T, Shibata K, Kajiyama H, Yamamoto E, Mizuno M, Kikkawa F. Prognostic factors in stage IA–IIA cervical cancer patients treated surgically: does the waiting time to the operation affect survival? Arch Gynecol Obstet. 2012;285(2):493–7. 45. Perri T, Issakov G, Ben-Baruch G, Felder S, Beiner ME, Helpman L, et al. Effect of treatment delay on survival in patients with cervical cancer: a historical cohort study. Int J Gynecol Cancer. 2014;24(7):1326–32. 46. Kroenke CH, Kubzansky LD, Schernhammer ES, Holmes MD, Kawachi I. Social networks, social support, and survival after breast cancer diagnosis. J Clin Oncol. 2006;24(7):1105–11. 47. Yang HC, Schuler TA. Marital quality and survivorship: slowed recovery for breast cancer patients in distressed relationships. Cancer. 2009;115(1):217–28. 48. Neale AV. Racial and marital status influences on 10 year survival from breast cancer. J Clin Epidemiol. 1994;47(5):475–83. 49. Yuan R, Zhang C, Li Q, Ji M, He N. The impact of marital status on stage at diagnosis and survival of female patients with breast and gynecologic cancers: a meta-analysis. Gynecol Oncol. 2021;162(3):778–87. 50. Zhai Z, Zhang F, Zheng Y, Zhou L, Tian T, Lin S, et al. Effects of marital status on breast cancer survival by age, race, and hormone receptor status: a population-based Study. Cancer Med. 2019;8(10):4906–17. 51. Liu YL, Wang DW, Yang ZC, Ma R, Li Z, Suo W, et al. Marital status is an independent prognostic factor in inflammatory breast cancer patients: an analysis of the surveillance, epidemiology, and end results database. Breast Cancer Res Treat. 2019;178(2):379–88. 52. Osborne C, Ostir GV, Du X, Peek MK, Goodwin JS. The influence of marital status on the stage at diagnosis, treatment, and survival of older women with breast cancer. Breast Cancer Res Treat. 2005;93(1):41–7. 53. Parise C, Caggiano V. The influence of marital status and race/ethnicity on risk of mortality for triple negative breast cancer. PLoS ONE. 2018;13(4): e0196134. 54. Khorana AA, Tullio K, Elson P, Pennell NA, Grobmyer SR, Kalady MF, et al. Time to initial cancer treatment in the United States and association with survival over time: an observational study. PLoS ONE. 2019;14(3): e0213209.
+Publisher’s Note
+Springer Nature remains neutral with regard to jurisdictional claims in published maps and institutional affiliations.
+
