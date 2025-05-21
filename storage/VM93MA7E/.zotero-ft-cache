@@ -1,0 +1,331 @@
+1180 www.thelancet.com/oncology Vol 19 September 2018
+Articles
+Lancet Oncol 2018; 19: 1180–91
+Published Online August 14, 2018 http://dx.doi.org/10.1016/ S1470-2045(18)30413-3
+See Comment page 1138
+*Contributed equally and are joint first authors
+†Contributed equally and are joint senior authors
+Gustave RoussyCentraleSupélec-Therapanacea Centre of Artificial Intelligence in Radiation Therapy and Oncology, Gustave Roussy Cancer Campus, Villejuif, France (R Sun MD, E J Limkin MD, M Vakalopoulou PhD, A Lancia MD, C Robert PhD, Prof N Paragios PhD, Prof E Deutsch MD, C Ferté MD); Centre for Visual Computing, University of Paris-Saclay, Gif-sur-Yvette, France (M Vakalopoulou, Prof N Paragios); Radiomics Team, Molecular Radiotherapy INSERM U1030 (R Sun, E J Limkin, A Lancia, C Robert, Prof E Deutsch, C Ferté), Immunology of Tumours and Immunotherapy INSERM U1015 (L Dercle MD), and Haematology and Pathology INSERM U1170 (D Brandao MSc), Paris-Sud University, Gustave Roussy Cancer Campus, and University of Paris-Saclay, Villejuif, France; Department of Radiation Oncology (R Sun, E J Limkin, Prof E Deutsch), Department of Nuclear Medicine and Endocrine Oncology (L Dercle), Department of Drug Development (S Champiat MD, L Verlingue MD, A Hollebecque MD, A Marabelle MD, C Massard MD, Prof J-C Soria MD, Prof E Deutsch, C Ferté), Department of Radiology (S Ammari MD), Department of Pathology (Prof J-Y Scoazec MD), and Medical Physics Unit (C Robert),
+A radiomics approach to assess tumour-infiltrating CD8 cells
+and response to anti-PD-1 or anti-PD-L1 immunotherapy:
+an imaging biomarker, retrospective multicohort study
+Roger Sun*, Elaine Johanna Limkin*, Maria Vakalopoulou, Laurent Dercle, Stéphane Champiat, Shan Rong Han, Loïc Verlingue, David Brandao, Andrea Lancia, Samy Ammari, Antoine Hollebecque, Jean-Yves Scoazec, Aurélien Marabelle, Christophe Massard, Jean-Charles Soria, Charlotte Robert, Nikos Paragios, Eric Deutsch†, Charles Ferté†
+Summary
+Background Because responses of patients with cancer to immunotherapy can vary in success, innovative predictors of response to treatment are urgently needed to improve treatment outcomes. We aimed to develop and independently validate a radiomics-based biomarker of tumour-infiltrating CD8 cells in patients included in phase 1 trials of anti-programmed cell death protein (PD)-1 or anti-programmed cell death ligand 1 (PD-L1) monotherapy. We also aimed to evaluate the association between the biomarker, and tumour immune phenotype and clinical outcomes of these patients.
+Methods In this retrospective multicohort study, we used four independent cohorts of patients with advanced solid tumours to develop and validate a radiomic signature predictive of immunotherapy response by combining contrast-enhanced CT images and RNA-seq genomic data from tumour biopsies to assess CD8 cell tumour infiltration. To develop the radiomic signature of CD8 cells, we used the CT images and RNA sequencing data of 135 patients with advanced solid malignant tumours who had been enrolled into the MOSCATO trial between May 1, 2012, and March 31, 2016, in France (training set). The genomic data, which are based on the CD8B gene, were used to estimate the abundance of CD8 cells in the samples and data were then aligned with the images to generate the radiomic signatures. The concordance of the radiomic signature (primary endpoint) was validated in a Cancer Genome Atlas [TGCA] database dataset including 119 patients who had available baseline preoperative imaging data and corresponding transcriptomic data on June 30, 2017. From 84 input variables used for the machine-learning method (78 radiomic features, five location variables, and one technical variable), a radiomics-based predictor of the CD8 cell expression signature was built by use of machine learning (elastic-net regularised regression method). Two other independent cohorts of patients with advanced solid tumours were used to evaluate this predictor. The immune phenotype internal cohort (n=100), were randomly selected from the Gustave Roussy Cancer Campus database of patient medical records based on previously described, extreme tumour-immune phenotypes: immune-inflamed (with dense CD8 cell infiltration) or immune-desert (with low CD8 cell infiltration), irrespective of treatment delivered; these data were used to analyse the correlation of the immune phenotype with this biomarker. Finally, the immunotherapy-treated dataset (n=137) of patients recruited from Dec 1, 2011, to Jan 31, 2014, at the Gustave Roussy Cancer Campus, who had been treated with anti-PD-1 and anti-PD-L1 monotherapy in phase 1 trials, was used to assess the predictive value of this biomarker in terms of clinical outcome.
+Findings We developed a radiomic signature for CD8 cells that included eight variables, which was validated with the gene expression signature of CD8 cells in the TCGA dataset (area under the curve [AUC]=0·67; 95% CI 0·57–0·77; p=0·0019). In the cohort with assumed immune phenotypes, the signature was also able to discriminate inflamed tumours from immune-desert tumours (0·76; 0·66–0·86; p<0·0001). In patients treated with anti-PD-1 and PD-L1, a high baseline radiomic score (relative to the median) was associated with a higher proportion of patients who achieved an objective response at 3 months (vs those with progressive disease or stable disease; p=0·049) and a higher proportion of patients who had an objective response (vs those with progressive disease or stable disease; p=0·025) or stable disease (vs those with progressive disease; p=0·013) at 6 months. A high baseline radiomic score was also associated with improved overall survival in univariate (median overall survival 24·3 months in the high radiomic score group, 95% CI 18·63–42·1; vs 11·5 months in the low radiomic score group, 7·98–15·6; hazard ratio 0·58, 95% CI 0·39–0·87; p=0·0081) and multivariate analyses (0·52, 0·35–0·79; p=0·0022).
+Interpretation The radiomic signature of CD8 cells was validated in three independent cohorts. This imaging predictor provided a promising way to predict the immune phenotype of tumours and to infer clinical outcomes for patients with cancer who had been treated with anti-PD-1 and PD-L1. Our imaging biomarker could be useful in estimating CD8 cell count and predicting clinical outcomes of patients treated with immunotherapy, when validated by further prospective randomised trials.
+
+
+Articles
+www.thelancet.com/oncology Vol 19 September 2018 1181
+Introduction
+Computational medical imaging, known as radiomics, involves the analysis and translation of medical images into quantitative data.1–3 High-dimensional imaging data allow an in-depth characterisation of tumour phenotypes, with the underlying hypothesis that imaging reflects not only macroscopic but also the cellular and molecular properties of tissues. The objective of radiomics is to generate image-driven biomarkers that serve as instruments that provide a deeper understanding of cancer biology to better aid clinical decisions.3,4 Radiomic features are complementary to biopsies and have the advantage of being non-invasive, which allows evaluation of a tumour and its microenvironment, characterisation of spatial heterogeneity, and longitudinal assessment of disease evolution. Immunotherapy has substantially changed the therapeutic strategies for cancers such as melanomas,5 lymphomas,6 and lung tumours.7 Unfortunately, only 20–50% of patients with advanced solid tumours respond to treatment.8 There is therefore a need for the development of methods to identify patients who are most likely to respond to immunotherapy. Several studies8–11 have shown that pre-existing tumoral and peritumoral immune infiltration correlates with patient response to anti-programmed cell death protein (PD)-1 and anti-programmed cell death ligand 1 (PD-L1) immunotherapy. Three distinct immune phenotypes have been described: immune-inflamed, immune-excluded, and immune-desert.12 Immune-inflamed tumours are characterised by dense, functional CD8 cell infiltration, increased interferon-γ signalling, expression of cell checkpoint markers (such as PD-L1), and a high mutational burden. These tumours tend to respond to immunotherapy.9,12,13 In immune-excluded tumours, several biological signals (such as signalling by transforming growth factor-β, activation of myeloid-derived
+suppressor cells, and angiogenesis) prevent infiltration by T cells into the tumour. The immune-desert phenotype is characterised by low infiltration by CD8 cells and highly proliferating tumour cells. Both immune-excluded and immune-desert phenotypes are considered not to be inflamed. Radiomics could allow evaluation of immune infiltration of tumours and, thus, lead to the identification of novel predictors of the efficacy of immunotherapy. We aimed to develop a radiomic signature of immune infiltration of tumours and to assess the ability of this signature to predict clinical outcomes in patients treated with anti-PD-1 or anti-PD-L1 immunotherapy. The adopted computational imaging vocabulary is defined in the appendix (p 1).
+Methods Study design and data sources
+In this multicohort study, radiomic analysis was applied retrospectively to four independent cohorts of patients older than 18 years who had solid tumours (figure 1).14–16 The MOSCATO dataset,14 the immune phenotype dataset, and the immunotherapy-treated dataset17,18 included patients treated at Gustave Roussy Institute (Villejuif, France) and the other dataset was from the databases of The Cancer Genome Atlas (TCGA) and The Cancer Imaging Archive (TCIA). The MOSCATO dataset was used as a training dataset to determine the radiomic signature of CD8 cells and consisted of 135 patients from the prospective MOSCATO trial.14 The MOSCATO trial included patients with several types of uncurable or metastatic solid tumours (table 1) and aimed to assess whether high-throughput genomic analyses improve outcomes in patients with advanced cancers. In this dataset, CT and RNA-sequencing (RNA-seq) data were available, allowing estimation of the quantity of CD8 cells by use of RNA-seq data and radiomic analysis of the corresponding images of the
+Research in context
+Evidence before this study
+We searched PubMed and Google Scholar for papers published before Aug 10, 2018, with the terms (“texture analysis” OR “radiomics” OR “radiomic” OR “computational imaging”) AND (“immunotherapy” OR “immune”), with no language restrictions. To our knowledge, there are no published studies that evaluate the use of radiomics to predict response to immunotherapy. Four studies have evaluated the associations between radiomics and immune infiltration or molecular pathways involved in the immune response; however, the level of evidence of these studies is still low: only one study has an external validation cohort.
+Added value of this study
+To our knowledge, our study is the first to develop and validate a radiomics-based biomarker of tumour-infiltrating CD8 cells to show a correlation of the number of tumour-infiltrating lymphocytes (as estimated by a pathologist), tumour immune phenotypes, and clinical responses to anti-programmed cell death protein-1 or anti-programmed cell death ligand 1 immunotherapy in three independent cohorts of patients with advanced solid tumours.
+Implications of all the available evidence
+Our study suggests that there is potential for non-invasive biomarker development in immunotherapy.
+Gustave Roussy Cancer Campus, Villejuif, France; Department of Pathology, North Franche-Comté Hospital, Trevenans, France (S R Han MD); Department of Diagnostic Imaging, Molecular Imaging, Interventional Radiology, and Radiotherapy, Tor Vergata General Hospital, Rome, Italy (A Lancia); and Faculty of Medicine, Paris-Sud University, Kremlin-Bicêtre, France (Prof J-Y Scoazec, Prof J-C Soria, C Robert, Prof E Deutsch)
+Correspondence to: Prof Eric Deutsch, Department of Radiation Oncology, Gustave Roussy Cancer Campus, 94805 Villejuif CEDEX, France eric.deutsch@gustaveroussy.fr
+See Online for appendix
+For The Cancer Genome Atlas see https://cancergenome.nih. gov/
+For The Cancer Imaging Archive see http://www.cancerimaging archive.net/
+Funding Fondation pour la Recherche Médicale, and SIRIC-SOCRATE 2.0, French Society of Radiation Oncology.
+Copyright © 2018 Elsevier Ltd. All rights reserved.
+
+
+Articles
+1182 www.thelancet.com/oncology Vol 19 September 2018
+tumour biopsy samples. More specifically, the gene expression signature, which is based on the CD8B gene, was used to estimate the abundance of CD8 cells.19 The genomic data were then aligned with the images to generate the radiomic signatures. Three separate cohorts were used to validate the radiomic signature. The TCGA dataset included 119 patients who had available baseline preoperative imaging data of the required quality (contrast-enhanced CT, soft or standard convolution kernel, slice thickness ≤5 mm, no artifacts) and corresponding transcriptomic data (appendix p 10).20,21 Data from patients with five types of cancer were assessed (appendix p 2): head and neck squamous-cell carcinoma (HNSC), lung squamous-cell carcinoma (LUSC), lung adenocarcinoma (LUAD), liver hepatocellular carcinoma (LIHC), and bladder endothelial carcinoma (BLCA). This dataset was used to validate the concordance of the radiomic signature (from the MOSCATO training set) with the CD8 cell gene expression signature in this independent dataset. The immune phenotype dataset consisted of 100 patients who were randomly selected from the Gustave Roussy Cancer Campus database of patient medical records, eSimbad, who had the two most extreme tumour immune phenotypes: immune-inflamed or immunedesert, irrespective of treatment delivered. In the absence of pathological analysis of the tumour immune infiltration (because of the retrospective nature of this study), tumours that were defined as inflamed either had recognised sensitivity to immunotherapy or had lymph nodes as volumes of interest (VOI; defined in the appendix p 1), including lymphoma, melanoma, lung cancer, bladder cancer, renal cancer, and microsatellite instability-high
+cancers. Immune-desert tumours were defined as those that were known to have poor lymphocyte infiltration, including adenoid cystic carcinoma,22 low-grade neuroendocrine tumours,15 and uterine leiomyoma16 (appendix p 3). EJL and CF recorded the immune phenotype of tumours. This dataset was used to evaluate the concordance of the radiomic- signature with tumour immune phenotype of tumours. The immunotherapy-treated cohort consisted of 137 patients with advanced solid tumours enrolled in five phase 1 trials of anti-PD-1 or anti-PD-L1 monotherapy at the Gustave Roussy Cancer Campus.17,18 This cohort was used to infer the association of the radiomic signature with clinical response in accordance with the Response Evaluation Criteria in Solid Tumors (RECIST) version 1.1, progression-free survival, and overall survival. Our study was approved by the Gustave Roussy institutional review board and done in accordance with ethical standards of the 1964 Helsinki Declaration and its later amendments. Patients provided signed informed consent in accordance with their respective trial protocols.
+Procedures
+For all cohorts, radiomic features, corresponding to the quantitative data obtained after computational translation of images, were extracted from contrastenhanced CTs. Images had a slice thickness of 5 mm or less and soft or standard convolution kernel reconstruction (appendix p 4). Tumours were semiautomatically delineated by three radiation oncologists (RS, EJL, and ED) with ISOgray version 4.1 (DOSIsoft; Cachan, France). Segmented lesions corresponded to the biopsied lesion in the MOSCATO cohort, the primary
+Figure 1: Study design
+The MOSCATO dataset14 contains data from patients included in a precision medicine trial and was used to train the radiomic signature. Three cohorts were used for validation. The Cancer Genome Atlas dataset comprised RNA-seq data and the corresponding imaging data from The Cancer Imaging Archive and pathology slides from The Cancer Digital Slide Archive. The immune phenotype-based cohort contained tumours labelled as either immune-desert or immune-inflamed. The immunotherapytreated dataset15,16 comprised patients included in anti-PD-1 and PD-L1 monotherapy phase 1 trials. RNA-seq=RNA sequencing. PD-1=programmed cell death protein-1. PD-L1=programmed cell death ligand 1. DICOMS=Digital Imaging and Communications in Medicine.
+MOSCATO (n=135)
+Training set
+Data input
+Response vector
+Validation sets
+The Cancer Genome Atlas (n=119)
+Immune phenotype cohort (n=100)
+Immunotherapy-treated dataset From phase 1 trials of anti-PD-1/PD-L1 monotherapy (n=137)
+CT scans (DICOMs) RNA-seq (n=135)
+CT scans (DICOMs) RNA-seq (n=119) Pathology slides (n=77)
+CT scans (DICOMs) (n=100) Clinical data (n=100)
+CT scans (DICOMs) (n=137) Clinical data (overall survival, objective response) (n=137)
+Estimation of CD8 cell infiltration by CD8 gene expression signature (primary endpoint)
+Association with tumour immune phenotype
+Predictive and prognostic responses to immunotherapy
+Estimation of CD8 cell infiltrate by CD8 gene expression signature
+Radiomic signature of CD8 cells
+
+
+Articles
+www.thelancet.com/oncology Vol 19 September 2018 1183
+lesion for the TCGA cohort, the biggest lesion (either primary or metastatic) for the immune phenotype cohort, and one of the target lesions, defined by the radiologist (SA, who was masked to the clinical data) in accordance with RECIST 1.1, for the immunotherapytreated cohort. To capture quantitative data from the tumour microenvironment, a peripheral ring was created with automated dilatation and shrinkage of the tumour boundaries by 2 mm on each side, namely outside and inside the boundary, resulting in a ring with a thickness of 4 mm. Large vessels, adjacent organs, and air cavities were excluded if not infiltrated by tumour cells (figure 2). Textural patterns can differ depending on the tissue macrostructure, so VOI locations were introduced as a parameter and labelled as adenopathy for node metastasis; head and neck for primary or secondary lesions of the pharynx, larynx, oral cavity, or salivary glands; lung or liver for primary or secondary lesions of the lungs or the liver; and other for subcutaneous or abdominal lesions. Tumour volume was included in analyses as a potential confounding factor.23,24 Radiomic feature extraction was done with LIFEx software (version 3.44).25 Images were resampled to 1 × 1 × 1 mm3 voxels by use of three-dimensional Lagrangian polygon interpolation. Voxel resampling consists of changing the size of each voxel; here, this technique was done to attain a cubic voxel of 1 × 1 × 1 mm3. Hounsfield units in all the images were then resampled into 400 discrete values (called bins) with absolute discretisation from –1000 to 3000 Hounsfield units, leading to a fixed bin size of 10 Hounsfield units.26 Four grey-level matrices were calculated in three dimensions, giving 39 radiomic features (including first-order and second-order features and volumes) for each of the two VOIs (tumour and ring; appendix p 5). Values of extracted radiomic features were normalised in a linear way in the range of 0–1. In the MOSCATO cohort, RNA-seq data were quantified with the transcripts per million method with Salmon (version 0.7.2).27 For the TCGA cohort, frozen RNA-seq data version 4.6 from the TCGA Pan-Cancer project21,28 were used, which comprised 20 530 genes obtained with Illumina Genome Analyzer Sequencing version 2 analysis (Illumina; San Diego, CA, USA), and the data were quantified with the reads per kilobase million method. All RNA-seq data were rescaled to have the same mean and variance as the training set, stratified by VOI location. For both cohorts, after log2 transformation, the abundance of CD8 cells was estimated with the gene expression signature, based on the CD8B gene, which encodes a part of the CD8 antigen (a cell surface glycoprotein found on most cytotoxic T lymphocytes), as defined by Becht and colleagues,19 and the MCPcounter package version 1.1.0 for R, which also provided estimation of the abundance of other tissue-infiltrating immune and stromal cell populations.19
+Input variables for the machine-learning method consisted of 84 variables: 78 radiomic features, five locations (labelled as binary variables), and one global imaging variable, the peak kilovoltage, given its established effect on radiomic output.29 A linear elastic-net model was used as the regression method by use of the R package glmnet (version 2.0–10) for feature selection and model building.30 The regularisation parameter λ was defined by use of cross-validation and the α penalty was set to 0·5 after a grid search. The machine-learning algorithm—ie, the radiomic score—provides a mathematical formula that predicts the abundance of CD8 cells by use of the gene expression signature with imaging data with the equation:
+where ŷ is the radiomic score, ai is the coefficient of the variable i, Xi is the value of the variable i determined from the input image, and b is the intercept. A sensitivity analysis of the effects of the non-radiomic features on the performance of the signature was also done.
+y=a1X1 + a2X2 + ... + aiXi + b
+All patients (n=135)
+Median age (IQR) 55·6 (41·4–64·7)
+Sex
+Female 73 (54%)
+Male 62 (46%)
+Type of cancer
+Adenoid cystic carcinoma 1 (1%)
+Breast 17 (13%)
+Colorectal 8 (6%)
+Gynaecological 18 (13%)
+Head and neck 14 (10%)
+Kidney 1 (1%)
+Liver 9 (7%)
+Lung 30 (22%)
+Neuroendocrine 2 (1%)
+Other* 4 (3%)
+Other epidermoid carcinoma† 2 (1%)
+Prostate 7 (5%)
+Sarcoma 6 (4%)
+Upper gastrointestinal tract 8 (6%)
+Urothelial 8 (6%)
+Volumes of interest location
+Adenopathy 22 (16%)
+Liver 54 (40%)
+Head and neck 6 (4%)
+Abdominopelvic or subcutaneous 13 (10%)
+Lung 40 (30%)
+Median genomic-based CD8 cell score (IQR) 1·60 (0·89–2·47)
+Data are n (%), unless otherwise indicated. *Includes spindle epithelial tumours with thymus-like differentiation, peritoneal desmoplastic small round cell tumours, hepatoblastomas, and nephroblastomas. †Includes anal cancer and penile cancer.
+Table 1: Characteristics of patients in the training dataset (MOSCATO trial)
+
+
+Articles
+1184 www.thelancet.com/oncology Vol 19 September 2018
+To assess the association between radiomic signature and the histology of tumour-infiltrating lymphocytes, biopsy samples that corresponded to primary tumours of patients in the TCGA dataset were retrieved from the Cancer Digital Slide Archive.31 77 formalin-fixed paraffin-embedded tissues that were stained with haematoxylin and eosin were available; these were analysed by an independent pathologist (SRH), who was masked to the radiomic results, to quantify the tumour-infiltrating lymphocytes as a proportion of the tumour area occupied by infiltrating lymphocytes (LIHCC=10, HNSC=38, LUSC=12, LUAD=6, and BLCA=11; appendix p 11). No multiple imputation was made for the missing data.
+Statistical analysis
+The Wilcoxon signed-rank or Kruskal-Wallis tests were used for numerical variables, and Fisher’s exact test was used for categorical variables. We determined the area under the curve (AUC) of the receiver operator characteristic and its confidence interval, in accordance with the Delong method, to assess whether the radiomic signature score could separate patients into two groups dependent on CD8 cell infiltration into the tumour. For MOSCATO and TCGA datasets, high or low CD8 cell
+infiltration was determined by stratifying patients into two groups on the basis of their median value of the gene expression signature of CD8 cells. For the immune phenotype, these two groups of patients were those with immune-desert tumours and those with immuneinflamed tumours. We assessed the associations between the abundance of infiltrating CD8 cells, assessed by gene expression or radiomics in the TCGA and MOSCATO datasets, and the other microenvironment cell populations, estimated by examination of gene expression signatures.19 We assessed correlations with Spearman’s correlation coefficient. In the immunotherapy-treated dataset, the median value of the radiomic score was used to cluster patients into high or low score groups (relative to the median value). Follow-up and survival times were calculated from the start of immunotherapy. We defined clinical responses in accordance with RECIST version 1.1 as complete response, partial response, stable disease, or progressive disease, which were evaluated at 3 months and 6 months. We evaluated overall survival and progression-free survival with the Kaplan-Meier method and Cox’s proportional hazards model. 95% CIs were calculated with the Wald test. Endpoints were death from any cause for overall survival, and any
+For the Cancer Digital Slide Archive see http://cancer. digitalslidearchive.net/
+Figure 2: Radiomics workflow
+PD-1=programmed cell death protein-1. PD-L1=programmed cell death ligand 1.
+Image selection and quality check
+Contrast-enhanced CT Soft or standard reconstruction algorithms Slice thickness ≤5 mm
+Absolute discretisation Voxel resampling: 1 × 1 × 1 mm3
+Feature extraction Machine learning
+Training
+Validation
+Semi-automatic delineation of volumes of interest
+Peripheral ring Tumour
+Image processing
+Texture
+Technical variables
+Gene expression signature of CD8 cells
+Volumes of interest location
+Histogram Volume
+Feature selection and coefficient optimisation
+Radiomic signature
+Radiomic score
+Gene expression signature
+Pathology Immune phenotype
+Clinical response to anti-PD-1 and anti-PD-L1
+
+
+Articles
+www.thelancet.com/oncology Vol 19 September 2018 1185
+recurrence or death for progression-free survival. A multivariate analysis was done; this analysis included the number of lines of treatment and the Royal Marsden Hospital prognostic score,32 since these were related to the overall survival in this cohort,18 and the tumour volume. A summary of the endpoint analysis for each dataset is provided in the appendix (p 7). Statisticians (RS, MV, and CF) had access to the clinical and radiomics data. A threshold p value of less than 0·05 was defined as significant in two-tailed analyses. Statistical analyses were done with R (version 3.4.1).
+Role of the funding source
+The funders of the study had no role in study design, data collection, data analysis, data interpretation, or writing of the report. ED and CF had full access to all the data in the study and had final responsibility for the decision to submit for publication.
+Results
+The MOSCATO training dataset that was used to build the radiomic signature consisted of 135 patients recruited between May 1, 2012, and March 31, 2016 (table 1). The TCGA validation dataset included 119 patients of the 435 patients who were available for screening and who had available RNA-seq data and CT scans at the time of inclusion on June 30, 2017 (appendix pp 2 and 10). The immune phenotype dataset consisted of 100 patients who had been randomly selected from the database of our institute between Aug 24, 2005, and Nov 19, 2015; of these patients, 70 (70%) tumours were classified as immune-inflamed and 30 (30%) tumours were classified as immune-desert (appendix p 3). The immunotherapytreated cohort included 137 patients enrolled in anti-PD-1 or anti-PD-L1 phase 1 trials between Dec 1, 2011, and Jan 31, 2014 (table 2). The median genomic score (corresponding to expression of the gene signature) of CD8 cells in the
+All patients (n=137) Radiomic score of CD8 cells p value
+Low (n=69) High (n=68)
+Median age (IQR) 58·0 (45·0–66·0) 55·0 (42·0–65·0) 61·00 (48·5–66·3) 0·161 (Wilcoxon)
+Sex ·· ·· ·· 0·732 (Fisher’s)
+Female 60 (44%) 29 (42%) 31 (46%) ··
+Male 77 (56%) 40 (58%) 37 (54%) ··
+Royal Marsden Hospital prognostic score ·· ·· ·· 0·930 (Fisher’s)
+0 32 (23%) 15 (22%) 17 (25%) ··
+1 48 (35%) 24 (35%) 24 (35%) ··
+2 47 (34%) 24 (35%) 23 (34%) ··
+3 10 (7%) 6 (9%) 4 (6%) ··
+Median follow-up, months (IQR) 16·5 (6·6–38·9) 10·6 (4·7–26·1) 23·5 (9·5–44·5) 0·002 (Wilcoxon)
+Median number of lines before inclusion (IQR) 2·0 (1·0–4·0) 2·0 (1·0–3·0) 2·0 (2·0–4·0) 0·118 (Wilcoxon)
+Type of cancer ·· ·· ·· 0·298 (Fisher’s)
+Melanoma 45 (33%) 23 (33%) 22 (32%) ··
+Lung 17 (12%) 6 (9%) 11 (16%) ··
+Urothelial 12 (9%) 7 (10%) 5 (7%) ··
+Kidney 11 (8%) 5 (7%) 6 (9%) ··
+Other* 11 (8%) 6 (9%) 5 (7%) ··
+Gynaecological 9 (7%) 6 (9%) 3 (4%) ··
+Liver 8 (6%) 6 (9%) 2 (3%) ··
+Lymphoma 7 (5%) 1 (1%) 6 (9%) ··
+Breast 6 (4%) 2 (3%) 4 (6%) ··
+Colorectal 6 (4%) 5 (7%) 1 (1%) ··
+Head and neck 5 (4%) 2 (3%) 3 (4%) ··
+Volumes of interest location ·· ·· ·· <0·0001 (Fisher’s)
+Adenopathy 53 (39%) 8 (12%) 45 (66%) ··
+Liver 37 (27%) 37 (54%) 0 (0) ··
+Abdominopelvic or subcutaneous 23 (17%) 20 (29%) 3 (4%) ··
+Lung 22 (16%) 2 (3%) 20 (29%) ··
+Head and neck 2 (1%) 2 (3%) 0 (0) ··
+Median radiomics score of CD8 cells (IQR) 1·91 (1·67–2·11) 1·67 (1·63–1·85) 2·12 (2·06–2·29) <0·0001 (Wilcoxon)
+Data are n (%), unless otherwise indicated. *Included gastric or oesophageal cancer (n=4), uveal melanoma (n=3), thyroid cancer (n=2), prostate cancer (n=1), and sarcoma (n=1).
+Table 2: Characteristics of patients in the immunotherapy-treated validation cohort
+
+
+Articles
+1186 www.thelancet.com/oncology Vol 19 September 2018
+Figure 3: Performance of the radiomic signature in training and validation datasets
+(A) AUC of the receiver operator characteristic of radiomic scores in the MOSCATO training set, TCGA validation set, and immune phenotype-based dataset. (B) Objective response to anti-PD-1/PD-L1 monotherapy relative to the CD8 T cells radiomic score, and overall survival of patients relative to the radiomic score (high or low, as defined by the median value). (C) Heatmap of correlations between the genomic signatures and radiomic signatures of CD8 T cells and the other cell populations, as estimated by the MCP-counter gene signatures28 in the MOSCATO training set and the TCGA validation set. AUC=area under the curve. TGCA=The Cancer Genome Atlas. PD-1=programmed cell death protein-1. PD-L1=programmed cell death ligand 1.
+0 0·2 0·4 0·6 0·8 1·0
+0
+True-positive rate
+False-positive rate
+AUC = 0·74 (95% CI 0·66–0·82) AUC = 0·67 (95% CI 0·57–0·77) AUC = 0·76 (95% CI 0·66–0·86)
+0·2
+0·4
+0·6
+0·8
+1·0
+Stable disease and disease control
+Stable disease, partial response, and complete response
+CD8 cell radiomic score
+Response to anti-PD-1 or anti-PD-L1 at 6 months
+Wilcoxon p value = 0·013
+0·2
+0·4
+0·8
+A MOSCATO training set
+0 0·2 0·4 0·6 0·8 1·0 False-positive rate
+B
+TCGA validation set
+0 0·2 0·4 0·6 0·8 1·0 False-positive rate
+C
+Assumed tumour immune phenotype
+0 4 8 12 16 20 24 28 32 36 40
+0
+Overall survival (%)
+Time (months)
+25
+50
+75
+100
+Number at risk (number censored) High Low
+68 (0) 69 (0)
+MOSCATO gene signature
+MOSCATO radiomic signature
+Genetic signatures of CD8 cells
+TCGA gene signature
+TCGA radiomic signature
+62 (1) 55 (0)
+54 (1) 41 (1)
+48 (2) 31 (2)
+46 (2) 24 (2)
+37 (2) 20 (2)
+34 (2) 20 (2)
+30 (4) 17 (2)
+27 (4) 15 (3)
+25 (5) 13 (3)
+21 (6) 11 (6)
++
++
+++ + + +
++
++
++ + ++ ++
+Hazard ratio = 0·58 (95% CI 0·39–0·87) p value = 0·0081
+Radiomics−based CD8 cell score ++
+High Low
+CD8 cells
+Cytotoxic lymphocytes
+T cells
+B lineage
+Natural killer cells
+Myeloid dentritic cells
+Endothelial cells
+Monocytic lineage
+Fibroblasts
+Neutrophils
+Colour key p value * <0·05
+** <0·01
+*** <0·001
+–1·0 –0·5 0 Spearman’s Rho
+0·5 1·0
+
+
+Articles
+www.thelancet.com/oncology Vol 19 September 2018 1187
+MOSCATO dataset was 1·60 (IQR 0·89–2·47). The score was developed for CD8 cell estimation using the elasticnet model (α=0·5, λ=0·2) and retained eight variables, including five radiomic features (one first-order and four second-order features from the grey-level run length matrix; details in the appendix p 14), two VOI locations (adenopathy and head and neck), and the peak kilovoltage variable (appendix p 6). The ability of the radiomic signature to classify high versus low abundance of CD8 infiltrate was shown to have an AUC of 0·74 (95% CI 0·66–0·82; p<0·0001) in the training set (figure 3). The radiomic score of CD8 cells was not correlated with tumour volume (Spearman’s rho –0·10; p=0·26; appendix p 8). The ability of the radiomic signature to predict the gene expression signature of CD8 cells in the TCGA validation set was shown to have an AUC of 0·67 (95% CI 0·57–0·77; p=0·0019; figure 3). Although the determination of a cutoff was not the aim of this study, sensitivity and specificity data of this signature are presented for information in the appendix (p 13). The radiomic score was significantly higher in the immune-inflamed group (median 1·99, IQR 1·59–2·02) than in the immune-desert group (1·55, 1·50–1·75; Wilcoxon’s difference in location –0·28, 95% CI –0.44 to –0·17; p<0·0001), and the ability of the radiomic signature to classify tumours was AUC 0·76 (95% CI 0·66–0·86; figure 3) in the tumour immune phenotype cohort. For the immunotherapy-treated cohort (table 2), the median follow-up was 16·5 months (IQR 6·6–38·9). At 3 months, the radiomic score at baseline was higher in the 31 (23%) patients with an objective response (complete response and partial response) than in the 106 (77%) patients with progressive disease and stable disease (Wilcoxon’s difference in location 0·12, 95% CI 9·9 × 10–6 to 2·3; p=0·049), but the radiomic score was not significantly higher in the 63 (46%) patients with controlled disease (stable disease, partial response, and compete response) than in the 74 (54%) patients with progressive disease (0·07, –1·8 ×10–4 to 0·21; p=0·050; appendix p 9). At 6 months, the radiomic score was significantly higher in patients with objective response (0·13, 0·007 to 0·23; p=0·025) than in patients with progressive disease and stable disease, and was significantly higher in patients with controlled disease (0·12, 0·017 to 0·23; p=0·013) than in patients with progressive disease (figure 3; appendix p 9). Overall survival was significantly improved in the group with a high radiomic score (68 [50%] patients; hazard ratio [HR] 0·58, 95% CI 0·39–0·87; p=0·0081) than in the low radiomic score group. The median overall survival was 24·3 months (95% CI 18·63–42·1) in the high radiomic score group versus 11·5 months (7·98–15·6) in the group of 69 (50%) patients with a low radiomic score (figure 3). Radiomic score was the strongest independent prognostic factor in multivariate analysis (HR 0·52, 95% CI 0·35–0·79; p=0·0022; appendix p 9).
+The correlations between the genomic and radiomic signatures of CD8 cells and other cell populations were estimated with the MCP-counter gene signatures in the MOSCATO and TCGA cohorts (figure 3). A significant correlation was observed between most of the cell populations and the genomic signatures of CD8 cells,
+Figure 4: Evaluation of agreement between radiomic score of CD8 T cells and pathology
+(A) Radiomic score of CD8 T cells as a function of the pathologist’s semi-quantitative quantification of tumour-infiltrating lymphocytes in the TCGA cohort, including patients with bladder cancer, liver hepatocellular carcinoma, lung adenocarcinoma, and lung squamous cell carcinoma. (B) Radiomic score of CD8 T cells by tumour type in head and neck tumours. Head and neck squamous cell carcinoma data are from the MOSCATO cohort (n=6) and the TCGA cohort (n=76), and adenoid cystic carcinoma data (n=4) are from the immune phenotype cohort. Seven patients with undifferentiated nasopharyngeal carcinomas from our institute (known to be very immune-inflamed) were added for this post-hoc analysis. TCGA=The Cancer Genome Atlas.
+0 10 20 30 40 50
+1·5
+Radiomic score of CD8 cells
+Pathologist’s quantification of tumour-infiltrating lymphocytes in the TCGA cohorts
+1·7
+1·9
+2·1
+Spearman’s rho=0·559 p value=0·00022
+A
+Adenoid cystic carcinoma
+MOSCATO: head and neck squamous cell carcinoma Cohort
+TCGA: head and neck squamous cell carcinoma
+Nasopharyngeal
+1·0
+Radiomic score of CD8 cells
+1·5
+2·0
+2·5
+Kruskal-Wallis, p=0·00046
+B
+p=0·025
+p=0·0078
+p=0·011
+p=0·73
+p=0·018
+p=0·0011
+
+
+Articles
+1188 www.thelancet.com/oncology Vol 19 September 2018
+but this correlation was most apparent between the radiomic score and the gene signatures for T-cell and B-cell populations in both cohorts. Significant inverse correlations were observed between abundance of CD8 cells and tumour-associated neutrophils in the TCGA validation cohort and both genomic (p=0·0079) and radiomic signatures (p<0·0001; figure 3). The pathologist’s quantification of tumour-infiltrating lymphocyte density and the radiomic score in the TCGA validation cohort were significantly correlated for the BLCA, LUAD, LUSC, and LIHC subgroups (39 [51%] of 77 patients; Spearman’s rho 0·559; p=0·00022), but not for the HNSC subgroup (38 [49%] of 77 patients; p=0·18 [data not shown]; figure 4). We therefore did a post-hoc analysis to regroup 93 head and neck tumours with different histologies; these groups included HNSC from MOSCATO (n=6), all the HNSC from MOSCATO (n=76), all the adenoid cystic carcinomas from the TCGA phenotype-based dataset (n=4), and a sample of patients with undifferentiated nasopharyngeal cancers from our centre (n=7). The radiomic predictor could significantly discriminate between the different head and neck tumour types on the basis of tumour immune infiltration. Specifically, as is consistent with the medical literature, adenoid cystic carcinoma has lower immune infiltration than HNSC, and undifferentiated nasopharyngeal cancer has higher infiltration than HNSC (p=0·00046; figure 4).22,33 A sensitivity analysis of the performance of the radiomic predictor was done without the non-radiomic variables as input variables for the machine learning in the MOSCATO training set (VOI location and peak kilovoltage). This analysis showed poorer prediction performance in the TCGA validation set, underscoring the importance of adjusting to these parameters when developing predictive radiomic metrics (appendix p 12).
+Discussion
+With increasing use of immunotherapy in cancer, knowledge of an individual’s immune status could help identify those who will respond to treatment.9,13 Radiomics approaches, when combined with tumour biopsies and genomics, could improve treatment selection. In our study, we developed a radiomic signature of tumour immune infiltration from CT scans. Access to both RNA-seq data and images of the biopsied lesion in the MOSCATO trial14 and the clinical data of patients from phase 1 trials17,18 of anti-PD-1 or anti-PD-L1 therapy were used to assess links between imaging features, transcriptomic data, tumour immune phenotype, and clinical responses to immunotherapy. Immune infiltration was modelled by use of the CD8B gene, in accordance with the CD8 cell signature by Becht and colleagues,19 who specifically showed an association of this gene with the infiltration of CD8 cells that was distinct from both the cytotoxic T-cell signature (which includes natural killer cells), and the T-cell signature (which includes CD4 and
+naive T cells) that are available in the same package for R.19 Radiomic features from the tumour and features in its periphery can provide information on both the tumour and its microenvironment.13,34 We validated the radiomic signature of CD8 cells with the TCGA dataset, confirmed an association with immune phenotype in a second independent cohort, and the radiomic signature was able to predict the clinical outcomes of patients treated with anti-PD-1 or anti-PD-L1. The importance of radiomics is shown by the increasing number of oncological clinical trials being done that use radiomics. To date, 27 clinical studies are registered in ClinicalTrials.gov, including one prospective study of pembrolizumab (NCT02644369). Although immunotherapy is increasingly used in oncology, two recent randomised controlled trials showed that PD-L1 was not associated with clinical response.35,36 Therefore, development of new biomarkers that predict response to immunotherapy are needed. Our study attempts to address this need by proposing a CT-based biomarker, which could be useful and accessible given the widespread availability and routine use of CT. This radiomic signature comprises textural features from the grey-level run length matrix.37 This matrix reflects homogeneity or heterogeneity of an image. An intuitive interpretation of the signature is that relatively homogeneous and hypodense tumours and peripheral rings were associated with a high CD8 cell score (appendix p 14). These patterns could be representative of inflammatory infiltrate, whereas heterogeneity and high grey levels might be more representative of heterogeneous and intertwined processes, such as chaotic vascularisation and necrosis. Notably, a 2017 study34 that evaluated features extracted from the tumour (intratumoral) and its periphery (peritumoral) in the context of neoadjuvant chemotherapy for breast cancer showed an association between pathological complete response and the same radiomic pattern as the one used in this study. Moreover, pathological complete response was associated with infiltration of lymphocytes into tumours, which is concordant with our results.34 It is of note that the signature included peak kilovoltage and VOI locations. That the image acquisition variable peak kilovoltage was retained highlights the need to account for image acquisition variability when cohorts are heterogeneous, given that textural features are highly dependent on it.29,38 VOI locations were included by design to account for radiomic information likely related only to the organ analysed, because it is recognised that tissue origin has a major effect on the tumour immune contexture.39 The machine-learning model retained three groups, which were adenopathy, head and neck cancers, and other cancers. Notably, several points strengthening the biological and clinical relevance of this radiomic signature have been identified. The abundance of CD8 cells, which was estimated either by the gene expression signature or the
+
+
+Articles
+www.thelancet.com/oncology Vol 19 September 2018 1189
+radiomic signature, was correlated with the abundance of other immune populations in both MOSCATO and TCGA datasets, particularly the cytotoxic lymphocytes, which include CD8 cells, natural killer cells, and B cells. This correlation might be related to the presence of tertiary lymphoid structures within the tumour, which are characterised by the presence of T cells, mature dendritic cells, a follicular centre with follicular dendritic cells, proliferating B cells, and high endothelial venules.40 Tertiary lymphoid structures are associated with favourable prognosis.41 Conversely, an inverse correlation of the abundance of CD8 cells with tumour-associated neutrophils was found in the TCGA dataset. However, it has been shown that tumour cells can attract and activate immunosuppressive immune cells, including tumourassociated neutrophils, while blocking T-cell function.42,43 These correlations are concordant with these biological processes. Regarding the clinical relevance of our results, although distribution of tumour types did not differ between high and low radiomic-signature score groups in the immunotherapy-treated cohort, all patients with liver lesions were in the low radiomic score group, which corresponded to poor overall survival. This finding is concordant with previous reports from Tumeh and colleagues,44 who found that patients with melanoma and non-small-cell lung cancer who had liver metastasis had reduced responses to anti-PD-1 because of reduced marginal infiltration by CD8 cells. To our knowledge, this is the first study to show that radiomics can be used to infer clinical outcomes of patients treated with immunotherapy. Four studies34,45–47 have evaluated imaging as a biomarker for immune infiltration or immune pathways, but no patients in these studies were treated with immunotherapy, and only one of these studies46 validated their radiomic signatures in an independent cohort. Grossmann and colleagues46 analysed two independent cohorts of 262 patients and 89 patients with lung cancer who received surgery, to assess associations between radiomic features and underlying molecular pathways. By use of biclustering, they identified three clusters of 58, eight, and 32 radiomic features that associated with five, 30, and 27 pathways related to the immune system or p53 (AUCs 0·64–0·69 in the validation set). Grossmann and colleagues also did immunohistochemical staining for CD3 in 22 tumours that were predicted to have high or low immune response based on one radiomic feature, and they found agreement between radiomic features and pathology. However, because the choice of the radiomic feature was made on the basis of a gene signature that was not part of the three identified radiomics-immune pathways clusters and had no proper validation, the results should be interpreted with caution. Tang and colleagues45 used unsupervised machine learning to identify a radiomic signature that was based on four features in patients with lung cancer who received surgery. This signature separated patients into four clusters (A–D). These
+clusters were associated with overall survival in the training set (5-year overall survival: 61% for A, 41% for B, 50% for C, and 91% for D; p=0·04) and validation sets (5-year overall survival: 55% for A, 72% for B, 75% for C, and 86% for D; p=0·002). Notably, cluster D had the lowest PD-L1-positive tumour cell count and the highest infiltrating CD3 T-cell count. These studies showed associations between radiomics and either genomics or biology. Our study goes further by illustrating a link between standard medical images and gene expression signature of CD8 cells, the quantity of tumour-infiltrating lymphocytes, tumour immune phenotype, and clinical outcomes of immunotherapy. Our study has some limitations, the first of which is the heterogeneity of the cohorts. The choice of heterogeneous cohorts was motivated by the objective to find a generic method for tumour characterisation that captures the tumour’s underlying behaviour. The selection of statistically different cohorts for training and testing guarantees that no overfitting to a particular subset of tumours is present, instead providing good generalisation across tumour types and locations. We therefore tried to homogenise data by setting quality standards, making a preselection of images in terms of the reconstruction algorithm, and accounting for image acquisition parameters. However, these restrictions resulted in fewer eligible patients, particularly for the TCGA cohort, in which patients came from several centres. Because of the retrospective nature of our study, further evaluation in large prospective studies is warranted to validate the results. In the immune phenotype validation cohort, we chose only to focus on two of the three described immune phenotypes: the immune-inflamed and immune-desert. This choice was made to dichotomise the radiomic score into high and low and analyse the results accordingly. We focused on CD8 cells within tumours because the absence of lymphocytes was consistently associated with poor response to immunotherapy.9,13,48 To account for the spatial distribution of the lymphocytes in the tumour microenvironment, tumours and peripheral rims were delineated, and the signature was used to predict CD8 gene expression on the basis of imaging variables from both. Future prospective studies could incorporate these three phenotypes or, perhaps, additional immunological subtypes as understanding of the tumour and stromal immune functions develops. Indeed, six novel immune subtypes have been identified to date: wound healing, interferon-γ dominant, inflammatory, lymphocyte-depleted, immunologically quiet, and TGF-β dominant.48,49 Another study50 also suggested a link between immune cell infiltration into tumours and response to immunotherapy, regardless of spatial parameters, underscoring the fact that this is a rapidly developing field. Moreover, the functional status of lymphocytes might be important to consider (such as in PD-1/PD-L1 interaction), especially if CD8 cells are
+
+
+Articles
+1190 www.thelancet.com/oncology Vol 19 September 2018
+assessed over time, because it has been shown that tumour-repopulating cells induce PD-1 expression in CD8 cells.51 In conclusion, our study suggests that radiomics could be an efficient, non-invasive, cost-effective, and reliable way to evaluate patients’ responses to precision medicine. Although these results need to be validated in large-scale prospective studies, in which several challenges remain (such as the standardisation of image acquisition), these findings suggest the potential for non-invasive biomarker development in immunotherapy.
+Contributors
+The INSERM U1030 Radiomics team (RS, EJL, ED, and CF) was responsible for trial conception and coordination, data analysis, and manuscript writing. RS, ED, and CF conceived the study; RS, NP, ED, and CF designed the study; RS, EJL, LD, SC, SRH, LV, DB, SA, AH, AM, CM, and J-CS acquired the data; RS, EJL, MV, DB, CR, NP, and CF implemented quality control of data and the algorithms; RS, EJL, MV, SRH, J-YS, CR, NP, and CF analysed and interpreted the data; RS, MV, and CF did the statistical analyses; RS and EJL prepared the first draft of the manuscript; RS, EJL, MV, CR, NP, ED, and CF edited the manuscript; and LD, SC, SRH, LV, DB, AL, SA, AH, J-YS, AM, CM, and J-CS reviewed the manuscript.
+Declaration of interests
+LV reports personal fees from Adaptherapy, outside the submitted work. AH reports receiving travel and accommodation expenses from Amgen and Servier and honoraria from Merck Serono, and serving in an advisory role for Amgen and Lilly. AM reports consultancy fees and honoraria for scientific advisory services from Roche/Genentech, BMS, Merck, Pfizer, Novartis, GSK, Lytix Biopharma, Biothera, and Nektar, outside the submitted work. CM reports consultancy fees and honoraria for scientific advisory services from Amgen, Astellas, AstraZeneca, Bayer, Celgene, Genentech, Ipsen, Jansen, Lilly, Novartis, Pfizer, Roche, Sanofi, and Orion, outside the submitted work. J-CS has been a full-time employee of Medimmune/AstraZeneca since Sept 13, 2017, and reports consultancy fees from AstraZeneca, Roche, Servier, and Tarveda, outside the submitted work. ED reports personal fees from Roche Genentech and Merck Serono and grants from Roche Genentech, Merck Serono, Servier, AstraZeneca, BMS, and MSD, outside the submitted work. CF has been a full-time employee of Medimmune since Sept 1, 2017. All other authors declare no competing interests.
+Acknowledgments
+We thank the patients who participated in this study. We would like to acknowledge The Cancer Genome Atlas, The Cancer Imaging Archive, and The Cancer Digital Slide Archive. This work was supported by the Fondation pour la Recherche Médicale (FRM; no. DIC20161236437) to CF, NP, and ED, and by a SIRIC SOCRATE 2.0 grant (INCa-DGOS-INSERM_12551) to Gustave Roussy and ED. RS was supported by the French Society of Radiation Oncology (SFRO) as the recipient of the Maurice Tubiana’s Grant 2016. The authors thank Yuki Takahashi for English editing and Cedric Verjat for editing the figures, which was funded by an FRM grant (DIC20161236437).
+References
+1 Limkin EJ, Sun R, Dercle L, et al. Promises and challenges for the implementation of computational medical imaging (radiomics) in oncology. Ann Oncol 2017; 28: 1191–206. 2 Gillies RJ, Anderson AR, Gatenby RA, Morse DL. The biology underlying molecular imaging in oncology: from genome to anatome and back again. Clin Radiol 2010; 65: 517–21. 3 Aerts HJ, Velazquez ER, Leijenaar RT, et al. Decoding tumour phenotype by noninvasive imaging using a quantitative radiomics approach. Nat Commun 2014; 5: 4006. 4 Sun R, Orlhac F, Robert C, et al. In regard to Mattonen et al. Int J Radiat Oncol Biol Phys 2016; 95: 1544–45.
+5 Robert C, Schachter J, Long GV, et al. Pembrolizumab versus ipilimumab in advanced melanoma. N Engl J Med 2015; 372: 2521–32.
+6 Ansell SM. Hodgkin lymphoma: MOPP chemotherapy to PD-1 blockade and beyond. Am J Hematol 2015; 91: 109–12. 7 Reck M, Rodríguez-Abreu D, Robinson AG, et al. Pembrolizumab versus chemotherapy for PD-L1-positive non-small-cell lung cancer. N Engl J Med 2016; 375: 1823–33. 8 Chen DS, Mellman I. Elements of cancer immunity and the cancer-immune set point. Nature 2017; 541: 321–30. 9 Herbst RS, Soria JC, Kowanetz M, et al. Predictive correlates of response to the anti-PD-L1 antibody MPDL3280A in cancer patients. Nature 2014; 515: 563–67. 10 Kim JM, Chen DS. Immune escape to PD-L1/PD-1 blockade: seven steps to success (or failure). Ann Oncol 2016; 27: 1492–504. 11 Hugo W, Zaretsky JM, Sun L, et al. Genomic and transcriptomic features of response to anti-PD-1 therapy in metastatic melanoma. Cell 2016; 165: 35–44. 12 Hegde PS, Karanikas V, Evers S. The where, the when, and the how of immune monitoring for cancer immunotherapies in the era of checkpoint inhibition. Clin Cancer Res 2016; 22: 1865–74. 13 Tumeh PC, Harview CL, Yearley JH, et al. PD-1 blockade induces responses by inhibiting adaptive immune resistance. Nature 2014; 515: 568–71. 14 Massard C, Michiels S, Ferté C, et al. High-throughput genomics and clinical outcome in hard-to-treat advanced cancers: results of the MOSCATO 01 trial. Cancer Discov 2017; 7: 586–95. 15 Grabowski P, Joehrens K, Arsenic R, et al. Tumor infiltrating lymphocytes and PD-L1 expression differ in low and high grade neuroendocrine tumors (abstract). Neuroendocrinology 2015; 10: 107–08. 16 Crow J. Pathology of uterine fibroids. Baillieres Clin Obstet Gynaecol 1998; 12: 197–211. 17 Champiat S, Dercle L, Ammari S, et al. Hyperprogressive disease is a new pattern of progression in cancer patients treated by anti-PD-1/PD-L1. Clin Cancer Res 2017; 23: 1920–28. 18 Sun R, Champiat S, Dercle L, et al. Baseline lymphopenia should not be used as exclusion criteria in early clinical trials investigating immune checkpoint blockers (PD-1/PD-L1 inhibitors). Eur J Cancer 2017; 84: 202–11. 19 Becht E, Giraldo NA, Lacroix L, et al. Estimating the population abundance of tissue-infiltrating immune and stromal cell populations using gene expression. Genome Biol 2016; 17: 218. 20 Clark K, Vendt B, Smith K, et al. The Cancer Imaging Archive (TCIA): maintaining and operating a public information repository. J Digit Imaging 2013; 26: 1045–57.
+21 Weinstein JN, Collisson EA, Mills GB, et al. The Cancer Genome Atlas Pan-Cancer analysis project. Nat Genet 2013; 45: 1113–20. 22 Sridharan V, Gjini E, Liao X, et al. Immune profiling of adenoid cystic carcinoma: PD-L2 expression and associations with tumor-infiltrating lymphocytes. Cancer Immunol Res 2016; 4: 679–87. 23 Hatt M, Majdoub M, Vallières M, et al. 18F-FDG PET uptake characterization through texture analysis: investigating the complementary nature of heterogeneity and functional tumor volume in a multi-cancer site patient cohort. J Nucl Med 2015; 56: 38–44. 24 Vallières M, Kay-Rivest E, Perrin LJ, et al. Radiomics strategies for risk assessment of tumour failure in head-and-neck cancer. Sci Rep 2017; 7: 10117. 25 Nioche C, Orlhac F, Boughdad S, et al. A freeware for tumor heterogeneity characterization in PET, SPECT, CT, MRI and US to accelerate advances in radiomics. J Nucl Med 2017; 58 (suppl 1): S1316. 26 Leijenaar RT, Nalbantov G, Carvalho S, et al. The effect of SUV discretization in quantitative FDG-PET radiomics: the need for standardized methodology in tumor texture analysis. Sci Rep 2015; 5: 11075. 27 Patro R, Duggal G, Love MI, Irizarry RA, Kingsford C. Salmon provides fast and bias-aware quantification of transcript expression. Nat Methods 2017; 14: 417–19. 28 TGCA. TCGA Pancancer Freeze v4.6. https://www.synapse.org/ #!Synapse:syn1701959 (accessed Aug 7, 2018). 29 Miles KA, Ganeshan B, Griffiths MR, Young RCD, Chatwin CR. Colorectal cancer: texture analysis of portal phase hepatic CT images as a potential marker of survival. Radiology 2009; 250: 444–52.
+
+
+Articles
+www.thelancet.com/oncology Vol 19 September 2018 1191
+30 Zou H, Hastie T. Regularization and variable selection via the elastic net. J R Stat Soc Series B Stat Methodol 2005; 67: 301–20. 31 Gutman DA, Cobb J, Somanna D, et al. Cancer Digital Slide Archive: an informatics resource to support integrated in silico analysis of TCGA pathology data. J Am Med Inform Assoc 2013; 20: 1091–98. 32 Arkenau HT, Barriuso J, Olmos D, et al. Prospective validation of a prognostic score to improve patient selection for oncology phase I trials. J Clin Oncol 2009; 27: 2692–96. 33 Jayasurya A, Bay BH, Yap WM, Tan NG. Lymphocytic infiltration in undifferentiated nasopharyngeal cancer.
+Arch Otolaryngol Head Neck Surg 2000; 126: 1329–32.
+34 Braman NM, Etesami M, Prasanna P, et al. Intratumoral and peritumoral radiomics for the pretreatment prediction of pathological complete response to neoadjuvant chemotherapy based on breast DCE-MRI. Breast Cancer Res 2017; 19: 57. 35 Gandhi L, Rodríguez-Abreu D, Gadgeel S, et al. Pembrolizumab plus chemotherapy in metastatic non-small-cell lung cancer. N Engl J Med 2018; 378: 2078–92. 36 Antonia SJ, Villegas A, Daniel D, et al. Durvalumab after chemoradiotherapy in stage III non-small-cell lung cancer. N Engl J Med 2017; 377: 1919–29. 37 Galloway MM. Texture analysis using gray level run lengths. Computer Graphics and Image Processing 1975; 4: 172–79. 38 Fletcher JG, Leng S, Yu L, McCollough CH. Dealing with uncertainty in CT Images. Radiology 2016; 279: 5–10. 39 Pao W, Ooi CH, Birzele F, et al. Tissue-specific immunoregulation: a call for better understanding of the “immunostat” in the context of cancer. Cancer Discov 2018; 8: 395–402. 40 Teillaud JL, Dieu-Nosjean MC. Tertiary lymphoid structures: an anti-tumor school for adaptive immune cells and an antibody factory to fight cancer? Front Immunol 2017; 8: 830. 41 Goc J, Fridman WH, Hammond SA, Sautès-Fridman C, Dieu-Nosjean MC. Tertiary lymphoid structures in human lung cancers, a new driver of antitumor immune responses. Oncoimmunology 2014; 3: e28976.
+42 Marvel D, Gabrilovich DI. Myeloid-derived suppressor cells in the tumor microenvironment: expect the unexpected. J Clin Invest 2015; 125: 3356–64. 43 Lanitis E, Dangaj D, Irving M, Coukos G. Mechanisms regulating T-cell infiltration and activity in solid tumors. Ann Oncol 2017; 28 (suppl 12): xii18–32. 44 Tumeh PC, Hellmann MD, Hamid O, et al. Liver metastasis and treatment outcome with anti-PD-1 monoclonal antibody in patients with melanoma and NSCLC. Cancer Immunol Res 2017; 5: 417–24. 45 Tang C, Hobbs B, Amer A, et al. Development of an immune-pathology informed radiomics model for non-small cell lung cancer. Sci Rep 2018; 8: 1922. 46 Grossmann P, Stringfield O, El-Hachem N, et al. Defining the biological basis of radiomic phenotypes in lung cancer. Elife 2017; 6: e23421. 47 Chen RY, Lin YC, Shen WC, et al. Associations of tumor PD-1 ligands, immunohistochemical studies, and textural features in 18F-FDG PET in squamous cell carcinoma of the head and neck. Sci Rep 2018; 8: 105. 48 Thorsson V, Gibbs DL, Brown SD, et al. The immune landscape of cancer. Immunity 2018; 48: 812–30. 49 Saltz J, Gupta R, Hou L, et al. Spatial organization and molecular correlation of tumor-infiltrating lymphocytes using deep learning on pathology images. Cell Rep 2018; 23: 181–93. 50 Davoli T, Uno H, Wooten EC, Elledge SJ. Tumor aneuploidy correlates with markers of immune evasion and with reduced response to immunotherapy. Science 2017; 355: eaaf8399. 51 Liu Y, Liang X, Dong W, et al. Tumor-repopulating cells induce PD-1 expression in CD8+ T cells by transferring kynurenine and AhR activation. Cancer Cell 2018; 33: 480–94.
