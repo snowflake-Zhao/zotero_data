@@ -1,0 +1,1676 @@
+Computer Graphics/Visualization
+
+INTERACTIVE
+D V ATA ISIUNTAELRIAZCATITVIEON
+
+Interactive Data Visualization: Foundations, Techniques, and Applications, Second Edition provides all the theory, details, and tools necessary to build visualizations and systems involving the visualization of data. In color throughout, it explains basic terminology and concepts, algorithmic and software engineering issues, and commonly used techniques and
+
+high-level algorithms. Full source code is provided for completing implementations.
+
+New to the Second Edition
+
+FOUNDATIONS, TECHNIQUES, AND APPLICATIONS
+
+• New related readings, exercises, aSndEproCgraOmmNingDprojecEts D I T I O N
+• Better quality figures and numerous new figures • New chapter on techniques for time-oriented data
+
+This popular book continues to explore the fundamental components of the visualization process, from the data to the human viewer. For developers, the book offers guidance on designing effective visualizations using methods derived from human perception, graphical design, art, and usability analysis. For practitioners, it shows how various public and commercial visualization systems are used to solve speci c problems in diverse domains. For researchers, the text describes emerging technology and hot topics in development at academic and industrial centers today.
+
+Features
+
+• Covers the full range of data visualizations, including mathematical and statistical graphs, cartography for displaying geographic information, two- and three-dimensional scientific displays, and general information visualization techniques
+• Discusses implementation and language issues, performance demands and limitations, and application requirements and results
+• Describes how visualizations are used in knowledge discovery, problem solving, visual analytics, and other application areas, enabling visualization system users to select appropriate tools for their tasks
+• Explores directions for current and future research • Presents many exercises and programming projects at the end of each chapter • Offers a wealth of ancillary materials on the book’s website, including software tools and
+example data sets
+
+K24093
+
+ISBN: 978-1-4822-5737-3
+90000
+9 781482 257373
+
+DATA VISUALIZATION
+
+INTERACTIVE
+
+WARD GRINSTEIN
+KEIM
+SECOND EDITION
+
+VE
+
+AN A K PETERS BOOK
+INTERACTIVE
+FOUNDATIONS, TECHNIQUES, AND APPLICATIONS
+MATTHEW O. WARD | GEORGES GRINSTEIN | DANIEL KEIM
+
+Interactive Data Visualization
+
+Interactive Data Visualization
+Foundations, Techniques, and Applications
+Second Edition
+Matthew Ward Georges Grinstein Daniel Keim
+
+CRC Press Taylor & Francis Group 6000 Broken Sound Parkway NW, Suite 300 Boca Raton, FL 33487-2742
+© 2015 by Taylor & Francis Group, LLC CRC Press is an imprint of Taylor & Francis Group, an Informa business
+No claim to original U.S. Government works Version Date: 20141027
+International Standard Book Number-13: 978-1-4822-5738-0 (eBook - PDF)
+This book contains information obtained from authentic and highly regarded sources. Reasonable efforts have been made to publish reliable data and information, but the author and publisher cannot assume responsibility for the validity of all materials or the consequences of their use. The authors and publishers have attempted to trace the copyright holders of all material reproduced in this publication and apologize to copyright holders if permission to publish in this form has not been obtained. If any copyright material has not been acknowledged please write and let us know so we may rectify in any future reprint.
+Except as permitted under U.S. Copyright Law, no part of this book may be reprinted, reproduced, transmitted, or utilized in any form by any electronic, mechanical, or other means, now known or hereafter invented, including photocopying, microfilming, and recording, or in any information storage or retrieval system, without written permission from the publishers.
+For permission to photocopy or use material electronically from this work, please access www.copyright.com (http://www.copyright.com/) or contact the Copyright Clearance Center, Inc. (CCC), 222 Rosewood Drive, Danvers, MA 01923, 978-750-8400. CCC is a not-for-profit organization that provides licenses and registration for a variety of users. For organizations that have been granted a photocopy license by the CCC, a separate system of payment has been arranged.
+Trademark Notice: Product or corporate names may be trademarks or registered trademarks, and are used only for identification and explanation without intent to infringe.
+Visit the Taylor & Francis Web site at http://www.taylorandfrancis.com
+and the CRC Press Web site at http://www.crcpress.com
+
+To our spouses Meredyth, Janet, and Ilse
+
+Contents
+
+Preface to the First Edition . . . . . . . . . . . . . . . . . . . . . xiii Preface to the Second Edition . . . . . . . . . . . . . . . . . . . . xix
+
+1 Introduction
+
+1
+
+1.1 What Is Visualization? . . . . . . . . . . . . . . . . . . . . 1
+
+1.2 History of Visualization . . . . . . . . . . . . . . . . . . . 7
+
+1.3 Relationship between Visualization and Other Fields . . . 23
+
+1.4 The Visualization Process . . . . . . . . . . . . . . . . . . 28
+
+1.5 The Role of Cognition . . . . . . . . . . . . . . . . . . . . 38
+
+1.6 Pseudocode Conventions . . . . . . . . . . . . . . . . . . . 38
+
+1.7 The Scatterplot . . . . . . . . . . . . . . . . . . . . . . . . 40
+
+1.8 The Role of the User . . . . . . . . . . . . . . . . . . . . . 45
+
+1.9 Related Readings . . . . . . . . . . . . . . . . . . . . . . . 47
+
+1.10 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49
+
+1.11 Projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50
+
+2 Data Foundations
+
+51
+
+2.1 Types of Data . . . . . . . . . . . . . . . . . . . . . . . . . 52
+
+2.2 Structure within and between Records . . . . . . . . . . . 53
+
+2.3 Data Preprocessing . . . . . . . . . . . . . . . . . . . . . . 56
+
+2.4 Data Sets Used in This Book . . . . . . . . . . . . . . . . 73
+
+2.5 Related Readings . . . . . . . . . . . . . . . . . . . . . . . 76
+
+2.6 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . 77
+
+2.7 Projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 78
+
+vii
+
+viii
+
+Contents
+
+3 Human Perception and Information Processing
+
+81
+
+3.1 What Is Perception? . . . . . . . . . . . . . . . . . . . . . 81
+
+3.2 Physiology . . . . . . . . . . . . . . . . . . . . . . . . . . . 86
+
+3.3 Perceptual Processing . . . . . . . . . . . . . . . . . . . . 97
+
+3.4 Perception in Visualization . . . . . . . . . . . . . . . . . 118
+
+3.5 Metrics . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 125
+
+3.6 Cognition . . . . . . . . . . . . . . . . . . . . . . . . . . . 136
+
+3.7 Related Readings . . . . . . . . . . . . . . . . . . . . . . . 136
+
+3.8 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . 137
+
+3.9 Projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 138
+
+4 Visualization Foundations
+
+139
+
+4.1 The Visualization Process in Detail . . . . . . . . . . . . . 140
+
+4.2 Semiology of Graphical Symbols . . . . . . . . . . . . . . . 143
+
+4.3 The Eight Visual Variables . . . . . . . . . . . . . . . . . 147
+
+4.4 Historical Perspective . . . . . . . . . . . . . . . . . . . . 159
+
+4.5 Taxonomies . . . . . . . . . . . . . . . . . . . . . . . . . . 175
+
+4.6 Related Readings . . . . . . . . . . . . . . . . . . . . . . . 179
+
+4.7 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . 180
+
+4.8 Projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 180
+
+5 Visualization Techniques for Spatial Data
+
+183
+
+5.1 One-Dimensional Data . . . . . . . . . . . . . . . . . . . . 184
+
+5.2 Two-Dimensional Data . . . . . . . . . . . . . . . . . . . . 187
+
+5.3 Three-Dimensional Data . . . . . . . . . . . . . . . . . . . 192
+
+5.4 Dynamic Data . . . . . . . . . . . . . . . . . . . . . . . . 204
+
+5.5 Combining Techniques . . . . . . . . . . . . . . . . . . . . 211
+
+5.6 Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . 216
+
+5.7 Related Readings . . . . . . . . . . . . . . . . . . . . . . . 217
+
+5.8 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . 217
+
+5.9 Projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 218
+
+6 Visualization Techniques for Geospatial Data
+
+221
+
+6.1 Visualizing Spatial Data . . . . . . . . . . . . . . . . . . . 221
+
+6.2 Visualization of Point Data . . . . . . . . . . . . . . . . . 232
+
+6.3 Visualization of Line Data . . . . . . . . . . . . . . . . . . 235
+
+6.4 Visualization of Area Data . . . . . . . . . . . . . . . . . . 239
+
+6.5 Other Issues in Geospatial Data Visualization . . . . . . . 247
+
+6.6 Related Readings . . . . . . . . . . . . . . . . . . . . . . . 249
+
+6.7 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . 250
+
+6.8 Projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 251
+
+Contents
+
+ix
+
+7 Visualization Techniques for Time-Oriented Data
+
+253
+
+7.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . 254
+
+7.2 Deﬁnitions: Characterizing Time-Oriented Data . . . . . . 255
+
+7.3 Visualizing Time-Oriented Data . . . . . . . . . . . . . . . 260
+
+7.4 TimeBench: A Data Model and Software Library for Vi-
+
+sual Analytics of Time-Oriented Data . . . . . . . . . . . 278
+
+7.5 Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . 280
+
+7.6 Related Readings . . . . . . . . . . . . . . . . . . . . . . . 282
+
+7.7 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . 283
+
+7.8 Projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 283
+
+8 Visualization Techniques for Multivariate Data
+
+285
+
+8.1 Point-Based Techniques . . . . . . . . . . . . . . . . . . . 285
+
+8.2 Line-Based Techniques . . . . . . . . . . . . . . . . . . . . 292
+
+8.3 Region-Based Techniques . . . . . . . . . . . . . . . . . . 299
+
+8.4 Combinations of Techniques . . . . . . . . . . . . . . . . . 306
+
+8.5 Related Readings . . . . . . . . . . . . . . . . . . . . . . . 316
+
+8.6 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . 316
+
+8.7 Projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 317
+
+9 Visualization Techniques for Trees, Graphs, and Networks
+
+319
+
+9.1 Displaying Hierarchical Structures . . . . . . . . . . . . . 320
+
+9.2 Displaying Arbitrary Graphs/Networks . . . . . . . . . . . 326
+
+9.3 Other Issues . . . . . . . . . . . . . . . . . . . . . . . . . . 334
+
+9.4 Related Readings . . . . . . . . . . . . . . . . . . . . . . . 337
+
+9.5 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . 338
+
+9.6 Projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 339
+
+10 Text and Document Visualization
+
+341
+
+10.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . 341
+
+10.2 Levels of Text Representations . . . . . . . . . . . . . . . 342
+
+10.3 The Vector Space Model . . . . . . . . . . . . . . . . . . . 343
+
+10.4 Single Document Visualizations . . . . . . . . . . . . . . . 348
+
+10.5 Document Collection Visualizations . . . . . . . . . . . . . 351
+
+10.6 Extended Text Visualizations . . . . . . . . . . . . . . . . 354
+
+10.7 Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . 361
+
+10.8 Related Readings . . . . . . . . . . . . . . . . . . . . . . . 362
+
+10.9 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . 362
+
+10.10 Projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 363
+
+x
+
+Contents
+
+11 Interaction Concepts
+
+365
+
+11.1 Interaction Operators . . . . . . . . . . . . . . . . . . . . . 366
+
+11.2 Interaction Operands and Spaces . . . . . . . . . . . . . . 372
+
+11.3 A Uniﬁed Framework . . . . . . . . . . . . . . . . . . . . . 382
+
+11.4 Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . 383
+
+11.5 Related Readings . . . . . . . . . . . . . . . . . . . . . . . 384
+
+11.6 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . 384
+
+11.7 Projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 385
+
+12 Interaction Techniques
+
+387
+
+12.1 Screen Space . . . . . . . . . . . . . . . . . . . . . . . . . 387
+
+12.2 Object Space (3D Surfaces) . . . . . . . . . . . . . . . . . 388
+
+12.3 Data Space (Multivariate Data Values) . . . . . . . . . . . 391
+
+12.4 Attribute Space (Properties of Graphical Entities) . . . . 392
+
+12.5 Data Structure Space (Components of Data Organization) 394
+
+12.6 Visualization Structure Space (Components of the
+
+Data Visualization) . . . . . . . . . . . . . . . . . . . . . . 396
+
+12.7 Animating Transformations . . . . . . . . . . . . . . . . . 397
+
+12.8 Interaction Control . . . . . . . . . . . . . . . . . . . . . . 402
+
+12.9 Related Readings . . . . . . . . . . . . . . . . . . . . . . . 404
+
+12.10 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . 405
+
+12.11 Projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 405
+
+13 Designing Effective Visualizations
+
+407
+
+13.1 Steps in Designing Visualizations . . . . . . . . . . . . . . 408
+
+13.2 Problems in Designing Eﬀective Visualizations . . . . . . . 419
+
+13.3 Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . 428
+
+13.4 Related Readings . . . . . . . . . . . . . . . . . . . . . . . 429
+
+13.5 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . 429
+
+13.6 Projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 430
+
+14 Comparing and Evaluating Visualization Techniques
+
+433
+
+14.1 User Tasks . . . . . . . . . . . . . . . . . . . . . . . . . . . 434
+
+14.2 User Characteristics . . . . . . . . . . . . . . . . . . . . . 435
+
+14.3 Data Characteristics . . . . . . . . . . . . . . . . . . . . . 436
+
+14.4 Visualization Characteristics . . . . . . . . . . . . . . . . . 437
+
+14.5 Structures for Evaluating Visualizations . . . . . . . . . . 438
+
+14.6 Benchmarking Procedures . . . . . . . . . . . . . . . . . . 440
+
+14.7 An Example of Visualization Benchmarking . . . . . . . . 441
+
+14.8 Related Readings . . . . . . . . . . . . . . . . . . . . . . . 446
+
+Contents
+
+xi
+
+14.9 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . 446 14.10 Projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 447
+
+15 Visualization Systems
+
+449
+
+15.1 Systems Based on Data Type . . . . . . . . . . . . . . . . 449
+
+15.2 Systems Based on Analysis Type . . . . . . . . . . . . . . 456
+
+15.3 Text Analysis and Visualization . . . . . . . . . . . . . . . 462
+
+15.4 Modern Integrated Visualization Systems . . . . . . . . . 464
+
+15.5 Toolkits . . . . . . . . . . . . . . . . . . . . . . . . . . . . 465
+
+15.6 Libraries . . . . . . . . . . . . . . . . . . . . . . . . . . . . 472
+
+15.7 Related Readings . . . . . . . . . . . . . . . . . . . . . . . 475
+
+15.8 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . 476
+
+15.9 Projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 476
+
+16 Research Directions in Visualization
+
+477
+
+16.1 Issues of Data . . . . . . . . . . . . . . . . . . . . . . . . . 478
+
+16.2 Issues of Cognition, Perception, and Reasoning . . . . . . 480
+
+16.3 Issues of System Design . . . . . . . . . . . . . . . . . . . 481
+
+16.4 Issues of Evaluation . . . . . . . . . . . . . . . . . . . . . 482
+
+16.5 Issues of Hardware . . . . . . . . . . . . . . . . . . . . . . 483
+
+16.6 Issues of Applications . . . . . . . . . . . . . . . . . . . . . 485
+
+16.7 Related Readings . . . . . . . . . . . . . . . . . . . . . . . 487
+
+16.8 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . 487
+
+16.9 Projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 488
+
+A History of Computer Graphics and Visualization
+
+491
+
+B Example Data Sets
+
+497
+
+C Sample Programs
+
+501
+
+Bibliography
+
+515
+
+Index
+
+551
+
+Preface to the First Edition
+Our goal in writing this book is to provide readers and students with the theory, details, and tools necessary to be able to build visualizations and systems involving the visualization of data. There are a number of books that provide visualization taxonomies with numerous examples, but none that look at the algorithmic and software engineering issues in building such visualizations and systems, and none that discuss visualization theory. Furthermore, this book covers the spectrum of data visualizations, including mathematical and statistical graphs, cartography for displaying geographic information, two- and three-dimensional scientiﬁc displays, and general information visualization techniques.
+We believe that it is not enough to provide detailed descriptions of each visualization or of the key techniques. We discuss implementation and language issues, performance demands and limitations, and application requirements and results. We also describe how visualizations are used in knowledge discovery and problem solving, as well as how to evaluate diﬀerent visualizations. We also discuss the various roles visualization plays in larger application frameworks, such as those in knowledge discovery and visual analytics. This will provide a view into the various visualization interfaces that can be delivered and will help explain the design process.
+Goals of This Book
+The main goal of this book is to enable readers and students to expand their understanding of the ﬁeld of interactive data visualization. To achieve
+xiii
+
+xiv
+
+Preface to the First Edition
+
+this, we explore the fundamental components of the visualization process, from the data to the human viewer. At each stage, we present the basic terminology and concepts, along with techniques and algorithms in common use today.
+The book is geared towards practitioners and developers, as well as those just wishing to gain some exposure to the ﬁeld, for which we present topics at multiple levels of detail. Those wanting an in-depth understanding of techniques are provided with suﬃcient information, often with full source code, to complete an implementation, while those with more modest aspirations can focus on the concepts and high-level algorithm details.
+For developers, we provide guidance in the design of eﬀective visualizations, using methods derived from the study of human perception, graphical design, art, and usability analysis. While we cannot guarantee the eﬀectiveness of a visualization designed using these guidelines (in fact, some guidelines may be contradictory), it is a good idea to examine the resulting visualization using diﬀerent evaluation criteria.
+For practitioners, we describe a wide range of existing visualization systems, both public and commercial, and show how these are used to solve speciﬁc problems in a wide range of domains. This will enable users of visualization systems to select appropriate tools for their tasks.
+Finally, for researchers in visualization, we describe directions for current and future research, identifying some of the emerging technology and hot topics being developed at academic and industrial centers today. We hope that the information contained in this textbook is suﬃcient to enable researchers new to the ﬁeld to acquire the background necessary to understand the details and signiﬁcance of current research being presented in conferences and journals in this ﬁeld.
+
+Assumptions about the Reader
+We assume readers are conversant with some programming language and have some understanding of algorithms. The more knowledgeable readers are, the more they will get out of the book, as the topics are covered in great detail. Each chapter contains programming activities that will help readers better understand the process of developing and testing a visualization. Some of these can be performed using Excel and its built-in plotting techniques. Others assume the use of regular programming languages such as Java or C++, as long as they have graphics libraries available. Readers should feel free to develop their code in other languages as well.
+
+Preface to the First Edition
+
+xv
+
+Outline of This Book
+The book consists of 15 chapters:
+Chapter 1 presents an overview and history of visualization and its connection with computer graphics.
+Chapter 2 provides the foundations and characteristics of data, which forms the beginning of the visualization pipeline.
+Chapter 3 explores the human component of the visualization pipeline, with descriptions of the perceptual system and the roles it plays in understanding and interpreting visualizations.
+Chapter 4 deals with the foundations of the visualization processes, from basic building blocks to taxonomies and frameworks.
+Chapters 5 through 10 cover a wide gamut of visualization techniques, loosely grouped by data characteristics, describing the methods and algorithms used to map data to graphical depictions.
+Chapters 11 and 12 describe the role of user interaction within visualizations, and presents a wide range of interaction techniques and styles.
+Chapters 13 and 14 discuss the visualization design process, presenting principles and guidelines to improve the eﬀectiveness of speciﬁc visualizations, as well as techniques for evaluating the resulting visualizations.
+Chapter 15 reviews a variety of available visualization systems, identifying key features and observed limitations.
+Chapter 16 touches on directions for future work for those wishing to advance their knowledge of the ﬁeld beyond what is covered in this book.
+
+Discussion of Exercises
+Several types of exercises are provided at the end of each chapter. Some are review questions that are geared towards reminding readers of the signiﬁcant concepts covered by the chapter. Others are expansion questions designed to encourage students to think beyond the material covered, to build on the concepts to design alternate approaches to solving a problem. Both types of questions would be appropriate for use in examinations.
+
+xvi
+
+Preface to the First Edition
+
+We also provide programming projects. Some require very little in the way of graphics support, and thus can be implemented readily on any platform, including those discussed. This minimal conﬁguration would simply require the ability to set a pixel and a line on the screen and control its color. On the web site we provide demonstration programs for a number of languages and operating systems that could be used for this. Other projects require a more extensive graphics package, such as OpenGL, to support 3D viewing, lighting control, and so on. Students who have completed a course in computer graphics should have already obtained the background necessary to use these packages. Programming projects range from the simple implementation of algorithms provided in pseudocode in the text, to extending various algorithms or techniques or even to programming techniques significantly diﬀerent from those presented in the text. We expect that this last type of project will take more time to complete than the others, and may be the basis for term projects and/or advanced studies.
+
+Web Site for This Book
+The web site associated with this textbook (http://www.idvbook.com/) contains a wealth of valuable information for both instructors and students. This web site includes downloadable software tools (described in Appendix C) along with example data sets (Appendix B), providing hands-on experience for understanding the various techniques described in this book. Additional links to useful data repositories, as well as sites describing data ﬁle formats, are also provided. As new visualization tools are always becoming available, and companies active in the visualization ﬁeld come and go, we maintain an up-to-date listing of software packages and vendors, with an occasional review written by one of the authors or contributed by others in the ﬁeld.
+Instructional tools, such as reading lists, slides for lectures, and demonstration programs, are also available. It is hoped that as more faculty use this text in their courses, additional material will be contributed, including additional exercises, supplementary web pages that expand on particular topics, and software to provide students good starting points for their own implementations.
+The web site contains updates and corrections to the printed text, along with a mechanism for readers to electronically submit identiﬁed bugs, and suggestions for improvements to both the text (for future editions) and the web site.
+
+Preface to the First Edition
+
+xvii
+
+Reliability of Programs: Disclaimer
+The programs in this book and on the web site have been written carefully. Use of these programs is, however, at your own risk. The authors and publisher disclaim all liability for direct or consequential damages resulting from use of the programs.
+
+Acknowledgments
+The authors wish to thank all the students in their visualization courses and research labs who have, over the last ten years, supported the evolution of the book materials through reviews, edits, ﬁgures, code, and comments. Special thanks go to Dr. Alex Gee and Curran Kelleher for their strong editorial participation, and to Loura Costello, Dr. John Sharko, Dr. Jianping Zhou, and Heather Byrne for their meticulous editorial support. Thanks to Dr. Jing Yang, Zaixian Xie, Zhenyu Guo, Wei Peng, Qingguang Cui, and Anil Petro for their work in developing software to generate many ﬁgures in this book. Michael Regenscheit, Fabian Fischer, Florian Stoﬀel, and Dr. Peter Bak provided essential SVN support, helped with LaTeX problems, and provided ﬁgures. Dr. Haim Levkowitz provided reviews and edits on the early versions. Christopher Healey contributed wonderful material for the chapter on perception.
+The authors also wish to thank Alice Peters, Charlotte Henderson, Camber Agrelius, and all the other people at A K Peters who helped make this book a reality. Their tireless eﬀorts at ﬁnding and ﬁxing the many bugs with this manuscript are greatly appreciated. We would also thank all of the many people who gave us permission to use their images for this book.
+Finally, the authors wish to thank their spouses and children for their countless hours of support and sacriﬁce that were required to complete this project. We couldn’t have done it without you!
+
+Preface to the Second Edition
+Several corrections, enhancements, and additions are included in this second edition of Interactive Data Visualization. Grammar and technical bugs were discovered and ﬁxed in every chapter. Material was updated and new related readings, exercises, and programming projects were added. Several ﬁgures were replaced with better-quality ones, and a number of new ﬁgures were added. A new chapter, entitled “Visualization Techniques for Time-Oriented Data” and written by Wolfgang Aigner, Silvia Miksch, Heidrun Schumann, and Christian Tominski, was added. We feel that all of these changes have greatly enhanced the value and usefulness of this book.
+The authors had a great deal of assistance in the creation of this new edition. Matthew Ward would like to thank the students of his data visualization course, especially Michael Barry, for help ﬁnding related readings and new content. Georges Grinstein would like to thank Ekaterina Galkina and John Fallon for their help in collecting new ﬁgures and content.
+xix
+
+1 CHAPTER
+Introduction
+This chapter provides a high-level introduction to data and information visualization, what visualizations are, and why imagery is so important. It presents reasons for using visualization, shows how visualizations are applied to problem solving, and discusses the process of visualization. The visualization pipeline is presented with its relationship to other data analysis pipelines. Finally, the importance of human perception in connection with visualization is introduced. We assume that the reader already has a basic understanding of computer graphics.
+1.1 What Is Visualization?
+We deﬁne visualization as the communication of information using graphical representations. Pictures have been used as a mechanism for communication since before the formalization of written language. A single picture can contain a wealth of information, and can be processed much more quickly than a comparable page of words. This is because image interpretation is performed in parallel within the human perceptual system, while the speed of text analysis is limited by the sequential process of reading. Pictures can also be independent of local language, as a graph or a map may be understood by a group of people with no common tongue.
+1.1.1 Visualization in Everyday Life
+It is an interesting exercise to consider the number and types of data and information visualization that we encounter in our normal activities. Some
+1
+
+2
+
+1. Introduction
+
+of these might include
+• a simple formatted number representing a single item of interest, such as the gross national product (GNP) of the U.S.;
+• a table in a newspaper, representing data being discussed in an article;
+• a train and subway map with times used for determining train arrivals and departures;
+• a map of the region, to help select a route to a new destination;
+• a weather chart showing the movement of a storm front that might inﬂuence your weekend activities;
+• a graph of stock market activities that might indicate an upswing (or downturn) in the economy;
+• a plot comparing the eﬀectiveness of your pain killer to that of the leading brand;
+• a 3D reconstruction of your injured knee, as generated from a CT scan;
+• an instruction manual for putting together a bicycle, with views speciﬁc to each part as it is added;
+• a highway sign indicating a curve, merging of lanes, or an intersection.
+Visualization is used on a daily basis in many areas of employment as well, such as
+• the result of a ﬁnancial and stock market analysis;
+• a mechanical and civil engineering rotary bridge design and systems analysis;
+• a breast cancer MRI for diagnosis and therapy;
+• a comet path data and trend analysis;
+• the analysis of human population smoking behaviors;
+• the study of actuarial data for conﬁrming and guiding quantitative analysis;
+• the simulation of a complex process;
+
+1.1. What Is Visualization?
+
+3
+
+• the analysis of a simulation of a physical system;
+• a visual representation of Facebook friends and their connections;
+• marketing posters and advertising.
+In each case, the visualization provides an alternative to, or a supplement for, textual or verbal information. It is clear that visualization provides a far richer description of the information than the word-based counterpart. But why is this so? In what kinds of situations are visualizations eﬀective? What types of information can and cannot be visualized? How many different ways are there to show the same data, and which ones are best for particular circumstances? In this book, we will explore these and other questions. Perhaps the most important question is this: why should we study visualization?
+
+1.1.2 Why Is Visualization Important?
+There are many reasons why visualization is important. Perhaps the most obvious reason is that we are visual beings who use sight as one of our key senses for information understanding. The two examples below highlight why visualization is so important in decision making, and the role of human preferences and training. One example focuses on data distortion, and the other on human interpretation.
+What is the eﬀect of the presentation of data on the decision-making process? Can the presentation of data impact the decision, and can we say which presentations are better or more inﬂuential than others? In Figures 1.1(a) through 1.1(d), we show several views of the same data set. In Figure 1.1(a), data are shown at a large uniform scale (equally) in both x and y; the scale is so large that the values of the data are all close to each other, resulting in a blob that does not allow the diﬀerentiation of individual data points and gives the appearance that the data is tightly clustered. In Figures 1.1(b) and 1.1(c) we alter the scales. In (b) the y-axis is scaled larger, thereby clustering the data in the vertical direction, resulting in a linear horizontal pattern. In (c) the scaling is in the x-direction, producing a strong linear pattern in the vertical direction. Finally, in Figure 1.1(d), we do not scale at all, but use the range of the data to determine the scaling (from min x to max x and min y to max y of all the values). By changing the origin of the graph with alternative scalings, we can produce graphs that look startlingly diﬀerent (even turning linear data into quadratic data). Looking at any of
+
+4
+
+1. Introduction
+
+(a)
+
+(b)
+
+Figure 1.1.
+
+(c)
+
+(d)
+
+The same data plotted with diﬀerent scales is perceived dramatically diﬀerently: (a) Equally (uniformly) large scale in both x and y. (b) Large scale in y. (c) Large scale in x. (d) Scale determined by range of x- and y-values.
+
+these ﬁgures, we would be tempted to categorize the data’s “natural” structure (we discuss this data in greater detail at the end of this chapter). We might be inclined to say the plot is very linear (a–c), while it is actually inversely proportional (d). Thus scaling as well as outliers can distort the “truthful” representation of data and in fact can be used to do so.
+A second example is very real and highlights the need for testing user interpretation of visualizations in speciﬁc decision-making processes. In 1999 Linda Elting and colleagues [113] presented to 34 clinicians the preliminary results from hypothetical clinical trials of a generic conventional treatment compared with a generic investigational treatment, both treating the same condition, using four diﬀerent visualization techniques. The two treatments diﬀered from one another, with one of the treatments made to appear much better than the other. Clinicians seeing that diﬀerence should then decide to stop the trial.
+
+1.1. What Is Visualization?
+
+5
+
+Figure 1.2.
+
+Various visual representations of a hypothetical clinical trial. The icon display (lower right) was the most eﬀective for the decision to stop the clinical trial. The bar and pie charts were the least eﬀective. (Image courtesy [113], c 1999 BMJ.)
+
+Figure 1.2 shows the four presentations of the same data. In the upper left we have a simple table, in the upper right pie charts, in the lower left stacked bar charts, and in the lower right a sequence of rectangles, each representing a patient. In all representations, both the conventional and the investigational treatments are presented. The green color shows that the drug induced a response and the red that none occurred.
+The decision to stop varied signiﬁcantly, depending on the presentation of the data. Correct decisions were 82% with icon displays (lower right), 68% with tables, and 56% with pie charts or bar graphs. In actual clinical practice, up to 25% of the patients treated according to the data displayed as bar or pie charts would have received inappropriate treatment. Clearly, the choice of visualization impacted the decision process. Elting noted that most (21) clinicians preferred the table, and that several were contemptuous of the icon display. This emphasizes that it is not only the visualization that is key in presenting data well, but that user preferences are heavily
+
+6
+
+1. Introduction
+
+Figure 1.3.
+
+An organizational chart. Patterns often require a great deal of words to describe.
+
+involved. In Chapter 3 we present a cognitive framework that attempts to explain the unexpected results.
+Figure 1.3 shows a diagram of an organization that is diﬃcult to describe verbally. However, the image can easily be comprehended with only a brief examination. For example, it is obvious that Marketing has the most consultants and that the Driver has the longest chain of command.
+The ﬂood of data, its democratization, and the web have brought about an increasing use of both static and interactive visualizations that are much more aesthetic and understandable to the user. The exploration and analysis of large marketing, ﬁnancial, security, medical, and biological data sets has led to results needing to be explained. Visualization is a cornerstone of these new knowledge discovery tools. Applications often use visualizations within larger applications to provide alternative views of the data and to help describe some structure, pattern or anomaly in the data. One thing is certain: given the increasing levels of information available to people to run their businesses, solve their problems, and assist in decision making, there is a growing need for tools and techniques to help make eﬀective use of this information overﬂow. Likewise, there is a growing need to ﬁnd mechanisms for communicating information to people in an eﬃcient and eﬀective manner, and to help educate them about processes and concepts that aﬀect everyday life, from global warming to economic trends to genetic engineering. In virtually any domain, visualization can be, and is becoming, an eﬀective tool to assist in analysis and communication.
+
+1.2. History of Visualization
+
+7
+
+1.2 History of Visualization
+As we embark on the study of visualization, we start with a quick look at the history of the ﬁeld. This is by no means a thorough review, but a cursory one aimed at piquing your curiosity. See Michael Friendly’s web site [136] for a wonderful collection and more details.
+
+1.2.1 Early Visualizations
+Perhaps the ﬁrst technique for graphically recording and presenting information was that used by early man. An example is the early Chauvet-Pontd’Arc Cave, located near Vallon-Pont-d’Arc in southern France [491]. The Chauvet Cave contains over 250 paintings, created approximately 30,000 years ago. These were likely meant to pass on information to future generations. See Figure 1.4 for an example of a cave painting.
+The oldest writing systems used pictures to encode symbols and whole words. Such systems are called logograms [88]. The Kish limestone tablet (see Figure 1.5) is considered the earliest written document. It is from Mesopotamia and is mostly pictographic, but it has the beginning of syllabic writing found in cuneiform scripts. It is located in the Ashmolean Museum, Oxford [395].
+
+Figure 1.4.
+
+One of the Lascaux cave paintings on the northern slopes of the French Pyrenees on the banks of the V´ez`ere River [386].
+
+8
+
+1. Introduction
+
+Figure 1.5.
+
+Early graphical writing. The Kish limestone tablet from Mesopotamia [395].
+
+Figure 1.6.
+
+A copy of one of the 12 pages of the Peutinger Map set, showing the roads of the Roman Empire. (Image courtesy http://www.livius.org/pen-pg/peutinger/map .html.)
+
+1.2. History of Visualization
+
+9
+
+Another early writing system, which came from the ancient Egyptians, is called hieroglyphics [9]. Hieroglyphs are divided into three major categories: logograms, phonograms, and determinatives. Hieroglyphic logograms are signs that represent morphemes, “the smallest language unit that carries a semantic interpretation” [193]. Phonograms are signs that represent one or more sounds. Determinatives are signs that help to join logograms and photograms together to disambiguate the meaning of a sequence of glyphs.
+Early visualizations came about out of necessity: for travel, commerce, religion, and communication. Maps provided support for travelers where planning or survival was the key. The Peutinger Map or cartogram, one page of which is shown in Figure 1.6, was an early road map of the 70,000 miles of imperial highways of a section of the Roman world, with roads (in red) and their approximate mileage. It adds key landmarks such as staging posts and distances between large rivers and forests. One interesting aspect of the map is that distances are distorted. East-west distances are scaled up more than north-south ones. Thus, Rome appears nearer to Carthage than Naples is to Pompeii. Such distorted maps arose for many reasons. Relative positions were more important than actual accuracy, and in some cases the distortions were due to the medium being used (the map itself is 22 feet 1.75 inches by 13.25 inches): “The archetype may well have been on a papyrus roll, designed for carrying around in a capsa [tool box]. As such, its width would be severely limited, whereas its length would not” [169]. The original map is now in the O¨ sterreichische Nationalbibliothek in Vienna, Austria.
+There were qualitative maps of land that highlighted the number of rivers to cross, mountain passes, and in some cases, the location of known brigands. There were maps showing the trade winds for sea travelers and maps used for battle planning. The European medieval world depended on sea trade for wealth. Thus, maps drawn by explorers and voyagers provided a great deal of information and were kept secret. However, as is usual, the information leaked, and a number of maps and books became available.
+The Hereford map (see Figure 1.7) is an approximately four and a half feet by ﬁve feet calf skin map of the world that can be seen in the cathedral at Hereford, Wales. It depicts the land masses of Asia, Africa, and Europe, with Jerusalem at the center and the Holy City at the exact center (where, in fact, an image of the cruciﬁed Jesus appears). Some real and some religious information is available on the map. On the external boundaries of the map, where little was known at the time but where there was much superstition, one can ﬁnd numerous mythical ﬁgures. See [458] for a very detailed analysis of the map. Note that there were earlier maps.
+
+10
+
+1. Introduction
+
+Figure 1.7.
+
+The famous Hereford map, the largest surviving map of the Middle Ages (1280s). (Image courtesy Wikimedia Commons.)
+
+Figure 1.8 shows a portion of John Snow’s map of the deaths resulting from cholera in London in 1854. Each stacked bar within the houses represents one deceased individual. There’s much that can be done with such a map. For example, the overview map in Figure 1.9 highlights a concentration around the central water pump. What caused this concentration? Why were there individuals who died far from that center? Tufte [424] stated, “Snow observed that cholera occurred almost entirely among those who lived near (and drank from) the Broad Street water pump. He had the handle of the contaminated pump removed, ending the neighborhood epidemic which had taken more than 500 lives.” It is maps such as these that allowed one to explore and communicate geographical links to disease and other time-based events.
+
+1.2. History of Visualization
+
+11
+
+Figure 1.8.
+
+A section of John Snow’s map of the deaths from cholera in London in 1854. Each bar within the houses represents one deceased individual. (Image courtesy Wikimedia Commons.)
+
+Figure 1.9.
+
+Overview map of the deaths from Cholera in London in 1854. Note the concentration around the Broad Street Water Pump. Note as well the outliers. (Image courtesy Wikimedia Commons.)
+
+12
+
+1. Introduction
+
+Figure 1.10.
+
+(a)
+
+(b)
+
+Two early time series visualizations: (a) produced by Biruni circa 1030, shows the phases of the moon in orbit; (b) drawn around the same time, shows planetary motion. (Image courtesy Wikimedia Commons.)
+
+Time series visualizations had been around even prior to Descartes in the 1600s. One of the earliest was a circular representation of the phases of the moon by Abu Rayhan Muhammad ibn Ahmad al-Biruni, born in Kath, Khwarezm. Biruni was well known in the Muslim world and one of the most encyclopedic and broadest scientists of his time. Biruni completed his extensive astronomical encyclopedia Kitab al-Qanun al-Mas’udi in which Figure 1.10(a) appears. Figure 1.10(b) appeared about the same time, but in the Western world. It displays the movement of the planets.
+Minard’s Napoleonic march representation was a brilliant tour-de-force, presenting linked geographic and time-series data on a static representation. This is one of his last maps, perhaps to appeal the destruction of France through war. The map strongly emphasizes the loss of troops during the Napoleonic Russian expedition. There were actually two maps, one of Hannibal’s campaigns and the one shown in Figure 1.11. The armies are represented as ﬂows whose width corresponds to the size of the army, and time is annotated. The size of French army went from over 400,000 to 10,000. The image is one of the most reproduced and has often been used as a test of the capabilities of visualization systems.
+A clear breakthrough for information visualization was the abstract representation for axes, allowing other parameters to be used as the coordinates. Without the abstract (mathematical) interpretation, we would stay with strictly planar geospatial interpretations. Thus one could have density as one axis and temperature as the other. For example, Figure 1.12(a) shows
+
+1.2. History of Visualization
+
+13
+
+Figure 1.11.
+
+Minard’s map, showing Napoleon’s march on Moscow. The width of the line conveys the size of the army at that location. Color indicates the direction of movement. The temperature is plotted at diﬀerent points along the retreat at the bottom. (Image courtesy Wikimedia Commons.)
+
+Figure 1.12.
+
+(a)
+
+(b)
+
+Early visualizations of William Playfair: (a) a plot of the national debt over time; (b) a display of the balance of trade between England and Norway/Denmark (1786). (Image courtesy Wikimedia Commons.)
+
+14
+
+1. Introduction
+
+Figure 1.13.
+
+Joseph Priestley’s display of the longevity of famous people (1765). (Image courtesy Wikimedia Commons.)
+
+Figure 1.14.
+
+Florence Nightingale’s coxcomb chart showing monthly deaths from battle and other causes. Blue represents the deaths from disease, red represents deaths from wounds, and black represents all other deaths. (From an interactive on-line tool at http://understandinguncertainty.org/node/213.)
+
+1.2. History of Visualization
+
+15
+
+Figure 1.15.
+
+Leonardo Da Vinci’s study of the motion of the human arm (1510). (Image courtesy Wikimedia Commons.)
+
+the national debt over time, as developed by William Playfair [322], one of the pioneers of information visualization. Other examples of early information visualization include Playfair’s plot of the balance of trade between England and Norway/Denmark over a number of years (Figure 1.12(b)), Joseph Priestley’s display of the life spans of famous people (Figure 1.13), and Florence Nightingale’s presentation of monthly deaths within the army, comparing those who died in battle with those dying from other causes (Figure 1.14). Medical visualizations were also quite popular, particularly for the training of new doctors. Many examples exist, though few are more famous than Leonardo Da Vinci’s amazing drawings of human anatomy (Figure 1.15).
+
+16
+
+1. Introduction
+
+Figure 1.16.
+
+The Tokyo Underground map. A logical representation of the metro highlighting qualitative relationships between the stops. (Image courtesy Wikimedia Commons.)
+
+1.2.2 Visualization Today
+Visualization most often provides diﬀerent levels of both qualitative and quantitative views of the information being communicated. For example, Figure 1.16 shows a map of the Tokyo underground. It provides an easy-toread yet logically distorted view of the criss-crossing network of the subway system to facilitate interpretation; similar techniques have been used for a number of subway and other transportation systems as well as for processes and their ﬂows.
+Distorted views are often interpreted imprecisely and depend on the viewer. Most representations of two-dimensional maps exhibit some degree of distortion due to the 3D-to-2D projection (globe to plane). However, since a small area on the globe is well approximated by a plane, local street maps have minimal distortions and thus can provide strong relative detail and especially link information, including connectedness, closeness, above, or below. Figure 1.17 displays Google map directions between two local street addresses, indicating the roads, intersections, and turns to make throughout the trip.
+
+1.2. History of Visualization
+
+17
+
+Figure 1.17.
+
+The google.com map directions from 198 Riverside St., Lowell, MA (UMass Lowell, North Campus) to 883 Broadway St., Lowell, MA (UMass Lowell, South Campus). Google.com maps provide graphical cues drawn on top of road maps to indicate driving directions from point A to point B. (Image c 2009 Google.)
+
+The diﬀerence between a statement such as “the Dow Jones average rose by 125 points today” and a plot of the Dow Jones average (Figure 1.18) is that the sentence provides a single, exact piece of information, while the plot provides several pieces of imprecise information; a viewer can gauge the degree and direction of the change, along with trend information, but may only have an approximation for the numeric values involved. This becomes even more pronounced over larger plots, where more patterns may be discerned.
+It is possible for visualizations to provide very precise views of the data. Figure 1.19 provides such precision. Numbers and text deﬁnitely are visual representations and are considered visualizations, as is a table or a document. They are representations of data. The ﬁgure is the running U.S. National Debt Clock. With a population of about 300 million, the average debt share was around $27,000 in January of 2006. As of May 2008, the average debt share had risen to over $30,000. As of July 2009 it was $37,826 and in 2014 it reached over $38,000!
+Modern visualizations harness digital media. For example, Figure 1.20(a) shows a normal ECG (electrocardiogram) while that of Figure 1.20(b) shows
+
+18
+
+1. Introduction
+
+Figure 1.18.
+
+Dow Jones Industrial Average (DJIA) from 1900 to 2000. The Dow Jones Industrial Average is a U.S. stock index based on the weighted average of the stock prices of 30 large and actively traded U.S. companies. The divisor changes over time as stock splits, so as not to alter that average in those cases. (Image courtesy Wikimedia Commons.)
+
+Figure 1.19. The outstanding United States public debt as of January 22, 2006.
+an 83-year-old man with left ventricular and arterial hypertrophy. An ECG is an electrical recording of the heart in action (beating) and is used to identify heart ailments or problems [205]. The diagnosis is based on diﬀerences from the normal or base ECG. Many such diﬀerences can be seen in Figure 1.20(b).
+
+Figure 1.20.
+
+(a)
+
+(b)
+
+Two examples of 12-lead ECGs: (a) a normal adult; (b) an 83-year-old adult with heart problems. (Image courtesy http://www.ecglibrary.com/ecghome.html.)
+
+1.2. History of Visualization
+
+19
+
+Figure 1.21.
+
+Yeast mechanism of action data with regression line. (Image Generated by UMass Lowell UVP Software.)
+
+Figure 1.21 displays a scatterplot for analyzing the mechanism of action for yeast. The x-coordinate represents the number of atoms and the ycoordinate, heat of formation. We do not need to understand the parameters nor the domain to see the scatterplot representation of the data and to recognize the line of regression. Clearly that regression line can be computed from the data without using the image. The result is an equation of the form y = mx + b, where m represents the slope of the line and b the y-intercept (here m = −12.5 and b = 50). The analyst would then have the regression. However the ﬁgure allows the user to explore more detail, such as the spread, what outliers are present, and other patterns. For example, the user might notice the color trend (which conveys the Gibbs energy at each point) from bottom left to top right, which might not have been identiﬁed in a statistical analysis. This ability to provide rich descriptions of the data is one of the key strengths of visualizations.
+Anscombe [20] provided an example of 4 totally diﬀerent data sets consisting of 11 points each, and having identical (to 2 decimal places) mean
+
+20
+
+1. Introduction
+
+Figure 1.22. Plots of four data sets with identical statistics. in x and y, sample variance in x and y, correlation between x and y, and a linear regression line. Figure 1.22 shows the 4 data sets, and Figure 1.23 shows their shared statistics. The upper left of Figure 1.22 is typically the one that would be thought of when looking at the statistical values. However the three other versions display some possible alternatives. This highlights that the
+Figure 1.23. Statistics of four distinct data sets.
+
+1.2. History of Visualization
+
+21
+
+Figure 1.24.
+
+Blood vessel conﬁguration of the head and brain. (Image c Gunther von Hagens, Institute for Plastination, Heidelberg, Germany, www.bodyworlds.com.)
+
+dependency only on statistics can be problematic and that a visualization could help eliminate misconceptions.
+We now deal with data every day and are quite familiar with maps, simple graphs and charts. These more abstract representations of data (graphs and charts) have gone beyond their ﬁrst applications (trading, economic analysis) and are much more widely used. Visualization provides a visual representation of objects that may include data, algorithms, results of computations, processes, user controls, and numerous other components of an application. These visual representations provide information through the use of computer-generated graphics. In an interactive visualization the user can query the display and thus interact with the application display directly rather than using menus. It is even possible for an application to be totally driven through its visualizations.
+The following are a collection of modern visualizations from a variety of applications, including medical reconstruction, aerospace simulation, and bioinformatics. Figure 1.24 shows the blood vessels in red overlaid on a skull. Figure 1.25 shows the airﬂow generated by a jet during take-oﬀ.
+The background image in Figure 1.26 comes from the Kyoto Encyclopedia of Genes and Genomes web site (KEGG), which provides XML ﬁles containing the coordinates of the genes in the image. Expression data from
+
+22
+
+1. Introduction
+
+Figure 1.25.
+
+Simulation visualization of the air ﬂow generated by a Harrier jet when taking oﬀ. Here, color depicts the amount of force exerted by the underlying representation, red being the highest and blue the lowest. (Image courtesy http://quest.nasa.gov/aero/background/tools.)
+
+Figure 1.26.
+
+A pathway represented by a network with nodes representing genes and color the level of expression. (Image generated using UMass Lowell UVP software.)
+
+1.3. Relationship between Visualization and Other Fields
+
+23
+
+the Stanford web site for yeast expression data has been overlaid. The slider along the bottom indicates a speciﬁc microarray experiment. The colors indicate the expression level for the gene. Green is low and red is high.
+Network representations are now increasingly in use. They can represent traﬃc patterns, communications between computers, e-mail exchanges, Facebook friend relationships, and numerous other relationships.
+Figures 1.27 and 1.28 show a social network where a point represents a person and an edge a relationship. Figure 1.27 is a simple one with Figure 1.28 a much more complex social network (VAST Challenge submission by Penn State University). Finally, Figure 1.29 shows the interconnections between genes in human DNA (See Circos.ca). Chapter 9 discusses these in more detail.
+
+1.3 Relationship between Visualization and Other Fields
+1.3.1 What Is the Difference between Visualization and Computer Graphics?
+Originally, visualization was considered a subﬁeld of computer graphics, primarily because visualization uses graphics to display information via images. As illustrated by any of the computer-generated images shown earlier, visualization applies graphical techniques to generate visual displays of data. Here, graphics is used as the communication medium.
+In all visualizations, one can clearly see the use of the graphics primitives (points, lines, areas, and volumes). Beyond the use of graphics, the most important aspect of all visualizations is their connection to data. Computer graphics focuses primarily on graphical objects and the organization of graphic primitives; visualizations go one step further and are based on the underlying data, and may include spatial positions, populations, or physical measures. Consequently, visualization is the application of graphics to display data by mapping data to graphical primitives and rendering the display.
+However, visualization is more than simply computer graphics. The ﬁeld of visualization encompasses aspects from numerous other disciplines, including human-computer interaction, perceptual psychology, databases, statistics, and data mining, to name a few. While computer graphics can be used to deﬁne and generate the displays that are used to communicate the information, the sources of data and the way users interact and perceive the data are all important components to understand when presenting information.
+
+24
+
+1. Introduction
+
+Figure 1.27. A simple social network.
+
+1.3. Relationship between Visualization and Other Fields
+
+25
+
+Figure 1.28. A more elaborate social network.
+
+26
+
+1. Introduction
+
+Figure 1.29.
+
+A network showing the relationships between genes in human DNA, generated with the Circos package.
+
+1.3. Relationship between Visualization and Other Fields
+
+27
+
+The sources and types of data will be described in Chapter 2, perception in Chapter 3, and interactions in Chapters 11 and 12.
+Our view is that computer graphics is predominantly focused on the creation of interactive synthetic images and animations of three-dimensional objects, most often where visual realism is one of the primary goals. A secondary application of computer graphics is in art and entertainment, with video games, cartoons, advertisements, and movie special eﬀects as typical examples. Visualization, on the other hand, does not emphasize visual realism as much as the eﬀective communication of information. Many types of visualizations do not deal with physical objects, and those that do are often communicating attributes of the objects that would normally not be visible, such as material stress or ﬂuid ﬂow patterns. Thus, while computer graphics and visualization share many concepts, tools, and techniques, the underlying models (the information to be visualized) and goals (what the viewer hopes to extract) are fundamentally diﬀerent.
+Thus, computer graphics consists of the tools that display the visualizations seen in this book. This includes the graphics-programming language (OpenGL, DirectX, Processing, Java3D), the underlying graphics hardware (NVidia or ATI/AMD graphics cards), the rendering process (ﬂat, Gouraud, Phong, ray tracing, or radiosity), the output format (JPEG, TIFF, AVI, MPEG), and more. We consider computer graphics to be the underpinning of visualization and thus need to keep abreast of it. In Appendix A we provide a brief history of computer graphics.
+The visualization in Figure 1.30 shows the dependency of interactive visualization on computer graphics. The visualization displays a patient’s heart (scientiﬁc/medical visualization) in the upper left window with two other frames showing additional parameters not easily displayable on the heart. These last two are the ones that are often considered information visualizations, but clearly all three are! Computer graphics is the rendering engine for this integrated visualization.
+
+1.3.2 Scientiﬁc Data Visualization vs. Information Visualization
+Although during the 1990s and early 2000s the visualization community diﬀerentiated between scientiﬁc visualization and information visualization, we do not. Both provide representations of data. However the data sets are most often diﬀerent. Figure 1.30 highlights the importance and value of having both. Biomolecular chemistry, which once only considered the visual representation of molecules as stick and balls, has migrated over time
+
+28
+
+1. Introduction
+
+Figure 1.30.
+
+A visualization of a patient’s heart, along with visualizations representing additional parameters not easily representable on that 3D model. (Image from [159], c 2000 IEEE.)
+
+to representations as spheres with rods, to more realistic ones, as shown in Figures 1.31 and 1.32, to now include information visualizations (scatterplots and other visualizations). This book takes the view that both scientiﬁc visualization and information visualization are allied ﬁelds. In some cases, the data being visualized begs for diﬀerent handling: a large volume (1K × 1K × 1K = 1 billion points) requires dealing with large numbers of memory accesses and large-scale computations, whereas displaying a scatterplot of a million patients from a ﬁle is more concerned with reading the data from the database or ﬁle; the computations are much simpler.
+
+1.4 The Visualization Process
+What is involved in the visualization process? The designer of a new visualization most often begins with an analysis of the type of data available for display and of the type of information the viewer hopes to extract from or convey with the display. The data can come from a wide variety of sources
+
+1.4. The Visualization Process
+
+29
+
+Figure 1.31.
+
+An example of a drug that targets HIV-I reverse transcriptase. (Image courtesy IBM OpenDX Highlights.)
+
+and may be simple or complex in structure. The viewer may wish to use the visualization for exploration (looking for “interesting” things), to conﬁrm a hypothesis (either conjectured or the result of quantitative analysis), or to present the results of one’s analysis to an audience. Examples of interesting results are anomalies (data that does not behave consistent with expectations), clusters (data that has suﬃciently similar behavior that may indicate the presence of a particular phenomenon), or trends (data that is changing in a manner that can be characterized, and thus used for predictive models).
+
+Figure 1.32.
+
+Electron microscopic image of ﬁlaments of DNA, generated with Alias/Wavefront Visualizer. (Image courtesy Ed Egelman.)
+
+30
+
+1. Introduction
+
+Figure 1.33. The visualization process at a very high or primitive level view.
+To visualize data, one needs to deﬁne a mapping from the data to the display (see Figure 1.33). There are many ways to achieve this mapping. The user interface consists of components, some of which deal with data needing to be entered, presented, monitored, analyzed, and computed. These user interface components are often input via dialog boxes, but they could be visual representations of the data to facilitate the selections required by the user. Visualizations can provide mechanisms for translating data and tasks into more visual and intuitive formats for users to perform their tasks.
+This means that the data values themselves, or perhaps the attributes of the data, are used to deﬁne graphical objects, such as points, lines, and shapes; and their attributes, such as size, position, orientation, and color. Thus, for example, a list of numbers can be plotted by mapping each number to the y-coordinate of a point and the number’s index in the list to the xcoordinate. Alternatively, we could map the number to the height of a bar or the color of a square to get a diﬀerent way to view the data. In this book we present dozens of possible mappings (see Chapters 5–10), along with strategies for selecting eﬀective mappings (see Chapter 13).
+Another signiﬁcant, yet often overlooked, component of the visualization process is the provision of interactive controls for the viewing and mapping of variables (attributes or parameters). While early visualizations were static objects, printed on paper or other ﬁxed media, modern visualization is a very dynamic process, with the user controlling virtually all stages of the procedure, from data selection and mapping control to color manipulation and view reﬁnement. There is no formula for guaranteeing the eﬀectiveness of a given visualization. Diﬀerent users, with diﬀerent backgrounds, perceptual abilities, and preferences, will have diﬀering opinions on each visualization. The user’s task will also aﬀect the usefulness of the visualization. Even a change in the data being visualized can have implications on the resulting visualization. Thus it is critical to enable users to customize, modify, and interactively reﬁne visualizations until they feel they have achieved their goal, such as extracting a complete and accurate description of the data contents or presenting a clear depiction of patterns that they want to convey.
+
+1.4. The Visualization Process
+
+31
+
+Visualization is often part of a larger process, which may be exploratory data analysis, knowledge discovery, or visual analytics. In this discovery process, the preparation of data depends upon the task and often requires massaging erroneous or noisy data. Visualization and analysis go hand in hand with the goal of building a model that represents or approximates the data. Visualization in data exploration is used to convey information, discover new knowledge, and identify structures, patterns, anomalies, trends, and relationships.
+The process of starting with data and generating an image, a visualization, or a model via the computer is traditionally described as a pipeline—a sequence of stages that can be studied independently in terms of algorithms, data structures, and coordinate systems. These processes or pipelines are diﬀerent for graphics, visualization, and knowledge discovery, but overlap a great deal. All start with data and end with the user. These pipelines are presented in the next three sections.
+1.4.1 The Computer Graphics Pipeline
+For computer graphics the stages are as follows (see Figure 1.34):
+Modeling. A three-dimensional model, consisting of planar polygons deﬁned by vertices and surface properties, is generated using a world coordinate system.
+Viewing. A virtual camera is deﬁned at a location in world coordinates, along with a direction and orientation (generally given as vectors). All vertices are transformed into a viewing coordinate system based on the camera parameters.
+Clipping. By specifying the bounds of the desired image (usually given by corner positions on a plane of projection placed in front of the camera), objects out of view can be removed, and those that are partially visible can be clipped. Objects may be transformed into normalized viewing coordinates to simplify the clipping process. Clipping can actually be performed at many diﬀerent stages of the pipeline.
+
+Figure 1.34. The graphics pipeline.
+
+32
+
+1. Introduction
+
+Hidden surface removal. Polygons facing away from the camera, or those obscured by others, are removed or clipped. This process may be integrated into the projection process.
+Projection. Three-dimensional polygons are projected onto the twodimensional plane of projection, usually using a perspective transformation. The results may be in a normalized 2D coordinate system or device/screen coordinates.
+Rendering. The actual color of the pixels associated with a visible polygon depends on a number of factors, including the material properties being synthesized (base color, texture, surface roughness, shininess), the type(s), location(s), color, and intensity of the light source(s), the degree of occlusion from direct light exposure, and the amount and color of light being reﬂected oﬀ of other objects onto the polygon. This process may also be applied at diﬀerent stages of the pipeline (e.g., vertex colors can be assigned during the modeling process); however, due to its computational complexity, it is usually performed in conjunction with projection.
+Ray tracing, a variant on this pipeline, involves casting rays from the camera through the plane of projection to ascertain what polygon(s) are hit. For reﬂective or translucent surfaces, secondary rays can be generated upon intersection with the surface, and the results accumulated (we shall see examples of this sort of accumulation when we discuss certain methods of volume rendering). The key algorithms involved include determining where rays intersect surfaces, the orientation of the surface at the intersection point, and the mechanism for combining the eﬀects of secondary rays. Since each ray needs to be intersected against many, if not all, polygons, signiﬁcant eﬀort is often involved in pruning objects that will be unlikely to intersect a given ray prior to performing the intersection formulae.
+1.4.2 The Visualization Pipeline
+The data/information visualization pipeline has some similarities to the graphics pipeline, at least on an abstract level. The stages of this pipeline (see Figure 1.35) are as follows:
+Data modeling. The data to be visualized, whether from a ﬁle or a database, has to be structured to facilitate its visualization. The name, type, range, and semantics of each attribute or ﬁeld of a data record must be available in a format that ensures rapid access and easy modiﬁcation.
+
+1.4. The Visualization Process
+
+33
+
+Figure 1.35.
+
+One example of the visualization pipeline. There are many variants, but all transform data into some internal representation within the computer and then use some visual paradigm to display the data on the screen.
+
+Data selection. Similar to clipping, data selection involves identifying the subset of the data that will be potentially visualized. This can occur totally under user control or via algorithmic methods, such as cycling through time slices or automatically detecting features of potential interest to the user.
+Data to visual mappings. The heart of the visualization pipeline is performing the mapping of data values to graphical entities or their attributes. Thus, one component of a data record may map to the size of an object, while others might control the position or color of the object. This mapping often involves processing the data prior to mapping, such as scaling, shifting, ﬁltering, interpolating, or subsampling.
+Scene parameter setting (view transformations). As in traditional graphics, the user must specify several attributes of the visualization that are relatively independent of the data. These include color map selection (for diﬀerent domains, certain colors have clearly deﬁned meaning), sound map selection (in case the auditory channels will be conveying information as well), and lighting speciﬁcations (for 3D visualizations).
+Rendering or generation of the visualization. The speciﬁc projection or rendering of the visualization objects varies according to the mapping being used; techniques such as shading or texture mapping might be involved, although many visualization techniques only require drawing lines and uniformly shaded polygons. Besides showing the data itself, most visualizations also include supplementary information to facilitate interpretation, such as axes, keys, and annotations.
+
+34
+
+1. Introduction
+
+1.4.3 The Knowledge Discovery Pipeline
+The knowledge discovery (also called data mining) ﬁeld has its own pipeline. As with the graphics and visualization pipelines, we start with data; in this case we process it with the goal of generating a model, rather than some graphics display. Figure 1.36 presents one view of that pipeline.
+Note that the visualization pipeline can be overlaid on this knowledge discovery (KD) pipeline. If we were to look at a pipeline for typical statistical analysis procedures, we would ﬁnd the same process structure:
+Data. In the KD pipeline there is more focus on data, as the graphics and visualization processes often assume that the data is already structured to facilitate its display.
+Data integration, cleaning, warehousing and selection. These involve identifying the various data sets that will be potentially analyzed. Again, the user may participate in this step. This can involve ﬁltering, sampling, subsetting, aggregating, and other techniques that help curate and manage the data for the data mining step.
+Data mining. The heart of the KD pipeline is algorithmically analyzing the data to produce a model.
+Pattern evaluation. The resulting model or models must be evaluated to determine their robustness, stability, precision, and accuracy.
+Rendering or visualization. The speciﬁc results must be presented to the user. It does not matter whether we think of this as part of the graphics or visualization pipelines; the fact is that a user will eventually need to see the results of the process. Model visualization is an exciting research area that will be discussed later.
+Interactive visualization can be used at every step of the KD pipeline. One can think of this as computational steering.
+
+Figure 1.36. One view of the knowledge discovery pipeline or process.
+
+1.4. The Visualization Process
+
+35
+
+Figure 1.37.
+
+How many legs does this elephant have? (Image from http://www.ilusa.com/ gallery/elephant-illusion.jpg.)
+
+1.4.4 The Role of Perception
+In all visualizations, a critical aspect related to the user is the abilities and limitations of the human visual system. If the goal of visualization is to accurately convey information with pictures, it is essential that perceptual abilities be considered. A well-drawn picture can be stimulating, but if we are presenting a conclusion, we do not want ambiguities such as Shepard’s many-legged elephant in Figure 1.37. The following illusions, and many more very interesting ones, are from http://www.ritsumei.ac.jp/∼akitaoka/ index-e.html.
+Consider a collection of black squares spaced slightly apart (Figure 1.38). Note the eﬀect these squares have as you stare at them. There are, of course, no moving black dots at the intersections of the white lines, but clearly such a presentation of data would create instabilities. It thus makes little sense to map a variable to a graphical attribute that humans have limited ability to control or quantify, if the goal is to communicate a numeric value with accuracy. For example, most people cannot gauge textures accurately
+
+Figure 1.38. The strength of the eye’s saccadic movement is hard to overcome.
+
+36
+
+1. Introduction
+
+(“Is texture A twice the value of texture B?”), though our abilities to perform relative comparisons are much stronger than absolute judgment (see Chapter 3).
+Users interact with visualizations based upon what they see and interpret. Understanding how we see should help us produce better displays, or at least avoid producing very poor ones. About half of the human brain deals with visual input, and much of the processing is parallel and eﬀectively continuous. Texture, color, and motion are examples of primitive attributes that we perceive. What are good colors for data? How does motion perception work? We discuss these in Chapter 3, but here we quickly review some of the key issues. For example, eight percent of males are color deﬁcient. This implies that good visualization software should provide the ability to change the color of objects on the screen. What colors to use will depend on the user’s deﬁciency and what the visualization is trying to convey. In the rest of this section, we present some key perceptual processes, so that we can use these in discussions on visualizations.
+As in the pipelines brieﬂy discussed earlier, the human perceptual system receives input data and processes it in various ways. The ﬁrst process is preattentive processing, a fast, high-performance system that quickly identiﬁes diﬀerences in, for example, color or texture. There are other features that the visual system deals with, such as line orientation, length, width, size of an object, curvature, grouping, and motion.
+Figure 1.39 shows a set of colored points with a distractor that can be easily distinguished from the others. Figure 1.40 also shows a distractor with targets. In this case, line orientation is the perceptual element explored. Note that it, too, is processed in parallel (preattentively). Figure 1.41 shows an example of a display in which identifying the distractor is done attentively, with focused attention. The identiﬁcation of preattentive primitives has helped in the development of modern display techniques for harnessing human perceptual capabilities.
+Understanding visual perception leads to certain guidelines. For example, the Gestalt School of Psychology, started in 1912, attempted to deﬁne a set of laws by which we perceive patterns. These laws included rules about proximity, similarity, continuity, closure, symmetry, foreground and background, and size. We discuss these laws in detail in Chapter 3 and how they can be used in the visualization design process in Chapter 12.
+Several steps are involved after the pre- and post-attentive processes. Cognition forces some visual interpretations, and thus understanding its role clearly helps in the development of task-oriented visualizations solutions.
+
+1.4. The Visualization Process
+
+37
+
+Figure 1.39.
+
+A display showing one distractor (red) in a sea of blue-colored points. It is preattentively distinguished.
+
+Figure 1.40. A display where orientation is the key perceptual factor explored.
+
+Figure 1.41.
+
+It is diﬃcult in this display to identify the inner square consisting of right-handed Rs.
+
+38
+
+1. Introduction
+
+Figure 1.42. A proposed model for the visualization pipeline.
+1.5 The Role of Cognition
+The visualization pipeline favors the synthesis of the visualizations and presents the user and the task as the target of the visualization. What does the user see in a visualization? What information gets understood, missed, remembered? For how long can such information be remembered? Each of these questions requires us to look beyond perception and into cognition. Figure 1.42 is a more balanced pipeline, which is discussed in greater detail in Chapter 3.
+1.6 Pseudocode Conventions
+Throughout the text we include pseudocode wherever possible. In our pseudocode, we aim to convey the essence of the algorithms at hand, while leaving out details required for user interaction, graphics nuances, and data management. We therefore assume that the following global variables and functions exist in the environment of the pseudocode:
+• data—The working data table. This data table is assumed to contain only numeric values. In practice, dimensions of the original data table that contain non-numeric values must be somehow converted to numeric values. When visualizing a subset of the entire original data table, the working data table is assumed to be the subset.
+• m—The number of dimensions (columns) in the working data table. Dimensions are typically iterated over using j as the running dimension index.
+
+1.6. Pseudocode Conventions
+
+39
+
+• n—The number of records (rows) in the working data table. Records are typically iterated over using i as the running record index.
+• Normalize(record, dimension), Normalize(record, dimension, min, max)—A function that maps the value for the given record and dimension in the working data table to a value between min and max, or between zero and one if min and max are not speciﬁed. The normalization is typically linear and local to a single dimension. However, in practice, code must be structured such that various kinds of normalization could be used (logarithmic or square root, for example) either locally (using the bounds of the current dimension), globally (using the bounds of all dimensions), or local to the active dimensions (using the bounds of the dimensions being displayed). Also, in practice, one must accommodate multiple kinds of normalization within a single visualization. For example, a scatterplot may require a linear normalization for the x-axis and a logarithmic normalization for the y-axis.
+• Color(color)—A function that sets the color state of the graphics environment to the speciﬁed color (whose type is assumed to be an integer containing RGB values).
+• MapColor(record, dimension)—A function that sets the color state of the graphics environment to be the color derived from applying the global color map to the normalized value of the given record and dimension in the working data table.
+• Circle(x, y, radius)—A function that ﬁlls a circle centered at the given (x, y)-location, with the given radius, with the color of the graphics environment. The plotting space for all visualizations is the unit square. In practice, this function must map the unit square to a square in pixel coordinates.
+• Polyline(xs, ys)—A function that draws a polyline (many connected line segments) from the given arrays of x- and y-coordinates.
+• Polygon(xs, ys)—A function that ﬁlls the polygon deﬁned by the given arrays of x- and y-coordinates with the color of the current color state.
+For geographic visualizations, the following functions are assumed to exist in the environment:
+
+40
+
+1. Introduction
+
+• GetLatitudes(record), GetLongitudes(record)—Functions that retrieve the arrays of latitude and longitude coordinates, respectively, of the geographic polygon associated with the given record. For example, these polygons could be outlines of the countries of the world.
+• ProjectLatitudes(lats, scale), ProjectLongitudes(longs, scale) —Functions that project arrays of latitude values to arrays of y values, and arrays of longitude values to arrays of x values, respectively.
+For graph and 3D surface data sets, the following is provided:
+• GetConnections(record)—A function that retrieves an array of record indices to which the given record is connected.
+Arrays are indexed starting at zero.
+
+1.7 The Scatterplot
+We conclude our introductory chapter with a detailed discussion of one of the most basic visualization techniques, one we have already used in previous illustrations: the scatterplot. We include it early in the book to provide a basis with which to discuss visualization in general, and to provide exercises for both coding and theory/applications. This will give us some experience with transforming data into a visual representation that is understood by most readers. The scatterplot is one of the earliest and most widely used visualizations developed. It is based on the Cartesian coordinate system.
+The following pseudocode renders a scatterplot of circles. Records are represented in the scatterplot as circles of varying location, color, and size. The x- and y-axes represent data from dimension numbers xDim and yDim, respectively. The color of the circles is derived from dimension number cDim. The radius of the circles is derived from dimension number rDim, as well as from the upper and lower bounds for the radius, rM in and rM ax.
+
+Scatterplot(xDim, yDim, cDim, rDim, rM in, rM ax)
+
+1 for each record i £ For each record,
+
+2
+
+do x ← Normalize(i, xDim) £ derive the location,
+
+3
+
+y ← Normalize(i, yDim)
+
+4
+
+r ← Normalize(i, rDim, rM in, rM ax) £ radius,
+
+5
+
+MapColor(i, cDim) £ and color, then
+
+6
+
+Circle(x, y, r) £ draw the record as a circle.
+
+1.7. The Scatterplot
+
+41
+
+Vehicle Name Acura 3.5 RL 4dr Acura MDX Suzuki XL-7 EX
+
+Sedan 1 0 0
+
+Sports 0 0 0
+
+SUV 0 1 1
+
+Wagon 0 0 0
+
+Minivan 0 0 0
+
+Pickup 0 0 0
+
+AWD 0 1 0
+
+RWD 0 0 0
+
+Price 43755 36945 23699
+
+Table 1.1.
+
+A simple partial table of the car and truck data. Note that you can think of this as a row-based table (cars and trucks) or a column-based table (car attributes).
+
+We consider the 2004 new car and truck data set, which consists of detailed speciﬁcations for 428 vehicles. The variables included are dealer and retail price, weight, size, horsepower, fuel eﬃciency for city and highway, and more (see the book’s web site). Although it looks like there are 19 variables for each vehicle, columns 2–7 eﬀectively identify the type of car, and columns 8 and 9 the wheel-drive type. Table 1.1 shows three records of the data; the table in Figure 1.43 shows a subset of the complete data focused on Toyota vehicles. Some records have missing entries. The column variables are as follows:
+1. vehicle name (text 1–45 characters);
+2. small, sporty, compact or large sedan (1=yes, 0=no);
+3. sports car? (1=yes, 0=no);
+4. sport utility vehicle? (1=yes, 0=no);
+5. wagon? (1=yes, 0=no);
+6. minivan? (1=yes, 0=no);
+7. pickup? (1=yes, 0=no);
+8. all-wheel drive? (1=yes, 0=no);
+9. rear-wheel drive? (1=yes, 0=no);
+10. suggested retail price, what the manufacturer thinks the vehicle is worth, including adequate proﬁt for the automaker and the dealer (U.S. dollars);
+11. dealer cost (or “invoice price”), what the dealership pays the manufacturer (U.S. dollars);
+12. engine size (liters);
+13. number of cylinders (=-1 if rotary engine);
+
+42
+
+1. Introduction
+
+Figure 1.43.
+
+Toyota vehicle table. All variables are shown. Notice that there are a few missing values.
+
+14. horsepower;
+15. city miles per gallon;
+16. highway miles per gallon;
+17. weight (pounds);
+18. wheel base (inches);
+19. length (inches);
+20. width (inches).
+We can look at the table of data for some of the variables. What patterns can be seen in the table? Now let’s try using graphical methods. Let’s begin to explore the data. Suppose we select all Toyota vehicles (see Figure 1.43). It is diﬃcult to get a sense of the data just by looking at even this small subset of 28 records. Speciﬁc questions about the data can be asked. For example, what are the relationships between weight and length? Is there a correlation between vehicle model and MPG (speciﬁc models have speciﬁc ranges of MPGs)? Does the dealer price mean we have a better performing vehicle (higher price implies better MPGs)? Do foreign vehicles perform better than domestic ones?
+
+1.7. The Scatterplot
+
+43
+
+Figure 1.44.
+
+A scatterplot of horsepower versus city MPG for Toyota vehicles. The vehicle class is mapped to color.
+In fact, even when looking at just three of these records the task is not simple. Imagine looking at tables with hundreds of records—how would one answer these questions? Figure 1.44 represents two selected variables for those 28 records.
+Much can be quickly and easily discerned from the visualization. For example all Toyota vehicles are broken down into three categories and there is clearly a close to linear relationship between horsepower and city miles per gallon. Is this a general rule? If we select another model, say Kia vehicles, we ﬁnd a very similar relationship (see Figure 1.45).
+So we have a hypothesis! In fact, there may be several. Increasing horsepower in 2004 vehicles yields a decrease in MPG. Perhaps that is too broad and we should restrict it to foreign vehicles. Let’s test that hypothesis. We want to conﬁrm that increasing horsepower in foreign vehicles yields a decrease in city MPG. There are many ways to do this. We’ll jump right to another foreign car to check it out. Consider the Lexus data in Figure 1.46. It’s clear that there are relationships, but they are not necessarily as simple as we stated earlier. Consider the whole data set plotted (see Figure 1.47). This is where we can start to explore the data further.
+There are a number of questions we can ask:
+1. Do the trends deﬁned for 28 records apply to the whole data set, or if not, what speciﬁc subsets do they apply to? In other words, can we generalize the model we’ve discovered or identiﬁed?
+
+44
+
+1. Introduction
+
+Figure 1.45.
+
+Table and scatterplot of the Kia vehicles. Note that here, too, a linear relationship holds.
+
+Figure 1.46.
+
+Table and scatterplot of the Lexus vehicles. Note that the hypothesis is not validated.
+
+2. How many records have missing values, and for what ﬁelds (attributes)? 3. What can we say about the missing data? 4. What can we say about the data overall?
+
+1.8. The Role of the User
+
+45
+
+Figure 1.47. Scatterplot of all vehicles. There is lots to explore here.
+(a) What is the distribution of MPG? (b) Are there trends? (c) Are there groups?
+There are many more questions that could be asked and discoveries that could be made. We will discuss further analyses of this data set in the exercises. Before leaving this example, we note that one can criticize the visualization. There is no legend. Some rectangles are bigger than others. What happens if points overlap? Why does it use squares?
+1.8 The Role of the User
+In computer graphics, the role of the user is predominantly at either of the two ends of the pipeline, either in creating the model of the scene to be rendered or observing the end results, perhaps with some interactive control of camera or animation parameters. As what is being rendered is often a simulation of a three-dimensional “world,” it is assumed that our innate perceptual abilities are suﬃcient and well trained for the task. In addition, the role of the resulting image is generally straightforward, that is, to convey to the user the scene contents and the actions and interactions of the objects within the scene.
+
+46
+
+1. Introduction
+
+On the other hand, the user can be involved in most, if not all stages of the visualization pipeline, and the role of the visualization can have signiﬁcant impact on the types of user involvement. It is useful to categorize visualizations based on the purpose they serve. These include the following:
+Exploration. The user possesses a data set and wants to examine it to ascertain its contents and/or whether a particular feature or set of features is present or absent (Figure 1.47).
+Conﬁrmation. The user has determined (e.g., via computational analysis) or hypothesized that a given feature is present in the data and wants to use the visualization to verify this fact or hypothesis (Figure 1.45).
+Presentation. The user is trying to convey some concept or set of facts to an audience (Figure 1.2). Note the added labeling and stronger colors to emphasize and support the author’s conclusion.
+Interactive Presentation. The user is providing a presentation as above but one that is interactive typically for an individual to explore. Interactive presentations such as those available nowadays on the web take much more time to prepare. There are numerous constraints that have to be present so as not to allow the user to get lost, such as zooming out to a point where nothing is visible. Such interactive presentations are engaging when well done and are becoming more common as users are becoming more facile on the web.
+The major experience most people have had with visualization is in presentations, where a speaker or author uses a bar chart or line graph to indicate a set of values and their relationships. Other common visualizations, such as maps and organizational charts, also primarily serve this purpose. The creator of the visualization is fully aware of the information that he/she wishes to convey and usually has a reasonable idea of the types of visualizations with which the intended audience is familiar. The reason that presentation visualizations are the primary visualization experiences for most people is that, until recently, visualizations have been mostly static images requiring signiﬁcant eﬀorts to generate. The advent of more powerful computers and easier mechanisms for creating visualizations has made possible the other types of visualization. Presentation visualizations take a great deal of time to produce and are used in a wide variety of areas, such as training and education. Figure 1.48 presents screen shots from animations used for explaining a complex model over time, showing the evolution of a storm.
+
+1.9. Related Readings
+
+47
+
+Figure 1.48.
+
+(a)
+
+(b)
+
+(a) A storm over time with a horizontal cross section in the small window. (b) The same storm with diﬀerent views [24]. (Images c 1995 IEEE.)
+
+In exploratory visualization we look for patterns in the data to explain its structure. Figure 1.49 displays the gene expression patterns of selected genes measured from a number of patients’ tissue samples and controls. The higher-expressed genes are portrayed in red; the lower-expressed genes are in green. Along the two dimensions, the tissue samples are organized by disease type, and genes are organized by their discriminative disease type in terms of analytic. This visualization allows one to see quickly which genes are related to which diseases.
+Each of these categories of visualization has its own special tools. For example, presentation visualizations more commonly use presentation graphics as their layout and visual control tools. Many products, such as Photoshop, provide rich controls for ﬁne tuning the visualization.
+
+1.9 Related Readings
+There are several web sites and articles written on the history of visualization and related topics. Here is a brief list:
+History. The National Science Foundation (NSF) has a brief document on the history of its funded pioneering visualization activities, mostly centered on scientiﬁc visualization. See http://www.nsf.gov/about/ history/nsf0050/pdf/visualization.pdf. See also Michael Friendly’s paper on the history and evolution of data visualization from the 17th century to modern times [135].
+
+48
+
+1. Introduction
+
+Figure 1.49.
+
+Exploratory visualization used in microarray gene expression experiment analysis. (Image courtesy [489].)
+
+Siggraph. The Association for Computing Machinery (ACM) Special Interest Group in Computer Graphics has a great deal of information and education materials. See http://education .siggraph.org/.
+Cartography. Michael Friendly and Daniel J. Denis maintain a web page with numerous beautiful images on Milestones in the History of Thematic Cartography, Statistical Graphics, and Data Visualization, an illustrated chronology of innovations. See http://www.math.yorku.ca/ SCS/Gallery/milestone/.
+Visual analytics. The National Visualization and Analytics Center (NVAC) has a wonderful book available online entitled Illuminating the Path: The Research and Development Agenda for Visual Analytics. See http://nvac.pnl.gov/agenda.stm.
+John Snow. A great deal of history is associated with Dr. John Snow’s map of the deaths from cholera in London. Snow used bars and an interpretation by Gilbert replaced the bars with dots [146]. Sedwick,
+
+1.10. Exercises
+
+49
+Tufte, and others credited the dots map to Snow. A nice description of the evolution of Snow’s maps and diﬀerent usages was done by Tom Koch [147].
+
+1.10 Exercises
+1. Choose a topic from computer graphics or visualization and research its origins. Feel free to skim ahead in this book to ﬁnd a topic, such as volume rendering or parallel coordinates. Send your contributions to the authors via the book’s web site. If we can verify it, your ﬁndings may be placed in our online history page.
+2. Describe the linkages between the stages of the graphics pipeline and those of the visualization pipeline. Are there any stages in one pipeline that do not have a clear linkage in the other pipeline?
+3. Describe the linkages between the stages of the visualization pipeline and those of the knowledge discovery pipeline. Are there any stages in one pipeline that do not have a clear linkage in the other pipeline?
+4. Give an example of each of the four categories of visualization: interactive presentation, presentation, conﬁrmation, and exploration.
+5. Give an example of existing websites relevant to data visualization that show data visualization can be both interesting, useful, and revealing. What type of visualizations do they provide? Do they engage you? What ideas do they evoke?
+6. Explore some visualizations and think about how to distort them to “hide” the truth.
+7. Familiarize yourself with scatterplots: write up a summary of what they are, how they are created, and how they are used. There are hundreds of diﬀerent variations on scatterplots, so select one or two as examples in your summary.
+8. Describe the similarities and diﬀerences between clipping in the computer graphics pipeline and data selection in the visualization pipeline. What would happen to each if this step were removed?
+
+50
+
+1. Introduction
+
+1.11 Projects
+1. Using the vehicle data set and an existing visualization tool (e.g., Excel, Weka, Weave, or XmdvTool), or an analytic tool such as R, perform the following tasks.
+(a) Read the full data set into the program. (b) Select a subset of the data that contains an obvious correlation
+(exploratory visualization). (c) State a hypothesis and conﬁrm it using the full data set (conﬁr-
+matory visualization). (d) Present your results in a PowerPoint slide (presentation visual-
+ization).
+2. Write a scatterplot program from scratch, using the following steps.
+(a) Write a program that reads the data, stores that data internally, and identiﬁes which records have missing values. Keep track of the minimum and maximum of each variable.
+(b) Select two of the variables as your axes. Draw coordinate axes and label them with the names of the variables.
+(c) Loop through all nonmissing data records and plot a circle or square at location (x, y) based on your selected variables. Skip any record that has missing values.
+(d) Additions to consider: color the square or circle by some other value; use size to represent yet another value of the record; have the user select which variables to use as the axes; handle missing values by replacing the missing data with some very large number, some very small number, or the average value for that variable.
+
+2 CHAPTER
+Data Foundations
+Since every visualization starts with the data that is to be displayed, a ﬁrst step in addressing the design of visualizations is to examine the characteristics of the data. Data comes from many sources; it can be gathered from sensors or surveys, or it can be generated by simulations and computations. Data can be raw (untreated), or it can be derived from raw data via some process, such as smoothing, noise removal, scaling, or interpolation. It also can have a wide range of characteristics and structures.
+A typical data set used in visualization consists of a list of n records, (r1, r2, . . . , rn). Each record ri consists of m (one or more) observations or variables, (v1, v2, . . . vm). An observation may be a single number/symbol/ string or a more complex structure (discussed in more detail later in this chapter). A variable may be classiﬁed as either independent or dependent. An independent variable ivi is one whose value is not controlled or aﬀected by another variable, such as the time variable in a time-series data set. A dependent variable dvj is one whose value is aﬀected by a variation in one or more associated independent variables. Temperature for a region would be considered a dependent variable, as its value is aﬀected by variables such as date, time, or location. Thus we can formally represent a record as
+ri = (iv1, iv2, . . . ivmi , dv1, dv2, . . . dvmd ), where mi is the number of independent variables and md is the number of dependent variables. With this notation we have, m = mi + md.
+In many cases, we may not know which variables are dependent or independent.
+We can also think of data as being generated by some process or function. In this case, the independent variables would be considered the domain of
+51
+
+52
+
+2. Data Foundations
+
+the function, and the dependent variables would be the range of the function, as for each entry in the domain there is a single unique entry in the range. Note that, in general, a data set will not contain an exhaustive list of all possible combinations of values for the variables in its domain.
+
+2.1 Types of Data
+In its simplest form, each observation or variable of a data record represents a single piece of information. We can categorize this information as being ordinal (numeric) or nominal (nonnumeric). Subcategories of each can be readily deﬁned.
+Ordinal. The data take on numeric values:
+• binary—assuming only values of 0 and 1; • discrete—taking on only integer values or from a speciﬁc subset
+(e.g., (2, 4, 6)); • continuous—representing real values (e.g., in the interval [0, 5]).
+Nominal. The data take on nonnumeric values:
+• categorical—a value selected from a ﬁnite (often short) list of possibilities (e.g., red, blue, green);
+• ranked—a categorical variable that has an implied ordering (e.g., small, medium, large);
+• arbitrary—a variable with a potentially inﬁnite range of values with no implied ordering (e.g., addresses).
+Another method of categorizing variables is by using the mathematical concept of scale.
+Scale. Three attributes that deﬁne a variable’s measure are as follows:
+• Ordering relation, with which the data can be ordered in some fashion. By deﬁnition, ranked nominal variables and all ordinal variables exhibit this relation.
+• Distance metric, with which the distances can be computed between diﬀerent records. This measure is clearly present in all ordinal variables, but is generally not found in nominal variables.
+
+2.2. Structure within and between Records
+
+53
+
+• Existence of absolute zero, in which variables may have a ﬁxed lowest value. This is useful for diﬀerentiating types of ordinal variables. A variable such as weight possesses an absolute zero, while bank balance does not.
+Scale is an important attribute to examine when designing appropriate visualizations because each graphical attribute that we can control has a scale associated with it. Ideally, the scale of a data variable should be compatible with the scale of the graphical entity or attribute to which it is mapped, though it is somewhat dependent on the task to be performed with the visualization.
+The type of data also determines the operations that can be applied to the data. While the equality and inequality operators (=, <>) can be applied to any type of data, comparison operators (<, >, <=, >=) can only be applied to ranked nominal and ordinal data types, and mathematical operators and distance computations (+, −, ∗, /) can only be applied to ordinal data types.
+
+2.2 Structure within and between Records
+Data sets have structure, both in terms of the means of representation (syntax ), and the types of interrelationships within a given record and between records (semantics).
+2.2.1 Scalars, Vectors, and Tensors
+An individual number in a data record is often referred to as a scalar. Scalar values, such as the cost of an item or the age of an individual, are often the focus for analysis and visualization. Multiple variables within a single record can represent a composite data item. For example, a point in a two-dimensional ﬂow ﬁeld might be represented by a pair of values, such as a displacement in x and y. This pair, and any such composition, is referred to as a vector. Other examples of vectors found in typical data sets include position (2 or 3 spatial values), color (a triplet of red, green, and blue components), and phone number (country code, area code, and local number). While each component of a vector might be examined individually, it is most common to treat the vector as a whole.
+Scalars and vectors are simple variants on a more general structure known as a tensor. A tensor is deﬁned by its rank and by the dimensionality of the space within which it is deﬁned. It is generally represented as an array or
+
+54
+
+2. Data Foundations
+
+matrix. A scalar is a tensor of rank 0, while a vector is a tensor of rank 1. One could use a 3 × 3 matrix to represent a tensor of rank 2 in 3D space, and in general, a tensor of rank M in D-dimensional space requires DM data values. An example of a tensor that might be found in a data record would be a transformation matrix to specify a local coordinate system.
+
+2.2.2 Geometry and Grids
+Geometric structure can commonly be found in data sets, especially those from scientiﬁc and engineering domains. The simplest method of incorporating geometric structure in a data set is to have explicit coordinates for each data record. Thus, a data set of temperature readings from across the country might include the longitude and latitude associated with the sensors, as well as the sensor values. In modeling of 3D objects, the geometry constitutes the majority of the data, with coordinates given for each vertex.
+Sometimes the geometric structure is implied. When this is the case, it is assumed that some form of grid exists, and the data set is structured such that successive data records are located at successive locations on the grid. For example, if one had a data set giving elevation at uniform spacing across a surface, it would be unnecessary to include the coordinates for each record; it would be suﬃcient to indicate a starting location, orientation, and the step size horizontally and vertically.
+There are many diﬀerent coordinate systems that are used for gridstructured data, including Cartesian, spherical , and hyperbolic coordinates. Often, the choice of coordinate system is domain-speciﬁc, and is partially dependent on how the data is acquired/computed, and on the structure of the space in which the data resides. Generally, a straightforward transformation matrix can be used to convert positions in the data space coordinate system into positions on the display space coordinate system.
+Nonuniform, or irregular , geometry is also common. For example, in simulating the ﬂow of wind around an airplane wing, it is important to have data computed densely at locations close to the surface, while data for locations far from the surface can be computed much more sparsely. For irregular geometry it is, of course, essential that the coordinates are explicitly speciﬁed in the data ﬁle. As the geometry changes from a uniform to a nonuniform or irregular grid, the computations for display increase in complexity.
+
+2.2. Structure within and between Records
+
+55
+
+2.2.3 Other Forms of Structure
+A timestamp is an important attribute that can be associated with a data record. Time perhaps has the widest range of possible values of all aspects of a data set, since we can refer to time with units from picoseconds to millennia. It can also be relative or absolute in terms of its base value. Data sets with temporal attributes can be uniformly spaced, such as in the sampling of a continuous phenomenon, or nonuniformly spaced, as in a business transaction database.
+Another important form of structure found within many data sets is that of topology, or how the data records are connected. Connectivity indicates that data records have some relationship to each other. Thus, vertices on a surface (geometry) are connected to their neighbors via edges (topology), and relationships between nodes in a hierarchy or graph can be speciﬁed by links. Connectivity information is essential to support the processes of resampling and interpolation. This form of structure can either be included explicitly in the data record (e.g., with a ﬁxed or variable length vector identifying the records to which the current record is linked) or as an auxiliary data structure.
+The following are examples of various structured data:
+MRI (magnetic resonance imagery). Density (scalar), with three spatial attributes, 3D grid connectivity;
+CFD (computational ﬂuid dynamics). Three dimensions for displacement, with one temporal and three spatial attributes, 3D grid connectivity (uniform or nonuniform);
+Financial. No geometric structure, n possibly independent components, nominal and ordinal, with a temporal attribute;
+CAD (computer-aided design). Three spatial attributes with edge and polygon connections, and surface properties;
+Remote sensing. Multiple channels, with two or three spatial attributes, one temporal attribute, and grid connectivity;
+Census. Multiple ﬁelds of all types, spatial attributes (e.g., addresses), temporal attribute, and connectivity implied by similarities in ﬁelds;
+Social Network. Nodes consisting of multiple ﬁelds of all types, with various connectivity attributes that could be spatial, temporal, or dependent
+
+56
+
+2. Data Foundations
+
+on other attributes, such as belonging to the same group or having some common computed values.
+
+2.3 Data Preprocessing
+In most circumstances, it is preferable to view the original raw data. In many domains, such as medical imaging, the data analyst is often opposed to any sort of data modiﬁcations, such as ﬁltering or smoothing, for fear that important information will be lost or deceptive artifacts will be added. Viewing raw data also often identiﬁes problems in the data set, such as missing data, or outliers that may be the result of errors in computation or input. Depending on the type of data and the visualization techniques to be applied, however, some forms of preprocessing might be necessary. Some common methods for preprocessing data are brieﬂy discussed later in this chapter. The interested reader is directed to the many ﬁne textbooks dedicated to these topics for more in-depth coverage.
+
+2.3.1 Metadata and Statistics
+
+Information regarding a data set of interest (its metadata) and statistical analysis can provide invaluable guidance in preprocessing the data. Metadata may provide information that can help in its interpretation, such as the format of individual ﬁelds within the data records. It may also contain the base reference point from which some of the data ﬁelds are measured, the units used in the measurements, the symbol or number used to indicate a missing value (see below), and the resolution at which measurements were acquired. This information may be important in selecting the appropriate preprocessing operations, and in setting their parameters.
+Various methods of statistical analysis can provide us with useful insights. Outlier detection can indicate records with erroneous data ﬁelds. Cluster analysis can help segment the data into groups exhibiting strong similarities. Correlation analysis can help users eliminate redundant ﬁelds or highlight associations between dimensions that might not have been apparent otherwise.
+The most common statistics about data include the mean
+
+1n
+
+μ= n
+
+(xi)
+
+i=0
+
+2.3. Data Preprocessing
+
+57
+
+and the standard deviation
+σ = ( (xi − μ)2).
+The most common statistical plot is the distribution of data, in the form of a histogram.
+2.3.2 Missing Values and Data Cleansing
+One of the realities of analyzing and visualizing “real” data sets is that they often are missing some data entries or have erroneous entries. Missing data may be caused by several reasons, including, for example, a malfunctioning sensor, a blank entry on a survey, or an omission on the part of the person entering the data. Erroneous data is most often caused by human error and can be diﬃcult to detect. In either case, the data analyst must choose a strategy for dealing with these common events. Some of these strategies, speciﬁcally those that are commonly used in data visualization, are outlined below.
+Discard the bad record. This seemingly drastic measure, namely to throw away any data record containing a missing or erroneous ﬁeld, is actually one of the most commonly applied, since the quality of the remaining data entries in that record may be in question. However, this can potentially lead to a signiﬁcant loss of information, especially in data sets containing large numbers of records. In some domains, as much as 90% of records have at least one missing or erroneous ﬁeld. In addition, those records with missing data may be the most interesting (e.g., such as due to a malfunctioning sensor or an overly high response to a drug).
+Assign a sentinel value. Another popular strategy is to have a designated sentinel value for each variable in the data set that can be assigned when the real value in a record is in question. For example, in a variable that has a range of 0 to 100, one might use a value such as −5 to designate an erroneous or missing entry. Then, when the data is visualized, the records with problematic data entries will be clearly visible. Of course, if this strategy is chosen, care must be taken not to perform statistical analysis on these sentinel values.
+Assign the average value. A simple strategy for dealing with bad or missing data is to replace it with the average value for that variable or dimension. An advantage to using this strategy is that it minimally aﬀects
+
+58
+
+2. Data Foundations
+
+the overall statistics for that variable. The average, however, may not be a good “guess” for this particular record. Another drawback of using this method is that it may mask or obscure outliers, which can be of particular interest.
+Assign value based on nearest neighbor. A better approximation for a substitute value is to ﬁnd the record that has the highest similarity with the record in question, based on analyzing the diﬀerences in all other variables. The basic idea here is that if record A is missing an entry for variable i, and record B is closer than any other record to A without considering variable i, then using the value of variable i from record B as a substitute in A is a reasonable assumption. The problem with this approach, however, is that variable i may be most dependent on only a subset of the other dimensions, rather than on all dimensions, and so the best nearest neighbor based on all dimensions may not be the best substitute for this particular dimension.
+Compute a substitute value. Researchers in multivariate statistics have dedicated a signiﬁcant amount of energy to developing methods for generating values to replace missing or erroneous data. The process, known as imputation, seeks to ﬁnd values that have high statistical conﬁdence. Schafer [362] has developed a model-based imputation technique (see the projects at the end of the chapter).
+In all cases where a value is substituted for the missing or erroneous value, it is critically important that the fact that this value is “suspect” be preserved, and that any visualization of this data must convey this information.
+2.3.3 Normalization
+Normalization is the process of transforming a data set so that the results satisfy a particular statistical property. A simple example of this is to transform the range of values a particular variable assumes so that all numbers fall within the range of 0.0 to 1.0. Other forms of normalization convert the data such that each dimension has a common mean and standard deviation. Normalization is a useful operation since it allows us to compare seemingly unrelated variables. It is important in visualization as well, since graphical attributes have a range of values that are possible, and thus to map data to those attributes, we need to convert the data range to be compatible with the graphical attribute range.
+
+2.3. Data Preprocessing
+
+59
+
+For example, if dmin and dmax are the minimum and maximum values for a particular data variable, we can normalize the values to the range of 0.0 to 1.0 using the formula
+dnormalized = (doriginal − dmin)/(dmax − dmin).
+To ease interpretation, we sometimes choose the scaling and oﬀset factors to coincide with intuitive maximum and minimum values, rather than the ones the data possess. For example, if the data corresponds to percentages that fall between 40 and 90, we might use the full range of 0 to 100 instead.
+If the data has a highly non-linear distribution, a linear normalization will map most values to the same or close-by values. In this case, it may be more appropriate to perform a non-linear normalization such as a square root mapping
+dsqrt−normalized = ( doriginal − dmin)/( dmax − dmin)
+or even a logarithmic mapping
+dlog−normalized = (log doriginal − log dmin)/(log dmax − log dmin).
+Note that such a mapping changes the data values and distribution, and it is essential that it is communicated to the user in the visual mapping.
+Normalization may also involve bounding values, so that, for example, values exceeding a particular threshold are capped at that threshold. In this way the details falling within the speciﬁed range can be more eﬀectively interpreted when mapped to a speciﬁc graphical attribute. For example, density values in a tomographic data set may have a substantial range, yet the range of interest for someone interpreting the data may be a very small portion of that range. By truncating the range and normalizing, the variation across the shortened range will be more easily perceived. This is especially important when extreme outliers exist.
+One method of automatically obtaining appropriate bounding values is to compute α − Quantiles with appropriate α-values. If we expect, for example, no more than 1% outliers at the top and bottom spectrum of our data distribution, we can use α = 1% and α = 99% as lower and upper bounding values.
+2.3.4 Segmentation
+In many situations, the data can be separated into contiguous regions, where each region corresponds to a particular classiﬁcation of the data. For example, an MRI data set might originally have 256 possible values for each data
+
+60
+
+2. Data Foundations
+
+point, and then be segmented into speciﬁc categories, such as bone, muscle, fat, and skin. Simple segmentation can be performed by just mapping disjoint ranges of the data values to speciﬁc categories. However, in most situations, the assignment of values to a category is ambiguous. In these cases, it is important to look at the classiﬁcation of neighboring points to improve the conﬁdence of classiﬁcation, or even to do a probabilistic segmentation, where each data point is assigned a probability for belonging to each of the available classiﬁcations. Figure 2.1 shows an image with 256 levels of grey segmented into four classes, based on the analysis of subranges of data.
+A typical problem with segmentation is that the results may not coincide with regions that are semantically homogeneous (undersegmented ), or may consist of large numbers of tiny regions (oversegmented ). One solution to this problem is to follow the initial segmentation process with an iterative split-and-merge reﬁnement stage. The structure of such an algorithm is as follows:
+similarThresh = similarity measure indicating two regions have similar characteristics
+homogeneousThresh = uniformity measure indicating a region is too nonhomogeneous
+do { changeCount = 0 for each region compare region with neighboring regions to find most similar
+
+Figure 2.1.
+
+Slice from skull data set, with original values and after segmenting into four subranges.
+
+2.3. Data Preprocessing
+
+61
+
+if most similar neighbor is within similarThresh of current region
+merge two regions changeCount++ evaluate homogeneity of region if region homogeneity is less than homogeneousThresh split region into two changeCount++ } until changeCount == 0
+The complex tasks of the above algorithm consist of:
+• determining if two regions are similar—a simple procedure is to compare the average values within each region;
+• evaluating the homogeneity of a region—one possible algorithm is to evaluate the histogram of the values within the region to determine if it is unimodal or multimodal;
+• splitting a region—a typical algorithm creates two (or more) subregions at the points where the values are most diﬀerent and grows regions around these seed points until all data points within the region have been reassigned.
+Care must be taken to avoid an inﬁnite loop caused by repeated splitting and merging of the same region. A solution to this problem is to tighten the similarity threshold or loosen the homogeneity threshold as the algorithm progresses. More sophisticated algorithms can incorporate other features of the regions, such as smoothness of boundaries or the size and shape of regions, to obtain desirable characteristics in the resulting segments.
+2.3.5 Sampling and Subsetting
+Often it is necessary to transform a data set with one spatial resolution into another data set with a diﬀerent spatial resolution. For example, we might have an image we would like to shrink or expand, or we might have only a small sampling of data points and wish to ﬁll in values for locations between our samples. In each case, we assume that the data we possess is a discrete sampling of a continuous phenomenon, and therefore we can predict the values at another location by examining the actual data nearest to it. The process of interpolation is a commonly used resampling method in many ﬁelds, including visualization. Some common techniques include the following:
+
+62
+
+2. Data Foundations
+
+Linear interpolation. Given the value of a variable d at two locations A and B, we can estimate the value of that variable at a location C that is between A and B by ﬁrst calculating the percentage of the distance between A and B where C lies. This percentage can then be used in conjunction with the amount the variable changes in value between the two points to determine the amount the value should have changed by the time point C is reached. If we assume the points lie on the x-axis, then we know the following equation is true:
+(xC − xA)/(xB − xA) = (dC − dA)/(dB − dA)
+or dC = dA + (dB − dA) ∗ (xC − xA)/(xB − xA).
+This is similar to the normalization transformation we encountered in Section 2.3.3. To remove the restriction of the line being on the x-axis, we can use parametric equations to deﬁne both the change in position and change in value between points A and B, compute the value of the parameter in the line equation that deﬁnes point C, and use this number in the value equation to generate the value at location C. The parametric form of a line is P (t) = PA + V t, where V = PB − PA. Note that this will work for arbitrary spaces, as we haven’t speciﬁed the number of dimensions used to deﬁne P . By setting the left-hand side to PC , we can then compute the value of t and use it in the associated equation for the value change, d(t) = dA + U t, where U = dB − dA.
+Bilinear interpolation. We can extend this concept to two dimensions (or to an arbitrary number of dimensions) by repeating the procedure for each dimension. For example, a common task in two dimensions is to compute the value of d at location (x, y) given a uniform grid of data values (i.e., the space between points is uniform in both directions, as in an image). If the location coincides with a grid point, the answer is simply the value stored at that location. But what happens if (x, y) lies between grid points? To solve this, we ﬁrst ﬁnd the four grid locations that surround (x, y). If we assume the grid positions are all whole numbers with a spacing of 1.0 and that (x, y) both have fractional components, the bounding box of grid elements containing the point will be (i, j), (i + 1, j), (i, j + 1), and (i + 1, j + 1), where i is the largest whole number less than x and j is the largest whole number less than y.
+We will ﬁrst interpolate horizontally, and then vertically. Reusing the one-dimensional interpolation above, we compute the percentage of the way
+
+2.3. Data Preprocessing
+
+63
+
+that x is between i and i + 1. Let us call this value s. We can now compute the value of d at positions (x, j) and (x, j + 1) using the values at the four grid points. Next, we compute the percentage of the way that y is between j and j + 1. Call this percentage t. We ﬁnally compute the value at position (x, y) by interpolating using the above calculated values from our horizontal interpolation and the percentage t, namely,
+dx,y = dx,j + t ∗ (dx,j+1 − dx,j ).
+
+In the end, dx,y is simply a weighted average of the four grid values nearest to it. Calculating the closed form solution for this weighted average is left as an exercise.
+
+Nonlinear interpolation. One of the deﬁciencies of linear interpolation tech-
+
+niques is that, while the local change in values is smooth, the changes on
+
+opposite sides of a grid point can be noticeably diﬀerent. In fact, the con-
+
+tinuity at a grid point is only order 0, as the ﬁrst derivative on either side
+
+will, in general, be diﬀerent. We can improve on this by using a diﬀerent
+
+formulation for interpolation, namely a higher-order polynomial equation,
+
+as a means of estimating the intermediate values. Several quadratic and
+
+cubic curves known as splines, and commonly found in graphics, have been
+
+employed. Indeed, the primary purpose of those curves has been to interpo-
+
+late surface positions, given a set of control points and blending functions.
+
+For our purposes, it is important that the data values at the grid points be
+
+preserved, i.e., the curve deﬁning the changing values must go through the
+
+control points. A popular curve satisfying this condition is the Catmull-Rom
+
+curve, which we describe below.
+
+Given control points (p0, p1, p2, p3), the cubic curve that goes through
+
+these points is deﬁned as
+
+⎛
+
+⎞⎛ ⎞
+
+0200
+
+p0
+
+q(t) = 0.5 ∗ (1.0
+
+t
+
+t2
+
+t3) ∗ ⎜⎜⎝
+
+−1 2
+
+0 −5
+
+1 4
+
+0 −1
+
+⎟⎟⎠ ∗ ⎜⎜⎝
+
+p1 p2
+
+⎟⎟⎠
+
+−1 3 −3 1
+
+p3
+
+or q(t) =0.5 ∗ ((2 ∗ p1) + (−p0 + p2) ∗ t + (2 ∗ p0 − 5 ∗ p1 + 4 ∗ p2 − p3) ∗ t2 + (−p0 + 3 ∗ p1 − 3 ∗ p2 + p3) ∗ t3).
+
+Figure 2.2 shows a sparse grid of random values with the intermediate values computed using Catmull-Rom interpolation. Data values are mapped to grayscale.
+Depending on the density or sparsity of the data, it might be possible to either selectively sample the data to reduce its size, or use data replication
+
+64
+
+2. Data Foundations
+
+Figure 2.2.
+
+Nonlinear interpolation of a 5 × 5 grid of random values provides smooth transitions between adjacent points.
+
+to expand the size. Subsampling can be fairly simplistic, such as choosing regularly spaced data from the original set. However, this can easily lead to lost data features. For example, selecting every fourth point on a map could easily miss important objects such as roads and streams. Other approaches involve averaging neighborhoods, selecting median or random points in the subregion of the original data that will map to a single point, or domain-speciﬁc feature preservation. Figure 2.3 shows a low-resolution medical image using two methods for resampling: pixel replication and averaging neighborhoods.
+Data subsetting is also a frequently used operation both prior to and during visualization. This is especially helpful for very large data sets, as the visualization of the entire data set may lead to substantial visual clutter. A user may specify a set of constraints (a query) to retrieve for visualization only the data that meet the desired conditions, such as all the data for a speciﬁc time period, or all data for which the change in stock value exceeds a particular threshold. Subsetting may also be performed on the visualization itself, with the user highlighting, painting, or otherwise selecting the data subset of interest (see the discussion about interactive techniques in Chapter 11). The results of this selection can either be deleted (as currently
+
+2.3. Data Preprocessing
+
+65
+
+Figure 2.3.
+
+Low-resolution version of skull data shown above, using pixel replication and averaging to interpolate additional data points.
+
+uninteresting), masked (i.e., remove all data other than the selected subset), or simply highlighted. Interactive subsetting is generally easier to control than query-based subsetting, as the user can see the characteristics of the overall data set and make an informed decision as to which portion of the data he or she wishes to explore in more detail. Query-based subsetting has the advantage of not requiring the loading of the entire data set into the program, and allows users to specify precise boundaries for their region of interest.
+
+2.3.6 Dimension Reduction
+In situations where the dimensionality of the data exceeds the capabilities of the visualization technique, it is necessary to investigate ways to reduce the data dimensionality, while at the same time preserving, as much as possible, the information contained within. This can be done manually by allowing the user to select the dimensions deemed most important, or via computational techniques, such as principal component analysis (PCA) [385], multidimensional scaling (MDS) [259], Kohonen self-organizing maps (SOMs) [248], and Local Linear Embedding (LLE) [350]. Each of these can be used to convey, within the dimensionality of the display, a description of the data set that covers the majority of signiﬁcant features, such as clusters, patterns, and outliers. However, it is important to note that most of these techniques do not produce unique results. Starting conﬁgurations, parameters of the
+
+66
+
+2. Data Foundations
+
+calculations, and variations in the computations can lead to quite diﬀerent results, as we will encounter in the aggregation techniques. In Figure 2.4 we can see the results of reducing a four-dimensional data set to two dimensions using PCA and plotting the resulting points. In fact, we use a form of glyph, called a star glyph, to convey the original data points. Clearly, the PCA algorithm does a good job of separating data into clusters.
+Principal component analysis (PCA) is a popular method for dimension reduction [385]. PCA is a data-space transformation technique that computes new dimensions/attributes which are linear combinations of the original data attributes. The advantage of the new dimensions is that they can be sorted according to their contribution in explaining the variance of the data. By selecting the most relevant new dimensions, a subspace of variables is obtained that minimizes the average error of lost information. An intuitive description of PCA is as follows:
+1. Select a line in space that spreads the projected n-dimensional data the most. This line represents the ﬁrst principal component.
+2. Select a line perpendicular to the ﬁrst that now spreads the data the most. That line is the second PCA.
+
+Figure 2.4.
+
+The Iris data set in star glyphs, with the position of each point based on the ﬁrst two principal components. The star glyph represents four variables as the lengths of the each of the lines emanating from the center of a four-pointed star. Reasonable clustering can be seen.
+
+2.3. Data Preprocessing
+
+67
+
+3. Repeat until all PC dimensions are computed, or until the desired number of PCs have been obtained.
+More formally, the steps in computing the PCA are as follows (from [385]):
+1. Assume the data has m dimensions/attributes. For each member of a record, subtract the mean value for that dimension, resulting in a data set with mean=0.
+2. Compute the covariance matrix (see any statistics book).
+3. Compute the eigenvectors and eigenvalues of the covariance matrix.
+4. Sort the eigenvectors based on their eigenvalues, from largest to smallest.
+5. Select the ﬁrst mr eigenvectors, where mr is the number of dimensions you want to reduce your data set to.
+6. Create a matrix of these eigenvectors as the rows, with the ﬁrst one being the top row of the matrix.
+7. For each data record, create a vector of its values, transpose it, and premultiply it with the matrix above. This completes the transformation; each data record is now represented in the reduced dimension space.
+As another example of a dimension reduction process, we present below the steps for computing a form of multidimensional scaling known as a gradient descent approach. Brieﬂy, MDS tries to ﬁnd a lower dimensional representation for a data set that best preserves the inter-point distances from the original data set. In other words, we wish to minimize, for every pair of points (i, j), the diﬀerence between dij (the distance between the points in N dimensions) and δij (the distance between the points in the reduced space). This discrepancy is usually referred to as the stress of the conﬁguration. The procedure is as follows:
+1. Compute the pairwise distances in n-dimensional space. If there are n data points, this requires the calculation of n(n − 1)/2 distances.
+2. Assign all data point locations (often random) in the lower dimensional space.
+3. Calculate the stress of the conﬁguration (a normalized, signed value or a mean-squared error are just two of the possibilities).
+
+68
+
+2. Data Foundations
+
+4. If the average or accumulated stress is less than a user-prescribed threshold, terminate the process and output the results.
+5. If not, for each data point, compute a vector indicating the direction in which it should move to reduce the stress between it and all other data points. This would be a weighted sum of vectors between this point and all its neighbors, pointing either toward or away from the neighbors and weighted proportional to the pairwise stress. Thus, positive stresses would move the points away from each other, and negative stresses would bring them together, and the greater the absolute value of the stress, the larger the motion.
+6. Move each data point in the lower dimensional space, according to the vector computed, and return to step 3.
+Care must be taken to avoid inﬁnite loops caused by points overshooting their “best” conﬁguration. Likewise, as in all optimization processes, the algorithm can become stuck in a local optimum. This can be caused by blockages, where some points that should be close together are caught on opposite sides of a repulsive force (points that are trying to maintain a long distance from the points in question). In this case, repeating the algorithm with diﬀerent starting conditions, or allowing, as in simulated annealing [261], an occasional jump with a magnitude and/or direction diﬀerent from the vector calculated, to enable a point to clear such blockages if they exist, may improve the solution. There are also a number of non-linear dimension reduction techniques which use a non-linear mapping from high- to lowdimensional space. Two widely used methods are emphSelf-organizing maps (SOMs) [248] and Local Linear Embeddings (LLEs) [350].
+Many visualization and statistical graphics packages include both MDS and PCA implementations. In fact, some will even use PCA to compute initial positions to be used in the MDS process, which can greatly reduce the number of iterations required to converge on a low-stress conﬁguration. It is worthwhile to note that there are examples of higher-dimensional data where the ﬁrst few principal components do not separate the data well, but the later principal components with small eigenvalues do.
+2.3.7 Mapping Nominal Dimensions to Numbers
+In many domains, one or more of the data dimensions consist of nominal values. We may have several alternative strategies for handling these dimensions within our visualizations, depending on how many nominal dimensions
+
+2.3. Data Preprocessing
+
+69
+
+there are, how many distinct values each variable can take on, and whether an ordering or distance relation is available or can be derived. The key is to ﬁnd a mapping of the data to a graphical entity or attribute that doesn’t introduce artiﬁcial relationships that don’t exist in the data. For example, when looking at a data set consisting of information about cars, the manufacturer and model name would both be nominal ﬁelds. If we were mapping one or both of these to positions on a plot, how would we do the assignment of positions to names? One might simply assign integers to diﬀerent names, perhaps using an alphabetic ordering. However, this might imply some false relationships, such as Hondas being closer to Fords than Toyotas. Clearly, we need a better approach. While ranked nominal values can be readily mapped to any of the graphical attributes at our disposal, nonranked values pose a more signiﬁcant problem.
+For variables with only a modest number of diﬀerent values, there are several options for graphical attributes that have less of an ordering relation than position or size. These include color and shapes. Indeed, most plotting programs support a number of diﬀerent plotting symbols to enable easy separation of modest numbers of distinct values or classes of data, and signiﬁcant research has gone into identifying colors that are readily separated, and in general, do not imply an ordering relationship (see the discussion of color perception in Chapter 3).
+If there is a single nominal variable, there are a few possible techniques we can use. The simplest is to just use this variable as the label for the graphical elements being displayed. This works ﬁne for data sets with modest numbers of records, but it quickly overwhelms the screen for large data sets. Innovative strategies include showing random subsets of labels and changing the points with labels being shown on a regular basis, and showing only the labels on objects near the cursor [121]. For mapping this single variable to numbers, we could look at similarities between the numeric variables associated with a pair of nominal values. If the statistical properties of the records associated with one nominal value are suﬃciently similar to the properties of a diﬀerent value, then that implies that these two values should likely be mapped to similar numeric values. Conversely, if there are suﬃcient diﬀerences in properties, then likely they should be mapped to quite distinct values. Given all the pairwise similarities, we could then use a technique such as MDS to map the diﬀerent nominal values to positions in one dimension. This is a simpliﬁed variant of a technique called correspondence analysis in statistics [158]. It can even be applied if all dimensions of the data set are nominal, which is termed multiple correspondence analysis.
+
+70
+
+2. Data Foundations
+
+2.3.8 Aggregation and Summarization
+In the event that too much data is present, it is often useful to group data points based on their similarity in value and/or position and represent the group by some smaller amount of data. This can be as simple as averaging the values, or there might be more descriptive information, such as the number of members in the group and the extents of their positions or values. Thus, there are two components to aggregation: the method of grouping the points and the method of displaying the resulting groups. Grouping can be done in a number of ways; the literature on data clustering is quite rich [204]. Methods include bottom-up merging of adjacent points, top-down partitioning of the data space, and iterative split-and-merge methods. In all cases, the important computations are the distance between data points, the goodness of the resulting clusters, and the quality of separation between adjacent clusters. Variations in these computations can lead to quite diﬀerent results. Indeed, there is often distrust of cluster results by people knowledgeable about their data. Again, it is important to convey to users when and how aggregation has been done.
+The key to visually depicting aggregated data is to provide suﬃcient information for the user to decide whether he or she wishes to perform a drill-down on the data, i.e., to explore the contents of one or more clusters. Simply displaying a single representative data point per cluster may not help in the understanding of the variability within the cluster, or in detecting outliers in the data set. Thus, other cluster measures, such as those listed above, are useful in exploring this sort of preprocessed data. Figure 2.5 shows the Iris data set using parallel coordinates, with one side showing the original data and the other showing aggregations resulting from a bottom-up clustering algorithm. The dominant clusters are clearly distinguishable.
+
+2.3.9 Smoothing and Filtering
+
+A common process in signal processing is to smooth the data values, to reduce noise and to blur sharp discontinuities. A typical way to perform this task is through a process known as convolution, which for our purposes can be viewed as a weighted averaging of neighbors surrounding a data point. In a one-dimensional case, this might be implemented via a formula as follows:
+
+p1i
+
+=
+
+pi−1 4
+
++
+
+pi 2
+
++
+
+pi+1 , 4
+
+where each pi is a data point.
+
+2.3. Data Preprocessing
+
+71
+
+Figure 2.5.
+
+(a)
+
+(b)
+
+The Iris data set in parallel coordinates: (a) the original data; (b) the centers and extents of clusters after aggregation. Each axis in parallel coordinates represents a dimension, with each record being drawn as a polyline through each of the coordinate values on the axes.
+
+The result of applying this operation is that values that are signiﬁcantly diﬀerent from their neighbors (e.g., noise) will be modiﬁed to be more similar to the neighbors, while values corresponding to dramatic changes will be “softened” to smooth out the transition. Many types of operations can be accomplished via this ﬁltering operation, by simply varying the weights or changing the size or shape of the neighborhood considered.
+For time series, it may be desired to weight older values less than more recent values. A popular method for obtaining this behavior is exponential smoothing [141]. The idea is to weight older data exponentially less than the more recent data. For a data series x0, x1, ..., xn, the exponential smoothing is calculated recursively as
+s0 = x0, st = α ∗ xt−1 + (1 − α) ∗ st−1,
+with α being the decay factor.
+2.3.10 Raster-to-Vector Conversion
+In computer graphics, objects are typically represented by sets of connected, planar polygons (vertices, edges, and triangular or quadrilateral patches),
+
+72
+
+2. Data Foundations
+
+and the task is to create a raster (pixel-level) image representing these objects, their surface properties, and their interactions with light sources and other objects. In spatial data visualization, our objects can be points or regions, or they can be linear structures, such as a road on a map. It is sometimes useful to take a raster-based data set, such as an image, and extract linear structures from it. Reasons for doing this might include:
+• Compressing the contents for transmission. A vertex and edge list is almost always more compact than a raster image.
+• Comparing the contents of two or more images. It is generally easier and more reliable to compare higher-level features of images, rather than their pixels.
+• Transforming the data. Aﬃne transformations such as rotation and scaling are easier to apply to vector representations than to raster.
+• Segmenting the data. Isolating regions by drawing boundaries around them is an eﬀective method for interactive exploration and model building.
+The image processing and computer vision ﬁelds have developed a wide assortment of techniques for converting raster images into vertex and edgebased models [153, 371]. A partial list of these include the following:
+Thresholding. Identify one or more values with which to break the data into regions, after which the boundaries can be traced to generate the edges and vertices. The values may be user-deﬁned, or computed based on histogram analysis, and may be adjusted for diﬀerent regions of the image (termed adaptive thresholding).
+Region-growing. Starting with seed locations, either selected by a human observer or computed via scanning of the data, merge pixels into clusters if they are suﬃciently similar to any neighboring point that has been assigned to a cluster associated with one of the seed pixels. A major problem is deﬁning a suitable measure of similarity.
+Boundary-detection. Compute a new image from the existing image by convolving the image with a particular pattern matrix. Convolution is a straightforward process. Each pixel and its immediate neighbors are multiplied by a value corresponding to their position in a pattern matrix (with the selected pixel mapped to the center of the pattern).
+
+2.4. Data Sets Used in This Book
+
+73
+
+These products are then summed, and the corresponding pixel in the result image is set to this value. A vast assortment of image transformations are possible, based on the contents of the pattern matrix. For boundary detection, we use patterns that will emphasize (set to high values) either horizontal, vertical, or diagonal boundaries, while deemphasizing (setting to low values) pixels that are very similar to all their neighbors.
+Thinning. The convolution process mentioned above can also be used to perform a process called thinning, where the goal is to reduce wide linear features, such as arteries, to a single pixel in width. These resulting connected pixels form the center or medial axis of the regions that were thinned.
+A wide range of such operators have been developed. A good text on the subject is [389].
+
+2.3.11 Summary of Data Preprocessing
+While these and other processes can improve the eﬀectiveness of the visualization and lead to new visual discoveries, it is important to convey to the user that these processes have been applied to the data. An understanding of the types of transformation the data has undergone can help in properly interpreting it. Likewise, misinterpretation or erroneous conclusions can be drawn from data that has been preprocessed without the user’s knowledge (see Chapter 13).
+
+2.4 Data Sets Used in This Book
+Throughout this book, we will give numerous examples of data visualizations. While each may be appreciated without understanding the data being displayed, in general, the eﬀectiveness of a visualization is enhanced by the user having some context for interpreting what is being shown. Thus, we will draw most examples from the following data sets, each of which may be downloaded from the book’s web site. A wealth of additional data sets can be found on the U.S. government’s open data portal www.data.gov and the European Union’s open data portal open-data.europa.eu.
+
+74
+
+2. Data Foundations
+
+djia-100.xls. A univariate, nonspatial data set consisting of 100+ years of daily Dow Jones Industrial Averages. Source—http://www.analyzeindices.com/dow-jones-history.shtml Format—Excel spreadsheet. After the header, each entry is of the form YYMMDD followed by the closing value. Code—ﬁle can be viewed with Excel.
+colorado elev.vit. A two-dimensional, uniform grid, scalar ﬁeld representing the elevation of a square region of Colorado. Source—included with the distribution of OpenDX (http://www.opendx .org/). Format—binary ﬁle with a 268-byte header followed by a 400 × 400 array of 1-byte elevations. Code—ﬁle can be rendered with TopoSurface, a Processing program included in Appendix C and on the book’s web site.
+uvw.dat. A three-dimensional uniform grid vector ﬁeld representing a simulated ﬂow ﬁeld. The data shows one frame of the unsteady velocity ﬁeld in a turbulent channel ﬂow, computed by a ﬁnite volume method. The streamwise velocity (u) is much larger than the secondary velocities in the transverse direction (v and w). Source—Data courtesy of Drs. Jiacai Lu and Gretar Tryggvason, ME Department, Worcester Polytechnic Institute (http://www.me.wpi .edu/Tryggvason). Format—plain text. After the header, each entry is a set of 6 ﬂoat values, 3 for position, 3 for displacement. There is roughly a 20:1:1 ratio between the 3 displacements. Code—ﬁle can be rendered with FlowSlicer, a Processing program, and FlowView, a Java program (also need Voxel.java) included in Appendix C and on the book’s web site.
+city temp.xls. A two-dimensional, nonuniform, geo-spatial, scalar data set containing the average January temperature for 56 U.S. cities. Source—Peixoto, J.L. (1990), “A Property of Well-Formulated Polynomial Regression Models.” American Statistician, 44, 26–30. Also found in: Hand, D.J., et al. (1994) A Handbook of Small Data Sets, London: Chapman & Hall, 208–210. Downloaded from http://lib.stat .cmu.edu.
+
+2.4. Data Sets Used in This Book
+
+75
+
+Format—Excel spreadsheet. After a header, each entry is a city name and state, followed by three numbers: average January temperature, latitude, and longitude. Code—ﬁle can be viewed with Excel.
+CThead.zip. A three-dimensional uniform grid, scalar ﬁeld consisting of a 113-slice MRI data set from a CT scan of a human head. Source—Data taken on the General Electric CT Scanner and provided courtesy of North Carolina Memorial Hospital. From http://graphics .stanford.edu/data/voldata/. Format—Each slice is stored in a separate binary ﬁle (no header). Slices are stored as a 256 × 256 array with dimensions of z = 113, y = 256, x = 256 in z, y, x order. Format is 16-bit integers—two consecutive bytes make up one binary integer (Mac byte ordering). x : y : z shape of each voxel is 1:1:2. Code—ﬁle can be rendered with VolumeSlicer, a Java program included in Appendix C and on the book’s web site.
+cars.xls, detroit.xls, cereal.xls. Several multivariate, nonspatial data sets commonly used in multivariate data analysis. Source—http://lib.stat.cmu.edu Format—Excel spreadsheets, mostly with no headers. Code—ﬁles can be viewed with Excel.
+Health-related multivariate data sets. Subsets from UNICEF’s basic indicators by country and the CDC’s obesity by state; several multivariate, spatial data sets used with Geospatial Information Systems. Source—http://OpenIndicators.org Format—Excel spreadsheets. Code—ﬁles can be viewed with Excel, with Weave, and with many other visualization systems.
+VAST Contest and Challenge Data. Several heterogeneous data sets that represent realistic scenarios (though they are synthetic) and have embedded ground truth. These were used in the various IEEE VAST contests and challenges. Source—http://hcil.cs.umd.edu/localphp/hcil/vast/archive/index.php Format—tables, text ﬁles, spreadsheet, images, videos, and others.
+
+76
+
+2. Data Foundations
+
+Code—ﬁles will likely require work to be read into a typical visualization system. For example, the text ﬁles require some processing to be dealt with. Several tools are available that analyze the data and even provide various visualizations, including Weka, RapidMiner, and Jigsaw.
+U.S. Counties Census Data. A subset of the U.S. census for the 3137 counties in the U.S. (including the District of Columbia) that includes county and state, total population broken down by age, race, family relationships (number children, age of children, . . . ) and household parameters (own, rent, . . . ).
+Source—http://www.census.gov and cleaned subset is at http://www .openindicators.org/data Format—comma-separated values. Code—The ﬁle can be viewed in Excel and in Weave (http://www .openindicators.org/).
+iris.csv. Size data for Iris plants classiﬁed by type. Source—http://archive.ics.uci.edu/ml/datasets/Iris Format—comma-separated values. Code—The ﬁle can be viewed with Excel or as text.
+
+2.5 Related Readings
+In the chapter “Data Preprocessing” of [352], the author provides a mathematical overview of data preprocessing including error handling, data transformation, and data merging. Details on dimension reduction, including principal component analysis (PCA), dimension estimation, and manifold modeling, can be found in [53]
+Collecting data sets for visualization and analysis quickly leads one to realize the incredible number of distinct ﬁle formats that need to be parsed in order to start analysis. For image data, one of the best sources for format information is the book by Brown et al. [49]. Another somewhat dated web site on data ﬁle formats is [402].
+The web is overﬂowing with data sets available for analysis. A few of the ones that have been around for a while include StatLib [394], a library of statistical data sets and algorithms, the UC Irvine KDD Repository [430],
+
+2.6. Exercises
+
+77
+
+NOAA’s collection of public climate data sets [306], and the Human Computer Interaction Lab’s archive of VAST and other related data sets [431].
+
+2.6 Exercises
+1. Give examples, other than the ones listed in this chapter, of data sets with the following characteristics:
+(a) with and without an ordering relationship, (b) with and without a distance metric, (c) with and without an absolute zero.
+2. Describe the diﬀerence between a data attribute and a value. Use examples to clarify your response.
+3. There are numerous strategies for dealing with missing data in a data set. These include deleting the row containing the missing value, replacing the missing value with a special number, such as −999, replacing the value with the average value for that data dimension, and replacing the value with the corresponding entry from the nearest neighbor (using some distance calculation). Comment on the strengths and weaknesses of each of these strategies: what is gained or lost by following one approach over the others?
+4. Perform a web search looking for repositories of publicly available data. Retrieve two or three, and analyze them in terms of their structure and meaning. Does the data have spatial or temporal attributes? Is it nominal or ordinal (or both)? Does it come in a standard or custom ﬁle format?
+5. Repeat the above process, using a newspaper as your source. What sorts of data can you extract from the newspaper? What are the data types? What data sets could you derive by processing the information in the newspaper? Try to design at least one data set for each section of the newspaper.
+6. List at least ten sources of data from your normal daily activities (you’ll be surprised—data is all around us!). For example, nutrition labels from the food we consume have a wealth of information, some of which you probably don’t want to know. Start gathering one or two types of data to be used for future projects in this course.
+
+78
+
+2. Data Foundations
+
+7. Find the data for temperature highs from the last two weeks in your region and apply the convolution smoothing technique to smooth the temperature curves.
+
+2.7 Projects
+1. Write a program that accepts as input a uniform, 3D scalar ﬁeld (each record is an integer) whose dimensions are (heighti, widthi, depthi) and that computes and outputs a ﬁle with dimensions (heightj, widthj, depthj). Assume the program is invoked with the command:
+resample file1 height1 width1 depth1 file2 height2 width2 depth2
+2. A common task when dealing with data is dividing it into categories, such as low, medium, and high. There are numerous strategies for performing this task, each of which has strengths and weaknesses. Write a program that reads in a list of integers and divides them into a given set of bins (this number can be passed into the program), using one or more of the following strategies:
+• uniform bin width—the size of the range of values for each bin is the same;
+• uniform bin count—as best as possible (without dividing a single number between multiple bins), each bin has about the same number of elements in it;
+• best break points—start with everything in one bin. Search for the largest gaps, and divide at those locations. If no gaps exist, break at values with low number of occurrences.
+3. Normalization is a process in which one or more dimensions are processed so that the resulting values have a particular range and/or mean. This allows two or more dimensions with very diﬀerent characteristic ranges (such as temperature and elevation) to be combined into a distance calculation. Given a list of ﬂoating point values, write a program that normalizes these values into one or more of the following ranges (you will see why this is useful when we start mapping to graphical attributes):
+• all values fall between 0.0 and 1.0;
+
