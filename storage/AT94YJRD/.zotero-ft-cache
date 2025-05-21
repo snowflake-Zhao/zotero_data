@@ -1,0 +1,2084 @@
+arXiv:1710.11469v5 [stat.ML] 13 Apr 2019
+
+Conditional Variance Penalties and Domain Shift Robustness
+Christina Heinze-Deml & Nicolai Meinshausen Seminar for Statistics ETH Zurich Zurich, Switzerland {heinzedeml,meinshausen}@stat.math.ethz.ch
+Abstract
+When training a deep neural network for image classiﬁcation, one can broadly distinguish between two types of latent features of images that will drive the classiﬁcation. We can divide latent features into (i) ‘core’ or ‘conditionally invariant’ features Xcore whose distribution Xcore|Y , conditional on the class Y , does not change substantially across domains and (ii) ‘style’ features Xstyle whose distribution Xstyle|Y can change substantially across domains. Examples for style features include position, rotation, image quality or brightness but also more complex ones like hair color, image quality or posture for images of persons. Our goal is to minimize a loss that is robust under changes in the distribution of these style features. In contrast to previous work, we assume that the domain itself is not observed and hence a latent variable.
+We do assume that we can sometimes observe a typically discrete identiﬁer or “ID variable”. In some applications we know, for example, that two images show the same person, and ID then refers to the identity of the person. The proposed method requires only a small fraction of images to have ID information. We group observations if they share the same class and identiﬁer (Y, ID) = (y, id) and penalize the conditional variance of the prediction or the loss if we condition on (Y, ID). Using a causal framework, this conditional variance regularization (CoRe) is shown to protect asymptotically against shifts in the distribution of the style variables. Empirically, we show that the CoRe penalty improves predictive accuracy substantially in settings where domain changes occur in terms of image quality, brightness and color while we also look at more complex changes such as changes in movement and posture. Keywords: Domain shift; Dataset shift; Causal models; Distributional robustness; Anticausal prediction; Image classiﬁcation
+1. Introduction
+Deep neural networks (DNNs) have achieved outstanding performance on prediction tasks like visual object and speech recognition (Krizhevsky et al., 2012; Szegedy et al., 2015; He et al., 2015). Issues can arise when the learned representations rely on dependencies that vanish in test distributions (see for example Quionero-Candela et al. (2009); Torralba and Efros (2011); Csurka (2017) and references therein). Such domain shifts can be caused by changing conditions such as color, background or location changes. Predictive performance is then likely to degrade. For example, consider the analysis presented in Kuehlkamp et al. (2017) which is concerned with the problem of predicting a person’s gender based on images of their iris. The results indicate that this problem is more diﬃcult than previous studies
+1
+
+have suggested due to the remaining eﬀect of cosmetics after segmenting the iris from the whole image.1 Previous analyses obtained good predictive performance on certain datasets but when testing on a dataset only including images without cosmetics accuracy dropped. In other words, the high predictive performance previously reported relied to a signiﬁcant extent on exploiting the confounding eﬀect of mascara on the iris segmentation which is highly predictive for gender. Rather than the desired ability of discriminating based on the iris’ texture the systems would mostly learn to detect the presence of cosmetics.
+More generally, existing biases in datasets used for training machine learning algorithms tend to be replicated in the estimated models (Bolukbasi et al., 2016). For an example involving Google’s photo app, see Crawford (2016) and Emspak (2016). In §5 we show many examples where unwanted biases in the training data are picked up by the trained model. As any bias in the training data is in general used to discriminate between classes, these biases will persist in future classiﬁcations, raising also considerations of fairness and discrimination (Barocas and Selbst, 2016).
+Addressing the issues outlined above, we propose Conditional variance Regularization (CoRe) to give diﬀerential weight to diﬀerent latent features. Conceptually, we take a causal view of the data generating process and categorize the latent data generating factors into ‘conditionally invariant’ (core) and ‘orthogonal’ (style) features, as in Gong et al. (2016). The core and style features are unobserved and can in general be highly nonlinear transformations of the observed input data. It is desirable that a classiﬁer uses only the core features as they pertain to the target of interest in a stable and coherent fashion. Basing a prediction on the core features alone yields stable predictive accuracy even if the style features are altered. CoRe yields an estimator which is approximately invariant under changes in the conditional distribution of the style features (conditional on the class labels) and it is asymptotically robust with respect to domain shifts, arising through interventions on the style features. CoRe relies on the fact that for certain datasets we can observe grouped observations in the sense that we observe the same object under diﬀerent conditions. Rather than pooling over all examples, CoRe exploits knowledge about this grouping, i.e., that a number of instances relate to the same object. By penalizing between-object variation of the prediction less than variation of the prediction for the same object, we can steer the prediction to be based more on the latent core features and less on the latent style features. While the proposed methodology can be motivated from the desire the achieve representational invariance with respect to the style features, the causal framework we use throughout this work allows to precisely formulate the distribution shifts we aim to protect against.
+The remainder of this manuscript is structured as follows: §1.1 starts with a few motivating examples, showing simple settings where the style features change in the test distribution such that standard empirical risk minimization approaches would fail. In §1.2 we review related work, introduce notation in §2 and in §3 we formally introduce conditional variance regularization CoRe. In §4, CoRe is shown to be asymptotically equivalent to minimizing the risk under a suitable class of strong interventions in a partially linear classiﬁcation setting, provided one chooses suﬃciently strong CoRe penalties. We also show that
+1. Segmenting eyelashes from the iris is not entirely accurate which implies that the iris images can still contain parts of eyelashes, occluding the iris. As mascara causes the eyelashes to be thicker and darker, it is diﬃcult to entirely remove the presence of cosmetics from the iris images.
+2
+
+the population CoRe penalty induces domain shift robustness for general loss functions to ﬁrst order in the intervention strength. The size of the conditional variance penalty can be shown to determine the size of the distribution class over which we can expect distributional robustness. In §5 we evaluate the performance of CoRe in a variety of experiments.
+To summarize, our contributions are the following:
+(i) Causal framework and distributional robustness. We provide a causal framework to deﬁne distributional shifts for style variables. Our framework allows that the domain variable itself is latent.
+(ii) Conditional variance penalties. We introduce conditional variance penalties and show two robustness properties in Theorems 1 and 2.
+(iii) Software. We illustrate our ideas using synthetic and real-data experiments. A TensorFlow implementation of CoRe as well as code to reproduce some of the experimental results are available at https://github.com/christinaheinze/core.
+1.1 Motivating examples
+To motivate the methodology we propose, consider the examples shown in Figures 1 and 2. Example 1 shows a setting where a linear decision boundary is suitable. Panel (a) in Figure 1 shows a subsample of the training data where class 1 is associated with red points, dark blue points correspond to class 0. If we were asked to draw a decision boundary based on the training data, we would probably choose one that is approximately horizontal. The style feature here corresponds to a linear direction (1, −0.75)t. Panel (b) shows a subsample of the test set where the style feature is intervened upon for class 1 observations: class 1 is associated with orange squares, cyan squares correspond to class 0. Clearly, a horizontal decision boundary would have misclassiﬁed all test points of class 1.
+Example 2 shows a setting where a nonlinear decision boundary is required. Here, the core feature corresponds to the distance from the origin while the style feature corresponds to the angle between the x1-axis and the vector from the origin to (x1, x2). Panel (c) shows a subsample of the training data and panel (d) additionally shows a subsample of the test data where the style—i.e. the distribution of the angle—is intervened upon. Clearly, a circular decision boundary yields optimal performance on both training and test set but is unlikely to be found by a standard classiﬁcation algorithm when only using the training set for the estimation. We will return to these examples in §3.4.
+Lastly, we introduce a strong dependence between the class label and the style feature “image quality” in the third example by manipulating the face images from the CelebA dataset (Liu et al., 2015): in the training set images of class “wearing glasses” are associated with a lower image quality than images of class “not wearing glasses”. Examples are shown in Figure 2(a). In the test set, this relation is reversed, i.e. images showing persons wearing glasses are of higher quality than images of persons without glasses, with examples in Figure 2(b). We will return to this example in §5.3 and show that training a convolutional neural network to distinguish between people wearing glasses or not works well on test data that are drawn from the same distribution (with error rates below 2%) but fails entirely on the shown test data, with error rates worse than 65%.
+3
+
+(a) Example 1, training set.
+Y=0 (train) Y=1 (train)
+
+(b) Example 1, test set.
+
+Y=0 (train) Y=0 (test) Y=1 (train) Y=1 (test)
+
+X2 −2 0 2 4 6 8 10 12
+
+X2 −2 0 2 4 6 8 10 12
+
+−2 0 2 4 6 8 10 12 X1
+(c) Example 2, training set.
+
+−2 0 2 4 6 8 10 12 X1
+(d) Example 2, test set.
+
+4
+
+4
+
+2
+
+2
+
+0
+
+X2
+
+0
+
+X2
+
+−2
+
+−2
+
+−4
+
+Y=0 (train) Y=1 (train)
+
+−4
+
+Y=0 (train) Y=0 (test) Y=1 (train) Y=1 (test)
+
+−4
+
+−2
+
+0
+
+2
+
+4
+
+X1
+
+−4
+
+−2
+
+0
+
+2
+
+4
+
+X1
+
+Figure 1: Motivating examples 1 and 2: a linear example in (a) and (b) and a nonlinear example in (c) and (d). The distributions are shifted in test data by style interventions where style in example (a/b) is the linear direction (1, −0.75) and the polar angle in example (c/d). Standard estimators achieve error rates of 0% on the training data and test data drawn from the same distribution as the training data (panels (a) and (c), respectively). On the shown test set where the distribution of the style conditional on Y has changed the error rates are > 50% (panels (b) and (d), respectively).
+
+4
+
+(a) Example 3, training set.
+
+(b) Example 3, test set.
+
+Figure 2: Motivating example 3: The goal is to predict whether a person is wearing glasses. The distributions are shifted in test data by style interventions where style is the image quality. A 5-layer CNN achieves 0% training error and 2% test error for images that are sampled from the same distribution as the training images (a), but a 65% error rate on images where the confounding between image quality and glasses is changed (b). See §5.3 for more details.
+
+1.2 Related work For general distributional robustness, the aim is to learn
+
+argminθ sup EF ( (Y, fθ(X)))
+
+(1)
+
+F ∈F
+
+for a given set F of distributions, twice diﬀerentiable and convex loss , and prediction fθ(x). The set F is the set of distributions on which one would like the estimator to achieve a guaranteed performance bound.
+Causal inference can be seen to be a speciﬁc instance of distributional robustness, where we take F to be the class of all distributions generated under do-interventions on X (Meinshausen, 2018; Rothenh¨ausler et al., 2018). Causal models thus have the deﬁning advantage that the predictions will be valid even under arbitrarily large interventions on all predictor variables (Haavelmo, 1944; Aldrich, 1989; Pearl, 2009; Sch¨olkopf et al., 2012; Peters et al., 2016; Zhang et al., 2013, 2015; Yu et al., 2017; Rojas-Carulla et al., 2018; Magliacane et al., 2018). There are two diﬃculties in transferring these results to the setting of domain shifts in image classiﬁcation. The ﬁrst hurdle is that the classiﬁcation task is typically anti-causal since the image we use as a predictor is a descendant of the true class of the object we are interested in rather than the other way around. The second challenge is that we do not want (or could) guard against arbitrary interventions on any or all variables but only would like to guard against a shift of the style features. It is hence not immediately obvious how standard causal inference can be used to guard against large domain shifts.
+Another line of work uses a class of distributions of the form F = F (F0) with
+
+F (F0) := {distributions F such that D(F, F0) ≤ },
+
+(2)
+
+with > 0 a small constant and D(F, F0) being, for example, a φ-divergence (Namkoong and Duchi, 2017; Ben-Tal et al., 2013; Bagnell, 2005; Volpi et al., 2018) or a Wasserstein distance (Shaﬁeezadeh-Abadeh et al., 2017; Sinha et al., 2018; Gao et al., 2017). The distribution F0 can be the true (but generally unknown) population distribution P from which the data were drawn or its empirical counterpart Pn. The distributionally robust targets in Eq. (2) can often be expressed in penalized form (Gao et al., 2017; Sinha et al., 2018; Xu et al.,
+
+5
+
+2009). A Wasserstein-ball is a suitable class of distributions for example in the context of adversarial examples (Sinha et al., 2018; Szegedy et al., 2014; Goodfellow et al., 2015).
+In this work, we do not try to achieve robustness with respect to a set of distributions that are pre-deﬁned by a Kullback-Leibler divergence or a Wasserstein metric as in Eq. (2). We try to achieve robustness against a set of distributions that are generated by interventions on latent style variables. We will formulate the class of distributions over which we try to achieve robustness as in Eq. (1) but with the class of distributions in Eq. (2) now replaced with
+
+Fξ = {F : Dstyle(F, F0) ≤ ξ},
+
+(3)
+
+where F0 is again the distribution the training data are drawn from. The diﬀerence to standard distributional robustness approaches listed below Eq. (2) is now that the metric Dstyle measures the shift of the orthogonal style features. We do not know a priori which features are prone to distributional shifts and which features have a stable (conditional) distribution. The metric is hence not known a priori and needs to be inferred in a suitable sense from the data.
+Similar to this work in terms of their goals are the work of Gong et al. (2016) and Domain-Adversarial Neural Networks (DANN) proposed in Ganin et al. (2016), an approach motivated by the work of Ben-David et al. (2007). The main idea of Ganin et al. (2016) is to learn a representation that contains no discriminative information about the origin of the input (source or target domain). This is achieved by an adversarial training procedure: the loss on domain classiﬁcation is maximized while the loss of the target prediction task is minimized simultaneously. The data generating process assumed in Gong et al. (2016) is similar to our model, introduced in §2.1, where we detail the similarities and diﬀerences between the models (cf. Figure 3). Gong et al. (2016) identify the conditionally independent features by adjusting a transformation of the variables to minimize the squared MMD distance between distributions in diﬀerent domains2. The fundamental diﬀerence between these very promising methods and our approach is that we use a diﬀerent data basis. The domain identiﬁer is explicitly observable in Gong et al. (2016) and Ganin et al. (2016), while it is latent in our approach. In contrast, we exploit the presence of an identiﬁer variable ID that relates to the identity of an object (for example identifying a person). In other words, we do not assume that we have data from diﬀerent domains but just diﬀerent realizations of the same object under diﬀerent interventions. This also diﬀerentiates this work from latent domain adaptation papers from the computer vision literature (Hoﬀman et al., 2012; Gong et al., 2013). Further related work is discussed in §6.
+
+2. Setting
+We introduce the assumed underlying causal graph and some notation before discussing notions of domain shift robustness.
+2. The distinction between ‘conditionally independent’ features and ‘conditionally transferable’ (which is the former modulo location and scale transformations) is for our purposes not relevant as we do not make a linearity assumption in general.
+6
+
+(a) Domain D
+
+(b) Domain D
+
+Y
+
+∆
+
+ID
+
+Y
+
+∆
+
+X core
+
+X style (∆)
+
+X core
+
+X style (∆)
+
+image X(∆) fθ Yˆ (X(∆))
+
+image X(∆) fθ Yˆ (X(∆))
+
+Figure 3: Observed quantities are shown as shaded nodes; nodes of latent quantities are transparent. Left: data generating process for the considered model as in Gong et al. (2016), where the eﬀect of the domain on the orthogonal features Xstyle is mediated via unobserved noise ∆. The style interventions and all its descendants are shown as nodes with dashed borders to highlight variables that are aﬀected by style interventions. Right: our setting. The domain itself is unobserved but we can now observe the (typically discrete) ID variable we use for grouping. The arrow between ID and Y can be reversed, depending on the sampling scheme.
+
+7
+
+2.1 Causal graph
+Let Y ∈ Y be a target of interest. Typically Y = R for regression or Y = {1, . . . , K} in classiﬁcation with K classes. Let X ∈ Rp be predictor variables, for example the p pixels of an image. The causal structural model for all variables is shown in the panel (b) of Figure 3. The domain variable D is latent, in contrast to Gong et al. (2016) whose model is shown in panel (a) of Figure 3. We add the ID variable whose distribution can change conditional on Y . In Figure 3, Y → ID but in some settings it might be more plausible to consider ID → Y . For the proposed method both options are possible. Together with Y , the ID variable is used to group observations. It is typically discrete and relates to the identity of the underlying object (identity of a person, for example). The variable can be assumed to be latent in the setting of Gong et al. (2016).
+The rest of the graph is in analogy to Gong et al. (2016). The prediction is anticausal, that is the predictor variables X that we use for Yˆ are non-ancestral to Y . In other words, the class label is here seen to be causal for the image and not the other way around3. The causal eﬀect from the class label Y on the image X is mediated via two types of latent variables: the so-called core or ‘conditionally invariant’ features Xcore and the orthogonal or style features Xstyle. The distinguishing factor between the two is that external interventions ∆ are possible on the style features but not on the core features. If the interventions ∆ have diﬀerent distributions in diﬀerent domains, then the conditional distributions Xcore|Y = y, ID = id are invariant for all (y, id) while Xstyle|Y = y, ID = id can change. The style variable can include point of view, image quality, resolution, rotations, color changes, body posture, movement etc. and will in general be context-dependent4. The style intervention variable ∆ inﬂuences both the latent style Xstyle, and hence also the image X. In potential outcome notation, we let Xstyle(∆ = δ) be the style under intervention ∆ = δ and X(Y, ID, ∆ = δ) the image for class Y , identity ID and style intervention ∆. The latter is sometimes abbreviated as X(∆ = δ) for notational simplicity. Finally, fθ(X(∆ = δ)) is the prediction under the style intervention ∆ = δ. For a formal justiﬁcation of using a causal graph and potential outcome notation simultaneously see Richardson and Robins (2013).
+To be speciﬁc, if not mentioned otherwise we will assume a causal graph as follows. For independent εY , εID, εstyle in R, R, Rq respectively with positive density on their support and continuously diﬀerentiable functions ky, kid, and kstyle, kcore, kx,
+
+Y ← ky(D, εY )
+
+identiﬁer ID ← kid(Y, εID) core or conditionally invariant features Xcore ← kcore(Y, ID)
+
+style or orthogonal features Xstyle ← kstyle(Y, ID, εstyle) + ∆
+
+image X ← kx(Xcore, Xstyle).
+
+(4)
+
+3. If an existing image is classiﬁed by a human, then the image is certainly ancestral for the attached label. If the label Y refers, however, to the underlying true object (say if you generate images by asking people to take pictures of objects), then the more ﬁtting model is the one where Y is ancestral for X.
+4. The type of features we regard as style and which ones we regard as core features can conceivably change depending on the circumstances—for instance, is the color “gray” an integral part of the object “elephant” or can it be changed so that a colored elephant is still considered to be an elephant?
+
+8
+
+Hence, the core features are assumed to be a deterministic function of Y and ID. The
+prediction yˆ for y, given X = x, is of the form fθ(x) for a suitable function fθ with parameters θ ∈ Rd, where the parameters θ correspond to the weights in a DNN, for example.
+
+2.2 Data
+We assume we have n data points (xi, yi, idi) for i = 1, . . . , n, where the observations idi with i = 1, . . . , n of variable ID can also contain unobserved values. Let m ≤ n be the number of unique realizations of (Y, ID) and let S1, . . . , Sm be a partition of {1, . . . , n} such that, for each j ∈ {1, . . . , m}, the realizations (yi, idi) are identical5 for all i ∈ Sj. While our prime application is classiﬁcation, regression settings with continuous Y can be approximated in this framework by slicing the range of the response variable into distinct bins in analogy to the approach in sliced inverse regression (Li, 1991). The cardinality of Sj is denoted by nj := |Sj| ≥ 1. Then n = i ni is again the total number of samples and c = n − m is the total number of grouped observations. Typically ni = 1 for most samples and occasionally ni ≥ 2 but one can also envisage scenarios with larger groups of the same identiﬁer (y, id).
+
+2.3 Domain shift robustness
+In this section, we clarify against which classes of distributions we hope to achieve robustness. Let be a suitable loss that maps y and yˆ = fθ(x) to R+. The risk under distribution F and parameter θ is given by
+EF (Y, fθ(X)) .
+Let F0 be the joint distribution of (ID, Y, Xstyle) in the training distribution. A new domain and explicit interventions on the style features can now shift the distribution of (ID, Y, X˜ style) to F . We can measure the distance between distributions F0 and F in different ways. Below we will deﬁne the distance considered in this work and denote it by Dstyle(F, F0). Once deﬁned, we get a class of distributions
+
+Fξ = {F : Dstyle(F0, F ) ≤ ξ}
+
+(5)
+
+and the goal will be to optimize a worst-case loss over this distribution class in the sense of Eq. (1), where larger values of ξ aﬀord protection against larger distributional changes. The relevant loss for distribution class Fξ is then
+
+Lξ(θ) = sup EF Y, fθ X .
+
+(6)
+
+F ∈Fξ
+
+In the limit of arbitrarily strong interventions on the style features Xstyle, the loss is given by
+
+L∞(θ) = lim sup EF Y, fθ X .
+
+(7)
+
+ξ→∞ F ∈Fξ
+
+5. Observations where the ID variable is unobserved are not grouped, that is each such observation is counted as a unique observation of (Y, ID).
+
+9
+
+Minimizing the loss L∞(θ) with respect to θ guarantees an accuracy in prediction which will work well across arbitrarily large shifts in the conditional distribution of the style features.
+A natural choice to deﬁne Dstyle is to use a Wasserstein-type distance (see e.g. Villani, 2003). We will ﬁrst deﬁne a distance Dy,id for the conditional distributions
+Xstyle|Y = y, ID = id and X˜ style|Y = y, ID = id,
+and then set D(F0, F ) = E(DY,ID), where the expectation is with respect to random ID and labels Y . The distance Dy,id between the two conditional distributions of Xstyle will be deﬁned as a Wasserstein W22(F0, F )-distance for a suitable cost function c(x, x˜). Specifically, let Πy,id be the couplings between the conditional distributions of Xstyle and X˜ style, meaning measures supported on Rq × Rq such that the marginal distribution over the ﬁrst q components is equal to the distribution of Xstyle and the marginal distribution over the remaining q components equal to the distribution of X˜ style. Then the distance between the conditional distributions is deﬁned as
+Dy,id = min E c(x, x˜) ,
+M ∈Πy,id
+where c : Rq × Rq → R+ is a nonnegative, lower semi-continuous cost function. Here, we focus on a Mahalanobis distance as cost
+c2(x, x˜) = (x − x˜)tΣ−y,1id(x − x˜).
+The cost of a shift is hence measured against the variability under the distribution F0, Σy,id = Cov(Xstyle|Y, ID)6.
+
+3. Conditional variance regularization
+
+3.1 Pooled estimator
+
+Let (xi, yi) for i = 1, . . . , n be the observations that constitute the training data and yˆi = fθ(xi) the prediction for yi. The standard approach is to simply pool over all available observations, ignoring any grouping information that might be available. The pooled estimator thus treats all examples identically by summing over the empirical loss as
+
+θˆpool = argminθ Eˆ (Y, fθ(X)) + γ · pen(θ),
+
+(8)
+
+where the ﬁrst part is simply the empirical loss over the training data,
+
+Eˆ
+
+1
+
+(Y, fθ(X))
+
+= n
+
+n
+
+yi, fθ(xi) .
+
+i=1
+
+In the second part, pen(θ) is a complexity penalty, for example a squared 2-norm of the weights θ in a convolutional neural network as a ridge penalty. All examples that compare to the pooled estimator will include a ridge penalty as default.
+
+6. As an example, if the change in distribution for Xstyle is caused by random shift-interventions ∆, then X˜ style ← Xstyle + ∆, and the distance Dstyle induced in the distributions is
+Dstyle(F0, F ) ≤ E E(∆tΣ−y,1id∆|Y = y, ID = id) ,
+ensuring that the strength of the shifts is measured against the natural variability Σy,id of the style features.
+
+10
+
+3.2 CoRe estimator The CoRe estimator is deﬁned in Lagrangian form for penalty λ ≥ 0 as
+
+θˆcore(λ) = argminθ Eˆ (Y, fθ(X)) + λ · Cˆθ.
+
+(9)
+
+The penalty Cˆθ is a conditional variance penalty of the form
+
+conditional-variance-of-prediction: Cˆf,ν,θ := Eˆ Var(fθ(X)|Y, ID)ν
+
+(10)
+
+conditional-variance-of-loss: Cˆ .ν,θ := Eˆ Var( (Y, fθ(X))|Y, ID)ν ,
+
+(11)
+
+where typically ν ∈ {1/2, 1}. For ν = 1/2, we also refer to the respective penalties as “conditional-standard-deviation” penalties. In the equivalent constrained form, the estimator can be viewed as an instance of a restricted maximum likelihood estimator (Harville, 1974; Verbeke and Molenberghs, 2009). In practice in the context of classiﬁcation and DNNs, we apply the penalty (10) to the predicted logits. The conditional-variance-of-loss penalty (11) takes a similar form to Namkoong and Duchi (2017). The crucial diﬀerence of our approach to Namkoong and Duchi (2017) is that we penalize with the expected conditional variance or standard deviation. The fact that we take a conditional variance is here important as we try to achieve distributional robustness with respect to interventions on the style variables. Conditioning on ID allows to guard speciﬁcally against these interventions. An unconditional variance penalty, in contrast, can achieve robustness against a pre-deﬁned class of distributions such as a ball of distributions deﬁned in a Kullback-Leibler or Wasserstein metric. The population CoRe estimator is deﬁned as in Eq. (9) where empirical estimates are replaced by their respective population quantities.
+Before showing numerical examples, we discuss the estimation of the expected conditional variance in §3.3 and return to the simple examples of §1.1 in §3.4. Domain shift robustness in a classiﬁcation setting for a partially linear version of the structural equation model (4) is shown in §4.1. Furthermore, we discuss the population limit of θˆcore(λ) in §4.2, where we show that the regularization parameter λ ≥ 0 is proportional to the size of the future style interventions that we want to guard against for future test data.
+
+3.3 Estimating the expected conditional variance
+
+Recall that Sj ⊆ {1, . . . , n} contains samples with identical realizations of (Y, ID) for j ∈
+{1, . . . , m}. For each j ∈ {1, . . . , m}, deﬁne µˆθ,j as the arithmetic mean across all fθ(xi), i ∈ Sj. The canonical estimator of the conditional variance Cˆf,1,θ is then
+
+Cˆf,1,θ
+
+:=
+
+1 m
+
+m j=1
+
+1 |Sj |
+
+(fθ (xi )
+i∈Sj
+
+−
+
+µˆθ,j )2,
+
+1 where µˆθ,j = |Sj| i∈Sj fθ(xi)
+
+and analogously for the conditional-variance-of-loss, deﬁned in Eq. (11)7. If there are no groups of samples that share the same identiﬁer (y, id), we deﬁne Cˆf,1,θ to vanish. The
+CoRe estimator is then identical to pooled estimation in this special case.
+
+7. The right hand side can also be interpreted as the graph Laplacian (Belkin et al., 2006) of an appropriately weighted graph that fully connects all observations i ∈ Sj for each j ∈ {1, . . . , m}.
+
+11
+
+3.4 Motivating examples (continued)
+We revisit the ﬁrst and the second example from §1.1. Figure 4 shows subsamples of the respective training and test sets with the estimated decision boundaries for diﬀerent values of the penalty parameter λ; in both examples, n = 20000 and c = 500. Additionally, grouped examples that share the same (y, id) are visualized: two grouped observations are connected by a line or curve, respectively. In each example, there are ten such groups visualized (better visible in the nonlinear example).
+Panel (a) shows the linear decision boundaries for λ = 0, equivalent to the pooled estimator, and for CoRe with λ ∈ {.1, 1}. The pooled estimator misclassiﬁes all test points of class 1 as can be seen in panel (b), suﬀering from a test error of ≈ 51%. In contrast, the decision boundary of the CoRe estimator with λ = 1 aligns with the direction along which the grouped observations vary, classifying the test set with almost perfect accuracy (test error is ≈ 0%).
+Panels (c) and (d) show the corresponding plots for the second example for penalty values λ ∈ {0, 0.05, 0.1, 1}. While all of them yield good performance on the training set, only a value of λ = 1, which is associated with a circular decision boundary, achieves almost perfect accuracy on the test set (test error is ≈ 0%). The pooled estimator suﬀers from a test error of ≈ 58%.
+4. Domain shift robustness for the CoRe estimator
+We show two properties of the CoRe estimator. First, consistency is shown under the risk deﬁnition (7) for an inﬁnitely large conditional variance penalty and the logistic loss in a partially linear structural equation model. Second, the population CoRe estimator is shown to achieve distributional robustness against shift interventions in a ﬁrst order expansion.
+4.1 Asymptotic domain shift robustness under strong interventions
+We analyze the loss under strong domain shifts, as given in Eq. (7), for the pooled and the CoRe estimator in a one-layer network for binary classiﬁcation (logistic regression) in an asymptotic setting of large sample size and strong interventions.
+Assume the structural equation for the image X ∈ Rp is linear in the style features Xstyle ∈ Rq (with generally p q) and we use logistic regression to predict the class label Y ∈ {−1, 1}. Let the interventions ∆ ∈ Rq act additively on the style features Xstyle (this is only for notational convenience) and let the style features Xstyle act in a linear way on the image X via a matrix W ∈ Rp×q (this is an important assumption without which results are more involved). The core or ‘conditionally invariant’ features are Xcore ∈ Rr, where in general r ≤ p but this is not important for the following. For independent εY , εID, εstyle in R, R, Rq respectively with positive density on their support and continuously diﬀerentiable
+12
+
+X2 −2 0 2 4 6 8 10 12
+
+X2 −2 0 2 4 6 8 10 12
+
+(a) Example 1, training set.
+Y=0 (train) Y=1 (train)
+1 0 0.1
+
+(b) Example 1, test set.
+
+Y=0 (train) Y=0 (test) Y=1 (train) Y=1 (test)
+
+1 0
+0.1
+
+−2 0 2 4 6 8 10 12 X1
+(c) Example 2, training set.
+
+−2 0 2 4 6 8 10 12 X1
+(d) Example 2, test set.
+
+4
+
+4
+
+2
+
+2
+
+0
+
+X2
+
+0
+
+X2
+
+−2
+
+−2
+
+−4
+
+0 0
+
+1 0.1
+
+0.05
+Y=0 (train) Y=1 (train)
+
+1 0.1
+
+0.05
+Y=0 (train) Y=0 (test) Y=1 (train) Y=1 (test)
+
+−4
+
+−4
+
+−2
+
+0
+
+2
+
+4
+
+X1
+
+−4
+
+−2
+
+0
+
+2
+
+4
+
+X1
+
+Figure 4: The decision boundary as function of the penalty parameters λ for the examples 1 and 2 from Figure 1. There are ten pairs of samples visualized that share the same identiﬁer (y, id) and these are connected by a line resp. a curve in the ﬁgures (better visible in panels (c) and (d)). The decision boundary associated with a solid line corresponds to λ = 0, the standard pooled estimator that ignores the groupings. The broken lines are decision boundaries for increasingly strong penalties, taking into account the groupings in the data. Here, we only show a subsample of the data to avoid overplotting.
+
+13
+
+functions ky, kid, kstyle, kcore, kx,
+
+class Y ← ky(D, εY )
+
+identiﬁer ID ← kid(Y, εID) core or conditionally invariant features Xcore ← kcore(Y, ID)
+
+style or orthogonal features Xstyle ← kstyle(Y, ID, εstyle) + ∆
+
+image X ← kx(Xcore) + W Xstyle.
+
+(12)
+
+We assume a logistic regression as a prediction of Y from the image data X:
+
+exp(xtθ) fθ(x) := 1 + exp(xtθ) .
+
+Given training data with n samples, we estimate θ with θˆ and use here a logistic loss θ(yi, xi) = log(1 + exp(−yi(xtiθ))).
+The formulation of Theorem 1 relies on the following assumptions.
+
+Assumption 1 We require the following conditions:
+(A1) Assume the conditional distribution Xstyle|Y = y, ID = id under the training distribution F0 has positive density (with respect to the Lebesgue measure) in an -ball in 2-norm around the origin for some > 0 for all y ∈ Y and id ∈ I.
+(A2) Assume the matrix W has full rank q.
+
+(A3) Let M ≤ n be the number of unique realizations among n iid samples of (Y, ID) and let pn := P (M ≤ n − q). Assume that pn → 1 for n → ∞.
+
+Assumption (A3) guarantees that the number c = n − m of grouped examples is at least as large as the dimension of the style variables. If we have too few or no grouped examples (small c), we cannot estimate the conditional variance accurately. Under these assumptions we can prove domain shift robustness.
+Theorem 1 (Asymptotic domain shift robustness under strong interventions) Under model (12) and Assumption 1, with probability 1, the pooled estimator (8) has inﬁnite loss (7) under arbitrarily large shifts in the distribution of the style features,
+L∞(θˆpool) = ∞.
+The CoRe estimator (9) θˆcore with λ → ∞ is domain shift robust under strong interventions in the sense that for n → ∞,
+L∞(θˆcore) →p inf L∞(θ).
+θ
+A proof is given in §A. The respective ridge penalties in both estimators (8) and (9) are assumed to be zero for the proof, but the proof can easily be generalized to include ridge penalties that vanish suﬃciently fast for large sample sizes. The Lagrangian regularizer λ is assumed to be inﬁnite for the CoRe estimator to achieve domain shift robustness under these strong interventions. The next section considers the population CoRe estimator in a setting with weak interventions and ﬁnite values of the penalty parameter.
+
+14
+
+4.2 Population domain shift robustness under weak interventions
+The previous theorem states that the CoRe estimator can achieve domain shift robustness under strong interventions for an inﬁnitely strong penalty in an asymptotic setting. An open question is how the loss (6),
+Lξ(θ) = sup EF Y, fθ(X)
+F ∈Fξ
+behaves under interventions of small to medium size and correspondingly smaller values of the penalty. Here, we aim to minimize this loss for a given value of ξ and show that domain shift robustness can be achieved to ﬁrst order with the population CoRe estimator using the conditional-standard-deviation-of-loss penalty, i.e., Eq. (11) with ν = 1/2, by choosing an appropriate value o√f the penalty λ. Below we will show this appropriate choice of the penalty weight is λ = ξ.
+Assumption 2 (B1) Deﬁne the loss under a deterministic shift δ as
+hθ(δ) := EFθ [ (Y, fθ(X))],
+where the expectation is with respect to random (ID, Y, X˜ style) ∼ Fθ, with Fθ deﬁned by the deterministic shift intervention X˜ style = Xstyle + δ and (ID, Y, X˜ style) ∼ F0. Assume that for all θ ∈ Θ, hθ(δ) is twice continuously diﬀerentiable with bounded second derivative for a deterministic shift δ ∈ Rq.
+(B2) The spectral norm of the conditional variance Σy,id of Xstyle|Y, ID under F0 is assumed to be smaller or equal to some ζ ∈ R for all y ∈ Y and id ∈ I.
+The ﬁrst assumption (B1) ensures that the loss is well behaved under interventions on the style variables. The second assumption (B2) allows to take the limit of small conditional variances in the styl√e variables.
+If setting λ = ξ and using the conditional-standard-deviation-of-loss penalty, the CoRe estimator optimizes according to
+θˆcore( ξ) = argminθ EˆF0 (Y, fθ(X)) + ξ · Cˆ ,1/2,θ.
+The next theorem shows that this is to ﬁrst order equivalent to minimizing the worst-case loss over the distribution class Fξ. The following result holds for the population CoRe estimator, see below for a discussion about consistency.
+Theorem 2 The supremum of the loss over the class of distribution Fξ is to ﬁrst-order given by the expected loss under distribution F0 with an additional conditional-standarddeviation-of-loss penalty C ,1/2,θ
+sup EF Y, fθ(X) = EF0 Y, fθ(X) + ξ · C ,1/2,θ + O(max{ξ, ζ}). (13)
+F ∈Fξ
+A proof is given in Appendix §B. The objective of the population CoRe estimat√or matches thus to ﬁrst order the loss under domain shifts if we set the penalty weight λ = ξ. Larger
+15
+
+anticipated domain shifts thus require naturally a larger penalty λ in the CoRe estimation. The result is possible as we have chosen the Mahalanobis distance to measure shifts in the style variable and deﬁne Fξ, ensuring that the strength of shifts on style variables are measured against the natural variance on the training distribution F0.
+In practice, the choice of λ involves a somewhat subjective choice about the strength of the distributional robustness guarantee. A stronger distributional robustness property is traded oﬀ against a loss in predictive accuracy if the distribution is not changing in the future. One option for choosing λ is to choose the largest penalty weight before the validation loss increases considerably. This approach would provide the best distributional robustness guarantee that keeps the loss of predictive accuracy in the training distribution within a pre-speciﬁed bound.
+As a caveat, the result takes the limit of small conditional variance of Xstyle in the training distribution and small additional interventions. Under larger interventions higherorder terms could start to dominate, depending on the geometry of the loss function and fθ. A further caveat is that the result looks at the population CoRe estimator. For ﬁnite sample sizes, we would optimize a noisy version on the rhs of (13). To show domain shift robustness in an asymptotic sense, we would need additional uniform convergence (in θ) of both the empirical loss and the conditional variance in that for n → ∞,
+sup |EˆF0 (Y, fθ(X)) − EF0 Y, fθ(X) | →p 0, and
+θ
+sup |Cˆ ,1/2,θ − C ,1/2,θ| →p 0.
+θ
+While this is in general a reasonable assumption to make, the validity of the assumption will depend on the speciﬁc function class and on the chosen estimator of the conditional variance.
+5. Experiments
+We perform an array of diﬀerent experiments, showing the applicability and advantage of the conditional variance penalty for two broad settings:
+1. Settings where we do not know what the style variables correspond to but still want to protect against a change in their distribution in the future. In the examples we show cases where the style variable ranges from fashion (§5.2), image quality (§5.3), movement (§5.4) and brightness (§5.7), which are all not known explicitly to the method. We also include genuinely unknown style variables in §5.1 (in the sense that they are unknown not only to the methods but also to us as we did not explicitly create the style interventions).
+2. Settings where we do know what type of style interventions we would like to protect against. This is usually dealt with by data augmentation (adding images which are, say, rotated or shifted compared to the training data if we want to protect against rotations or translations in the test data; see for example Sch¨olkopf et al. (1996)). The conditional variance penalty is here exploiting that some augmented samples were generated from the same original sample and we use as ID variable the index
+16
+
+Figure 5: Eyeglass detection for CelebA dataset with small sample size. The goal is to predict whether a person wears glasses or not. Random samples from training and test data are shown. Groups of observations in the training data that have common (Y, ID) here correspond to pictures of the same person with either glasses on or oﬀ. These are labelled by red boxes in the training data and the conditional variance penalty is calculated across these groups of pictures.
+of the original image. We show that this approach generalizes better than simply pooling the augmented data, in the sense that we need fewer augmented samples to achieve the same test error. This setting is shown in §5.5.
+Details of the network architectures can be found in Appendix §C. All reported error rates are averaged over ﬁve runs of the respective method. A TensorFlow (Abadi et al., 2015) implementation of CoRe can be found at https://github.com/christinaheinze/core.
+5.1 Eyeglasses detection with small sample size
+In this example, we explore a setting where training and test data are drawn from the same distribution, so we might not expect a distributional shift between the two. However, we consider a small training sample size which gives rise to statistical ﬂuctuations between training and test data. We assess to which extent the conditional variance penalty can help to improve test accuracies in this setting.
+Speciﬁcally, we use a subsample of the CelebA dataset (Liu et al., 2015) and try to classify images according to whether or not the person in the image wears glasses. For construction of the ID variable, we exploit the fact that several photos of the same person are available and set ID to be the identiﬁer of the person in the dataset. Figure 5 shows examples from both the training and the test data set The conditional variance penalty is estimated across groups of observations that share a common (Y, ID). Here, this corresponds to pictures of the same person where all pictures show the person either with glasses (if Y = 1) or all pictures show the person without glasses (Y = 0). Statistical ﬂuctuations between training and test set could for instance arise if by chance the background of eyeglass wearers is darker in the training sample than in test samples, the eyeglass wearers happen to be outdoors more often or might be more often female than male etc.
+Below, we present the following analyses. First, we look at ﬁve diﬀerent datasets and analyze the eﬀect of adding the CoRe penalty (using conditional-variance-of-prediction)
+17
+
+to the cross-entropy loss. Second, we focus on one dataset and compare the four diﬀerent variants of the CoRe penalty in Eqs. (10) and (11) with ν ∈ {1/2, 1}.
+
+5.1.1 CoRe penalty using the conditional variance of the predicted logits
+
+We consider ﬁve diﬀerent training sets which are created as follows. For each person in the standard CelebA training data we count the number of available images and select the 50 identities for which most images are available individually. We partition these 50 identities into 5 disjoint subsets of size 10 and consider the resulting 5 datasets, containing the images of 10 unique identities each. The resulting 5 datasets have sizes {289, 296, 292, 287, 287}. For the validation and the test set, we consider the usual CelebA validation and test split but balance these with respect to the target variable “Eyeglasses”. The balanced validation set consists of 2766 observations; the balanced test set contains 2578 images. The identities in the validation and test sets are disjoint from the identities in the training sets.
+Given a training dataset, the standard approach would be to pool all examples. The only additional information we exploit is that some observations can be grouped. If using a 5-layer convolutional neural network with a standard ridge penalty (details can be found in Table C.1) and pooling all data, the test error on unseen images ranges from 18.08% to 25.97%. Exploiting the group structure with the CoRe penalty (in addition to a ridge penalty) results in test errors ranging from 14.79% to 21.49%, see Table 1. The relative improvements when using the CoRe penalty range from 9% to 28.6%.
+The test error is not very sensitive to the weight of the CoRe penalty as shown in Figure 6(a): for a large range of penalty weights, adding the CoRe penalty decreases the test error compared to the pooled estimator (identical to a CoRe penalty weight of 0). This holds true for various ridge penalty weights.
+While test error rates shown in Figure 6 suggests already that the CoRe penalty diﬀerentiates itself clearly from a standard ridge penalty, we examine next the diﬀerential eﬀect of the CoRe penalty on the between- and within-group variances. Concretely, the variance of the predictions can be decomposed as
+
+Var(fθ(X)) = E Var(fθ(X)|Y, ID) + Var E(fθ(X)|Y, ID) ,
+
+where the ﬁrst term on the rhs is the within-group variance that CoRe penalizes, while a ridge penalty would penalize both the within- and also the between-group variance (the second term on the rhs above). In Figure 6(b) we show the ratio between the CoRe penalty and the between-group variance where groups are deﬁned by conditioning on (Y, ID). Speciﬁcally, the ratio is computed as
+
+Eˆ Var(fθ(X)|Y, ID) /Var Eˆ(fθ(X)|Y, ID) .
+
+(14)
+
+The results shown in Figure 6(b) are computed on dataset 1 (DS 1). While increasing ridge penalty weights do lead to a smaller value of the CoRe penalty, the between-group variance is also reduced such that the ratio between the two terms does not decrease with larger weights of the ridge penalty8. With increasing weight of the CoRe penalty, the variance ratio decreases, showing that the CoRe penalty indeed penalizes the within-group variance more than the between-group variance.
+
+8. In Figure D.1 in the Appendix, the numerator and the denominator are plotted separately as a function of the CoRe penalty weight.
+
+18
+
+DS 5 DS 4 DS 3 DS 2 DS 1
+
+Error
+
+Penalty value
+
+Method
+
+Training
+
+Test
+
+Training
+
+Test
+
+5-layer CNN
+
+0.0% (0.00%) 18.08% (0.24%) 19.14 (1.70) 18.86 (1.87)
+
+5-layer CNN + CoRe 0.0% (0.00%) 15.08% (0.43%) 0.01 (0.01) 0.70 (0.05)
+
+5-layer CNN
+
+0.0% (0.00%) 23.81% (0.51%) 6.20 (0.35) 6.97 (0.46)
+
+5-layer CNN + CoRe 0.0% (0.00%) 17.00% (0.75%) 0.00 (0.00) 0.41 (0.04)
+
+5-layer CNN
+
+0.0% (0.00%) 18.61% (0.52%) 7.33 (1.40) 7.91 (1.13)
+
+5-layer CNN + CoRe 0.0% (0.00%) 14.79% (0.89%) 0.00 (0.00) 0.26 (0.03)
+
+5-layer CNN
+
+0.0% (0.00%) 25.97% (0.24%) 6.19 (0.43) 7.13 (0.54)
+
+5-layer CNN + CoRe 0.0% (0.00%) 21.12% (0.40%) 0.00 (0.00) 0.63 (0.04)
+
+5-layer CNN
+
+0.0% (0.00%) 23.64% (0.64%) 20.20 (2.46) 24.85 (3.56)
+
+5-layer CNN + CoRe 0.0% (0.00%) 21.49% (1.27%) 0.00 (0.00) 0.59 (0.10)
+
+Table 1: Eyeglass detection, trained on small subsets (DS1—DS5) of the CelebA dataset
+with disjoint identities. We report training and test error as well as the value of the CoRe penalty Cˆf,1,θ on the training and the test set after training, evaluated for both the pooled estimator and the CoRe estimator. The weights of the ridge and the CoRe penalty were chosen based on their performance on the validation set.
+
+19
+
+Test error Var. ratio (test)
+
+(a)
+Ridge weight: 0 Ridge weight: 0.0001 Ridge weight: 0.0005 Ridge weight: 0.001 Ridge weight: 0.005 Ridge weight: 0.01 20 18 16 14
+0 20 Pe4n0alty w6e0ight 80 100
+
+(b)
+Ridge weight: 0 Ridge weight: 0.0001 Ridge weight: 0.0005 Ridge weight: 0.001 Ridge weight: 0.005 Ridge weight: 0.01 0.35
+
+0.30
+
+0.25
+
+0.20
+
+0.15 0
+
+20 Pe4n0alty w6e0ight 80 100
+
+Figure 6: Eyeglass detection, trained on a small subset (DS1) of the CelebA dataset with disjoint identities. (a) Average test error as a function of both the CoRe penalty on x-axis and various levels of the ridge penalty. The results can be seen to be fairly insensitive to the ridge penalty. (b) The variance ratio (14) on test data as a function of both the CoRe and ridge penalty weights. The CoRe penalty can be seen to penalize the withingroup variance selectively, whereas a strong ridge penalty decreases both the within- and between-group variance.
+
+Table 1 also reports the value of the CoRe penalty after training when evaluated for the pooled and the CoRe estimator on the training and the test set. As a qualitative measure to assess the presence of sample bias in the data (provided the model assumptions hold), we can compare the value the CoRe penalty takes after training when evaluated for the pooled estimator and the CoRe estimator. The diﬀerence yields a measure for the extent the respective estimators are functions of ∆. If the respective hold-out values are both small, this would indicate that the style features are not very predictive for the target variable. If, on the other hand, the CoRe penalty evaluated for the pooled estimator takes a much larger value than for the CoRe estimator (as in this case), this would indicate the presence of sample bias.
+5.1.2 Other CoRe penalty types
+We now compare all CoRe penalty types, i.e., penalizing with (i) the conditional variance of the predicted logits Cˆf,1,θ, (ii) the conditional standard deviation of the predicted logits Cˆf,1/2,θ, (iii) the conditional variance of the loss Cˆl,1,θ and (iv) the conditional standard deviation of the loss Cˆl,1/2,θ. For this comparison, we use the training dataset 1 (DS 1) from above. Table 2 contains the test error (training error was 0% for all methods) as
+20
+
+Error
+
+Penalty value
+
+Method
+
+Test
+
+Training
+
+Test
+
+5-layer CNN 5-layer CNN + CoRe w/ Cˆf,1,θ 5-layer CNN + CoRe w/ Cˆf,1/2,θ 5-layer CNN + CoRe w/ Cˆl,1,θ 5-layer CNN + CoRe w/ Cˆl,1/2,θ
+
+18.08% (0.24%) 15.08% (0.43%) 15.34% (0.83%) 15.12% (0.27%) 15.59% (0.36%)
+
+19.14 (1.70) 0.01 (0.01) 0.03 (0.01) 0.00 (0.00) 0.00 (0.00)
+
+18.86 (1.87) 0.70 (0.05) 0.89 (0.03) 0.38 (0.03) 0.35 (0.02)
+
+Table 2: Eyeglass detection, trained on a small subset (DS1) of the CelebA dataset with disjoint
+identities. We report training and test error as well as the value of the CoRe penalties Cˆf,1,θ, Cˆf,1/2,θ, Cˆl,1,θ and Cˆl,1/2,θ on the training and the test set after training, evaluated for both the pooled estimator and the CoRe estimator. The weights of the ridge and the
+CoRe penalty were chosen based on their performance on the validation set. The four
+CoRe penalty variants’ performance diﬀerences are not statistically signiﬁcant.
+
+well as the value the respective CoRe penalty took after training on the training set and the test set. The four CoRe penalty variants’ performance diﬀerences are not statistically signiﬁcant. Hence, we mostly focus on the conditional variance of the predicted logits Cˆf,1,θ in the other experiments.
+5.1.3 Discussion
+While the distributional shift in this example arises due to statistical ﬂuctuations which will diminish as the sample size grows, the following examples are more concerned with biases that will persist even if the number of training and test samples is very large. A second diﬀerence to the subsequent examples is the grouping structure—in this example, we consider only a few identities, namely m = 10, with a relatively large number ni of associated observations (about thirty observations per individual). In the following examples, m is much larger while ni is typically smaller than ﬁve.
+5.2 Gender classiﬁcation with unknown confounding
+In the following set of experiments, we work again with the CelebA dataset and the 5-layer convolutional neural network architecture described in Table C.1. This time we consider the problem of classifying whether the person shown in the image is male or female. We create a confounding in training and test set I by including mostly images of men wearing glasses and women not wearing glasses. In test set 2 the association between gender and glasses is ﬂipped: women always wear glasses while men never wear glasses. Examples from the training and test sets 1 and 2 are shown in Figure 7. The training set, test set 1 and 2 are subsampled such that they are balanced with respect to Y , resulting in 16982, 4224 and 1120 observations, respectively.
+21
+
+Training data (n = 16982): Test data 1 (n = 4224):
+
+Test data 2 (n = 1120):
+
+Figure 7: Classiﬁcation for Y ∈ {woman, man}. There is an unknown confounding here as men are very likely to wear glasses in training and test set 1 data, while it is women that are likely to wear glasses in test set 2. Estimators that pool all observations are making use of this confounding and hence fail for test set 2. The conditional variance penalty for the CoRe estimator is computed over groups of images of the same person (and consequently same class label), such as the images in the red box on the left. The number of grouped examples c is 500. We vary the proportion of males in the grouped examples between 50% and 100% (cf. §5.2.1).
+To compute the conditional variance penalty, we use again images of the same person. The ID variable is, in other words, the identity of the person and gender Y is constant across all examples with the same ID. Conditioning on (Y, ID) is hence identical to conditioning on ID alone. Another diﬀerence to the other experiments is that we consider a binary style feature here.
+5.2.1 Label shift in grouped observations
+We compare six diﬀerent datasets that vary with respect to the distribution of Y in the grouped observations. In all training datasets, the total number of observations is 16982 and the total number of grouped observations is 500. In the ﬁrst dataset, 50% of the grouped observations correspond to males and 50% correspond to females. In the remaining 5 datasets, we increase the number of grouped observations with Y = “man”, denoted by κ, to 75%, 90%, 95%, 99% and 100%, respectively. Table 3 shows the performance obtained for these datasets when using the pooled estimator compared to the CoRe estimator with Cˆf,1,θ. The results show that both the pooled estimator as well as the CoRe estimator perform better if the distribution of Y in the grouped observations is more balanced. The CoRe estimator improves the error rate of the pooled estimator by ≈ 28 − 39% on a relative scale. Figure 8 shows the performance for κ = 50% as a function of the CoRe penalty weight. Signiﬁcant improvements can be obtained across a large range of values for the CoRe penalty and the ridge penalty. Test errors become more sensitive to the chosen value of the CoRe penalty for very large values of the ridge penalty weight as the overall amount of regularization is already large.
+22
+
+Test error 1
+
+(a)
+
+Ridge weight: 0 Ridge weight: 0.0001 Ridge weight: 0.0005 Ridge weight: 0.001 Ridge weight: 0.005 Ridge weight: 0.01 50
+
+40
+
+30
+
+20
+
+10
+
+0 0
+
+Ridge weight: 0
+
+RRiidd2gg0ee Ridge
+
+wwweeePiiiggge4hhhn0ttta::: l000t...y000000w0016e150ight
+
+80
+
+100
+
+Ridge weight: 0.005
+
+Ridge weigh(tc:)0.01
+
+4
+
+3
+
+2
+
+1
+
+0
+0 20 Pen40alty we6ig0ht 80 100
+
+Var. ratio (Males)
+
+Test error 2
+
+50 45 40 35 30 25 20
+0
+2.0 1.5 1.0 0.5 0.0
+0
+
+(b)
+Ridge weight: 0 Ridge weight: 0.0001 Ridge weight: 0.0005 Ridge weight: 0.001 Ridge weight: 0.005 Ridge weight: 0.01
+
+Ridge weight: 0
+
+RR2iidd0ggee Ridge
+
+wwwPeeeeiiiggg4nhhh0attt:::lt000y...000w0006001e150ight
+
+80
+
+100
+
+Ridge weight: 0.005
+
+Ridge weig(hdt): 0.01
+
+20 Pen40alty we6ig0ht 80 100
+
+Var. ratio (Females)
+
+Figure 8: Classiﬁcation for Y ∈ {woman, man} with κ = 0.5. Panels (a) and (b) show the test error on test data sets 1 and 2 respectively as a function of the CoRe and ridge penalty. Panels (c) and (d) show the variance ratio (14) (comparing within- and between- group variances) for females and males separately.
+
+23
+
+κ = 1 κ = .99 κ = .95 κ = .9 κ = .75 κ = .5
+
+Method 5-layer CNN 5-layer CNN + CoRe 5-layer CNN 5-layer CNN + CoRe 5-layer CNN 5-layer CNN + CoRe 5-layer CNN 5-layer CNN + CoRe 5-layer CNN 5-layer CNN + CoRe 5-layer CNN 5-layer CNN + CoRe
+
+Train 0.00% 6.43% 0.00% 7.61% 0.00% 8.76% 0.00% 10.45% 0.00% 11.10% 0.00% 11.12%
+
+Error Test 1 2.00% 5.85% 1.98% 6.99% 2.00% 7.74% 1.89% 9.35% 1.70% 10.51% 1.93% 10.11%
+
+Test 2 38.54% 24.07% 43.41% 27.05% 47.64% 30.63% 48.96% 29.57% 50.11% 32.91% 49.41% 35.68%
+
+Train 22.77 0.01 8.23 0.00 9.47 0.00 13.62 0.00 20.66 0.00 821.32 0.00
+
+Penalty value
+
+Test: Females Test: Males
+
+74.05
+
+30.67
+
+1.61
+
+0.93
+
+32.98
+
+11.76
+
+1.44
+
+0.62
+
+40.51
+
+14.37
+
+1.26
+
+0.42
+
+61.01
+
+21.26
+
+0.42
+
+0.16
+
+70.80
+
+27.80
+
+0.00
+
+0.00
+
+2524.77
+
+1253.21
+
+0.02
+
+0.01
+
+Table 3: Classiﬁcation for Y ∈ {woman, man}. We compare six diﬀerent datasets that vary with respect to the distribution of Y in the grouped observations. Speciﬁcally, we vary the proportion of images showing men between κ = 0.5 and κ = 1. In all training datasets, the total number of observations is 16982 and the total number of grouped observations is 500. Both the pooled estimator as well as the CoRe estimator perform better if the distribution of Y in the grouped observations is more balanced. The CoRe estimator improves the error rate of the pooled estimator by ≈ 28−39% on a relative scale. Table D.2 in the Appendix additionally contains the standard error of all shown results.
+
+24
+
+Error
+
+Method
+
+Train Test 1 Test 2
+
+Inception V3
+
+5.74% 5.53% 30.29%
+
+Inception V3 + CoRe 6.15% 5.85% 21.70%
+
+Table 4: Classiﬁcation for Y ∈ {woman, man} with κ = 0.5 Here, we compared 2-regularized logistic regression based on Inception V3 features with and without the CoRe penalty. The CoRe estimator improves the performance of the pooled estimator by ≈ 28% on a relative scale.
+
+5.2.2 Using pre-trained Inception V3 features
+To verify that the above conclusions do not change when using more powerful features, we here compare 2-regularized logistic regression using pre-trained Inception V3 features9 with and without the CoRe penalty. Table 4 shows the results for κ = 0.5. While the results show that both the pooled estimator as well as the CoRe estimator perform better using pre-trained Inception features, the relative improvement with the CoRe penalty is still 28% on test set 2.
+5.2.3 Additional baselines: Unconditional variance regularization and grouping by class label
+As additional baselines, we consider the following two schemes: (i) we group all examples sharing the same class label and penalize with the conditional variance of the predicted logits, computed over these two groups; (ii) we penalize the overall variance of the predicted logits, i.e., a form of unconditional variance regularization. Figure 9 shows the performance of these two approaches. In contrast to the CoRe penalty, regularizing with the variance of the predicted logits conditional on Y only does not yield performance improvements on test set 2, compared to the pooled estimator (corresponding to a penalty weight of 0). Interestingly, using baseline (i) without a ridge penalty does yield an improvement on test set I, compared to the pooled estimator with various strengths of the ridge penalty.
+5.3 Eyeglasses detection with known and unknown image quality intervention
+We now revisit the third example from §1.1. We again use the CelebA dataset and consider the problem of classifying whether the person in the image is wearing eyeglasses. Here, we modify the images in the following way: in the training set and in test set 1, we sample the image quality10 for all samples {i : yi = 1} (all samples that show glasses) from a Gaussian distribution with mean µ = 30 and standard deviation σ = 10. Samples with yi = 0 (no glasses) are unmodiﬁed. In other words, if the image shows a person wearing glasses, the
+9. Retrieved from https://tfhub.dev/google/imagenet/inception_v3/feature_vector/1. 10. We use ImageMagick (https://www.imagemagick.org) to change the quality of the compression through
+convert -quality q ij input.jpg output.jpg where qi,j ∼ N (30, 100).
+25
+
+Test error 1
+
+(a) Baseline: Grouping-by-Y
+
+Ridge weight: 0 Ridge weight: 0.0001 Ridge weight: 0.0005 Ridge weight: 0.001 Ridge weight: 0.005 Ridge weight: 0.01 2.50
+
+2.25
+
+2.00
+
+1.75
+
+1.50
+
+1.25
+
+0
+
+RRiiddgg1ee Ridge
+
+wwweeePiiigggehhhnttta2::: l000t..y0000w00e15i3ght
+
+4
+
+5
+
+Ridge weight: 0.001
+
+Ridge weight: 0.005
+
+(c) BaselineR: idUgnecwoenidghitti:o0n.0a1l variance penalty
+
+3.0
+
+2.5
+
+2.0
+
+1.5
+
+0.00 0.02 0P.e0n4alty0.0w6eig0h.t08 0.10 0.12
+
+Test error 2
+
+Test error 2
+
+(b) Baseline: Grouping-by-Y
+
+Ridge weight: 0 Ridge weight: 0.0001 Ridge weight: 0.0005 Ridge weight: 0.001 Ridge weight: 0.005 Ridge weight: 0.01 48
+
+46
+
+44
+
+42
+
+40
+
+38
+
+Ridge weight: 0
+
+0
+
+RRiiddgg1ee Ridge
+
+wwwPeeeiiiegggnhhhattt2:::l000ty...000w000001e15i3ght
+
+4
+
+5
+
+Ridge weight: 0.005
+
+(d) BaselineR:idUgencwoenigdhitt:io0n.0a1l variance penalty
+
+55
+
+50
+
+45
+
+40
+
+35
+0.00 0.02 0P.e0n4alty0.0w6eig0h.t08 0.10 0.12
+
+Test error 1
+
+Figure 9: Classiﬁcation for Y ∈ {woman, man} with κ = 0.5, using the baselines which (i) penalize the variance of the predicted logits conditional on the class label Y only; and (ii) penalize the overall variance of the predicted logits (cf. §5.2.3). For baseline (i), panels (a) and (b) show the test error on test data sets 1 and 2 respectively as a function of the “baseline penalty weight” for various ridge penalty strengths. For baseline (ii), the equivalent plots are shown in panels (c) and (d). In contrast to the CoRe penalty, regularizing with these two baselines does not yield performance improvements on test set 2, compared to the pooled estimator (corresponding to a penalty weight of 0).
+
+26
+
+Training data (n = 20000): Test set 1 (n = 5344):
+
+Test set 2 (n = 5344):
+
+5-layer CNN training error: 0% 5-layer CNN test error: 2% 5-layer CNN test error: 65% with add. CoRe penalty: 10% with add. CoRe penalty: 13% with add. CoRe penalty: 29%
+
+Figure 10: Eyeglass detection for CelebA dataset with image quality interventions (which are unknown to any procedure used). The JPEG compression level is lowered for Y = 1 (glasses) samples on training data and test set 1 and lowered for Y = 0 (no glasses) samples for test set 2. To the human eye, these interventions are barely visible but the CNN that uses pooled data without CoRe penalty has exploited the correlation between image quality and outcome Y to achieve a (arguably spurious) low test error of 2% on test set 1. However, if the correlation between image quality and Y breaks down, as in test set 2, the CNN that uses pooled data without a CoRe penalty has a 65% misclassiﬁcation rate. The training data on the left show paired observations in two red boxes: these observations share the same label Y and show the same person ID. They are used to compute the conditional variance penalty for the CoRe estimator that does not suﬀer from the same degradation in performance for test set 2.
+
+27
+
+Training data (n = 20000): Test set 1 (n = 5344):
+
+Test set 2 (n = 5344):
+
+5-layer CNN training error: 0% 5-layer CNN test error: 2% 5-layer CNN test error: 65% with added CoRe penalty: 3% with added CoRe penalty: 7% with add. CoRe penalty: 13%
+
+Figure 11: Eyeglass detection for CelebA dataset with image quality interventions. The only difference to Figure 10 is in the training data where the paired images now use the same underlying image in two diﬀerent JPEG compressions. The compression level is drawn from the same distribution. The CoRe penalty performs better than for the experiment in Figure 10 since we could explicitly control that only Xstyle ≡ image quality varies between grouped examples. On the other hand, the performance of the pooled estimator is not changed in a noticeable way if we add augmented images as the (spurious) correlation between image quality and outcome Y still persists in the presence of the extra augmented images. Thus, the pooled estimator continues to be susceptible to image quality interventions.
+image quality tends to be lower. In test set 2, the quality is reduced in the same way for yi = 0 samples (no glasses), while images with yi = 1 are not changed. Figure 10 shows examples from the training set and test sets 1 and 2. For the CoRe penalty, we calculate the conditional variance across images that share the same ID if Y = 1, that is across images that show the same person wearing glasses on all images. Observations with Y = 0 (not wearing glasses) are not grouped. Two examples are shown in the red box of Figure 10. Here, we have c = 5000 grouped observations among a total sample size of n = 20000.
+Figure 10 shows misclassiﬁcation rates for CoRe and the pooled estimator on test sets 1 and 2. The pooled estimator (only penalized with an 2 penalty) achieves low error rates of 2% on test set 1, but suﬀers from a 65% misclassiﬁcation error on test set 2, as now the relation between Y and the implicit Xstyle variable (image quality) has been ﬂipped. The CoRe estimator has a larger error of 13% on test set 1 as image quality as a feature is penalized by CoRe implicitly and the signal is less strong if image quality has been removed as a dimension. However, in test set 2 the performance of the CoRe estimator is 28% and improves substantially on the 65% error of the pooled estimator. The reason is again the same: the CoRe penalty ensures that image quality is not used as a feature to the same extent as for the pooled estimator. This increases the test error slightly if the samples are generated from the same distribution as training data (as here for test set 1) but substantially improves the test error if the distribution of image quality, conditional on the class label, is changed on test data (as here for test set 2).
+28
+
+Eyeglasses detection with known image quality intervention To compare to the above results, we repeat the experiment by changing the grouped observations as follows. Above, we grouped images that had the same person ID when Y = 1. We refer to this scheme of grouping observations with the same (Y, ID) as ‘Grouping setting 2’. Here, we use an explicit augmentation scheme and augment c = 5000 images with Y = 1 in the following way: each image is paired with a copy of itself and the image quality is adjusted as described above. In other words, the only diﬀerence between the two images is that image quality diﬀers slightly, depending on the value that was drawn from the Gaussian distribution with mean µ = 30 and standard deviation σ = 10, determining the strength of the image quality intervention. Both the original and the copy get the same value of identiﬁer variable ID. We call this grouping scheme ‘Grouping setting 1’. Compare the left panels of Figures 10 and 11 for examples.
+While we used explicit changes in image quality in both above and here, we referred to grouping setting 2 as ‘unknown image quality interventions’ as the training sample as in the left panel of Figure 10 does not immediately reveal that image quality is the important style variable. In contrast, the augmented data samples (grouping setting 1) we use here diﬀer only in their image quality for a constant (Y, ID).
+Figure 11 shows examples and results. The pooled estimator performs more or less identical to the previous dataset. The explicit augmentation did not help as the association between image quality and whether eyeglasses are worn is not changed in the pooled data after including the augmented data samples. The misclassiﬁcation error of the CoRe estimator is substantially better than the error rate of the pooled estimator. The error rate on test set 2 of 13% is also improving on the rate of 28% of the CoRe estimator in grouping setting 2. We see that using grouping setting 1 works best since we could explicitly control that only Xstyle ≡ image quality varies between grouped examples. In grouping setting 2, diﬀerent images of the same person can vary in many factors, making it more challenging to isolate image quality as the factor to be invariant against.
+5.4 Stickmen image-based age classiﬁcation with unknown movement interventions
+In this example we consider synthetically generated stickmen images; see Figure 12 for some examples. The target of interest is Y ∈ {adult, child}. The core feature Xcore is here the height of each person. The class Y is causal for height and height cannot be easily intervened on or change in diﬀerent domains. Height is thus a robust predictor for diﬀerentiating between children and adults. As style feature we have here the movement of a person (distribution of angles between body, arms and legs). For the training data we created a dependence between age and the style feature ‘movement’, which can be thought to arise through a hidden common cause D, namely the place of observation. The data generating process is illustrated in Figure D.6. For instance, the images of children might mostly show children playing while the images of adults typically show them in more “static” postures. The left panel of Figure 12 shows examples from the training set where large movements are associated with children and small movements are associated with adults. Test set 1 follows the same distribution, as shown in the middle panel. A standard CNN will exploit this relationship between movement and the label Y of interest, whereas this is discouraged
+29
+
+Training data (n = 20000): Test set 1 (n = 20000):
+
+Test set 2 (n = 20000):
+
+5-layer CNN training error: 4% 5-layer CNN test error: 3% 5-layer CNN test error: 41% with added CoRe penalty: 4% with added CoRe penalty: 4% with added CoRe penalty: 9%
+
+Figure 12: Classiﬁcation into {adult, child} based on stickmen images, where children tend to be smaller and adults taller. In training and test set 1 data, children tend to have stronger movement whereas adults tend to stand still. In test set 2 data, adults show stronger movement. The two red boxes in the panel with the training data show two out of the c = 50 pairs of examples over which the conditional variance is calculated. The CoRe penalty leads to a network that generalizes better for test set 2 data, where the spurious correlation between age and movement is reversed, if compared to the training data.
+by the conditional variance penalty of CoRe. The latter is pairing images of the same person in slightly diﬀerent movements as shown by the red boxes in the leftmost panel of Figure 12. If the learned model exploits this dependence between movement and age for predicting Y , it will fail when presented images of, say, dancing adults. The right panel of Figure 12 shows such examples (test set 2). The standard CNN suﬀers in this case from a 41% misclassiﬁcation rate, as opposed to the 3% on test set 1 data. For as few as c = 50 paired observations, the network with an added CoRe penalty, in contrast, achieves also 4% on test set 1 data and succeeds in achieving an 9% performance on test set 2, whereas the pooled estimator fails on this dataset with a test error of 41%.
+These results suggest that the learned representation of the pooled estimator uses movement as a predictor for age while CoRe does not use this feature due to the conditional variance regularization. Importantly, including more grouped examples would not improve the performance of the pooled estimator as these would be subject to the same bias and hence also predominantly have examples of heavily moving children and “static” adults (also see Figure D.7 which shows results for c ∈ {20, 500, 2000}).
+5.5 MNIST: more sample eﬃcient data augmentation
+The goal of using CoRe in this example is to make data augmentation more eﬃcient in terms of the required samples. In data augmentation, one creates additional samples by modifying the original inputs, e.g. by rotating, translating, or ﬂipping the images (Sch¨olkopf et al., 1996). In other words, additional samples are generated by interventions on style features. Using this augmented data set for training results in invariance of the estimator with respect to the transformations (style features) of interest. For CoRe we can use the grouping information that the original and the augmented samples belong to the same object. This enforces the invariance with respect to the style features more strongly compared to normal data augmentation which just pools all samples. We assess this for the style feature
+30
+
+Training data (n = 10200):
+3-layer CNN training error: 0% with added CoRe penalty: 1%
+
+Test set (n = 10000):
+3-layer CNN test error: 22% with added CoRe penalty: 10%
+
+Figure 13: Data augmentation for MNIST images. The left shows training data with a few rotated images. Evaluating on only rotated images from the test set, a standard network achieves only 22% accuracy. We can add the CoRe penalty by computing the conditional variance over images that were generated from the same original image. The test error is then lowered to 10% on the test data of rotated images.
+‘rotation’ on MNIST (LeCun et al., 1998) and only include c = 200 augmented training examples for m = 10000 original samples, resulting in a total sample size of n = 10200. The degree of the rotations is sampled uniformly at random from [35, 70]. Figure 13 shows examples from the training set. By using CoRe the average test error on rotated examples is reduced from 22% to 10%. Very few augmented sample are thus suﬃcient to lead to stronger rotational invariance. The standard approach of creating augmented data and pooling all images requires, in contrast, many more samples to achieve the same eﬀect. Additional results for m ∈ {1000, 10000} and c ranging from 100 to 5000 can be found in Figure D.5 in Appendix §D.4.
+5.6 Elmer the Elephant
+In this example, we want to assess whether invariance with respect to the style feature ‘color’ can be achieved. In the children’s book ‘Elmer the elephant’11 one instance of a colored elephant suﬃces to recognize it as being an elephant, making the color ‘gray’ no longer an integral part of the object ‘elephant’. Motivated by this process of concept formation, we would like to assess whether CoRe can exclude ‘color’ from its learned representation by penalizing conditional variance appropriately.
+We work with the ‘Animals with attributes 2’ (AwA2) dataset (Xian et al., 2017) and consider classifying images of horses and elephants. We include additional examples by adding grayscale images for c = 250 images of elephants. These additional examples do not distinguish themselves strongly from the original training data as the elephant images are already close to grayscale images. The total training sample size is 1850.
+11. https://en.wikipedia.org/wiki/Elmer_the_Patchwork_Elephant
+31
+
+Training data (n = 1850): Test data 1 (n = 414):
+
+Test data 2 (n = 414):
+
+5-layer CNN training error: 0% 5-layer CNN test error: 24% 5-layer CNN test error: 52% with added CoRe penalty: 0% with add. CoRe penalty: 30% with add. CoRe penalty: 30%
+
+Figure 14: Elmer-the-Elephant dataset. The left panel shows training data with a few additional grayscale elephants. The pooled estimator learns that color is predictive for the animal class and achieves test error of 24% on test set 1 where this association is still true but suﬀers a misclassiﬁcation error of 53% on test set 2 where this association breaks down. By adding the CoRe penalty, the test error is consistently around 30%, irrespective of the color distribution of horses and elephants.
+Figure 14 shows examples and misclassiﬁcation rates from the training set and test sets for CoRe and the pooled estimator on diﬀerent test sets. Examples from these and more test sets can be found in Figure D.10. Test set 1 contains original, colored images only. In test set 2 images of horses are in grayscale and the colorspace of elephant images is modiﬁed, eﬀectively changing the color gray to red-brown. We observe that the pooled estimator does not perform well on test set 2 as its learned representation seems to exploit the fact that ‘gray’ is predictive for ‘elephant’ in the training set. This association is no longer valid for test set 2. In contrast, the predictive performance of CoRe is hardly aﬀected by the changing color distributions. More details can be found in Appendix §D.7.
+It is noteworthy that a colored elephant can be recognized as an elephant by adding a few examples of a grayscale elephant to the very lightly colored pictures of natural elephants. If we just pool over these examples, there is still a strong bias that elephants are gray. The CoRe estimator, in contrast, demands invariance of the prediction for instances of the same elephant and we can learn color invariance with a few added grayscale images.
+5.7 Eyeglasses detection: unknown brightness intervention
+As in §5.3 we work with the CelebA dataset and try to classify whether the person in the image is wearing eyeglasses. Here we analyze a confounded setting that could arise as follows. Say the hidden common cause D of Y and Xstyle is a binary variable and indicates whether the image was taken outdoors or indoors. If it was taken outdoors, then the person tends to wear (sun-)glasses more often and the image tends to be brighter. If the image was taken indoors, then the person tends not to wear (sun-)glasses and the image tends to be darker. In other words, the style variable Xstyle is here equivalent to brightness and the structure of the data generating process is equivalent to the one shown in Figure D.6. Figure 15 shows examples from the training set and test sets. As previously, we compute the conditional variance over images of the same person, sharing the same class label (and
+32
+
+Training data (n = 20000): Test set 1 (n = 5344):
+
+Test set 2 (n = 5344):
+
+5-layer CNN training error: 0% 5-layer CNN test error: 4% 5-layer CNN test error: 37% with added CoRe penalty: 6% with added CoRe penalty: 6% with add. CoRe penalty: 25%
+
+Figure 15: Eyeglass detection for CelebA dataset with brightness interventions (which are unknown to any procedure used). On training data and test set 1 data, images where people wear glasses tend to be brighter whereas on test set 2 images where people do not wear glasses tend to be brighter.
+the CoRe estimator is hence not using the knowledge that brightness is important). Two alternatives for constructing grouped observations in this setting are discussed in §D.2. We use c = 2000 and n = 20000. For the brightness intervention, we sample the value for the magnitude of the brightness increase resp. decrease from an exponential distribution with mean β = 20. In the training set and test set 1, we sample the brightness value as bi,j = [100+yiei,j]+ where ei,j ∼ Exp(β−1) and yi ∈ {−1, 1}, where yi = 1 indicates presence of glasses and yi = −1 indicates absence.12 For test set 2, we use instead bi,j = [100−yiei,j]+, so that the relation between brightness and glasses is ﬂipped.
+Figure 15 shows misclassiﬁcation rates for CoRe and the pooled estimator on diﬀerent test sets. Examples from all test sets can be found in Figure D.3. First, we notice that the pooled estimator performs better than CoRe on test set 1. This can be explained by the fact that it can exploit the predictive information contained in the brightness of an image while CoRe is restricted not to do so. Second, we observe that the pooled estimator does not perform well on test set 2 as its learned representation seems to use the image’s brightness as a predictor for the response which fails when the brightness distribution in the test set diﬀers signiﬁcantly from the training set. In contrast, the predictive performance of CoRe is hardly aﬀected by the changing brightness distributions. Results for β ∈ {5, 10, 20} and c ∈ {200, 5000} can be found in Figure D.4 in Appendix §D.2.
+6. Further related work
+Encoding certain invariances in estimators is a well-studied area in computer vision and machine learning with an extensive body of literature. While a large part of this work assumes the desired invariance to be known, fewer approaches aim to learn the required
+12. Speciﬁcally, we use ImageMagick (https://www.imagemagick.org) and modify the brightness of each image by applying the command convert -modulate b ij,100,100 input.jpg output.jpg to the image.
+33
+
+invariances from data and the focus often lies on geometric transformations of the input data or explicitly creating augmented observations (Sohn and Lee, 2012; Khasanova and Frossard, 2017; Hashimoto et al., 2017; Devries and Taylor, 2017). The main diﬀerence between this line of work and CoRe is that we do not require to know the style feature explicitly, the set of possible style features is not restricted to a particular class of transformations and we do not aim to create augmented observations in a generative framework.
+Recently, various approaches have been proposed that leverage causal motivations for deep learning or use deep learning for causal inference, related to e.g. the problems of causeeﬀect inference and generative adversarial networks (Chalupka et al., 2014; Lopez-Paz et al., 2017; Lopez-Paz and Oquab, 2017; Goudet et al., 2017; Bahadori et al., 2017; Besserve et al., 2018; Kocaoglu et al., 2018).
+Kilbertus et al. (2017) exploit causal reasoning to characterize fairness considerations in machine learning. Distinguishing between the protected attribute and its proxies, they derive causal non-discrimination criteria. The resulting algorithms avoiding proxy discrimination require classiﬁers to be constant as a function of the proxy variables in the causal graph, thereby bearing some structural similarity to our style features.
+Distinguishing between core and style features can be seen as some form of disentangling factors of variation. Estimating disentangled factors of variation has gathered a lot of interested in the context of generative modeling. As in CoRe, Bouchacourt et al. (2018) exploit grouped observations. In a variational autoencoder framework, they aim to separate style and content—they assume that samples within a group share a common but unknown value for one of the factors of variation while the style can diﬀer. Denton and Birodkar (2017) propose an autoencoder framework to disentangle style and content in videos using an adversarial loss term where the grouping structure induced by clip identity is exploited. Here we try to solve a classiﬁcation task directly without estimating the latent factors explicitly as in a generative framework.
+In the computer vision literature, various works have used identity information to achieve pose invariance in the context of face recognition (Bartlett and Sejnowski, 1996; Tran et al., 2017). More generally, the idea of exploiting various observations of the same underlying object is related to multi-view learning (Xu et al., 2013). In the context of adversarial examples, Kannan et al. (2018) recently proposed the defense “Adversarial logit pairing” which is methodologically equivalent to the CoRe penalty Cf,1,θ when using the squared error loss. Several empirical studies have shown mixed results regarding the performance on ∞ perturbations (Engstrom et al., 2018; Mosbach et al., 2018), so far this setting has not been analyzed theoretically and hence it is an open question whether a CoRe-type penalty constitutes an eﬀective defense against adversarial examples.
+7. Conclusion
+Distinguishing the latent features in an image into core and style features, we have proposed conditional variance regularization (CoRe) to achieve robustness with respect to arbitrarily large interventions on the style or “orthogonal” features. The main idea of the CoRe estimator is to exploit the fact that we often have instances of the same object in the training data. By demanding invariance of the classiﬁer amongst a group of instances that relate to the same object, we can achieve invariance of the classiﬁcation performance with
+34
+
+respect to interventions on style features such as image quality, fashion type, color, or body posture. The training also works despite sampling biases in the data.
+There are two main application areas: 1. If the style features are known explicitly, we can achieve the same classiﬁcation perfor-
+mance as standard data augmentation approaches with substantially fewer augmented samples, as shown for example in §5.5. 2. Perhaps more interesting are settings in which it is unknown what the style features are, with examples in §5.1, §5.2, §5.3, §5.4 and §5.7. CoRe regularization forces predictions to be based on features that do not vary strongly between instances of the same object. We could show in the examples and in Theorems 1 and 2 that this regularization achieves distributional robustness with respect to changes in the distribution of the (unknown) style variables. An interesting line of work would be to use larger models such as Inception or large ResNet architectures (Szegedy et al., 2015; He et al., 2016). These models have been trained to be invariant to an array of explicitly deﬁned style features. In §5.2 we include results which show that using Inception V3 features does not guard against interventions on more implicit style features. We would thus like to assess what beneﬁts CoRe can bring for training Inception-style models end-to-end, both in terms of sample eﬃciency and in terms of generalization performance.
+35
+
+Acknowledgments
+We thank Brian McWilliams, Jonas Peters, and Martin Arjovsky for helpful comments and discussions and CSCS for provision of computational resources. A preliminary version of this work was presented at the NIPS 2017 Interpretable ML Symposium and we thank participants of the symposium for very helpful discussions. We would also like to thank three anonymous referees and the action editor Edo Airoli for detailed and very helpful feedback on an earlier version of the manuscript.
+References
+M. Abadi, A. Agarwal, P. Barham, E. Brevdo, Z. Chen, C. Citro, G. S. Corrado, A. Davis, J. Dean, M. Devin, S. Ghemawat, I. Goodfellow, A. Harp, G. Irving, M. Isard, Y. Jia, R. Jozefowicz, L. Kaiser, M. Kudlur, J. Levenberg, D. Man´e, R. Monga, S. Moore, D. Murray, C. Olah, M. Schuster, J. Shlens, B. Steiner, I. Sutskever, K. Talwar, P. Tucker, V. Vanhoucke, V. Vasudevan, F. Vi´egas, O. Vinyals, P. Warden, M. Wattenberg, M. Wicke, Y. Yu, and X. Zheng. TensorFlow: Large-scale machine learning on heterogeneous systems, 2015. URL https://www.tensorflow.org/. Software available from tensorﬂow.org.
+J. Aldrich. Autonomy. Oxford Economic Papers, 41:15–34, 1989.
+J. Bagnell. Robust supervised learning. In Proceedings of the national conference on artiﬁcial intelligence, volume 20, page 714. Menlo Park, CA; Cambridge, MA; London; AAAI Press; MIT Press; 1999, 2005.
+M. T. Bahadori, K. Chalupka, E. Choi, R. Chen, W. F. Stewart, and J. Sun. Causal regularization. arXiv preprint arXiv:1702.02604, 2017.
+S. Barocas and A. D. Selbst. Big Data’s Disparate Impact. 104 California Law Review 671, 2016.
+M. S. Bartlett and T. J. Sejnowski. Viewpoint invariant face recognition using independent component analysis and attractor networks. In Proceedings of the 9th International Conference on Neural Information Processing Systems, NIPS’96, pages 817–823, Cambridge, MA, USA, 1996. MIT Press.
+M. Belkin, P. Niyogi, and V. Sindhwani. Manifold regularization: A geometric framework for learning from labeled and unlabeled examples. Journal of machine learning research, 7(Nov):2399–2434, 2006.
+S. Ben-David, J. Blitzer, K. Crammer, and F. Pereira. Analysis of representations for domain adaptation. In Advances in Neural Information Processing Systems 19. 2007.
+A. Ben-Tal, D. Den Hertog, A. De Waegenaere, B. Melenberg, and G. Rennen. Robust solutions of optimization problems aﬀected by uncertain probabilities. Management Science, 59(2):341–357, 2013.
+36
+
+M. Besserve, N. Shajarisales, B. Sch¨olkopf, and D. Janzing. Group invariance principles for causal generative models. In Proceedings of the 21st International Conference on Artiﬁcial Intelligence and Statistics (AISTATS), volume 84 of Proceedings of Machine Learning Research, pages 557–565. PMLR, 2018.
+T. Bolukbasi, K.-W. Chang, J. Y. Zou, V. Saligrama, and A. T. Kalai. Man is to computer programmer as woman is to homemaker? debiasing word embeddings. In Advances in Neural Information Processing Systems 29. 2016.
+D. Bouchacourt, R. Tomioka, and S. Nowozin. Multi-level variational autoencoder: Learning disentangled representations from grouped observations. In AAAI Conference on Artiﬁcial Intelligence. 2018.
+K. Chalupka, P. Perona, and F. Eberhardt. Visual Causal Feature Learning. Uncertainty in Artiﬁcial Intelligence, 2014.
+K. Crawford. Artiﬁcial intelligence’s white guy problem. The New York Times, June 25 2016, 2016. URL https://www.nytimes.com/2016/06/26/opinion/sunday/ artificial-intelligences-white-guy-problem.html.
+G. Csurka. A comprehensive survey on domain adaptation for visual applications. In Domain Adaptation in Computer Vision Applications., pages 1–35. 2017.
+E. L. Denton and V. Birodkar. Unsupervised learning of disentangled representations from video. In Advances in Neural Information Processing Systems 30. 2017.
+T. Devries and G. W. Taylor. Dataset augmentation in feature space. ICLR Workshop Track, 2017.
+J. Emspak. How a machine learns prejudice. Scientiﬁc American, December 29 2016, 2016. URL https://www.scientificamerican.com/article/ how-a-machine-learns-prejudice/.
+L. Engstrom, A. Ilyas, and A. Athalye. Evaluating and understanding the robustness of adversarial logit pairing. arXiv preprint arXiv:1807.10272, 2018.
+Y. Ganin, E. Ustinova, H. Ajakan, P. Germain, H. Larochelle, F. Laviolette, M. Marchand, and V. Lempitsky. Domain-adversarial training of neural networks. Journal of Machine Learning Research, 17(1), 2016.
+R. Gao, X. Chen, and A. Kleywegt. arXiv preprint arXiv:1712.06050, 2017.
+B. Gong, K. Grauman, and F. Sha. Reshaping visual datasets for domain adaptation. In Advances in Neural Information Processing Systems 26, pages 1286–1294. Curran Associates, Inc., 2013.
+M. Gong, K. Zhang, T. Liu, D. Tao, C. Glymour, and B. Sch¨olkopf. Domain adaptation with conditional transferable components. In International Conference on Machine Learning, 2016.
+37
+
+I. Goodfellow, J. Shlens, and C. Szegedy. Explaining and harnessing adversarial examples. In International Conference on Learning Representations, 2015.
+O. Goudet, D. Kalainathan, P. Caillou, D. Lopez-Paz, I. Guyon, M. Sebag, A. Tritas, and P. Tubaro. Learning Functional Causal Models with Generative Neural Networks. arXiv preprint arXiv:1709.05321, 2017.
+T. Haavelmo. The probability approach in econometrics. Econometrica, 12:S1–S115 (supplement), 1944.
+David A Harville. Bayesian inference for variance components using only error contrasts. Biometrika, 61(2):383–385, 1974.
+T. B Hashimoto, P. S Liang, and J. C Duchi. Unsupervised transformation learning via convex relaxations. In Advances in Neural Information Processing Systems 30, pages 6875–6883. Curran Associates, Inc., 2017.
+K. He, X. Zhang, S. Ren, and J. Sun. Delving deep into rectiﬁers: Surpassing humanlevel performance on imagenet classiﬁcation. Proceedings of the 2015 IEEE International Conference on Computer Vision (ICCV), pages 1026–1034, 2015.
+K. He, X. Zhang, S. Ren, and J. Sun. Deep residual learning for image recognition. 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pages 770–778, 2016.
+J. Hoﬀman, B. Kulis, T. Darrell, and K. Saenko. Discovering latent domains for multisource domain adaptation. In Computer Vision – ECCV 2012, pages 702–715, Berlin, Heidelberg, 2012. Springer Berlin Heidelberg.
+H. Kannan, A. Kurakin, and I. J. Goodfellow. Adversarial logit pairing. arXiv preprint arXiv:1803.06373, 2018.
+R. Khasanova and P. Frossard. Graph-based isometry invariant representation learning. In Proceedings of the 34th International Conference on Machine Learning, volume 70, pages 1847–1856, 2017.
+N. Kilbertus, M. Rojas Carulla, G. Parascandolo, M. Hardt, D. Janzing, and B. Sch¨olkopf. Avoiding discrimination through causal reasoning. Advances in Neural Information Processing Systems 30, pages 656–666, 2017.
+D. P. Kingma and J. Ba. Adam: A method for stochastic optimization. International Conference on Learning Representations (ICLR), 2015.
+M. Kocaoglu, C. Snyder, A. Dimakis, and S. Vishwanath. CausalGAN: Learning causal implicit generative models with adversarial training. International Conference on Learning Representations, 2018.
+A. Krizhevsky, I. Sutskever, and G. E Hinton. Imagenet classiﬁcation with deep convolutional neural networks. In Advances in Neural Information Processing Systems 25. 2012.
+38
+
+A. Kuehlkamp, B. Becker, and K. Bowyer. Gender-from-iris or gender-from-mascara? In 2017 IEEE Winter Conference on Applications of Computer Vision (WACV), 2017.
+Y. LeCun, L. Bottou, Y. Bengio, and P. Haﬀner. Gradient-based learning applied to document recognition. Proceedings of the IEEE, 1998.
+Ker-Chau Li. Sliced inverse regression for dimension reduction. Journal of the American Statistical Association, 86(414):316–327, 1991.
+Z. Liu, P. Luo, X. Wang, and X. Tang. Deep learning face attributes in the wild. In Proceedings of International Conference on Computer Vision (ICCV), 2015.
+D. Lopez-Paz and M. Oquab. Revisiting Classiﬁer Two-Sample Tests. International Conference on Learning Representations (ICLR), 2017.
+D. Lopez-Paz, R. Nishihara, S. Chintala, B. Sch¨olkopf, and L. Bottou. Discovering causal signals in images. In The IEEE Conference on Computer Vision and Pattern Recognition (CVPR 2017), 2017.
+S. Magliacane, T. van Ommen, T. Claassen, S. Bongers, P. Versteeg, and J. Mooij. Domain adaptation by using causal inference to predict invariant conditional distributions. Advances in Neural Information Processing Systems, 2018.
+N. Meinshausen. Causality from a distributional robustness point of view. In 2018 IEEE Data Science Workshop (DSW), pages 6–10, 2018.
+M. Mosbach, M. Andriushchenko, T. Trost, M. Hein, and D. Klakow. Logit pairing methods can fool gradient-based attacks. arXiv preprint arXiv:1810.12042, 2018.
+H. Namkoong and J.C. Duchi. Variance-based regularization with convex objectives. In Advances in Neural Information Processing Systems, pages 2975–2984, 2017.
+J. Pearl. Causality: Models, Reasoning, and Inference. Cambridge University Press, New York, USA, 2nd edition, 2009.
+J. Peters, P. Bu¨hlmann, and N. Meinshausen. Causal inference using invariant prediction: identiﬁcation and conﬁdence intervals. Journal of the Royal Statistical Society, Series B, 78:947–1012, 2016.
+J. Quionero-Candela, M. Sugiyama, A. Schwaighofer, and N. D. Lawrence. Dataset Shift in Machine Learning. The MIT Press, 2009.
+T. Richardson and J. M. Robins. Single world intervention graphs (SWIGs): A uniﬁcation of the counterfactual and graphical approaches to causality. Center for the Statistics and the Social Sciences, University of Washington Series. Working Paper 128, 30 April 2013, 2013.
+M. Rojas-Carulla, B. Sch¨olkopf, R. Turner, and J. Peters. Causal transfer in machine learning. To appear in Journal of Machine Learning Research., 2018.
+39
+
+D. Rothenh¨ausler, P. Bu¨hlmann, N. Meinshausen, and J. Peters. Anchor regression: heterogeneous data meets causality. arXiv preprint arXiv:1801.06229, 2018.
+B. Sch¨olkopf, C. Burges, and V. Vapnik. Incorporating invariances in support vector learning machines. In Artiﬁcial Neural Networks — ICANN 96, pages 47–52, Berlin, Heidelberg, 1996. Springer Berlin Heidelberg.
+B. Sch¨olkopf, D. Janzing, J. Peters, E. Sgouritsa, K. Zhang, and J. Mooij. On causal and anticausal learning. In Proceedings of the 29th International Conference on Machine Learning (ICML), pages 1255–1262, 2012.
+S. Shaﬁeezadeh-Abadeh, D. Kuhn, and P. Esfahani. Regularization via mass transportation. arXiv preprint arXiv:1710.10016, 2017.
+A. Sinha, H. Namkoong, and J. Duchi. Certiﬁable distributional robustness with principled adversarial training. In International Conference on Learning Representations, 2018.
+K. Sohn and H. Lee. Learning invariant representations with local transformations. In Proceedings of the 29th International Coference on International Conference on Machine Learning, ICML’12, pages 1339–1346, USA, 2012. Omnipress.
+C. Szegedy, W. Zaremba, I. Sutskever, J. Bruna, D. Erhan, I. Goodfellow, and R. Fergus. Intriguing properties of neural networks. In International Conference on Learning Representations, 2014.
+C. Szegedy, W. Liu, Y. Jia, P. Sermanet, S. Reed, D. Anguelov, D. Erhan, V. Vanhoucke, and A. Rabinovich. Going deeper with convolutions. In Computer Vision and Pattern Recognition (CVPR), 2015.
+A. Torralba and A. A. Efros. Unbiased look at dataset bias. In Computer Vision and Pattern Recognition (CVPR), 2011.
+L. Tran, X. Yin, and X. Liu. Disentangled representation learning gan for pose-invariant face recognition. In In Proceeding of IEEE Computer Vision and Pattern Recognition, Honolulu, HI, July 2017.
+Geert Verbeke and Geert Molenberghs. Linear mixed models for longitudinal data. Springer Science & Business Media, 2009.
+C. Villani. Topics in optimal transportation. Number 58. American Mathematical Soc., 2003.
+Riccardo Volpi, Hongseok Namkoong, Ozan Sener, John Duchi, Vittorio Murino, and Silvio Savarese. Generalizing to unseen domains via adversarial data augmentation. arXiv preprint arXiv:1805.12018, 2018.
+Y. Xian, C. H. Lampert, B. Schiele, and Z. Akata. Zero-shot learning - A comprehensive evaluation of the good, the bad and the ugly. arXiv preprint arXiv:1707.00600, 2017.
+C. Xu, D. Tao, and C. Xu. A survey on multi-view learning. arXiv preprint arXiv:1304.5634, 2013.
+40
+
+H. Xu, C. Caramanis, and S. Mannor. Robust regression and lasso. In Advances in Neural Information Processing Systems, pages 1801–1808, 2009.
+X. Yu, T. Liu, M. Gong, K. Zhang, and D. Tao. Transfer learning with label noise. arXiv preprint arXiv:1707.09724, 2017.
+K. Zhang, B. Sch¨olkopf, K. Muandet, and Z. Wang. Domain adaptation under target and conditional shift. In International Conference on Machine Learning, 2013.
+K. Zhang, M. Gong, and B. Sch¨olkopf. Multi-source domain adaptation: A causal view. In Proceedings of the Twenty-Ninth AAAI Conference on Artiﬁcial Intelligence, 2015.
+41
+
+Appendix
+
+Appendix A. Proof of Theorem 1
+
+First part. To show the ﬁrst part, namely that with probability 1,
+
+L∞(θˆpool) = ∞,
+we need to show that W tθˆpool = 0 with probability 1. The reason this is suﬃcient is as follows: if W tθ = 0, then L∞(θ) = ∞ as we can then ﬁnd a v ∈ Rq such that γ := θtW v = 0. Assume without limitation of generality that v is normed such that E(E(vtΣ−y,1idv|Y = y, ID = id)) = 1. Setting ∆ξ = ξv for ξ ∈ R, we have that (ID, Y, Xstyle + ∆ξ) is in the class F|ξ| if the distribution of (ID, Y, Xstyle) is equal to F0. Furthermore, x(∆ξ)tθ = x(∆ = 0)tθ + ξγ. Hence log(1 + exp(−y · x(∆ξ)tθ)) → ∞ for either ξ → ∞ or ξ → −∞.
+To show that W tθˆpool = 0 with probability 1, let θˆ∗ be the oracle estimator that is
+constrained to be orthogonal to the column space of W :
+
+θˆ∗ = argminθ:W tθ=0 Ln(θ)
+
+with
+
+1n
+
+Ln(θ) := n
+
+(yi, fθ(xi)).
+
+(15)
+
+i=1
+
+We show W tθˆpool = 0 by contradiction. Assume hence that W tθˆpool = 0. If this is indeed the case, then the constraint W tθ = 0 in (15) becomes non-active and we have θˆpool = θˆ∗.
+
+This would imply that taking the directional derivative of the training loss with respect to any δ ∈ Rp in the column space of W should vanish at the solution θˆ∗. In other words, deﬁne the gradient as g(θ) = ∇θLn(θ) ∈ Rp. The implication is then that for all δ in the
+
+column-space of W ,
+
+δtg(θˆ∗) = 0
+
+(16)
+
+and we will show the latter condition is violated almost surely.
+
+As we work with the logistic loss and Y ∈ {−1, 1}, the loss is given by (yi, fθ(xi)) =
+
+log(1+exp(−yixtiθ)). Deﬁne ri(θ) := yi/(1+exp(yixtiθ)). For all i = 1, . . . , n we have ri = 0.
+
+Then
+
+g(θˆ∗) = 1 n
+
+n
+
+ri(θˆ∗)xi.
+
+(17)
+
+i=1
+
+The training images can be written according to the model as xi = x0i + W xsityle, where X0 := kx(Xcore, εX ) are the images in absence of any style variation. Since the style features only have an eﬀect on the column space of W in X, the oracle estimator θˆ∗ is identical under
+
+the true training data and the (hypothetical) training data x0i , i = 1, . . . , n in absence of style variation. As X − X0 = W Xstyle, equation (17) can also be written as
+
+δtg(θˆ∗) = 1 n
+
+n
+
+ri(θˆ∗)(x0i )tδ
+
++
+
+1 n
+
+n
+
+ri(θˆ∗)(xsityle)tW tδ.
+
+i=1
+
+i=1
+
+(18)
+
+Since δ is in the column-space of W , there exists u ∈ Rq such that δ = W u and we can
+
+write (18) as
+
+δtg(θˆ∗) = 1 n
+
+n
+
+ri(θˆ∗)(x0i )tW
+
+u
+
++
+
+1 n
+
+n
+
+ri(θˆ∗)(xsityle)tW tW u.
+
+(19)
+
+i=1
+
+i=1
+
+42
+
+From (A2) we have that the eigenvalues of W tW are all positive. Also ri(θˆ∗) is not a function of the interventions xsityle, i = 1, . . . , n since, as above, the estimator θˆ∗ is identical whether trained on the original data xi or on the intervention-free data x0i , i = 1, . . . , n. If we condition on everything except for the random interventions by conditioning on (x0i , yi)
+for i = 1, . . . , n, then the rhs of (19) can be written as
+
+atu + Btu,
+
+where
+
+a
+
+∈
+
+Rq
+
+is
+
+ﬁxed
+
+(conditionally)
+
+and
+
+B
+
+=
+
+1 n
+
+n i=1
+
+ri
+
+(θˆ∗)(xsityle
+
+)tW
+
+t
+
+W
+
+∈
+
+Rq
+
+is
+
+a
+
+random
+
+vector and B = −a ∈ Rq with probability 1 by (A1) and (A2) Hence the left hand side
+
+of (19) is not identically 0 with probability 1 for any given δ in the column-space of W .
+
+This shows that the implication (16) is incorrect with probability 1 and hence completes
+
+the proof of the ﬁrst part by contradiction.
+
+Invariant parameter space. Before continuing with the second part of the proof, some deﬁnitions. Let I be the invariant parameter space
+
+I := {θ : fθ(x(∆)) is constant as function of ∆ ∈ Rq for all x ∈ Rp}.
+
+For all θ ∈ I, the loss (7) for any F ∈ Fξ is identical to the loss under F0. That is for all ξ ≥ 0,
+if θ ∈ I, then sup EF Y, fθ X = EF0 Y, fθ X .
+F ∈Fξ
+The optimal predictor in the invariant space I is
+
+θ∗ = argminθ EF0 (Y, fθ(X)) such that θ ∈ I.
+
+(20)
+
+If fθ is only a function of the core features Xcore, then θ ∈ I. The challenge is that the core
+features are not directly observable and we have to infer the invariant space I from data.
+Second part. For the second part, we ﬁrst show that with probability at least pn, as deﬁned in (A3), θˆcore = θˆ∗ with θˆ∗ deﬁned as in (15). The invariant space for this model is the linear subspace I = {θ : W tθ = 0} and by their respective deﬁnitions,
+
+θˆ∗
+
+=
+
+argminθ
+
+1 n
+
+n
+
+(yi, fθ(xi)) such that θ ∈ I,
+
+i=1
+
+θˆcore
+
+=
+
+argminθ
+
+1 n
+
+n
+
+(yi, fθ(xi)) such that θ ∈ In.
+
+i=1
+
+Since we use In = In(τ ) with τ = 0, In = θ : Eˆ(Vˆar(fθ(X)|Y, ID)) = 0 .
+
+This implies that for θ ∈ In, fθ(xi) = fθ(xi ) if i, i ∈ Sj for some j ∈ {1, . . . , m}13. Since fθ(x) = fθ(x ) implies (x − x )tθ = 0, it follows that (xi − xi )tθ = 0 if i, i ∈ Sj for some
+j ∈ {1, . . . , m} and hence
+
+In ⊆ θ : (xi − xi )tθ = 0 if i, i ∈ Sj for some j ∈ {1, . . . , m} .
+
+13. recall that (yi, idi) = (yi , idi ) if i, i ∈ Sj as the subsets Sj, j = 1, . . . , m, collect all observations that have a unique realization of (Y, ID)
+
+43
+
+Since Xstyle has a linear inﬂuence on X in (12), xi − xi = W (∆i − ∆i ) if i, i are in
+
+the same group Sj of observations for some j ∈ {1, . . . , m}. Note that the number of
+
+grouped examples n − m is equal to or exceeds the rank q of W with probability pn, using
+
+(A3), and pn → 1 for n → ∞. By (A2), it follows then with probability at least pn that
+
+In ⊆ {θ : W tθ = 0} = I. As, by deﬁnition, I ⊆ In is always true, we have with probability pn that I = In. Hence, with probability pn (and pn → 1 for n → ∞), θˆcore = θˆ∗. It thus
+
+remains to be shown that
+
+L∞(θˆ∗) →p inf L∞(θ).
+
+(21)
+
+θ
+
+Since θˆ∗ is in I, we have (y, x(∆)) = (y, x0), where x0 are the previously deﬁned data in
+
+absence of any style variance. Hence
+
+θˆ∗
+
+=
+
+argminθ
+
+1 n
+
+n
+
+(yi, fθ(x0i )) such that θ ∈ I,
+
+(22)
+
+i=1
+
+that is the estimator is unchanged if we use the (hypothetical) data x0i , i = 1, . . . , n as training data. The population optimal parameter vector deﬁned in (20) as
+
+θ∗ = argminθ EF0 (Y, fθ(X)) such that θ ∈ I.
+
+(23)
+
+is for all ξ ≥ 0 identical to
+
+argminθ sup EF (Y, fθ(X)) such that θ ∈ I.
+F ∈Fξ
+
+Hence (22) and (23) can be written as
+
+θˆ∗
+
+=
+
+argminθ:θ∈I
+
+L(n0)(θ)
+
+with
+
+L(n0)(θ)
+
+:=
+
+1 n
+
+n
+
+(yi, fθ(x0i ))
+
+i=1
+
+θ∗ = argminθ:θ∈I L(0)(θ) with L(0)(θ) := E[ (Y, fθ(X0))].
+
+By uniform convergence of L(n0) to the population loss L(0), we have L(0)(θˆ∗) →p L(0)(θ∗). By deﬁnition of I and θ∗, we have L∗∞ = L∞(θ∗) = L(0)(θ∗). As θˆ∗ is in I, we also have L∞(θˆ∗) = L(0)(θˆ∗). Since, from above, L(0)(θˆ∗) →p L(0)(θ∗), this also implies L∞(θˆ∗) →p L∞(θ∗) = L∗∞. Using the previously established result that θˆcore = θˆ∗ with probability at
+least pn and pn → 1 for n → ∞, this completes the proof.
+
+Appendix B. Proof of Theorem 2
+Let F0 be the training distribution of (ID, Y, Xstyle) and F a distribution for (ID, Y, X˜ style) in Fξ. By deﬁnition of Fξ, we can write X˜ style = Xstyle + ∆ for a suitable random variable ∆ ∈ Rq with
+∆ ∈ Uξ, where Uξ = {∆ : E(E(∆tΣ−Y,1ID∆|Y, ID)) ≤ ξ}.
+Vice versa: if we can write X˜ style = Xstyle + ∆ with ∆ ∈ Uξ, then the distribution is in Fξ. While X under F0 can be written as X(∆ = 0), the distribution of X under F is of
+
+44
+
+√ the form X(∆) or, alternatively, X( ξU ) with U ∈ U1. Adopting from now on the latter constraint that U ∈ U1, and using (B2),
+EF Y, fθ(X) = EF0 hθ(0) + ξ EF0 (∇hθ)tU + o(ξ),
+
+where ∇hθ is the gradient of hθ(δ) with respect to δ, evaluated at δ ≡ 0. Hence
+
+sup EF hθ(∆) = EF0 hθ(0) + ξ sup EF0 (∇hθ)tU + o(ξ).
+
+F ∈Fξ
+
+U ∈U1
+
+The proof is complete if we can show that
+
+On the one hand,
+
+C ,1/2,θ = sup EF0 (∇hθ)tU + O(ζ).
+U ∈U1
+
+sup EF0 (∇hθ)tU = EF0 (∇hθ)tΣY,ID(∇hθ) .
+U ∈U1
+This follows for a matrix Σ with Cholesky decomposition Σ = CtC,
+
+max (∇hθ)tu = max (∇hθ)tCtw
+
+u:utΣ−1u≤1
+
+w:
+
+w
+
+2 2
+
+≤1
+
+= C(∇h) 2 = (∇h)tΣ(∇h).
+
+On the other hand, the conditional-variance-of-loss can be expanded as
+
+C ,1/2,θ = EF0 Var( (Y, fθ(X))|Y, ID) = EF0 (∇hθ)tΣY,ID(∇hθ) + O(ζ), which completes the proof.
+
+Appendix C. Network architectures
+We implemented the considered models in TensorFlow (Abadi et al., 2015). The model architectures used are detailed in Table C.1. CoRe and the pooled estimator use the same network architecture and training procedure; merely the loss function diﬀers by the CoRe regularization term. In all experiments we use the Adam optimizer (Kingma and Ba, 2015). All experimental results are based on training the respective model ﬁve times (using the same data) to assess the variance due to the randomness in the training procedure. In each epoch of the training, the training data xi, i = 1, . . . , n are randomly shuﬄed, keeping the grouped observations (xi)i∈Ij for j ∈ {1, . . . , m} together to ensure that mini batches will contain grouped observations. In all experiments the mini batch size is set to 120. For small c this implies that not all mini batches contain grouped observations, making the optimization more challenging.
+
+45
+
+Dataset MNIST
+Stickmen
+CelebA (all experiments using CelebA) AwA2
+
+Optimizer Adam
+Adam
+Adam
+Adam
+
+Input CNN
+Input CNN
+Input CNN
+Input CNN
+
+Architecture
+28 × 28 × 1 Conv 5 × 5 × 16, 5 × 5 × 32 (same padding, strides = 2, ReLu activation), fully connected, softmax layer
+64 × 64 × 1 Conv 5 × 5 × 16, 5 × 5 × 32, 5 × 5 × 64, 5 × 5 × 128 (same padding, strides = 2, leaky ReLu activation), fully connected, softmax layer
+64 × 48 × 3 Conv 5 × 5 × 16, 5 × 5 × 32, 5 × 5 × 64, 5 × 5 × 128 (same padding, strides = 2, leaky ReLu activation), fully connected, softmax layer
+32 × 32 × 3 Conv 5 × 5 × 16, 5 × 5 × 32, 5 × 5 × 64, 5 × 5 × 128 (same padding, strides = 2, leaky ReLu activation), fully connected, softmax layer
+
+Table C.1: Details of the model architectures used.
+Appendix D. Additional experiments
+D.1 Eyeglasses detection with small sample size
+Figure D.1 shows the numerator and the denominator of the variance ratio deﬁned in Eq. (14) separately as a function of the CoRe penalty weight. In conjunction with Figure 6(b), we observe that a ridge penalty decreases both the within- and between-group variance while the CoRe penalty penalizes the within-group variance selectively.
+D.2 Eyeglasses detection: known and unknown brightness interventions
+Here, we show additional results for the experiment discussed in §5.7. Recall that we work with the CelebA dataset and consider the problem of classifying whether the person in the image is wearing eyeglasses. We discuss two alternatives for constructing diﬀerent test sets and we vary the number of grouped observations in c ∈ {200, 2000, 5000} as well as the strength of the brightness interventions in β ∈ {5, 10, 20}, all with sample size n = 20000. Generation of training and test sets 1 and 2 were already described in §5.7. Here, we consider additionally test set 3 where all images are left unchanged (no brightness interventions at all) and in test set 4 the brightness of all images is increased.
+Furthermore, we consider three diﬀerent ways of grouping images. In §5.7 we used images of the same person to create a grouped observation by sampling a diﬀerent value for the brightness intervention. We refer to this as ‘Grouping setting 2’ here. An alternative is to use the same image of the same person in diﬀerent brightnesses (drawn from the same distribution) as a group over which the conditional variance is calculated. We call this ‘Grouping setting 1’ and it can be useful if we know that we want to protect against brightness interventions in the future. For comparison, we also evaluate grouping with an image of a diﬀerent person (but sharing the same class label) as a baseline (‘Grouping
+46
+
+Penalty value (test)
+
+(a)
+Ridge weight: 0 Ridge weight: 0.0001 Ridge weight: 0.0005 Ridge weight: 0.001 Ridge weight: 0.005 Ridge weight: 0.01 20 15 10 5 0
+0 20 Pe4n0alty w6e0ight 80 100
+
+Between gr. var (test)
+
+(b)
+Ridge weight: 0 Ridge weight: 0.0001 Ridge weight: 0.0005 Ridge weight: 0.001 Ridge weight: 0.005 Ridge weight: 0.01 80 60 40 20 0
+0 20 Pe4n0alty w6e0ight 80 100
+
+Figure D.1: Eyeglass detection, trained on a small subset (DS1) of the CelebA dataset with disjoint identities. Panel (a) shows the numerator of the variance ratio deﬁned in Eq. (14) on test data as a function of both the CoRe and ridge penalty weights. Panel (b) shows the equivalent plot for the denominator. A ridge penalty decreases both the within- and between-group variance while the CoRe penalty penalizes the within-group variance selectively (the latter can be seen more clearly in Figure 6(b)).
+
+MISCLASS. RATE (IN %)
+
+(a) Examples of misclassiﬁed observations.
+
+y ≡ glasses
+
+y ≡ no glasses
+
+y ≡ glasses
+
+Pˆcore(gl.) = 1.00
+
+Pˆcore(no gl.) = 0.84 Pˆcore(gl.) = 0.90
+
+Pˆpool(gl.) = 0.21
+
+Pˆpool(no gl.) = 0.13 Pˆpool(gl.) = 0.14
+
+(b) Misclassiﬁcation rates.
+40
+
+30
+
+Method
+
+20
+
+CORE
+
+pooled
+
+10
+
+0 Tr
+
+Te1 Te2 Te3 Te4
+Dataset
+
+Figure D.2: CelebA eyeglasses detection with brightness interventions, grouping setting 1. (a) Misclassiﬁed examples from the test sets. (b) Misclassiﬁcation rates for β = 20 and c = 2000. Results for diﬀerent test sets, grouping settings, β ∈ {5, 10, 20} and c ∈ {200, 5000} can be found in Figure D.4.
+
+47
+
+(a) Grouping setting 1, β = 5
+
+(b) Grouping setting 1, β = 10 (c) Grouping setting 1, β = 20
+
+(d) Grouping setting 2, β = 5
+
+(e) Grouping setting 2, β = 10
+
+(f) Grouping setting 2, β = 20
+
+(g) Grouping setting 3, β = 5
+
+(h) Grouping setting 3, β = 10
+
+(i) Grouping setting 3, β = 20
+
+Figure D.3: Examples from the CelebA eyeglasses detection with brightness interventions, grouping settings 1–3 with β ∈ {5, 10, 20}. In all rows, the ﬁrst three images from the left have y ≡ no glasses; the remaining three images have y ≡ glasses. Connected images are grouped examples. In panels (a)–(c), row 1 shows examples from the training set, rows 2–4 contain examples from test sets 2–4, respectively. Panels (d)–(i) show examples from the respective training sets.
+
+setting 3’). Examples from the training sets using grouping settings 1, 2 and 3 can be found in Figure D.3.
+Results for all grouping settings, β ∈ {5, 10, 20} and c ∈ {200, 5000} can be found in Figure D.4. We see that using grouping setting 1 works best since we could explicitly control that only Xstyle ≡ brightness varies between grouping examples. In grouping setting 2, diﬀerent images of the same person can vary in many factors, making it more challenging to isolate brightness as the factor to be invariant against. Lastly, we see that if we group images of diﬀerent persons (‘Grouping setting 3’), the diﬀerence between CoRe estimator and the pooled estimator becomes much smaller than in the previous settings.
+Regarding the results for grouping setting 1 in Figure D.2, we notice that the pooled estimator performs better than CoRe on test set 1. This can be explained by the fact that it can exploit the predictive information contained in the brightness of an image while CoRe is restricted not to do so. Second, we observe that the pooled estimator does not perform well on test sets 2 and 4 as its learned representation seems to use the image’s brightness as a predictor for the response which fails when the brightness distribution in the test set diﬀers signiﬁcantly from the training set. In contrast, the predictive performance of CoRe is hardly aﬀected by the changing brightness distributions.
+48
+
+(a) Grouping setting 1, c = 200
+
+(b) Grouping setting 1, c = 2000
+
+Method CORE pooled
+
+Method CORE pooled
+
+MISCLASS. RATE (IN %)
+
+mean: 5 40
+
+mean: 10
+
+mean: 20
+
+30
+
+20
+
+10
+
+0 Tr Te1 Te2 Te3 Te4
+
+Tr Te1 Te2 Te3 Te4
+Dataset
+
+Tr Te1 Te2 Te3 Te4
+
+MISCLASS. RATE (IN %)
+
+mean: 5 40
+
+mean: 10
+
+mean: 20
+
+30
+
+20
+
+10
+
+0 Tr Te1 Te2 Te3 Te4
+
+Tr Te1 Te2 Te3 Te4
+Dataset
+
+Tr Te1 Te2 Te3 Te4
+
+(c) GrouMpeitnhgodsettiCnOgR2E, c p=oo2le0d00
+
+(d) GrouMpeitnhgodsettiCnOgRE2, c p=oo5le0d00
+
+MISCLASS. RATE (IN %)
+
+mean: 5 40
+
+mean: 10
+
+mean: 20
+
+30
+
+20
+
+10
+
+0 Tr Te1 Te2 Te3 Te4
+
+Tr Te1 Te2 Te3 Te4
+Dataset
+
+Tr Te1 Te2 Te3 Te4
+
+MISCLASS. RATE (IN %)
+
+mean: 5 40
+
+mean: 10
+
+mean: 20
+
+30
+
+20
+
+10
+
+0 Tr Te1 Te2 Te3 Te4
+
+Tr Te1 Te2 Te3 Te4
+Dataset
+
+Tr Te1 Te2 Te3 Te4
+
+(e) GrouMpeitnhgodsettiCnOgR3E, c p=oo2le0d00
+
+(f) GrouMpeitnhgodsettiCnOgR3E, c =poo5le0d00
+
+MISCLASS. RATE (IN %)
+
+mean: 5 40
+
+mean: 10
+
+mean: 20
+
+30
+
+20
+
+10
+
+0 Tr Te1 Te2 Te3 Te4
+
+Tr Te1 Te2 Te3 Te4
+Dataset
+
+Tr Te1 Te2 Te3 Te4
+
+MISCLASS. RATE (IN %)
+
+mean: 5 40
+
+mean: 10
+
+mean: 20
+
+30
+
+20
+
+10
+
+0 Tr Te1 Te2 Te3 Te4
+
+Tr Te1 Te2 Te3 Te4
+Dataset
+
+Tr Te1 Te2 Te3 Te4
+
+Figure D.4: Misclassiﬁcation rates for the CelebA eyeglasses detection with brightness interventions, grouping settings 1–3 with c ∈ {200, 2000, 5000} and the mean of the exponential distribution β ∈ {5, 10, 20}.
+
+49
+
+D.3 Gender classiﬁcation Table D.2 additionally reports the standard errors for the results discussed in §5.2.
+50
+
+κ = 1 κ = .99 κ = .95 κ = .9 κ = .75 κ = .5
+
+Error
+
+Penalty value
+
+Method
+
+Train
+
+Test 1
+
+Test 2
+
+Train
+
+Test: Females
+
+Test: Males
+
+5-layer CNN 0.00% (0.00%) 2.00% (0.17%) 38.54% (0.81%) 22.77 (0.27)
+
+74.05 (2.17)
+
+30.67 (0.88)
+
++ CoRe
+
+6.43% (0.25%) 5.85% (0.17%) 24.07% (0.80%) 0.01 (0.01)
+
+1.61 (0.14)
+
+0.93 (0.09)
+
+5-layer CNN 0.00% (0.00%) 1.98% (0.09%) 43.41% (0.44%) 8.23 (0.33)
+
+32.98 (1.44)
+
+11.76 (0.59)
+
++ CoRe
+
+7.61% (0.44%) 6.99% (0.42%) 27.05% (1.32%) 0.00 (0.00)
+
+1.44 (0.20)
+
+0.62 (0.03)
+
+5-layer CNN 0.00% (0.00%) 2.00% (0.11%) 47.64% (1.11%) 9.47 (0.75)
+
+40.51 (1.62)
+
+14.37 (1.12)
+
++ CoRe
+
+8.76% (0.59%) 7.74% (0.68%) 30.63% (1.73%) 0.00 (0.01)
+
+1.26 (0.31)
+
+0.42 (0.08)
+
+5-layer CNN 0.00% (0.00%) 1.89% (0.16%) 48.96% (1.02%) 13.62 (1.64)
+
+61.01 (1.22)
+
+21.26 (1.66)
+
++ CoRe
+
+10.45% (1.42%) 9.35% (1.79%) 29.57% (2.43%) 0.00 (0.00)
+
+0.42 (0.30)
+
+0.16 (0.11)
+
+5-layer CNN 0.00% (0.00%) 1.70% (0.10%) 50.11% (0.65%) 20.66 (1.25)
+
+70.80 (1.81)
+
+27.80 (1.12)
+
++ CoRe
+
+11.10% (1.17%) 10.51% (1.26%) 32.91% (0.81%) 0.00 (0.00)
+
+0.00 (0.00)
+
+0.00 (0.00)
+
+5-layer CNN 0.00% (0.00%) 1.93% (0.05%) 49.41% (1.50%) 821.32 (144.68) 2524.77 (219.96) 1253.21 (184.84)
+
++ CoRe
+
+11.12% (0.34%) 10.11% (0.32%) 35.68% (2.03%) 0.00 (0.00)
+
+0.02 (0.02)
+
+0.01 (0.01)
+
+51
+
+Table D.2: Classiﬁcation for Y ∈ {woman, man}. We compare six diﬀerent datasets that vary with respect to the distribution of Y in the grouped observations. Speciﬁcally, we vary the proportion of images showing men between κ = 0.5 and κ = 1. In all training datasets, the total number of observations is 16982 and the total number of grouped observations is 500. Both the pooled estimator as well as the CoRe estimator perform better if the distribution of Y in the grouped observations is more balanced. The CoRe estimator improves the error rate of the pooled estimator by ≈ 28 − 39% on a relative scale.
+
+(a) m = 1000
+
+(b) m = 10000
+
+Method CORE pooled
+
+Method CORE pooled
+
+MISCLASS. RATE (IN %) MISCLASS. RATE (IN %)
+
+c: 100 40
+
+c: 200
+
+c: 500 c: 1000
+
+c: 100 40
+
+c: 200
+
+c: 500
+
+c: 1000
+
+c: 2000
+
+c: 5000
+
+30
+
+30
+
+20
+
+20
+
+10
+
+10
+
+0 Tr Te1Te2
+
+Tr Te1Te2 Tr Te1Te2
+Dataset
+
+Tr Te1Te2
+
+0 Tr Te1Te2
+
+Tr Te1Te2
+
+Tr Te1Te2 Tr Te1Te2
+Dataset
+
+Tr Te1Te2
+
+Tr Te1Te2
+
+Figure D.5: Data augmentation setting: Misclassiﬁcation rates for MNIST and Xstyle ≡ rotation.
+
+In test set 1 all digits are rotated by a degree randomly sampled from [35, 70]. Test
+
+set 2 is the usual MNIST test set.
+
+place of observation D
+
+person ID
+
+adult/child Y
+
+∆
+
+height Xcore movement Xstyle(∆) image X(∆) fθ Yˆ (X(∆))
+Figure D.6: Data generating process for the stickmen example.
+
+D.4 MNIST: more sample eﬃcient data augmentation
+Here, we show further results for the experiment introduced in §5.5. We vary the number of augmented training examples c from 100 to 5000 for m = 10000 and c ∈ {100, 200, 500, 1000} for m = 1000. The degree of the rotations is sampled uniformly at random from [35, 70]. Figure D.5 shows the misclassiﬁcation rates. Test set 1 contains rotated digits only, test set 2 is the usual MNIST test set. We see that the misclassiﬁcation rates of CoRe are always lower on test set 1, showing that it makes data augmentation more eﬃcient. For m = 1000, it even turns out to be beneﬁcial for performance on test set 2.
+52
+
+(a) Examples from test sets 1–3.
+
+(b) Misclassiﬁcation rates.
+
+c: 20
+
+c: 500
+
+c: 2000
+
+MISCLASS. RATE (IN %)
+
+50
+
+40
+
+30
+
+20
+
+10
+
+0 Tr Te1 Te2 Te3
+
+Tr Te1 Te2 Te3
+Dataset
+
+Tr Te1 Te2 Te3
+
+Method
+CORE pooled
+
+Figure D.7: a) Examples from the stickmen test set 1 (row 1), test set 2 (row 2) and test sets 3 (row 3). In each row, the ﬁrst three images from the left have y ≡ child; the remaining three images have y ≡ adult. Connected images are grouped examples. b) Misclassiﬁcation rates for diﬀerent numbers of grouped examples.
+
+D.5 Stickmen image-based age classiﬁcation
+Here, we show further results for the experiment introduced in §5.4. Figure D.6 illustrates the data generating process. Recall that test set 1 follows the same distribution as the training set. In test sets 2 and 3 large movements are associated with both children and adults, while the movements are heavier in test set 3 than in test set 2. Figure D.7b shows results for diﬀerent numbers of grouping examples. For c = 20 the misclassiﬁcation rate of CoRe estimator has a large variance. For c ∈ {50, 500, 2000}, the CoRe estimator shows similar results. Its performance is thus not sensitive to the number of grouped examples, once there are suﬃciently many grouped observations in the training set. The pooled estimator fails to achieve good predictive performance on test sets 2 and 3 as it seems to use “movement” as a predictor for “age”.
+D.6 Eyeglasses detection: image quality intervention
+Here, we show further results for the experiments introduced in §5.3. Speciﬁcally, we consider interventions of diﬀerent strengths by varying the mean of the quality intervention in µ ∈ {30, 40, 50}. Recall that we use ImageMagick to modify the image quality. In the training set and in test set 1, we sample the image quality value as qi,j ∼ N (µ, σ = 10) and apply the command convert -quality q ij input.jpg output.jpg if yi ≡ glasses. If yi ≡ no glasses, the image is not modiﬁed. In test set 2, the above command is applied if yi ≡ no glasses while images with yi ≡ glasses are not changed. In test set 3 all images are left unchanged and in test set 4 the command is applied to all images, i.e. the quality of all images is reduced.
+We run experiments for grouping settings 1–3 and for c = 5000, where the deﬁnition of the grouping settings 1–3 is identical to §D.2. Figure D.8 shows examples from the respective training and test sets and Figure D.9 shows the corresponding misclassiﬁcation rates. Again, we observe that grouping setting 1 works best, followed by grouping setting 2.
+53
+
+(a) Grouping setting 1, µ = 50 (b) Grouping setting 1, µ = 40 (c) Grouping setting 1, µ = 30
+
+(d) Grouping setting 2, µ = 50
+
+(e) Grouping setting 2, µ = 40
+
+(f) Grouping setting 2, µ = 30
+
+(g) Grouping setting 3, µ = 50
+
+(h) Grouping setting 3, µ = 40
+
+(i) Grouping setting 3, µ = 30
+
+Figure D.8: Examples from the CelebA image quality datasets, grouping settings 1–3 with µ ∈ {30, 40, 50}. In all rows, the ﬁrst three images from the left have y ≡ no glasses; the remaining three images have y ≡ glasses. Connected images are grouped observations over which we calculate the conditional variance. In panels (a)–(c), row 1 shows examples from the training set, rows 2–4 contain examples from test sets 2–4, respectively. Panels (d)–(i) show examples from the respective training sets.
+Interestingly, there is a large performance diﬀerence between µ = 40 and µ = 50 for the pooled estimator. Possibly, with µ = 50 the image quality is not suﬃciently predictive for the target.
+
+54
+
+MISCLASS. RATE (IN %) MISCLASS. RATE (IN %) MISCLASS. RATE (IN %)
+
+(a) Grouping setting 1
+
+Method CORE pooled
+
+mean: 30 70
+
+mean: 40
+
+mean: 50
+
+60
+
+50
+
+40
+
+30
+
+20
+
+10
+
+0 Tr Te1 Te2 Te3 Te4
+
+Tr Te1 Te2 Te3 Te4
+Dataset
+
+Tr Te1 Te2 Te3 Te4
+
+(b) Grouping setting 2
+
+Method CORE pooled
+
+mean: 30 70
+
+mean: 40
+
+mean: 50
+
+60
+
+50
+
+40
+
+30
+
+20
+
+10
+
+0 Tr Te1 Te2 Te3 Te4
+
+Tr Te1 Te2 Te3 Te4
+Dataset
+
+Tr Te1 Te2 Te3 Te4
+
+(c) Grouping setting 3
+
+Method CORE pooled
+
+mean: 30 70
+
+mean: 40
+
+mean: 50
+
+60
+
+50
+
+40
+
+30
+
+20
+
+10
+
+0 Tr Te1 Te2 Te3 Te4
+
+Tr Te1 Te2 Te3 Te4
+Dataset
+
+Tr Te1 Te2 Te3 Te4
+
+Figure D.9: Misclassiﬁcation rates for the CelebA eyeglasses detection with image quality interventions, grouping settings 1–3 with c = 5000 and the mean of the Gaussian distribution µ ∈ {30, 40, 50}.
+
+55
+
+Figure D.10: Examples from the subsampled and augmented AwA2 dataset (Elmer-the-Elephant dataset). Row 1 shows examples from the training set, rows 2–5 show examples from test sets 1–4, respectively.
+D.7 Elmer the Elephant The color interventions for the experiment introduced in §5.6 were created as follows. In the training set, if yi ≡ elephant we apply the following ImageMagick command for the grouped examples convert -modulate 100,0,100 input.jpg output.jpg. Test sets 1 and 2 were already discussed in §5.6: in test set 1, all images are left unchanged. In test set 2, the above command is applied if yi ≡ horse. If yi ≡ elephant, we sample ci,j ∼ N (µ = 20, σ = 1) and apply convert -modulate 100,100,100-c ij input.jpg output.jpg to the image. Here, we consider again some more test sets than in §5.6. In test set 4, the latter command is applied to all images. It rotates the colors of the image, in a cyclic manner14. In test set 3, all images are changed to grayscale. The causal graph for the data generating process is shown in Figure D.12. Examples from all four test sets are shown in Figure D.10 and classiﬁcation results are shown in Figure D.11.
+14. For more details, see http://www.imagemagick.org/Usage/color_mods/#color_mods.
+56
+
+MISCLASS. RATE (IN %)
+
+(a) Examples of misclassiﬁed observations.
+
+y ≡ horse
+
+y ≡ horse
+
+y ≡ elephant
+
+Pˆcore(horse) = 0.72 Pˆcore(horse) = 1.00
+
+Pˆcore(ele.) = 0.95
+
+50
+
+Pˆpool(horse) = 0.01
+
+Pˆpool(horse) = 0.01
+
+Pˆpool(ele.) = 0.00
+
+40
+
+30
+
+20
+
+(b) Misclassiﬁcation rates.
+Method
+CORE pooled
+
+10
+
+0 Tr
+
+Te1 Te2 Te3 Te4
+Dataset
+
+Figure D.11: Elmer-the-Elephant dataset. (a) Misclassiﬁed examples from the test sets. (b) Misclassiﬁcation rates on test sets 1 to 4.
+
+place of observation D
+
+animal ID
+
+animal class Y
+
+∆
+
+X core
+
+color Xstyle(∆)
+
+image X(∆) fθ Yˆ (X(∆))
+
+Figure D.12: Data generating process for the Elmer-the-Elephant example.
+
+57
+
