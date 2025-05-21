@@ -1,0 +1,86 @@
+
+Skip to main content
+Cornell University
+We gratefully acknowledge support from
+the Simons Foundation and member institutions.
+arxiv logo > stat > arXiv:1710.11469
+
+Help | Advanced Search
+Search
+Statistics > Machine Learning
+(stat)
+[Submitted on 31 Oct 2017 ( v1 ), last revised 13 Apr 2019 (this version, v5)]
+Title: Conditional Variance Penalties and Domain Shift Robustness
+Authors: Christina Heinze-Deml , Nicolai Meinshausen
+Download a PDF of the paper titled Conditional Variance Penalties and Domain Shift Robustness, by Christina Heinze-Deml and Nicolai Meinshausen
+Download PDF
+
+    Abstract: When training a deep neural network for image classification, one can broadly distinguish between two types of latent features of images that will drive the classification. We can divide latent features into (i) "core" or "conditionally invariant" features X core whose distribution X core | Y , conditional on the class Y , does not change substantially across domains and (ii) "style" features X style whose distribution X style | Y can change substantially across domains. Examples for style features include position, rotation, image quality or brightness but also more complex ones like hair color, image quality or posture for images of persons. Our goal is to minimize a loss that is robust under changes in the distribution of these style features. In contrast to previous work, we assume that the domain itself is not observed and hence a latent variable.
+    We do assume that we can sometimes observe a typically discrete identifier or " I D variable". In some applications we know, for example, that two images show the same person, and I D then refers to the identity of the person. The proposed method requires only a small fraction of images to have I D information. We group observations if they share the same class and identifier ( Y , I D ) = ( y , i d ) and penalize the conditional variance of the prediction or the loss if we condition on ( Y , I D ) . Using a causal framework, this conditional variance regularization (CoRe) is shown to protect asymptotically against shifts in the distribution of the style variables. Empirically, we show that the CoRe penalty improves predictive accuracy substantially in settings where domain changes occur in terms of image quality, brightness and color while we also look at more complex changes such as changes in movement and posture. 
+
+Subjects: 	Machine Learning (stat.ML) ; Machine Learning (cs.LG)
+Cite as: 	arXiv:1710.11469 [stat.ML]
+  	(or arXiv:1710.11469v5 [stat.ML] for this version)
+  	https://doi.org/10.48550/arXiv.1710.11469
+Focus to learn more
+arXiv-issued DOI via DataCite
+Submission history
+From: Christina Heinze-Deml [ view email ]
+[v1] Tue, 31 Oct 2017 13:52:12 UTC (5,528 KB)
+[v2] Tue, 12 Dec 2017 13:30:15 UTC (5,533 KB)
+[v3] Wed, 21 Mar 2018 20:43:04 UTC (6,598 KB)
+[v4] Tue, 8 May 2018 11:37:22 UTC (6,599 KB)
+[v5] Sat, 13 Apr 2019 12:39:36 UTC (6,731 KB)
+Full-text links:
+Download:
+
+    Download a PDF of the paper titled Conditional Variance Penalties and Domain Shift Robustness, by Christina Heinze-Deml and Nicolai Meinshausen
+    PDF
+    Other formats 
+
+( license )
+Current browse context:
+stat.ML
+< prev   |   next >
+new | recent | 1710
+Change to browse by:
+cs
+cs.LG
+stat
+References & Citations
+
+    NASA ADS
+    Google Scholar
+    Semantic Scholar
+
+a export BibTeX citation Loading...
+Bookmark
+BibSonomy logo Mendeley logo Reddit logo ScienceWISE logo
+Bibliographic Tools
+Bibliographic and Citation Tools
+Bibliographic Explorer Toggle
+Bibliographic Explorer ( What is the Explorer? )
+Litmaps Toggle
+Litmaps ( What is Litmaps? )
+scite.ai Toggle
+scite Smart Citations ( What are Smart Citations? )
+Code, Data, Media
+Demos
+Related Papers
+About arXivLabs
+Which authors of this paper are endorsers? | Disable MathJax ( What is MathJax? )
+
+    About
+    Help
+
+    contact arXiv Click here to contact arXiv Contact
+    subscribe to arXiv mailings Click here to subscribe Subscribe
+
+    Copyright
+    Privacy Policy
+
+    Web Accessibility Assistance
+
+    arXiv Operational Status
+    Get status notifications via email or slack
+
