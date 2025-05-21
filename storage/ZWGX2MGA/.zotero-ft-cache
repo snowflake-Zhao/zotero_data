@@ -1,0 +1,541 @@
+
+Your Privacy
+
+We use cookies to make sure that our website works properly, as well as some ‘optional’ cookies to personalise content and advertising, provide social media features and analyse how people use our site. By accepting some or all optional cookies you give consent to the processing of your personal data, including transfer to third parties, some in countries outside of the European Economic Area that do not offer the same data protection standards as the country where you live. You can decide which optional cookies to accept by clicking on ‘Manage Settings’, where you can also find more information about how your personal data is processed. Further information can be found in our privacy policy .
+Accept all cookies Manage preferences
+Skip to main content
+Advertisement
+Nature Machine Intelligence
+
+    View all journals
+    Search
+    Login
+
+    Explore content
+    About the journal
+    Publish with us
+
+Subscribe
+
+    Sign up for alerts
+    RSS feed
+
+    nature
+    nature machine intelligence
+    perspectives
+    article
+
+    Perspective
+    Published: 13 July 2020
+
+Causal inference and counterfactual prediction in machine learning for actionable healthcare
+
+    Mattia Prosperi   ,
+    Yi Guo   , ,
+    Matt Sperrin ,
+    James S. Koopman ,
+    Jae S. Min ,
+    Xing He ,
+    Shannan Rich   ,
+    Mo Wang ,
+    …
+    Iain E. Buchan   &
+    Jiang Bian   ,  
+
+Nature Machine Intelligence volume  2 ,  pages 369–375 ( 2020 ) Cite this article
+
+    6402 Accesses
+
+    54 Citations
+
+    60 Altmetric
+
+    Metrics details
+
+Abstract
+
+Big data, high-performance computing, and (deep) machine learning are increasingly becoming key to precision medicine—from identifying disease risks and taking preventive measures, to making diagnoses and personalizing treatment for individuals. Precision medicine, however, is not only about predicting risks and outcomes, but also about weighing interventions. Interventional clinical predictive models require the correct specification of cause and effect, and the calculation of so-called counterfactuals, that is, alternative scenarios. In biomedical research, observational studies are commonly affected by confounding and selection bias. Without robust assumptions, often requiring a priori domain knowledge, causal inference is not feasible. Data-driven prediction models are often mistakenly used to draw causal effects, but neither their parameters nor their predictions necessarily have a causal interpretation. Therefore, the premise that data-driven prediction models lead to trustable decisions/interventions for precision medicine is questionable. When pursuing intervention modelling, the bio-health informatics community needs to employ causal approaches and learn causal structures. Here we discuss how target trials (algorithmic emulation of randomized studies), transportability (the licence to transfer causal effects from one population to another) and prediction invariance (where a true causal model is contained in the set of all prediction models whose accuracy does not vary across different settings) are linchpins to developing and testing intervention models.
+Access through your institution
+Buy or subscribe
+
+This is a preview of subscription content
+Access options
+Access through your institution
+
+Access through your institution
+
+Subscribe to Nature+
+
+Get immediate online access to the entire Nature family of 50+ journals
+
+$29.99
+
+monthly
+Subscribe
+
+Subscribe to Journal
+
+Get full journal access for 1 year
+
+$99.00
+
+only $8.25 per issue
+Subscribe
+
+All prices are NET prices.
+VAT will be added later in the checkout.
+Tax calculation will be finalised during checkout.
+
+Buy article
+
+Get time limited or full article access on ReadCube.
+
+$32.00
+Buy
+
+All prices are NET prices.
+Additional access options:
+
+    Log in
+    Learn about institutional subscriptions
+
+References
+
+    Norgeot, B., Glicksberg, B. S. & Butte, A. J. A call for deep-learning healthcare. Nat. Med. 25 , 14–15 (2019).
+
+    Google Scholar  
+
+    Wiens, J. et al. Do no harm: a roadmap for responsible machine learning for health care. Nat. Med. 25 , 1337–1340 (2019).
+
+    Google Scholar  
+
+    Silver, D. et al. Mastering the game of Go without human knowledge. Nature 550 , 354–359 (2017).
+
+    Google Scholar  
+
+    Jin, P., Keutzer, K. & Levine, S. Regret minimization for partially observable deep reinforcement learning. In 35th Int. Conf. Machine Learning 80 , 2342–2351 (ICML, 2018).
+
+    Pearl, J. & Mackenzie, D. The Book of Why: The New Science of Cause and Effect (Basic Books, 2018).
+
+    Chouldechova, A. Fair prediction with disparate impact: a study of bias in recidivism prediction instruments. Big Data 5 , 153–163 (2017).
+
+    Google Scholar  
+
+    Kusner, M., Loftus, J., Russell, C. & Silva, R. Counterfactual fairness. In Advances in Neural Information Processing Systems Vol. 31, 4069–4079 (MIT Press, 2017).
+
+    Christodoulou, E. et al. A systematic review shows no performance benefit of machine learning over logistic regression for clinical prediction models. J. Clin. Epidemiol. 110 , 12–22 (2019).
+
+    Google Scholar  
+
+    Bian, J., Buchan, I., Guo, Y. & Prosperi, M. Statistical thinking, machine learning. J. Clin. Epidemiol. 116 , 136–137 (2019).
+
+    Google Scholar  
+
+    Baker, R. E., Peña, J. M., Jayamohan, J. & Jérusalem, A. Mechanistic models versus machine learning, a fight worth fighting for the biological community? Biol. Lett. 14 , 20170660 (2018).
+
+    Google Scholar  
+
+    Gulshan, V. et al. Development and validation of a deep learning algorithm for detection of diabetic retinopathy in retinal fundus photographs. JAMA 316 , 2402–2410 (2016).
+
+    Google Scholar  
+
+    Winkler, J. K. et al. Association between surgical skin markings in dermoscopic images and diagnostic performance of a deep learning convolutional neural network for melanoma recognition. JAMA Dermatol. 155 , 1135–1141 (2019).
+
+    Google Scholar  
+
+    Komorowski, M., Celi, L. A., Badawi, O., Gordon, A. C. & Faisal, A. A. The Artificial Intelligence Clinician learns optimal treatment strategies for sepsis in intensive care. Nat. Med. 24 , 1716–1720 (2018).
+
+    Google Scholar  
+
+    Lewis, D. K. Causation J. Philos. 70 , 556–567 (1973).
+
+    Google Scholar  
+
+    Mackie, J. L. The Cement of the Universe (Clarendon, 1974).
+
+    Pearl, J. Causality: Models, Reasoning and Inference (Cambridge Univ. Press, 2009).
+
+    Rothman, K. J., Greenland, S. & Lash, T. Modern Epidemiology 3rd edn (Lippincott Williams & Wilkins, 2012).
+
+    Lehmann, E. L. Model specification: the views of Fisher and Neyman, and later developments. Stat. Sci. 5 , 160–168 (1990).
+
+    MathSciNet   MATH   Google Scholar  
+
+    Vansteelandt, S., Bekaert, M. & Claeskens, G. On model selection and model misspecification in causal inference. Stat. Meth. Med. Res. 21 , 7–30 (2012).
+
+    MathSciNet   MATH   Google Scholar  
+
+    Asteriou, D., Hall, S. G., Asteriou, D. & Hall, S. G. in Applied Econometrics 2nd edn 176–197 (Palgrave Macmillan, 2016).
+
+    Sackett, D. L. Bias in analytic research. J. Chronic Dis. 32 , 51–63 (1979).
+
+    Google Scholar  
+
+    Banack, H. R. & Kaufman, J. S. The ‘obesity paradox’ explained. Epidemiology 24 , 461–462 (2013).
+
+    Google Scholar  
+
+    Pearl, J. Causal diagrams for empirical research. Biometrika 82 , 669–688 (1995).
+
+    MathSciNet   MATH   Google Scholar  
+
+    Greenland, S., Pearl, J. & Robins, J. M. Causal diagrams for epidemiologic research. Epidemiology 10 , 37–48 (1999).
+
+    Google Scholar  
+
+    Westreich, D. & Greenland, S. The table 2 fallacy: Presenting and interpreting confounder and modifier coefficients. Am. J. Epidemiol. 177 , 292–298 (2013).
+
+    Google Scholar  
+
+    Wei, L., Brookhart, M. A., Schneeweiss, S., Mi, X. & Setoguchi, S. Implications of m bias in epidemiologic studies: A simulation study. Am. J. Epidemiol. 176 , 938–948 (2012).
+
+    Google Scholar  
+
+    Cooper, G. F. et al. An evaluation of machine-learning methods for predicting pneumonia mortality. Artif. Intell. Med. 9 , 107–138 (1997).
+
+    Google Scholar  
+
+    Ambrosino, R., Buchanan, B. G., Cooper, G. F. & Fine, M. J. The use of misclassification costs to learn rule-based decision support models for cost-effective hospital admission strategies. In Proc. Annual Symp. Computer Applications Medical Care 304–308 (AMIA, 1995).
+
+    Caruana, R. et al. Intelligible models for healthcare: predicting pneumonia risk and hospital 30-day readmission. in Proc. ACM SIGKDD Int. Conf. Knowledge Discovery and Data Mining 1721–1730 (ACM, 2015).
+
+    Lucero, R. J. et al. A data-driven and practice-based approach to identify risk factors associated with hospital-acquired falls: applying manual and semi- and fully-automated methods. Int. J. Med. Inform. 122 , 63–69 (2019).
+
+    Google Scholar  
+
+    Hernán, M. A. & Robins, J. M. Using big data to emulate a target trial when a randomized trial is not available. Am. J. Epidemiol. 183 , 758–764 (2016).
+
+    Google Scholar  
+
+    Petito, L. C. et al. Estimates of overall survival in patients with cancer receiving different treatment regimens: emulating hypothetical target trials in the surveillance, epidemiology, and end results (SEER)–Medicare linked database. JAMA Netw. Open 3 , e200452–e200452 (2020).
+
+    Google Scholar  
+
+    Pearl, J. Causal diagrams for empirical research. Biometrika 82 , 669–688 (1995).
+
+    MathSciNet   MATH   Google Scholar  
+
+    Westland, J. C. Structural Equation Models 1–15 (Springer, 2019).
+
+    Bollen, K. A. & Pearl, J. in Handbook of Causal Analysis for Social Research (ed. Morgan, S. L.) 301–328 (Springer, 2013).
+
+    Hernán, M. A. & Robins, J. M. Estimating causal effects from epidemiological data. J. Epidemiol. Commun. Health 60 , 553 (2006).
+
+    Google Scholar  
+
+    van der Laan, M. J. & Rubin, D. Targeted maximum likelihood learning. Int. J. Biostat. 6 , 2 (2006).
+
+    MathSciNet   Google Scholar  
+
+    Schuler, M. S. & Rose, S. Targeted maximum likelihood estimation for causal inference in observational studies. Am. J. Epidemiol. 185 , 65–73 (2017).
+
+    Google Scholar  
+
+    van der Laan, M. J. & Rose, S. Targeted Learning: Causal Inference For Observational And Experimental Data (Springer, 2011).
+
+    Naimi, A. I., Cole, S. R. & Kennedy, E. H. An introduction to g methods. Int. J. Epidemiol. 46 , 756–762 (2017).
+
+    Google Scholar  
+
+    Robins, J. M. & Hernán, M. A. in Longitudinal Data Analysis (eds Fitzmaurice, G. et al.) 553–599 (CRC, 2008).
+
+    Rosenbaum, P. R. & Rubin, D. B. The central role of the propensity score in observational studies for causal effects. Biometrika 70 , 41–55 (1983).
+
+    MathSciNet   MATH   Google Scholar  
+
+    Li, J., Ma, S., Le, T., Liu, L. & Liu, J. Causal decision trees. IEEE Trans. Knowl. Data Eng. 29 , 257–271 (2017).
+
+    Google Scholar  
+
+    Hahn, P. R., Murray, J. & Carvalho, C. M. Bayesian regression tree models for causal inference: regularization, confounding, and heterogeneous effects. Bayesian Anal . https://doi.org/10.1214/19-BA1195 (2020).
+
+    Lu, M., Sadiq, S., Feaster, D. J. & Ishwaran, H. Estimating individual treatment effect in observational data using random forest methods. J. Comput. Graph. Stat. 27 , 209–219 (2018).
+
+    MathSciNet   Google Scholar  
+
+    Schneeweiss, S. et al. High-dimensional propensity score adjustment in studies of treatment effects using health care claims data. Epidemiology 20 , 512–522 (2009).
+
+    Google Scholar  
+
+    Verma, T. & Pearl, J. in Machine Intelligence and Pattern Recognition Vol. 9 (eds Shachter, R. D. et al.) 69–76 (Elsevier, 1990).
+
+    Jaber, A., Zhang, J. & Bareinboim, E. Causal identification under Markov equivalence. In 34th Conf. Uncertainty in Artificial Intelligence (UAI, 2018).
+
+    Richardson, T. in Compstat (eds Dutter, R. & Grossmann, W.) 482–487 (Springer, 1994).
+
+    Heckerman, D., Meek, C. & Cooper, G. In Innovations in Machine Learning (eds Holmes, D. E. & Jain, L. C.) 1–28 (Sprigner, 2006).
+
+    Peter Spirtes, C. G. and R S. Causation, Prediction, and Search 2nd edn (MIT Press, 2003).
+
+    Glymour, C., Zhang, K. & Spirtes, P. Review of causal discovery methods based on graphical models. Front. Genet. 10 , 524 (2019).
+
+    Google Scholar  
+
+    Colombo, D. & Maathuis, M. H. Order-independent constraint-based causal structure learning. J. Mach. Learn. Res. 15 , 3921–3962 (2014).
+
+    MathSciNet   MATH   Google Scholar  
+
+    Shalit, U., Johansson, F. D. & Sontag, D. Estimating individual treatment effect: generalization bounds and algorithms. In Proc. 34th Int. Conf. Machine Learning Vol. 70 (eds Precup, D. & Teh, Y. W.) 3076–3085 (PMLR, 2017).
+
+    Hartford, J., Lewis, G., Leyton-Brown, K. & Taddy, M. Deep {IV}: a flexible approach for counterfactual prediction. In Proc. 34th Int. Conf. Machine Learning Vol. 70 (eds Precup, D. & Teh, Y. W.) 1414–1423 (PMLR, 2017).
+
+    Pearl, J. & Bareinboim, E. External validity: from do-calculus to transportability across populations. Stat. Sci. 29 , 579–595 (2014).
+
+    MathSciNet   MATH   Google Scholar  
+
+    Dahabreh, I. J., Robertson, S. E., Tchetgen, E. J., Stuart, E. A. & Hernán, M. A. Generalizing causal inferences from individuals in randomized trials to all trial‐eligible individuals. Biometrics 75 , 685–694 (2019).
+
+    MathSciNet   MATH   Google Scholar  
+
+    Bareinboim, E. & Pearl, J. Causal inference and the data-fusion problem. Proc. Natl Acad. Sci. USA 113 , 7345–7352 (2016).
+
+    Google Scholar  
+
+    Pearl, J. & Bareinboim, E. Transportability of causal and statistical relations: a formal approach. In Proc. IEEE Int. Conf. Data Mining (IEEE, 2011).
+
+    Lee, S., Correa, J. D. & Bareinboim, E. General identifiability with arbitrary surrogate experiments. In Proc. 35th Conf. Uncertainty in Artificial Intelligence (UAI, 2019).
+
+    Huang, J., Smola, A. J., Gretton, A., Borgwardt, K. M. & Schölkopf, B. Correcting sample selection bias by unlabeled data. In Advances in Neural Information Processing Systems Vol. 19 (eds Schölkopf, B. et al.) 601–609 (MIT Press, 2007).
+
+    Peters, J., Bühlmann, P. & Meinshausen, N. Causal inference by using invariant prediction: identification and confidence intervals. J. R. Stat. Soc. Ser. B Stat. Methodol. 78 , 947–1012 (2016).
+
+    MathSciNet   MATH   Google Scholar  
+
+    Subbaswamy, A., Schulam, P. & Saria, S. Preventing failures due to dataset shift: learning predictive models that transport. In Proc. 22nd Int. Conf. Artificial Intelligence and Statistics 3118–3127 (AiStats, 2019).
+
+    Hernán, M. A., Hsu, J. & Healy, B. A second chance to get causal inference right: a classification of data science tasks. CHANCE 32 , 42–49 (2019).
+
+    Google Scholar  
+
+    Wiens, J. et al. Do no harm: a roadmap for responsible machine learning for health care. Nat. Med. 25 , 1337–1340 (2019).
+
+    Google Scholar  
+
+    Rudin, C. Stop explaining black box machine learning models for high stakes decisions and use interpretable models instead. Nat. Mach. Intell. 1 , 206–215 (2019).
+
+    Google Scholar  
+
+    Kusner, M. J. & Loftus, J. R. The long road to fairer algorithms. Nature 578 , 34–36 (2020).
+
+    Google Scholar  
+
+    van Amsterdam, W. A. C., Verhoeff, J. J. C., de Jong, P. A., Leiner, T. & Eijkemans, M. J. C. Eliminating biasing signals in lung cancer images for prognosis predictions with deep learning. npj Digit. Med. 2 , 122 (2019).
+
+    Google Scholar  
+
+    Moons, K. G. M. et al. Transparent reporting of a multivariable prediction model for individual prognosis or diagnosis (TRIPOD): explanation and elaboration. Ann. Intern. Med. 162 , W1–W73 (2015).
+
+    Google Scholar  
+
+Download references
+Acknowledgements
+
+J.B.’s, Y.G.’s and M.P.’s research for this work was in part supported by the University of Florida (UF)’s Creating the Healthiest Generation—Moonshot initiative, supported by the UF Office of the Provost, UF Office of Research, UF Health, UF College of Medicine and UF Clinical and Translational Science Institute. M.W.’s research for this work was supported in part by the Lanzillotti–McKethan Eminent Scholar Endowment.
+Author information
+Authors and Affiliations
+
+    Department of Epidemiology, College of Public Health and Health Professions, College of Medicine, University of Florida, Gainesville, FL, USA
+
+    Mattia Prosperi, Jae S. Min & Shannan Rich
+
+    Department of Health Outcomes and Biomedical Informatics, College of Medicine, University of Florida, Gainesville, FL, USA
+
+    Yi Guo, Xing He & Jiang Bian
+
+    Cancer Informatics and eHealth Core, University of Florida Health Cancer Center, Gainesville, FL, USA
+
+    Yi Guo & Jiang Bian
+
+    Division of Informatics, Imaging and Data Sciences, University of Manchester, Manchester, UK
+
+    Matt Sperrin
+
+    Department of Epidemiology, School of Public Health, University of Michigan, Ann Arbor, MI, USA
+
+    James S. Koopman
+
+    Department of Management, Warrington College of Business, University of Florida, Gainesville, FL, USA
+
+    Mo Wang
+
+    Institute of Population Health, University of Liverpool, Liverpool, UK
+
+    Iain E. Buchan
+
+Contributions
+
+M.P., Y.G., J.B. and M.W. conceived the premise, wrote the paper, designed the figures and tables, and revised the paper. M.S., X.E. and S.R. contributed to specific sections, aided with the figures and tables, and with revision. J.K., I.B. and J.M. contributed to specific sections and helped with revisions.
+Corresponding author
+
+Correspondence to Mattia Prosperi .
+Ethics declarations
+Competing interests
+
+The authors declare no competing interests.
+Additional information
+
+Publisher’s note Springer Nature remains neutral with regard to jurisdictional claims in published maps and institutional affiliations.
+Rights and permissions
+
+Reprints and Permissions
+About this article
+Verify currency and authenticity via CrossMark
+Cite this article
+
+Prosperi, M., Guo, Y., Sperrin, M. et al. Causal inference and counterfactual prediction in machine learning for actionable healthcare. Nat Mach Intell 2, 369–375 (2020). https://doi.org/10.1038/s42256-020-0197-y
+
+Download citation
+
+    Received : 25 November 2019
+
+    Accepted : 04 June 2020
+
+    Published : 13 July 2020
+
+    Issue Date : July 2020
+
+    DOI : https://doi.org/10.1038/s42256-020-0197-y
+
+Subjects
+
+    Education
+    Machine learning
+    Outcomes research
+    Research management
+
+Further reading
+
+    Automated causal inference in application to randomized controlled clinical trials
+        Ji Q. Wu
+        Nanda Horeweg
+        Viktor H. Koelzer
+
+    Nature Machine Intelligence (2022)
+    Relevance of the antenatal corticosteroids-to-delivery interval in the prevention of neonatal respiratory distress syndrome through the eyes of causal inference: a review and target trial
+        Isabelle Dehaene
+        Kristien Roelens
+        Johan Decruyenaere
+
+    Archives of Gynecology and Obstetrics (2022)
+    Can Robots Do Epidemiology? Machine Learning, Causal Inference, and Predicting the Outcomes of Public Health Interventions
+        Alex Broadbent
+        Thomas Grote
+
+    Philosophy & Technology (2022)
+    Black Box Prediction Methods in Sports Medicine Deserve a Red Card for Reckless Practice: A Change of Tactics is Needed to Advance Athlete Care
+        Garrett S. Bullock
+        Tom Hughes
+        Stefan Kluzek
+
+    Sports Medicine (2022)
+    Minimizing bias in massive multi-arm observational studies with BCAUS: balancing covariates automatically using supervision
+        Chinmay Belthangady
+        Will Stedden
+        Beau Norgeot
+
+    BMC Medical Research Methodology (2021)
+
+Access through your institution
+Buy or subscribe
+
+Access through your institution
+Buy or subscribe
+
+    Sections
+    Figures
+    References 
+
+    Abstract
+    References
+    Acknowledgements
+    Author information
+    Ethics declarations
+    Additional information
+    Rights and permissions
+    About this article
+    Further reading 
+
+Advertisement
+
+Nature Machine Intelligence ( Nat Mach Intell ) ISSN 2522-5839 (online)
+nature.com sitemap
+Nature portfolio
+
+    About us
+    Press releases
+    Press office
+    Contact us
+
+Discover content
+
+    Journals A-Z
+    Articles by subject
+    Nano
+    Protocol Exchange
+    Nature Index
+
+Publishing policies
+
+    Nature portfolio policies
+    Open access
+
+Author & Researcher services
+
+    Reprints & permissions
+    Research data
+    Language editing
+    Scientific editing
+    Nature Masterclasses
+    Nature Research Academies
+    Research Solutions
+
+Libraries & institutions
+
+    Librarian service & tools
+    Librarian portal
+    Open research
+    Recommend to library
+
+Advertising & partnerships
+
+    Advertising
+    Partnerships & Services
+    Media kits
+    Branded content
+
+Career development
+
+    Nature Careers
+    Nature Conferences
+    Nature events
+
+Regional websites
+
+    Nature Africa
+    Nature China
+    Nature India
+    Nature Italy
+    Nature Japan
+    Nature Korea
+    Nature Middle East
+
+Legal & Privacy
+
+    Privacy Policy
+    Use of cookies
+    Manage cookies/Do not sell my data
+    Legal notice
+    Accessibility statement
+    Terms & Conditions
+    California Privacy Statement
+
+Springer Nature
+
+© 2022 Springer Nature Limited
+Close banner Close
+Nature Briefing
+
+Sign up for the Nature Briefing newsletter — what matters in science, free to your inbox daily.
+Email address
+Sign up
+I agree my information will be processed in accordance with the Nature and Springer Nature Limited Privacy Policy .
