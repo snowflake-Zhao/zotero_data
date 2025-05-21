@@ -1,0 +1,1274 @@
+ORIGINAL RESEARCH published: 03 November 2021 doi: 10.3389/fsurg.2021.696628
+
+Metastatic Pattern Discriminates Survival Beneﬁt of Type of Surgery in Patients With De Novo Stage IV Breast Cancer Based on SEER Database
+
+Kunlong Li , 1,2† Can Zhou 1†, Yan Yu 1, Ligang Niu 1, Wei Zhang 1, Bin Wang 1, Jianjun He 1* and Guanqun Ge 1*
+1 Department of Breast Surgery, First Afﬁliated Hospital, Xi’an Jiaotong University, Xi’an, China, 2 School of Medicine, Xi’an Jiaotong University, Xi’an, China
+
+Edited by: Gianluca Franceschini, Catholic University of the Sacred
+Heart, Italy
+Reviewed by: Adam Brufsky, University of Pittsburgh Medical Center, United States Xiaosong Chen, Shanghai Jiao Tong University, China
+*Correspondence: Jianjun He
+chinahjj@163.com Guanqun Ge
+geguanqun@xjtu.edu.cn
+†These authors have contributed equally to this work and share ﬁrst
+authorship
+Specialty section: This article was submitted to
+Surgical Oncology, a section of the journal
+Frontiers in Surgery
+Received: 17 April 2021 Accepted: 16 September 2021 Published: 03 November 2021
+Citation: Li K, Zhou C, Yu Y, Niu L, Zhang W,
+Wang B, He J and Ge G (2021) Metastatic Pattern Discriminates Survival Beneﬁt of Type of Surgery in Patients With De Novo Stage IV
+Breast Cancer Based on SEER Database. Front. Surg. 8:696628. doi: 10.3389/fsurg.2021.696628
+
+Background: The role of surgery and surgery type in de novo stage IV breast cancer (BC) is unclear.
+Methods: We carried out a retrospective cohort study that included the data of 4,108 individuals with de novo stage IV BC abstracted from SEER (Surveillance, Epidemiology, and End Results) data resource from 2010 to 2015. The patients were stratiﬁed into the non-surgery group, breast-conserving (BCS) surgery group, and mastectomy group. Inverse probability propensity score weighting (IPTW) was then used to balance clinicopathologic factors. Overall survival (OS), as well as the breast cancer-speciﬁc survival (BCSS), was assessed in the three groups using Kaplan–Meier analysis and COX model. Subgroups were stratiﬁed by metastatic sites for analysis.
+Results: Of the 4,108 patients, 48.5% received surgery and were stratiﬁed into the BCS group (574 cases) and mastectomy group (1,419 cases). After IPTW balance demographic and clinicopathologic factors, BCS and mastectomy groups had better OS (BCS group: HR, 0.61; 95% CI: 0.49–0.75; mastectomy group: HR, 0.7; 95% CI: 0.63–0.79) and BCSS (BCS group: HR, 0.6; 95% CI, 0.47–0.75; mastectomy group: HR, 0.71; 95% CI, 0.63–0.81) than the non-therapy group. Subgroup analyses revealed that BCS, rather than mastectomy, was linked to better OS (HR, 0.66; 95% CI: 0.48–0.91) and BCSS (HR, 0.63; 95% CI: 0.45–0.89) for patients with bone-only metastasis. For patients with viscera metastasis or bone+viscera metastases, BCS achieved similar OS (viscera metastasis: HR, 1.05; 95% CI: 0.74–1.48; bone+viscera metastases: HR, 1.01; 95% CI: 0.64–1.61) and BCSS (viscera metastasis: HR, 0.94; 95% CI: 0.64–1.38; bone+viscera metastases: HR, 1.06; 95% CI: 0.66–1.73) in contrast with mastectomy.
+Conclusions: Local surgery for patients with distant metastasis (DS) exhibited a remarkable survival advantage in contrast with non-operative management. BCS may have more survival beneﬁts for patients with de novo stage IV BC with bone-only metastasis than other metastatic sites. Decisions on de novo stage IV BC primary surgery should be tailored to the metastatic pattern.
+Keywords: SEER, IPTW, de novo stage IV BC, surgery, metastatic patterns
+
+Frontiers in Surgery | www.frontiersin.org
+
+1
+
+November 2021 | Volume 8 | Article 696628
+
+Li et al.
+
+Type of Surgery
+
+INTRODUCTION
+There is an ongoing epidemic of breast cancer (BC) among women all over the world, and to date, it is a universally acknowledged fact that this disease is the most frequent form of cancer Lands far and near (1, 2). About 3%−8% of BC cases are detected in stage IV (3), and BC with distant metastasis (DM) is generally incurable, with a median overall survival (OS) of 2–3 years (4, 5). Given its poor prognosis, treating primary tumors in de novo stage IV BC remains a vital position. Treatment aims to relieve the symptoms, enhance the quality of life (QOL), as well as prolong survival (6). Advancements in systemic treatment have remarkably improved metastatic disease control along with survival (7, 8). Nonetheless, the role of surgery and surgery type in de novo stage IV BC treatment is unclear, and the consensus is lacking.
+Numerous retrospective studies have illustrated that local surgery improves the prognoses of patients with BC with DMs (9, 10). However, three prospective randomized trials have generated controversial ﬁndings. MF07-01 trial updated their data at a median follow-up of 40 months, and a remarkably diﬀerent improvement in OS was observed in favor of performing surgery (11). However, the Indian Tata Memorial, as well as ABCSG-28 POSYTIVE trials, found no association between prognosis and surgery (12, 13). Moreover, some studies suggest that surgery may even accelerate metastatic growth, adversely aﬀecting survival (14, 15). These inconsistent outcomes are attributed to diﬀerences in metastatic patterns, which aﬀect prognosis (11, 16–18). Thus, individualized clinical strategies are needed for de novo stage IV BC.
+Here, we explored the survival beneﬁts of primary surgery and surgery scheme in de novo stage IV BC categorized by metastatic proﬁles. We followed a large cohort of de novo stage IV BC from the population-based SEER data resource (Surveillance, Epidemiology, and End Results) from 2010 to 2015.
+MATERIALS AND METHODS
+Data Resource
+The recent version of SEER 18 registries Custom Data (with additional treatment ﬁelds) was employed as a data resource for this retrospective longitudinal study. This database is comprised of 18 population-based cancer registries, representing about 26% of the USA population (19). SEER∗-Stat V.8.3.8 (https://seer. cancer.gov/seerstat/) (Information Management Service, Inc.) was employed in generating case listing. The approved guidelines were followed in all the procedures. This study was granted approval by the ethics committee of the First Aﬃliated Hospital of Xi’an Jiaotong University. The consent of the participants is not required to access and use SEER data.
+Patient Cohort
+Cases of 14,968 individuals who had been diagnosed with stage IV BC from January 1, 2010, to December 31, 2015, were identiﬁed in the SEER data resource. According to the SEER program, diagnosis of metastases in the ﬁrst 4 months of diagnosis is deﬁned as initial stage IV BC. The demographic along with the clinicopathologic variables contained sex (female),
+
+tumor T stage, age, tumor N stage, race, histology, tumor grade, radiotherapy, type of surgery, breast subtype, chemotherapy, survival months, the status of DS, vital status, cause of death, breast-adjusted American joint committee on cancer (AJCC) sixth tumor node metastasis (TNM) stage, and marital status.
+After the ﬁrst selection, participants were excluded based on the following criteria: (1) patients with multiple primary tumors, (2) follow-up autopsy type or death certiﬁcate, (3) not receiving any non-surgical treatment (chemotherapy or radiotherapy), (4) unknown metastatic sites, (5) unknown breast subtype, (6) aged <18 years old, (7) missing surgical records, (8) patients without metastasis or with brain metastasis, and (9) survival time of <6 months.
+About 4,108 patients with stage IV BC were enrolled. To estimate the impact of surgery on prognosis, the enrolled dataset was stratiﬁed into three groups based on operation selection: non-surgery group, breast-conserving surgery (BCS) group, and mastectomy group. Based on SEER Program Coding and Staging Manual, 2016, local tumor destruction, partial mastectomy, and subcutaneous mastectomy were regarded as BCS. Extended radical mastectomy, simple mastectomy, modiﬁed radical mastectomy, as well as radical mastectomy, were regarded as mastectomy. And “No radiation and/or cancer-directed surgery” was regarded as no radiotherapy. “No/Unknown” chemotherapy records were regarded as no chemotherapy. To evaluate surgical options for diﬀerent metastatic sites, the patterns were categorized into bone-only, viscera, and bone+viscera. The screening process is outlined in Figure 1.
+Endpoints
+The patients whose data were used in this study had been followed up until November 2015. OS was the primary index, which was deﬁned as the time beginning the diagnosis date to the date of death due to any cause, while the secondary outcome measurements were breast cancer-speciﬁc survival (BCSS), deﬁned as the time beginning the diagnosis date to the date of death from BC.
+STATISTICAL ANALYSIS
+All statistical analyses were implemented in R V. 3.6.3 (https:// www.r-project.org). Clinicopathologic and demographic factors were compared between non-surgery, BCS, and mastectomy groups with the chi-square test or Fisher’s exact test, as appropriate. Inverse probability propensity score weighting (IPTW) (20–22) was employed to balance clinicopathologic and demographic characteristics among the above-mentioned groups. Propensity scores were calculated based on race, tumor grade, histology, tumor T stage, non-surgical treatment, tumor N stage, metastatic organs, breast subtype, age, and marital status using a generalized boosted model (GBM) for receipt of diﬀerent surgeries (22, 23). Propensity score weighted log-rank tests along with Cox proportional hazard model were used to compare OS and BCSS among the three groups. OS and BCSS HR with 95% CI were determined from multivariable models corrected for baseline characteristics of the patients. Metastatic pattern subgroups were analyzed similarly.
+
+Frontiers in Surgery | www.frontiersin.org
+
+2
+
+November 2021 | Volume 8 | Article 696628
+
+Li et al.
+
+Type of Surgery
+
+FIGURE 1 | Eligibility, inclusion, and exclusion criteria of the study population.
+
+RESULTS
+Baseline Characteristics
+A total of 4,108 individuals with de novo stage IV BC were eligible for analyses. Of these, 51.5% were non-surgical. Of the 48.5% who received surgery, 574 and 1,419 belonged to the BCS and mastectomy groups, respectively. Of these patients, 54.5% had poorly diﬀerentiated or undiﬀerentiated BC (grade III or IV), 82.9% had inﬁltrating duct carcinoma, 35.9% had T2 stage BC, 48.8% had N1 stage BC, 68% had received chemotherapy only, 45.4% had bone-only metastasis, 51.3% had Luminal A BC, 73.1% were white, and 48.6% were married. By comparing nonsurgery (BCS) and mastectomy groups, remarkable diﬀerences (p = <0.05) were found in grade, stage, histology, T-stage, N-stage, non-surgical treatment, metastatic sites, molecular subtype, age, and marital status. Detailed information is shown in Table 1. Balance in patient features was attained after adjustments of the
+
+propensity score for predicting the average treatment impact (Table 2).
+Kaplan–Meier Analysis of OS and BCSS After IPTW
+About 51.3% (1,941/4,108) of the patients in this cohort study died after a median follow-up time of 27 months from diagnosis. Of these, 91.3% (1,771/1,941) were BC-speciﬁc deaths, while 8.7% (170/1,941) were due to other causes. After weighing inverse propensity score, the 3 year OS rate was 50.4, 65, and 61.5% in the non-surgery, BCS, and mastectomy group, respectively. The 5 year OS rate was 26.8, 44.6, and 40.5% in the nonsurgery, BCS, and mastectomy group, respectively. The 3 year BCSS rate was 52.3, 66.3, and 62.7% in the non-surgery, BCS, and mastectomy group, respectively. The 5 year BCSS rate was 29, 48.8, and 42.9% in the non-surgery, BCS, and mastectomy
+
+Frontiers in Surgery | www.frontiersin.org
+
+3
+
+November 2021 | Volume 8 | Article 696628
+
+Li et al.
+
+Type of Surgery
+
+TABLE 1 | The baseline characteristics of patients with different surgery procedures in the SEER database.
+
+ITEMS
+
+Total N (%)
+
+BCS N (%)
+
+Mastectomy N (%)
+
+Age Grade I–II III–IV Histology Inﬁltrating duct carcinoma Other T_stage T1 T2 T3 T4 N_stage N0 N1 N2 N3 Non-surgical treatment Chemotherapy Radiotherapy Radiotherapy+Chemotherapy Metastatic sites Bone+viscera Bone_only Viscera Molecular subtype HER2-enriched Luminal A Luminal B Triple-negative Race White Unwhite Marital status Married Single Unknown
+
+4,108 (100) 55.32 (13.05)
+1,869 (45.5) 2,239 (54.5)
+3,404 (82.9) 704 (17.1)
+443 (10.8) 1,474 (35.9) 811 (19.7) 1,380 (33.6)
+718 (17.5) 2,005 (48.8) 628 (15.3) 757 (18.4)
+2,795 (68.0) 363 (8.8) 950 (23.1)
+1,110 (27.0) 1,867 (45.4) 1,131 (27.5)
+489 (11.9) 2,106 (51.3) 948 (23.1) 565 (13.8)
+3,004 (73.1) 1,104 (26.9)
+1,996 (48.6) 1,930 (47.0)
+182 (4.4)
+
+574 (14) 56.28 (12.79)
+255 (44.4) 319 (55.6)
+490 (85.4) 84 (14.6)
+112 (19.5) 321 (55.9) 70 (12.2) 71 (12.4)
+152 (26.5) 237 (41.3) 100 (17.4) 85 (14.8)
+225 (39.2) 119 (20.7) 230 (40.1)
+91 (15.9) 325 (56.6) 158 (27.5)
+57 (9.9) 317 (55.2) 117 (20.4) 83 (14.5)
+430 (74.9) 144 (25.1)
+306 (53.3) 242 (42.2)
+26 (4.5)
+
+HER2, human epidermal growth receptor 2; BCS, breast-conserving surgery.
+
+1,419 (34.5) 54.71 (13.28)
+574 (40.5) 845 (59.5)
+1,126 (79.4) 293 (20.6)
+102 (7.2) 481 (33.9) 319 (22.5) 517 (36.4)
+150 (10.6) 571 (40.2) 328 (23.1) 370 (26.1)
+659 (46.4) 147 (10.4) 613 (43.2)
+251 (17.7) 747 (52.6) 421 (29.7)
+174 (12.3) 729 (51.4) 293 (20.6) 223 (15.7)
+1,041 (73.4) 378 (26.6)
+716 (50.5) 639 (45.0)
+64 (4.5)
+
+Non-surgery N (%)
+2,115 (51.5) 55.47 (12.94)
+1,040 (49.2) 1,075 (50.8)
+1,788 (84.5) 327 (15.5)
+229 (10.8) 672 (31.8) 422 (20.0) 792 (37.4)
+416 (19.7) 1,197 (56.6)
+200 (9.5) 302 (14.3)
+1,911 (90.4) 97 (4.6) 107 (5.1)
+768 (36.3) 795 (37.6) 552 (26.1)
+258 (12.2) 1,060 (50.1) 538 (25.4) 259 (12.2)
+1,533 (72.5) 583 (27.5)
+974 (46.1) 1,049 (49.6)
+92 (4.3)
+
+P-value 0.04
+<0.001 <0.001 <0.001
+<0.001
+<0.001 <0.001 0.001
+0.49 0.009
+
+group, respectively. Compared to non-surgery patients, BCS and mastectomy recipients had signiﬁcantly higher OS (BCS group: 95% CI: 0.49–0.75, p = <0.001, HR, 0.61; mastectomy group: HR, 0.7, 95% CI: 0.63–0.79, p = <0.001) and BCSS (BCS group: HR, 0.6, 95% CI: 0.47–0.75, p = <0.001; mastectomy group: HR, 0.71, 95% CI: 0.63 0.81, P < 0.001) in patients with stage IV BC (Figures 2A,B).
+Univariate Along With Multivariate Cox Regression Model Analysis of MaBC Patients After IPTW
+Univariate Cox analysis revealed that age, tumor grade, race, Tstage, type of surgery, non-surgical treatment, molecular subtype,
+
+metastatic pattern, and marital status were remarkably linked to OS and BCSS (Table 3). To identify independent predictors for OS and BCSS, multivariate Cox proportional hazard regression analysis was conducted. After adjusting clinical factors and considering propensity score in the Cox proportional hazard regression models, we found that relative to non-surgery patients, patients in BCS group and mastectomy group exhibited better OS (BCS group: HR, 0.59, 95% CI: 0.47–0.75, p = <0.001; mastectomy group: p = <0.001, HR, 0.68, 95% CI: 0.59–0.77) and BCSS (BCS group: HR, 0.58, 95% CI: 0.45–0.75, p = <0.001; mastectomy group: HR, 0.69, 95% CI: 0.6–0.79, p = <0.001). Additionally, age, grade, tumor grade, T-stage, non-surgical treatment, metastatic pattern, and molecular subtype were also independent predictive factors for OS and BCSS.
+
+Frontiers in Surgery | www.frontiersin.org
+
+4
+
+November 2021 | Volume 8 | Article 696628
+
+Li et al.
+
+Type of Surgery
+
+TABLE 2 | The baseline characteristics of patients with different surgery procedures in the SEER database after IPTW.
+
+ITEMS
+
+Total N (%)
+
+BCS N (%)
+
+Mastectomy N (%)
+
+Age Grade I–II III–IV Histology Inﬁltrating duct carcinoma Other T_stage T1 T2 T3 T4 N_stage N0 N1 N2 N3 Non-surgical treatment Chemotherapy Radiotherapy Radiotherapy+Chemotherapy Metastatic sites Bone+viscera Bone_only Viscera Molecular subtype HER2-enriched Luminal A Luminal B Triple-negative Race White Unwhite Marital status Married Single Unknown
+
+4,108 55.32 (13.05)
+1,866 (45.4) 2,242 (54.6)
+3,430 (83.5) 678 (16.5)
+427 (10.5) 1,439 (35) 803 (19.5) 1,439 (35)
+698 (17) 2,038 (49.6) 622 (15.1) 751 (18.3)
+2,845 (69.3) 357 (8.7) 907 (22)
+1,115 (27.1) 1,835 (44.7) 1,158 (28.2)
+494 (12) 2,052 (50) 978 (23.8) 585 (14.2)
+3,014 (73.4) 1,094 (26.6)
+2,010 (48.9) 1,910 (46.7)
+181 (4.4)
+
+574 56.28 (12.79)
+256 (44.6) 318 (55.4)
+490 (85.4) 84 (14.6)
+64 (11.2) 221 (38.5)
+98 (17) 191 (33.3)
+96 (16.7) 285 (49.6) 94 (16.3) 100 (17.4)
+378 (65.8) 55 (9.5)
+142 (24.7)
+157 (27.4) 249 (43.3) 168 (29.3)
+73 (12.7) 274 (47.7) 147 (25.7) 80 (13.9)
+431 (75.1) 143 (24.9)
+290 (50.4) 259 (45.1)
+26 (4.5)
+
+1,419 54.71 (13.28)
+617 (43.5) 802 (56.5)
+1,172 (82.6) 247 (17.4)
+141 (9.9) 499 (35.2) 294 (20.7) 485 (34.2)
+235 (16.6) 683 (48.1) 229 (16.2) 272 (19.2)
+945 (66.6) 129 (9.1) 345 (24.3)
+358 (25.2) 646 (45.5) 415 (29.3)
+172 (12.1) 713 (50.2) 322 (22.7) 213 (15)
+1,038 (73.1) 381 (26.9)
+703 (49.5) 650 (45.9)
+66 (4.6)
+
+HER2, human epidermal growth receptor 2; IPTW, inverse probability propensity score weighting; BCS, breast-conserving surgery.
+
+Non-surgery N (%)
+2,115 55.47 (12.94)
+993 (46.9) 1,122 (53.1)
+1,768 (83.6) 347 (16.4)
+222 (10.5) 719 (34) 411 (19.4) 763 (36.1)
+367 (17.4) 1,070 (50.6) 299 (14.1) 379 (17.9)
+1,522 (72) 173 (8.2) 420 (19.8)
+600 (28.4) 940 (44.4) 575 (27.2)
+249 (11.8) 1,065 (50.4)
+509 (24) 292 (13.8)
+1,545 (73.1) 570 (26.9)
+1,017 (48.1) 1,010 (47.7)
+89 (4.2)
+
+P-value 0.04 0.12
+<0.001 0.28
+0.51
+0.003 0.28 0.74
+0.6 0.71
+
+Subgroup Analysis After IPTW
+To explore the inﬂuence of metastatic pattern on the choice of surgical strategy for de novo stage IV BC, subgroup analyses were performed after IPTW (Tables 4, 5). This analysis showed that relative to mastectomy recipients with bone-only metastasis, BCS recipients had better OS (95% CI: 0.48–0.91; p = <0.001; HR, 0.66) and BCSS (p = 0.01; HR, 0.63; 95% CI, 0.45–0.89), while non-surgery patients had poorer OS (HR, 1.73; 95% CI, 1.4–2.14; p = 0.01) and BCSS (HR, 1.65; 95% CI, 1.33–2.06; p = <0.001). Moreover, BCS recipients had similar OS relative to
+
+mastectomy recipients with viscera metastasis or bone+viscera metastases (viscera metastasis: HR, 1.05, p = 0.81; 95% CI, 0.74– 1.48, bone+viscera metastases: HR, 1.01, 95% CI, 0.64–1.61, p = 0.96) and BCSS (viscera metastasis: HR, 0.94, 95% CI, 0.64– 1.38, p = 0.75; bone+viscera metastases: 95% CI, 0.66–1.73, p = 0.8, HR, 1.06,), while non-surgery patients had worse OS (viscera metastasis: HR, 1.35, 95% CI, 1.06–1.73, p = 0.02; bone+viscera metastases: HR, 1.33, p = 0.02, 95% CI, 1.04–1.7) and BCSS (viscera metastasis: HR, 1.32, p = 0.04, 95% CI, 1.02–1.7,; bone+viscera metastases: HR, 1.37, p = 0.02, 95% CI, 1.06–1.77).
+
+Frontiers in Surgery | www.frontiersin.org
+
+5
+
+November 2021 | Volume 8 | Article 696628
+
+Li et al.
+
+Type of Surgery
+
+FIGURE 2 | Kaplan–Meier survival analysis for patients with de novo stage IV Breast Cancer after IPTW. (A) Overall survival curves. (B) Breast cancer-speciﬁc survival curves.
+
+DISCUSSION
+In this large population-based cohort study, the role of surgery for patients with BC remained ambiguous, with no consensus; hence, we employed the SEER population database from 2010 to 2015. We ﬁnd that the BCS and mastectomy group (surgery groups) had a better prognosis than the non-surgery group. Furthermore, we ﬁnd that a personalized scheme for de novo stage IV BC surgery can be based on diﬀerent metastatic patterns. Our study shows that BCS oﬀers a signiﬁcant survival improvement over mastectomy for patients with bone-only metastasis, but not for those with other metastatic patterns. For the ﬁrst time, this is the largest population-based study to compare survival rates between non-surgery, BCS, and mastectomy individuals with de novo stage IV BC.
+In our study, surgery was linked to improved BCSS and OS, which were objective, credible, and accurate indexes for patients with BC. Log-rank test analysis uncovered signiﬁcant improvements in BCSS and OS in surgery groups, but not in the non-surgery group. To reduce estimation bias and then study further the eﬃciency of surgery on BCSS and OS in individuals with stage IV BC, multivariate Cox regression and IPTW analyses were conducted. After adjusting and balancing demographic, clinicopathologic, and therapeutic variables by weighing inverse propensity scores, we found that surgery could prolong BCSS and OS. A previous study based on the SEER database (1998–2011) suggested a survival beneﬁt with a surgical procedure (median OS, 34 months for surgery vs. 18 months for non-surgery), but the data about HER2 status in this study was incomplete (24). However, other recent studies based on the SEER database (20102015), the information about HER2 status was integral, also proposed that surgery could improve OS and BCSS in patients with stage IV BC (25, 26). Moreover, one research based on the NCDB database also highlighted that surgery could beneﬁt
+
+patients with stage IV BC. In this large cohort, an improved OS was found in the surgery group compared with the nonsurgery group even after propensity score matching (HR = 0.68, 95% CI [0.63–0.72], p < 0.001) (27). The above-mentioned ﬁndings are in consistent with the previous studies showing that surgical procedure has a key role in de novo stage IV BC therapy (17, 25, 26, 28, 29) as surgery may substantially reduce overall tumor burden and improve survival by activating immune responsiveness (30, 31). But other studies held diﬀerent opinions. A retrospective control study from Massachusetts General Hospital demonstrated no diﬀerence in survival between the surgery group and non-surgery group (median OS of 2.4 vs. 2.36 years). The researchers considered that this conclusion was correlated with lead-time bias. Meanwhile, a case-matched study suggested that survival was similar between the above-mentioned groups. So the results were potentially confounded by selection bias and system error.
+Due to these biases, randomized clinical trials were designed. MF07-01 trial was a prospective, multicenter, randomized trial to ﬁgure out the impact of breast surgery on the prognosis of patients with de novo stage IV BC (11). In this study, one group received surgery plus systemic therapy after primary surgery and the other group only received systemic therapy. Surgery might not obtain a survival advantage after 3 years of follow-up, but after 5 years of follow-up, patients receiving surgery could attain a better prognosis. However, TATA, TBCRC 013, and POSYTIVE clinical trials suggested that surgery had a similar prognosis in patients with de novo stage IV BC compared with nonsurgery (12, 13, 32). Moreover, the Eastern Cooperative Oncology Group (ECOG) 2018 suggested that there were no statistically signiﬁcant diﬀerences in OS and progression-free survival (PFS) between the surgery and palliative groups, while the rate of local recurrence was signiﬁcantly higher in the palliative care group than in the surgery group (3 year recurrence rate 25.6% vs.
+
+Frontiers in Surgery | www.frontiersin.org
+
+6
+
+November 2021 | Volume 8 | Article 696628
+
+Li et al.
+
+Type of Surgery
+
+TABLE 3 | Multivariate analysis of prognostic factors of BCSS and OS in metastatic breast cancer after IPTW.
+
+ITEMS
+
+OS
+
+Univariate analysis
+
+Multivariate analysis
+
+HR 95% CI P-value HR 95% CI P-value
+
+BCSS
+
+Univariate analysis
+
+Multivariate analysis
+
+HR 95% CI P-value HR 95% CI P-value
+
+Age Grade I–II III–IV Histology Inﬁltrating duct carcinoma Other T_stage T1 T2 T3 T4 N_stage N0 N1 N2 N3 Type of surgery Non-surgery BCS Mastectomy Non-surgical treatment Chemotherapy Radiotherapy Radiotherapy+Chemotherapy Metastatic pattern Bone+viscera Bone_only Viscera Molecular subtype HR–/HER2– (Triple-negative) HR–/HER2+ (HER2-enriched) HR+/HER2– (Luminal A) HR+/HER2+ (Luminal B) Race Unwhite White Marital status Married Single Unknown
+
+1.01
+1.69
+0.98
+1.26 1.55 1.82
+1.07 1.27 1.17
+0.61 0.7
+0.86 0.8
+0.55 0.83
+0.26 0.32 0.21
+0.82
+1.24 1.16
+
+1.008–1.02 <0.001
+
+As reference 1.46–1.95 <0.001
+
+As reference
+
+0.81–1.18
+
+0.8
+
+As reference
+
+1.01–1.58
+
+0.04
+
+1.21–1.99 <0.001
+
+1.43–2.33 <0.001
+
+As reference
+
+0.88–1.32
+
+0.5
+
+0.99–1.61
+
+0.05
+
+0.93–1.46
+
+0.18
+
+As reference 0.49–0.75 <0.001 0.63–0.79 <0.001
+
+As reference
+
+0.71–1.04
+
+0.11
+
+0.67–0.94 0.007
+
+As reference
+
+0..45–0.66 <0.001
+
+0.68–1.01
+
+0.06
+
+As reference 0.2–0.36 <0.001 0.27–0.39 <0.001 0.16–0.27 <0.001
+
+As reference 0.71–0.95 0.008
+
+As reference
+
+1.07–1.44 0.005
+
+0.87–1.54
+
+0.3
+
+1.01
+1.58
+1.21 1.31 1.51
+0.59 0.68
+0.99 0.84
+0.55 0.68
+0.27 0.41 0.21
+0.93
+1.12 1.1
+
+1.002–1.02 0.005
+As reference 1.34–1.86 <0.001
+
+As reference
+
+0.96–1.52
+
+0.11
+
+1.02–1.69
+
+0.04
+
+1.18–1.94 0.001
+
+As reference 0.47–0.75 <0.001 0.59–0.77 <0.001
+
+As reference
+
+0.79–1.25
+
+0.97
+
+0.7–1.01
+
+0.07
+
+As reference 0.46–0.66 <0.001 0.55–0.84 <0.001
+
+As reference 0.2–0.36 <0.001 0.33–0.51 <0.001 0.17–0.28 <0.001
+
+As reference
+
+0.79–1.09
+
+0.37
+
+As reference
+
+0.96–1.31
+
+0.14
+
+0.83–1.45
+
+0.51
+
+1.02 1.01–1.03 <0.001
+
+As reference 1.75 1.5–2.04 <0.001
+
+As reference 1.01 0.83–1.23 0.96
+
+As reference 1.32 1.04–1.67 0.02 1.66 1.29–2.16 <0.001 1.91 1.47–2.48 <0.001
+
+As reference
+
+1.1 0.89–1.35 0.38
+
+1.3 1–1.68
+
+0.05
+
+1.2 0.94–1.53 0.14
+
+As reference 0.6 0.47–0.75 <0.001 0.71 0.63–0.81 <0.001
+
+As reference 0.87 0.71–1.07 0.18 0.79 0.67–0.94 0.01
+
+As reference 0.53 0.44–0.63 <0.001 0.81 0.66–1.01 0.05
+
+As reference 0.26 0.19–0.36 <0.001 0.32 0.27–0.39 <0.001 0.2 0.16–0.27 <0.001
+
+As reference 0.83 0.71–0.97 0.02
+
+As reference 1.24 1.06–1.45 0.01 1.13 0.83–1.52 0.45
+
+1.02 1.01–1.03 0.02
+As reference 1.63 1.38–1.94 <0.001
+
+As reference
+
+1.26 0.99–1.6
+
+0.06
+
+1.39 1.07–1.81 0.01
+
+1.57 1.21–2.04 0.001
+
+As reference 0.58 0.45–0.75 <0.001 0.69 0.6–0.79 <0.001
+
+As reference 1.03 0.81–1.31 0.83 0.84 0.69–1.02 0.08
+
+As reference 0.54 0.45–0.65 <0.001 0.67 0.54–0.84 <0.001
+
+As reference 0.27 0.2–0.36 <0.001 0.42 0.33–0.52 <0.001 0.21 0.16–0.27 <0.001
+
+As reference 0.94 0.79–1.12 0.51
+
+As reference
+
+1.14 0.97–1.34 0.12
+
+1.07 0.8–1.43
+
+0.66
+
+BCSS, breast cancer-speciﬁc survival; OS, overall survival; HR, hazard ratio; CI, conﬁdence interval; HER2, human epidermal growth receptor 2; BCS, breast-conserving surgery; IPTW, inverse probability propensity score weighting.
+
+10.2% in the surgery group) (33). In addition, the SUBMIT study (NCT01392586) is a randomized clinical trial that could provide evidence about the impact of surgery in patients with BC with metastatic disease, but it was stopped because of low accrual rate (34).
+
+Based on BC heterogeneity, previous studies have been inconsistent. Past studies have proposed that diﬀerent metastatic patterns have diﬀerent biological eﬀects on BC and prognoses may diﬀer with metastatic pattern (17, 35, 36). It was recognized that the most frequent metastasis sites are bones, viscera, and
+
+Frontiers in Surgery | www.frontiersin.org
+
+7
+
+November 2021 | Volume 8 | Article 696628
+
+Li et al.
+
+Type of Surgery
+
+TABLE 4 | Multivariate analysis of prognostic factors of OS for speciﬁc sites of metastases after IPTW.
+
+Metastatic sites
+
+Only_bone
+
+Viscera
+
+Bone+viscera
+
+HR
+
+95% CI
+
+P-value
+
+HR
+
+95% CI
+
+P-value
+
+HR
+
+95% CI
+
+P-value
+
+Age
+
+1.01
+
+1.005–1.02
+
+0.04
+
+1.01
+
+0.99–1.02
+
+0.06
+
+1.01
+
+1.002–1.02
+
+0.02
+
+Grade
+
+I–II
+
+As reference
+
+As reference
+
+As reference
+
+III–IV
+
+1.37
+
+1.11–1.69
+
+0.003
+
+1.66
+
+1.23–2.23
+
+<0.001
+
+1.66
+
+1.24–2.23
+
+<0.001
+
+T_stage
+
+T1
+
+As reference
+
+As reference
+
+T2
+
+1.52
+
+1.05–2.22
+
+0.03
+
+1.06
+
+0.73–1.55
+
+0.74
+
+T3
+
+1.87
+
+1.25–2.79
+
+0.002
+
+1.06
+
+0.71–1.59
+
+0.78
+
+T4
+
+1.85
+
+1.25–2.74
+
+0.002
+
+1.33
+
+0.87–2.01
+
+0.18
+
+N_stage
+
+N0
+
+As reference
+
+N1
+
+1.22
+
+0.89–1.67
+
+0.22
+
+N2
+
+1.6
+
+1.12–2.29
+
+0.01
+
+N3
+
+1.61
+
+1.15–2.24
+
+0.005
+
+Type of surgery
+
+Mastectomy
+
+As reference
+
+As reference
+
+As reference
+
+Non-surgery
+
+1.76
+
+1.43–2.15
+
+<0.001
+
+1.37
+
+1.09–1.73
+
+0.01
+
+1.39
+
+1.1–1.75
+
+0.006
+
+BCS
+
+0.66
+
+0.48–0.91
+
+<0.001
+
+0.98
+
+0.69–1.4
+
+0.93
+
+1.02
+
+0.72–1.43
+
+0.93
+
+Molecular subtype
+
+HR–/HER2– (Triple-negative)
+
+As reference
+
+As reference
+
+As reference
+
+HR–/HER2+ (HER2-enriched)
+
+0.14
+
+0.1–0.25
+
+<0.001
+
+0.34
+
+0.22–0.52
+
+<0.001
+
+0.33
+
+0.22–0.51
+
+<0.001
+
+HR+/HER2– (Luminal A)
+
+0.38
+
+0.28–0.52
+
+<0.001
+
+0.51
+
+0.37–0.7
+
+<0.001
+
+0.49
+
+0.36–0.67
+
+<0.001
+
+HR+/HER2+ (Luminal B)
+
+0.22
+
+0.14–0.33
+
+<0.001
+
+0.19
+
+0.13–0.27
+
+<0.001
+
+0.19
+
+0.13–0.26
+
+<0.001
+
+Race
+
+Unwhite
+
+As reference
+
+White
+
+0.84
+
+0.66–1.08
+
+0.17
+
+Marital status
+
+Married
+
+As reference
+
+As reference
+
+Single
+
+1.2
+
+0.96–1.48
+
+0.1
+
+1.15
+
+0.89–1.49
+
+0.28
+
+Unknown
+
+0.89
+
+0.54–1.47
+
+0.65
+
+1.44
+
+0.99–2.09
+
+0.06
+
+OS, overall survival; HR, hazard ratio; CI, conﬁdence interval; HER2, human epidermal growth receptor 2; BCS, breast-conserving surgery; IPTW, inverse probability propensity score weighting.
+
+bone+viscera. Bone-only metastases are most common and have the best prognosis (18, 37, 38). These reports were mirrored in our study, where 45.4% of the cohort had bone-only metastasis at primary diagnosis and had a 59.4% survival rate, which was higher than in other groups (viscera: 51%, bone+ viscera: 43.3%). Metastasis site is inﬂuenced by BC subtype (39, 40). For example, despite aggressive systemic treatment, HER2-positive, as well as triple-negative, cancers have a high risk of visceral metastasis, while luminal A tumors tend to metastasize to bones (37, 41). We ﬁnd that 55% of the cohort with luminal A BC had bone-only metastasis, 47% of the HER2-enriched BC cohort, and 48.7% of the cohort with triple-negative BC had viscera metastasis.
+Some SEER-based studies suggest that BCS plus radiotherapy had a better prognosis in contrast with mastectomy (42–44), while these studies were conducted on patients with early-stage BC. However, we found that BCS was equally remarkable for individuals with BC, with bone-only metastasis, because patients with BC with bone-only metastasis received radiotherapy or
+
+radiotherapy plus chemotherapy were highest among our cohort. Furthermore, relative to mastectomy recipients, BCS may have cosmetic beneﬁts and is safe, and decreases anxiety, psychological morbidity, and depression, improving body image and selfesteem (45–47). In our cohort, the median BC survival time for individuals with BC, with bone-only metastasis, was 31 months, higher than in the viscera and bone+viscera metastases group (both 25 months). Thus, the absence of breasts after a mastectomy had a remarkable inﬂuence on the QOL of patients, all the time reminding them that they are patients with BC. Thus, BCS may be recommended for individuals with BC with boneonly metastasis, which provides considerable survival beneﬁts and is more acceptable to patients.
+Interestingly, BCS had similar eﬀects on OS and BCSS in patients with viscera and bone+viscera metastases relative to mastectomy, even after combined COX multivariate proportional hazard and IPTW analyses. Breast subtypes were correlated with the choice of surgery type (48, 49). Luminal
+
+Frontiers in Surgery | www.frontiersin.org
+
+8
+
+November 2021 | Volume 8 | Article 696628
+
+Li et al.
+
+Type of Surgery
+
+TABLE 5 | Multivariate analysis of prognostic factors of BCSS for speciﬁc sites of metastases after IPTW.
+
+Metastatic sites
+
+Only_bone
+
+Viscera
+
+HR
+
+95% CI
+
+P-value
+
+HR
+
+95% CI
+
+P-value
+
+Bone+viscera
+
+HR
+
+95% CI
+
+P-value
+
+Age
+
+1.01
+
+Grade
+
+I–II
+
+III–IV
+
+1.36
+
+T_stage
+
+T1
+
+T2
+
+1.54
+
+T3
+
+1.91
+
+T4
+
+1.76
+
+N_stage
+
+N0
+
+N1
+
+1.22
+
+N2
+
+1.63
+
+N3
+
+1.63
+
+Type of surgery
+
+Mastectomy
+
+Non-surgery
+
+1.69
+
+BCS
+
+0.62
+
+Molecular subtype
+
+HR–/HER2– (Triple-negative)
+
+HR–/HER2+ (HER2-enriched)
+
+0.13
+
+HR+/HER2– (Luminal A)
+
+0.37
+
+HR+/HER2+ (Luminal B)
+
+0.2
+
+Race
+
+Unwhite
+
+White
+
+0.87
+
+Marital status
+
+Married
+
+Single
+
+1.21
+
+Unknown
+
+0.92
+
+0.99–1.02
+
+0.14
+
+As reference 1.09–1.69
+
+0.005
+
+As reference 1.04–2.27 1.25–2.89 1.17–2.67
+
+0.03 0.003 0.007
+
+As reference 0.87–1.7 1.12–2.38 1.15–2.3
+
+0.25 0.01 0.006
+
+As reference 1.37–2.09 0.44–0.87
+
+<0.001 0.006
+
+As reference 0.1–0.25 0.27–0.51 0.13–0.31
+
+<0.001 <0.001 <0.001
+
+As reference
+
+0.67–1.12
+
+0.28
+
+As reference
+
+0.96–1.62
+
+0.1
+
+0.54–1.57
+
+0.76
+
+1.01
+
+0.99–1.02
+
+0.06
+
+As reference
+
+1.66
+
+1.21–2.27
+
+0.002
+
+As reference
+
+1.2
+
+0.79–1.8
+
+0.39
+
+1.22
+
+0.79–1.88
+
+0.38
+
+1.48
+
+0.95–2.33
+
+0.08
+
+As reference
+
+1.33
+
+1.04–1.69
+
+0.02
+
+0.89
+
+0.61–1.31
+
+0.56
+
+As reference
+
+0.34
+
+0.22–0.53
+
+<0.001
+
+0.53
+
+0.38–0.74
+
+<0.001
+
+0.19
+
+0.13–0.28
+
+<0.001
+
+As reference
+
+1.18
+
+0.9–1.55
+
+0.22
+
+1.52
+
+1.03–2.23
+
+0.03
+
+1.01
+
+0.99–1.02
+
+0.11
+
+As reference
+
+1.92
+
+1.34–2.73
+
+<0.001
+
+As reference
+
+1.38
+
+1.09–1.75
+
+0.007
+
+1.03
+
+0.63–1.69
+
+0.9
+
+As reference
+
+0.28
+
+0.16–0.49
+
+<0.001
+
+0.37
+
+0.22–0.63
+
+<0.001
+
+0.21
+
+0.12–0.37
+
+<0.001
+
+BCSS, breast cancer-speciﬁc survival; HR, hazard ratio; CI, conﬁdence interval; HER2, human epidermal growth receptor 2; BCS, breast-conserving surgery; IPTW, inverse probability propensity score weighting.
+
+A and luminal B BC are linked to good prognosis, while Her2-enriched and triple-negative BC have a poor prognosis (37, 40, 50, 51). Meanwhile, the prognosis of patients with bone metastasis was signiﬁcantly better than that of patients with viscera or bone+viscera metastasis. Herein, patients in the viscera metastasis group had 13.1% Her2-enriched and 10.7% triple-negative, patients in bone+viscera metastasis group had 20.3% Her2-enriched and 24.3% triple negative, and the above-mentioned two groups were both more than bone-only metastasis group. Because patients without bone-only metastasis had shorter survival, BCS had a limited impact on our analysis. Furthermore, individuals with hormone receptor-positive tumors are sensitive to endocrine treatment, while those with HER2-enriched or triple-negative BC lack eﬀective therapeutic targets (52, 53). Meanwhile, we also compared prognosis among three surgery methods based on diﬀerent molecular subtypes. BCS recipients had similar OS and BCSS relative to mastectomy recipients, but non-surgery patients had a worse eﬀect, regardless
+
+of subtype (Supplementary Tables 1, 2). Due to the limited number of patients enrolled in our study, subgroup analysis of metastasis type and molecular typing could not be carried out simultaneously.
+Moreover, despite diﬀerent metastasis patterns, the tumor grade and the molecular subtype were prognostic factors that inﬂuenced the survival of patients with de novo stage IV BC. Meanwhile, age at diagnose was signiﬁcantly correlated only with better OS and the threshold value of BCSS. The above-mentioned results were consistent with previous studies investigating prognostic factors in metastatic BC (36, 54, 55). But tumor T stage and tumor N stage had only impacted the patients with bone metastasis in our study. BC was a systemic disease, which had diﬀerent tumor burdens depended on diﬀerent biological characteristics. In our study, the absolute survival beneﬁt was observed for women with small primary breast tumors as previous meta-analysis and retrospective study reported (56, 57) because patients with a lower disease burden
+
+Frontiers in Surgery | www.frontiersin.org
+
+9
+
+November 2021 | Volume 8 | Article 696628
+
+Li et al.
+
+Type of Surgery
+
+could have greater beneﬁt from surgery. Patients with a higher disease burden could have had more challenging local control and may have done poorly on this basis. We hypothesized that the size of the primary lesion and the number of lymph node metastasis in patients with stage IV BC with bone metastasis had a great impact on the systemic tumor burden of the patient. Surgical resection could reduce the burden of the local tumor to improve OS and BCSS. But for patients with visceral or multiple metastases, local lesion size and number of lymph node metastasis had little inﬂuence on systemic tumor burden, local surgery had a limited impact. Thus, the notion that the T stage and N stage in the stage IV setting could impact survival is plausible, especially in patients with bone metastasis.
+This was a comprehensive study of how the beneﬁts of diﬀerent surgery types vary by metastatic pattern in stage IV BC. However, it has some limitations. First, in our studies, patients needed to be randomized into diﬀerent groups according to the treatment. Retrospective studies could not be the cause and may be inﬂuenced by selection bias and uncontrolled confounding factors, especially metastatic site and non-surgical treatment, even with IPTW administration. Second, due to the lack of information on endocrine, anti-HER2, denosumab or zoledronic acid therapy, family history, patient anxiety, BRCA gene status, and other variables in the SEER database, we were unable to control for these potential modiﬁers. These factors greatly inﬂuence clinical decisions and even prognosis. Third, there was a big gap among the three groups, which may introduce bias to the data, and the sample size was not suﬃcient to uncover modest diﬀerences. Fourth, the SEER data resource only contained data on four site-speciﬁc DS sites at primary diagnosis. Thus, we could not obtain details on other DS sites. Lastly, p < 0.05 was statistically signiﬁcant, and the chance of falsely rejecting a null hypothesis may exceed 0.05.
+CONCLUSION
+Our research show that survival beneﬁt from the type of surgery used on de novo stage IV BC diﬀers by metastatic pattern.
+
+Local surgery for individuals with DS oﬀered a remarkable survival advantage in contrast with non-surgical management, and BCS is the top selection for individuals with bone-only metastasis. Surgical decisions on patients with de novo stage IV BC should be customized to metastatic proﬁle. The mechanisms underlying bone, viscera, bone+viscera, or ﬁrst BC metastasis need investigation.
+DATA AVAILABILITY STATEMENT
+Publicly available datasets were analyzed in this study. This data can be found here: https://seer.cancer.gov.
+AUTHOR CONTRIBUTIONS
+KL and CZ drafted the manuscript and analyzed the data. YY, LN, and WZ generated the ﬁgure. BW performed the background research. GG and JH edited the manuscript. All authors have read and approved the content of the manuscript.
+FUNDING
+This study was supported by the Health Research Fund of Shaanxi Province (HRFS 2018007 to GG).
+ACKNOWLEDGMENTS
+We are thankful to the Surveillance, Epidemiology, and End Results Program (National Cancer Institute) for the development of the SEER database. We wish to thank all our colleagues in the Departments of Breast Surgery, First Aﬃliate Hospital of Xi’an Jiaotong University.
+SUPPLEMENTARY MATERIAL
+The Supplementary Material for this article can be found online at: https://www.frontiersin.org/articles/10.3389/fsurg. 2021.696628/full#supplementary-material
+
+REFERENCES
+1. DeSantis C, Ma J, Bryan L, Jemal A. Breast cancer statistics, 2013. CA Cancer J Clin. (2014) 64:52–62. doi: 10.3322/caac.21203
+2. Youlden DR, Cramb SM, Dunn NA, Muller JM, Pyke CM, Baade PD. The descriptive epidemiology of female breast cancer: an international comparison of screening, incidence, survival and mortality. Cancer Epidemiol. (2012) 36:237–48. doi: 10.1016/j.canep.2012.02.007
+3. Silber JH, Rosenbaum PR, Clark AS, Giantonio BJ, Ross RN, Teng Y, et al. Characteristics associated with diﬀerences in survival among black and white women with breast cancer. JAMA. (2013) 310:389– 97. doi: 10.1001/jama.2013.8272
+4. Schroeder MC, Rastogi P, Geyer CJ, Miller LD, Thomas A. Early and locally advanced metaplastic breast cancer: presentation and survival by receptor status in Surveillance, Epidemiology, and End Results (SEER) 2010-2014. Oncologist. (2018) 23:481–8. doi: 10.1634/theoncologist.2017-0398
+5. Miller KD, Nogueira L, Mariotto AB, Rowland JH, Yabroﬀ KR, Alfano CM, et al. Cancer treatment and survivorship statistics, 2019. CA Cancer J Clin. (2019) 69:363–85. doi: 10.3322/caac.21565
+
+6. Sanchez-Munoz A, Perez-Ruiz E, Ribelles N, Marquez A, Alba E. Maintenance treatment in metastatic breast cancer. Expert Rev Anticancer Ther. (2008) 8:1907–12. doi: 10.1586/14737140.8.12.1907
+7. Dawood S, Haaland B, Albaracin C, Gupta S, Cortes J, Sim YY, et al. Is the proportion of patients diagnosed with synchronous stage IV breast cancer who survive more than two years increasing over time? Oncology. (2015) 89:79–87. doi: 10.1159/000371746
+8. Corona SP, Sobhani N, Ianza A, Roviello G, Mustacchi G, Bortul M, et al. Advances in systemic therapy for metastatic breast cancer: future perspectives. Med Oncol. (2017) 34:119. doi: 10.1007/s12032-0170975-5
+9. AlJohani B, AlMalik O, Anwar E, Tulbah A, Alshabanah M, AlSyaed A, et al. Impact of surgery on survival in stage IV breast cancer. Breast J. (2016) 22:678–82. doi: 10.1111/tbj.12662
+10. Warschkow R, Guller U, Tarantino I, Cerny T, Schmied BM, Thuerlimann B, et al. Improved survival after primary tumor surgery in metastatic breast cancer: a propensity-adjusted, population-based SEER trend analysis. Ann Surg. (2016) 263:1188–98. doi: 10.1097/SLA.00000000000 01302
+
+Frontiers in Surgery | www.frontiersin.org
+
+10
+
+November 2021 | Volume 8 | Article 696628
+
+Li et al.
+
+Type of Surgery
+
+11. Soran A, Ozmen V, Ozbas S, Karanlik H, Muslumanoglu M, Igci A, et al. Randomized trial comparing resection of primary tumor with no surgery in stage IV breast cancer at presentation: protocol MF07-01. Ann Surg Oncol. (2018) 25:3141–9. doi: 10.1245/s10434-018-6494-6
+12. Fitzal F, Bjelic-Radisic V, Knauer M, Steger G, Hubalek M, Balic M, et al. Impact of breast surgery in primary metastasized breast cancer: outcomes of the prospective randomized phase III ABCSG-28 POSYTIVE trial. Ann Surg. (2019) 269:1163–9. doi: 10.1097/SLA.0000000000002771
+13. Badwe R, Hawaldar R, Nair N, Kaushik R, Parmar V, Siddique S, et al. Locoregional treatment versus no treatment of the primary tumour in metastatic breast cancer: an open-label randomised controlled trial. Lancet Oncol. (2015) 16:1380–8. doi: 10.1016/S1470-2045(15)00135-7
+14. Al-Sahaf O, Wang JH, Browne TJ, Cotter TG, Redmond HP. Surgical injury enhances the expression of genes that mediate breast cancer metastasis to the lung. Ann Surg. (2010) 252:1037–43. doi: 10.1097/SLA.0b013e3181efc635
+15. Retsky M, Bonadonna G, Demicheli R, Folkman J, Hrushesky W, Valagussa P. Hypothesis: induced angiogenesis after surgery in premenopausal nodepositive breast cancer patients is a major underlying reason why adjuvant chemotherapy works particularly well for those patients. Breast Cancer Res. (2004) 6:R372–4. doi: 10.1186/bcr804
+16. Kono M, Fujii T, Matsuda N, Harano K, Chen H, Wathoo C, et al. Somatic mutations, clinicopathologic characteristics, and survival in patients with untreated breast cancer with bone-only and non-bone sites of ﬁrst metastasis. J Cancer. (2018) 9:3640–6. doi: 10.7150/jca.26825
+17. Rogoz B, Houze DLA, Duhamel A, Houze DLD. Thirty-year trends of survival and time-varying eﬀects of prognostic factors in patients with metastatic breast cancer-a single institution experience. Clin Breast Cancer. (2018) 18:246–53. doi: 10.1016/j.clbc.2017.08.012
+18. Schroder J, Fietz T, Kohler A, Petersen V, Tesch H, Spring L, et al. Treatment and pattern of bone metastases in 1094 patients with advanced breast cancer - results from the prospective German Tumour Registry Breast Cancer cohort study. Eur J Cancer. (2017) 79:139–48. doi: 10.1016/j.ejca.2017.03.031
+19. Wingo PA, Jamison PM, Hiatt RA, Weir HK, Gargiullo PM, Hutton M, et al. Building the infrastructure for nationwide cancer surveillance and control–a comparison between the National Program of Cancer Registries (NPCR) and the Surveillance, Epidemiology, and End Results (SEER) Program (United States). Cancer Causes Control. (2003) 14:175– 93. doi: 10.1023/A:1023002322935
+20. Moons P. Propensity weighting: how to minimise comparative bias in non-randomised studies? Eur J Cardiovasc Nurs. (2020) 19:83–8. doi: 10.1177/1474515119888972
+21. McCaﬀrey DF, Griﬃn BA, Almirall D, Slaughter ME, Ramchand R, Burgette LF. A tutorial on propensity score estimation for multiple treatments using generalized boosted models. Stat Med. (2013) 32:3388– 414. doi: 10.1002/sim.5753
+22. Tein JY, Mazza GL, Gunn HJ, Kim H, Stuart EA, Sandler IN, et al. Multigroup propensity score approach to evaluating an eﬀectiveness trial of the new beginnings program. Eval Health Prof. (2018) 41:290– 320. doi: 10.1177/0163278718763499
+23. Burgette JM, Preisser JS, Rozier RG. Propensity score weighting: an application to an Early Head Start dental study. J Public Health Dent. (2016) 76:17–29. doi: 10.1111/jphd.12106
+24. Vohra NA, Brinkley J, Kachare S, Muzaﬀar M. Primary tumor resection in metastatic breast cancer: a propensity-matched analysis, 1988-2011 SEER data base. Breast J. (2018) 24:549–54. doi: 10.1111/tbj.13005
+25. Lin Y, Huang K, Zeng Q, Zhang J, Song C. Impact of breast surgery on survival of patients with stage IV breast cancer: a SEER population-based propensity score matching analysis. Peerj. (2020) 8:e8694. doi: 10.7717/peerj. 8694
+26. Wang K, Shi Y, Li ZY, Xiao YL, Li J, Zhang X, et al. Metastatic pattern discriminates survival beneﬁt of primary surgery for de novo stage IV breast cancer: a real-world observational study. Eur J Surg Oncol. (2019) 45:1364– 72. doi: 10.1016/j.ejso.2019.02.013
+27. Arciero C, Liu Y, Gillespie T, Subhedar P. Surgery and survival in patients with stage IV breast cancer. Breast J. (2019) 25:644–53. doi: 10.1111/tbj.13296
+28. Tosello G, Torloni MR, Mota BS, Neeman T, Riera R. Breast surgery for metastatic breast cancer. Cochrane Database Syst Rev. (2018) 3:D11276. doi: 10.1002/14651858.CD011276.pub2
+
+29. Thomas A, Khan SA, Chrischilles EA, Schroeder MC. Initial surgery and survival in stage IV breast cancer in the United States, 1988-2011. JAMA Surg. (2016) 151:424–31. doi: 10.1001/jamasurg.2015.4539
+30. Rashid OM, Nagahashi M, Ramachandran S, Graham L, Yamada A, Spiegel S, et al. Resection of the primary tumor improves survival in metastatic breast cancer by reducing overall tumor burden. Surgery. (2013) 153:771– 8. doi: 10.1016/j.surg.2013.02.002
+31. Danna EA, Sinha P, Gilbert M, Clements VK, Pulaski BA, OstrandRosenberg S. Surgical removal of primary tumor reverses tumor-induced immunosuppression despite the presence of metastatic disease. Cancer Res. (2004) 64:2205–11. doi: 10.1158/0008-5472.CAN-03-2646
+32. King TA, Lyman JP, Gonen M, Voci A, De Brot M, Boafo C, et al. Prognostic impact of 21-gene recurrence score in patients with stage IV breast cancer: TBCRC 013. J Clin Oncol. (2016) 34:2359–65. doi: 10.1200/JCO.2015.63.1960
+33. Soran A, Dogan L, Isik A, Ozbas S, Trabulus DC, Demirci U, et al. The eﬀect of primary surgery in patients with de novo stage IV breast cancer with bone metastasis only (Protocol BOMET MF 14-01): a multi-center, prospective registry study. Ann Surg Oncol. (2021). doi: 10.1245/s10434-021-10396-1
+34. Ruiterkamp J, Voogd AC, Tjan-Heijnen VC, Bosscha K, van der Linden YM, Rutgers EJ, et al. SUBMIT: systemic therapy with or without up front surgery of the primary tumor in breast cancer patients with distant metastases at initial presentation. BMC Surg. (2012) 12:5. doi: 10.1186/1471-2482-12-5
+35. Gobbini E, Ezzalfani M, Dieras V, Bachelot T, Brain E, Debled M, et al. Time trends of overall survival among metastatic breast cancer patients in the real-life ESME cohort. Eur J Cancer. (2018) 96:17– 24. doi: 10.1016/j.ejca.2018.03.015
+36. Wang R, Zhu Y, Liu X, Liao X, He J, Niu L. The Clinicopathological features and survival outcomes of patients with diﬀerent metastatic sites in stage IV breast cancer. BMC Cancer. (2019) 19:1091. doi: 10.1186/s12885-019-6311-z
+37. Leone BA, Vallejo CT, Romero AO, Machiavelli MR, Perez JE, Leone J, et al. Prognostic impact of metastatic pattern in stage IV breast cancer at initial diagnosis. Breast Cancer Res Treat. (2017) 161:537– 48. doi: 10.1007/s10549-016-4066-7
+38. Diessner J, Wischnewsky M, Stuber T, Stein R, Krockenberger M, Hausler S, et al. Evaluation of clinical parameters inﬂuencing the development of bone metastasis in breast cancer. BMC Cancer. (2016) 16:307. doi: 10.1186/s12885-016-2345-7
+39. Sihto H, Lundin J, Lundin M, Lehtimaki T, Ristimaki A, Holli K, et al. Breast cancer biological subtypes and protein expression predict for the preferential distant metastasis sites: a nationwide cohort study. Breast Cancer Res. (2011) 13:R87. doi: 10.1186/bcr2944
+40. Smid M, Wang Y, Zhang Y, Sieuwerts AM, Yu J, Klijn JG, et al. Subtypes of breast cancer show preferential site of relapse. Cancer Res. (2008) 68:3108– 14. doi: 10.1158/0008-5472.CAN-07-5644
+41. Bartmann C, Wischnewsky M, Stuber T, Stein R, Krockenberger M, Hausler S, et al. Pattern of metastatic spread and subcategories of breast cancer. Arch Gynecol Obstet. (2017) 295:211–23. doi: 10.1007/s00404-016-4225-4
+42. Chen QX, Wang XX, Lin PY, Zhang J, Li JJ, Song CG, et al. The diﬀerent outcomes between breast-conserving surgery and mastectomy in triplenegative breast cancer: a population-based study from the SEER 18 database. Oncotarget. (2017) 8:4773–80. doi: 10.18632/oncotarget.13976
+43. Kurian AW, Canchola AJ, Ma CS, Clarke CA, Gomez SL. Magnitude of reduction in risk of second contralateral breast cancer with bilateral mastectomy in patients with breast cancer: Data from California, 1998 through 2015. Cancer Am Cancer Soc. (2020) 126:958–70. doi: 10.1002/cncr.32618
+44. Zumsteg ZS, Morrow M, Arnold B, Zheng J, Zhang Z, Robson M, et al. Breast-conserving therapy achieves locoregional outcomes comparable to mastectomy in women with T1-2N0 triple-negative breast cancer. Ann Surg Oncol. (2013) 20:3469–76. doi: 10.1245/s10434-013-3011-9
+45. Al-Ghazal SK, Fallowﬁeld L, Blamey RW. Comparison of psychological aspects and patient satisfaction following breast conserving surgery, simple mastectomy and breast reconstruction. Eur J Cancer. (2000) 36:1938– 43. doi: 10.1016/S0959-8049(00)00197-0
+46. Howes BH, Watson DI, Xu C, Fosh B, Canepa M, Dean NR. Quality of life following total mastectomy with and without reconstruction versus breastconserving surgery for breast cancer: a case-controlled cohort study. J Plast Reconstr Aesthet Surg. (2016) 69:1184–91. doi: 10.1016/j.bjps.2016.06.004
+
+Frontiers in Surgery | www.frontiersin.org
+
+11
+
+November 2021 | Volume 8 | Article 696628
+
+Li et al.
+
+Type of Surgery
+
+47. Eltahir Y, Werners L, Dreise MM, van Emmichoven I, Jansen L, Werker P, et al. Quality-of-life outcomes between mastectomy alone and breast reconstruction: comparison of patient-reported BREAST-Q and other health-related quality-of-life measures. Plast Reconstr Surg. (2013) 132:201– 9e. doi: 10.1097/PRS.0b013e31829586a7
+48. Tryfonidis K, Senkus E, Cardoso MJ, Cardoso F. Management of locally advanced breast cancer-perspectives and future directions. Nat Rev Clin Oncol. (2015) 12:147–62. doi: 10.1038/nrclinonc.2015.13
+49. Rouzier R, Mathieu MC, Sideris L, Youmsi E, Rajan R, Garbay JR, et al. Breast-conserving surgery after neoadjuvant anthracycline-based chemotherapy for large breast tumors. Cancer Am Cancer Soc. (2004) 101:918–25. doi: 10.1002/cncr.20491
+50. Rosa M. Advances in the molecular analysis of breast cancer: pathway toward personalized medicine. Cancer Control. (2015) 22:211–9. doi: 10.1177/107327481502200213
+51. Kast K, Link T, Friedrich K, Petzold A, Niedostatek A, Schoﬀer O, et al. Impact of breast cancer subtypes and patterns of metastasis on outcome. Breast Cancer Res Treat. (2015) 150:621–9. doi: 10.1007/s10549-0153341-3
+52. Savci-Heijink CD, Halfwerk H, Hooijer GK, Horlings HM, Wesseling J, van de Vijver MJ. Retrospective analysis of metastatic behaviour of breast cancer subtypes. Breast Cancer Res Treat. (2015) 150:547– 57. doi: 10.1007/s10549-015-3352-0
+53. Guo Y, Arciero CA, Jiang R, Behera M, Peng L, Li X. Diﬀerent breast cancer subtypes show diﬀerent metastatic patterns: a study from a large public database. Asian Pac J Cancer Prev. (2020) 21:3587– 93. doi: 10.31557/APJCP.2020.21.12.3587
+54. Lobbezoo DJ, van Kampen RJ, Voogd AC, Dercksen MW, van den Berkmortel F, Smilde TJ, et al. Prognosis of metastatic breast cancer subtypes: the hormone receptor/HER2-positive subtype is associated with the most favorable outcome. Breast Cancer Res Treat. (2013) 141:507– 14. doi: 10.1007/s10549-013-2711-y
+
+55. Lobbezoo DJ, van Kampen RJ, Voogd AC, Dercksen MW, van den Berkmortel F, Smilde TJ, et al. Prognosis of metastatic breast cancer: are there diﬀerences between patients with de novo and recurrent metastatic breast cancer? Br J Cancer. (2015) 112:1445–51. doi: 10.1038/bjc. 2015.127
+56. Harris E, Barry M, Kell MR. Meta-analysis to determine if surgical resection of the primary tumour in the setting of stage IV breast cancer impacts on survival. Ann Surg Oncol. (2013) 20:2828–34. doi: 10.1245/s10434-0132998-2
+57. Hazard HW, Gorla SR, Scholtens D, Kiel K, Gradishar WJ, Khan SA. Surgical resection of the primary tumor, chest wall control, and survival in women with metastatic breast cancer. Cancer Am Cancer Soc. (2008) 113:2011– 9. doi: 10.1002/cncr.23870
+Conﬂict of Interest: The authors declare that the research was conducted in the absence of any commercial or ﬁnancial relationships that could be construed as a potential conﬂict of interest.
+Publisher’s Note: All claims expressed in this article are solely those of the authors and do not necessarily represent those of their aﬃliated organizations, or those of the publisher, the editors and the reviewers. Any product that may be evaluated in this article, or claim that may be made by its manufacturer, is not guaranteed or endorsed by the publisher.
+Copyright © 2021 Li, Zhou, Yu, Niu, Zhang, Wang, He and Ge. This is an open-access article distributed under the terms of the Creative Commons Attribution License (CC BY). The use, distribution or reproduction in other forums is permitted, provided the original author(s) and the copyright owner(s) are credited and that the original publication in this journal is cited, in accordance with accepted academic practice. No use, distribution or reproduction is permitted which does not comply with these terms.
+
+Frontiers in Surgery | www.frontiersin.org
+
+12
+
+November 2021 | Volume 8 | Article 696628
+
