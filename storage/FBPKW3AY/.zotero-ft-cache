@@ -1,0 +1,2054 @@
+1. Preface
+a. What You Will Learn in This Book
+b. Conventions Used in This Book
+c. Using Code Examples
+d. O’Reilly Online Learning
+e. How to Contact Us
+f. Acknowledgments
+2. 1. Introduction to Stateful Stream Processing
+a. Traditional Data Infrastructures
+i. Transactional Processing
+ii. Analytical Processing
+b. Stateful Stream Processing
+i. Event-Driven Applications
+ii. Data Pipelines
+iii. Streaming Analytics
+c. The Evolution of Open Source Stream Processing
+i. A Bit of History
+d. A Quick Look at Flink
+i. Running Your First Flink Application
+e. Summary
+3. 2. Stream Processing Fundamentals
+
+
+a. Introduction to Dataflow Programming
+i. Dataflow Graphs
+ii. Data Parallelism and Task Parallelism
+iii. Data Exchange Strategies
+b. Processing Streams in Parallel
+i. Latency and Throughput
+ii. Operations on Data Streams
+c. Time Semantics
+i. What Does One Minute Mean in Stream
+Processing?
+ii. Processing Time
+iii. Event Time
+iv. Watermarks
+v. Processing Time Versus Event Time
+d. State and Consistency Models
+i. Task Failures
+ii. Result Guarantees
+e. Summary
+4. 3. The Architecture of Apache Flink
+a. System Architecture
+i. Components of a Flink Setup
+ii. Application Deployment
+
+
+iii. Task Execution
+iv. Highly Available Setup
+b. Data Transfer in Flink
+i. Credit-Based Flow Control
+ii. Task Chaining
+c. Event-Time Processing
+i. Timestamps
+ii. Watermarks
+iii. Watermark Propagation and Event Time
+iv. Timestamp Assignment and Watermark
+Generation
+d. State Management
+i. Operator State
+ii. Keyed State
+iii. State Backends
+iv. Scaling Stateful Operators
+e. Checkpoints, Savepoints, and State Recovery
+i. Consistent Checkpoints
+ii. Recovery from a Consistent Checkpoint
+iii. Flink’s Checkpointing Algorithm
+iv. Performace Implications of
+Checkpointing
+v. Savepoints
+
+
+f. Summary
+5. 4. Setting Up a Development Environment for Apache
+Flink
+a. Required Software
+b. Run and Debug Flink Applications in an IDE
+i. Import the Book’s Examples in an IDE
+ii. Run Flink Applications in an IDE
+iii. Debug Flink Applications in an IDE
+c. Bootstrap a Flink Maven Project
+d. Summary
+6. 5. The DataStream API (v1.7)
+a. Hello, Flink!
+i. Set Up the Execution Environment
+ii. Read an Input Stream
+iii. Apply Transformations
+iv. Output the Result
+v. Execute
+b. Transformations
+i. Basic Transformations
+ii. KeyedStream Transformations
+iii. Multistream Transformations
+iv. Distribution Transformations
+
+
+c. Setting the Parallelism
+d. Types
+i. Supported Data Types
+ii. Creating Type Information for Data
+Types
+iii. Explicitly Providing Type Information
+e. Defining Keys and Referencing Fields
+i. Field Positions
+ii. Field Expressions
+iii. Key Selectors
+f. Implementing Functions
+i. Function Classes
+ii. Lambda Functions
+iii. Rich Functions
+g. Including External and Flink Dependencies
+h. Summary
+7. 6. Time-Based and Window Operators
+a. Configuring Time Characteristics
+i. Assigning Timestamps and Generating
+Watermarks
+ii. Watermarks, Latency, and Completeness
+b. Process Functions
+i. TimerService and Timers
+
+
+ii. Emitting to Side Outputs
+iii. CoProcessFunction
+c. Window Operators
+i. Defining Window Operators
+ii. Built-in Window Assigners
+iii. Applying Functions on Windows
+iv. Customizing Window Operators
+d. Joining Streams on Time
+i. Interval Join
+ii. Window Join
+e. Handling Late Data
+i. Dropping Late Events
+ii. Redirecting Late Events
+iii. Updating Results by Including Late
+Events
+f. Summary
+8. 7. Stateful Operators and Applications
+a. Implementing Stateful Functions
+i. Declaring Keyed State at
+RuntimeContext
+ii. Implementing Operator List State with
+the ListCheckpointed Interface
+iii. Using Connected Broadcast State
+
+
+iv. Using the CheckpointedFunction
+Interface
+v. Receiving Notifications About
+Completed Checkpoints
+b. Enabling Failure Recovery for Stateful
+Applications
+c. Ensuring the Maintainability of Stateful
+Applications
+i. Specifying Unique Operator Identifiers
+ii. Defining the Maximum Parallelism of
+Keyed State Operators
+d. Performance and Robustness of Stateful
+Applications
+i. Choosing a State Backend
+ii. Choosing a State Primitive
+iii. Preventing Leaking State
+e. Evolving Stateful Applications
+i. Updating an Application without
+Modifying Existing State
+ii. Removing State from an Application
+iii. Modifying the State of an Operator
+f. Queryable State
+i. Architecture and Enabling Queryable
+State
+ii. Exposing Queryable State
+
+
+iii. Querying State from External
+Applications
+g. Summary
+9. 8. Reading from and Writing to External Systems
+a. Application Consistency Guarantees
+i. Idempotent Writes
+ii. Transactional Writes
+b. Provided Connectors
+i. Apache Kafka Source Connector
+ii. Apache Kafka Sink Connector
+iii. Filesystem Source Connector
+iv. Filesystem Sink Connector
+v. Apache Cassandra Sink Connector
+c. Implementing a Custom Source Function
+i. Resettable Source Functions
+ii. Source Functions, Timestamps, and
+Watermarks
+d. Implementing a Custom Sink Function
+i. Idempotent Sink Connectors
+ii. Transactional Sink Connectors
+e. Asynchronously Accessing External Systems
+f. Summary
+10. 9. Setting Up Flink for Streaming Applications
+
+
+a. Deployment Modes
+i. Standalone Cluster
+ii. Docker
+iii. Apache Hadoop YARN
+iv. Kubernetes
+b. Highly Available Setups
+i. HA Standalone Setup
+ii. HA YARN Setup
+iii. HA Kubernetes Setup
+c. Integration with Hadoop Components
+d. Filesystem Configuration
+e. System Configuration
+i. Java and Classloading
+ii. CPU
+iii. Main Memory and Network Buffers
+iv. Disk Storage
+v. Checkpointing and State Backends
+vi. Security
+f. Summary
+11. 10. Operating Flink and Streaming Applications
+a. Running and Managing Streaming Applications
+i. Savepoints
+
+
+ii. Managing Applications with the
+Command-Line Client
+iii. Managing Applications with the REST
+API
+iv. Bundling and Deploying Applications in
+Containers
+b. Controlling Task Scheduling
+i. Controlling Task Chaining
+ii. Defining Slot-Sharing Groups
+c. Tuning Checkpointing and Recovery
+i. Configuring Checkpointing
+ii. Configuring State Backends
+iii. Configuring Recovery
+d. Monitoring Flink Clusters and Applications
+i. Flink Web UI
+ii. Metric System
+iii. Monitoring Latency
+e. Configuring the Logging Behavior
+f. Summary
+12. 11. Where to Go from Here?
+a. The Rest of the Flink Ecosystem
+i. The DataSet API for Batch Processing
+ii. Table API and SQL for Relational
+
+
+Analysis
+iii. FlinkCEP for Complex Event Processing
+and Pattern Matching
+iv. Gelly for Graph Processing
+b. A Welcoming Community
+13. Index
+
+
+Stream Processing with
+Apache Flink
+Fundamentals, Implementation, and Operation of
+Streaming Applications
+Fabian Hueske and Vasiliki Kalavri
+
+
+Stream Processing with Apache Flink
+by Fabian Hueske and Vasiliki Kalavri
+Copyright © 2019 Fabian Hueske, Vasiliki Kalavri. All rights reserved.
+Printed in the United States of America.
+Published by O’Reilly Media, Inc., 1005 Gravenstein Highway North,
+Sebastopol, CA 95472.
+O’Reilly books may be purchased for educational, business, or sales
+promotional use. Online editions are also available for most titles
+(http://oreilly.com). For more information, contact our
+corporate/institutional sales department: 800-998-9938 or
+corporate@oreilly.com.
+Acquisitions Editor: Rachel Roumeliotis
+Development Editor: Alicia Young
+Production Editor: Katherine Tozer
+Copyeditor: Christina Edwards
+Proofreader: Charles Roumeliotis
+Indexer: Judith McConville
+Interior Designer: David Futato
+Cover Designer: Karen Montgomery
+
+
+Illustrator: Rebecca Demarest
+April 2019: First Edition
+Revision History for the First Edition
+2019-04-03: First Release
+See http://oreilly.com/catalog/errata.csp?isbn=9781491974292 for
+release details.
+The O’Reilly logo is a registered trademark of O’Reilly Media, Inc.
+Stream Processing with Apache Flink, the cover image, and related
+trade dress are trademarks of O’Reilly Media, Inc.
+The views expressed in this work are those of the authors, and do not
+represent the publisher’s views. While the publisher and the authors
+have used good faith efforts to ensure that the information and
+instructions contained in this work are accurate, the publisher and the
+authors disclaim all responsibility for errors or omissions, including
+without limitation responsibility for damages resulting from the use of
+or reliance on this work. Use of the information and instructions
+contained in this work is at your own risk. If any code samples or other
+technology this work contains or describes is subject to open source
+licenses or the intellectual property rights of others, it is your
+responsibility to ensure that your use thereof complies with such
+licenses and/or rights.
+978-1-491-97429-2
+[LSI]
+
+
+Preface
+What You Will Learn in This Book
+This book will teach you everything you need to know about stream
+processing with Apache Flink. It consists of 11 chapters that hopefully
+tell a coherent story. While some chapters are descriptive and aim to
+introduce high-level design concepts, others are more hands-on and
+contain many code examples.
+While we intended for the book to be read in chapter order when we
+were writing it, readers familiar with a chapter’s content might want to
+skip it. Others more interested in writing Flink code right away might
+want to read the practical chapters first. In the following, we briefly
+describe the contents of each chapter, so you can directly jump to those
+chapters that interest you most.
+Chapter 1 gives an overview of stateful stream processing,
+data processing application architectures, application designs,
+and the benefits of stream processing over traditional
+approaches. It also gives you a brief look at what it is like to
+run your first streaming application on a local Flink instance.
+Chapter 2 discusses the fundamental concepts and challenges
+of stream processing, independent of Flink.
+Chapter 3 describes Flink’s system architecture and
+internals. It discusses distributed architecture, time and state
+handling in streaming applications, and Flink’s fault-tolerance
+mechanisms.
+
+
+Chapter 4 explains how to set up an environment to develop
+and debug Flink applications.
+Chapter 5 introduces you to the basics of the Flink’s
+DataStream API. You will learn how to implement a
+DataStream application and which stream transformations,
+functions, and data types are supported.
+Chapter 6 discusses the time-based operators of the
+DataStream API. This includes window operators and time
+based joins as well as process functions that provide the most
+flexibility when dealing with time in streaming applications.
+Chapter 7 explains how to implement stateful functions and
+discusses everything around this topic, such as the
+performance, robustness, and evolution of stateful functions. It
+also shows how to use Flink’s queryable state.
+Chapter 8 presents Flink’s most commonly used source and
+sink connectors. It discusses Flink’s approach to end-to-end
+application consistency and how to implement custom
+connectors to ingest data from and emit data to external
+systems.
+Chapter 9 discusses how to set up and configure Flink clusters
+in various environments.
+Chapter 10 covers operation, monitoring, and maintenance of
+streaming applications that run 24/7.
+Finally, Chapter 11 contains resources you can use to ask
+questions, attend Flink-related events, and learn how Flink is
+currently being used.
+Conventions Used in This Book
+The following typographical conventions are used in this book:
+
+
+Italic
+Indicates new terms, URLs, email addresses, filenames, and file
+extensions.
+Constant width
+Used for program listings, as well as within paragraphs to refer to
+program elements such as variable or function names, databases,
+data types, environment variables, statements, and keywords. Also
+used for module and package names, and to show commands or
+other text that should be typed literally by the user and the output of
+commands.
+Constant width italic
+Shows text that should be replaced with user-supplied values or by
+values determined by context.
+TIP
+This element signifies a tip or suggestion.
+NOTE
+This element signifies a general note.
+WARNING
+This element signifies a warning or caution.
+
+
+Using Code Examples
+Supplemental material (code examples in Java and Scala) is available
+for download at https://github.com/streaming-with-flink.
+This book is here to help you get your job done. In general, if example
+code is offered with this book, you may use it in your programs and
+documentation. You do not need to contact us for permission unless
+you’re reproducing a significant portion of the code. For example,
+writing a program that uses several chunks of code from this book does
+not require permission. Selling or distributing a CD-ROM of examples
+from O’Reilly books does require permission. Answering a question by
+citing this book and quoting example code does not require permission.
+Incorporating a significant amount of example code from this book into
+your product’s documentation does require permission.
+We appreciate, but do not require, attribution. An attribution usually
+includes the title, author, publisher, and ISBN. For example: “Stream
+Processing with Apache Flink by Fabian Hueske and Vasiliki Kalavri
+(O’Reilly). Copyright 2019 Fabian Hueske and Vasiliki Kalavri, 978
+1-491-97429-2.”
+If you feel your use of code examples falls outside fair use or the
+permission given above, feel free to contact us at
+permissions@oreilly.com.
+O’Reilly Online Learning
+NOTE
+
+
+For almost 40 years, O’Reilly has provided technology and business training,
+knowledge, and insight to help companies succeed.
+Our unique network of experts and innovators share their knowledge
+and expertise through books, articles, conferences, and our online
+learning platform. O’Reilly’s online learning platform gives you on
+demand access to live training courses, in-depth learning paths,
+interactive coding environments, and a vast collection of text and video
+from O’Reilly and 200+ other publishers. For more information, please
+visit http://oreilly.com.
+How to Contact Us
+Please address comments and questions concerning this book to the
+publisher:
+O’Reilly Media, Inc.
+1005 Gravenstein Highway North
+Sebastopol, CA 95472
+800-998-9938 (in the United States or Canada)
+707-829-0515 (international or local)
+707-829-0104 (fax)
+We have a web page for this book, where we list errata, examples, and
+any additional information. You can access this page at
+
+
+http://bit.ly/stream-proc.
+To comment or ask technical questions about this book, send email to
+bookquestions@oreilly.com.
+For more information about our books, courses, conferences, and news,
+see our website at http://www.oreilly.com.
+Find us on Facebook: http://facebook.com/oreilly
+Follow us on Twitter: http://twitter.com/oreillymedia
+Watch us on YouTube: http://www.youtube.com/oreillymedia
+Follow the authors on Twitter: @fhueske and @vkalavri
+Acknowledgments
+This book couldn’t have been possible without the help and support of
+several amazing people. We would like to thank and acknowledge
+some of them here.
+This book summarizes knowledge obtained through years of design,
+development, and testing performed by the Apache Flink community at
+large. We are grateful to everyone who has contributed to Flink
+through code, documentation, reviews, bug reports, feature requests,
+mailing list discussions, trainings, conference talks, meetup
+organization, and other activities.
+Special thanks go to our fellow Flink committers: Alan Gates, Aljoscha
+
+
+Krettek, Andra Lungu, ChengXiang Li, Chesnay Schepler, Chiwan
+Park, Daniel Warneke, Dawid Wysakowicz, Gary Yao, Greg Hogan,
+Gyula Fóra, Henry Saputra, Jamie Grier, Jark Wu, Jincheng Sun,
+Konstantinos Kloudas, Kostas Tzoumas, Kurt Young, Márton Balassi,
+Matthias J. Sax, Maximilian Michels, Nico Kruber, Paris Carbone,
+Robert Metzger, Sebastian Schelter, Shaoxuan Wang, Shuyi Chen,
+Stefan Richter, Stephan Ewen, Theodore Vasiloudis, Thomas Weise,
+Till Rohrmann, Timo Walther, Tzu-Li (Gordon) Tai, Ufuk Celebi,
+Xiaogang Shi, Xiaowei Jiang, Xingcan Cui. With this book, we hope to
+reach developers, engineers, and streaming enthusiasts around the
+world and grow the Flink community even larger.
+We’ve also like to thank our technical reviewers who made countless
+valuable suggestions helping us to improve the presentation of the
+content. Thank you, Adam Kawa, Aljoscha Krettek, Kenneth Knowles,
+Lea Giordano, Matthias J. Sax, Stephan Ewen, Ted Malaska, and Tyler
+Akidau.
+Finally, we say a big thank you to all the people at O’Reilly who
+accompanied us on our two and a half year long journey and helped us
+to push this project over the finish line. Thank you, Alicia Young,
+Colleen Lobner, Christine Edwards, Katherine Tozer, Marie
+Beaugureau, and Tim McGovern.
+
+
+Chapter 1. Introduction to
+Stateful Stream Processing
+Apache Flink is a distributed stream processor with intuitive and
+expressive APIs to implement stateful stream processing applications.
+It efficiently runs such applications at large scale in a fault-tolerant
+manner. Flink joined the Apache Software Foundation as an incubating
+project in April 2014 and became a top-level project in January 2015.
+Since its beginning, Flink has had a very active and continuously
+growing community of users and contributors. To date, more than five
+hundred individuals have contributed to Flink, and it has evolved into
+one of the most sophisticated open source stream processing engines as
+proven by its widespread adoption. Flink powers large-scale, business
+critical applications in many companies and enterprises across different
+industries and around the globe.
+Stream processing technology is becoming more and more popular
+with companies big and small because it provides superior solutions for
+many established use cases such as data analytics, ETL, and
+transactional applications, but also facilitates novel applications,
+software architectures, and business opportunities. In this chapter, we
+discuss why stateful stream processing is becoming so popular and
+assess its potential. We start by reviewing conventional data
+application architectures and point out their limitations. Next, we
+introduce application designs based on stateful stream processing that
+
+
+exhibit many interesting characteristics and benefits over traditional
+approaches. Finally, we briefly discuss the evolution of open source
+stream processors and help you run a streaming application on a local
+Flink instance.
+Traditional Data Infrastructures
+Data and data processing have been omnipresent in businesses for
+many decades. Over the years the collection and usage of data has
+grown consistently, and companies have designed and built
+infrastructures to manage that data. The traditional architecture that
+most businesses implement distinguishes two types of data processing:
+transactional processing and analytical processing. In this section, we
+discuss both types and how they manage and process data.
+Transactional Processing
+Companies use all kinds of applications for their day-to-day business
+activities, such as enterprise resource planning (ERP) systems,
+customer relationship management (CRM) software, and web-based
+applications. These systems are typically designed with separate tiers
+for data processing (the application itself) and data storage (a
+transactional database system) as shown in Figure 1-1.
+
+
+Figure 1-1. Traditional design of transactional applications that store data in a remote database system
+Applications are usually connected to external services or face human
+users and continuously process incoming events such as orders, email,
+or clicks on a website. When an event is processed, an application
+reads its state or updates it by running transactions against the remote
+database system. Often, a database system serves multiple applications
+that sometimes access the same databases or tables.
+This application design can cause problems when applications need to
+evolve or scale. Since multiple applications might work on the same
+
+
+data representation or share the same infrastructure, changing the
+schema of a table or scaling a database system requires careful
+planning and a lot of effort. A recent approach to overcoming the tight
+bundling of applications is the microservices design pattern.
+Microservices are designed as small, self-contained, and independent
+applications. They follow the UNIX philosophy of doing a single thing
+and doing it well. More complex applications are built by connecting
+several microservices with each other that only communicate over
+standardized interfaces such as RESTful HTTP connections. Because
+microservices are strictly decoupled from each other and only
+communicate over well-defined interfaces, each microservice can be
+implemented with a different technology stack including a
+programming language, libraries, and datastores. Microservices and all
+the required software and services are typically bundled and deployed
+in independent containers. Figure 1-2 depicts a microservices
+architecture.
+
+
+Figure 1-2. A microservices architecture
+Analytical Processing
+The data that is stored in the various transactional database systems of
+a company can provide valuable insights about a company’s business
+operations. For example, the data of an order processing system can be
+analyzed to obtain sales growth over time, to identify reasons for
+delayed shipments, or to predict future sales in order to adjust the
+
+
+inventory. However, transactional data is often distributed across
+several disconnected database systems and is more valuable when it
+can be jointly analyzed. Moreover, the data often needs to be
+transformed into a common format.
+Instead of running analytical queries directly on the transactional
+databases, the data is typically replicated to a data warehouse, a
+dedicated datastore for analytical query workloads. In order to populate
+a data warehouse, the data managed by the transactional database
+systems needs to be copied to it. The process of copying data to the
+data warehouse is called extract–transform–load (ETL). An ETL
+process extracts data from a transactional database, transforms it into a
+common representation that might include validation, value
+normalization, encoding, deduplication, and schema transformation,
+and finally loads it into the analytical database. ETL processes can be
+quite complex and often require technically sophisticated solutions to
+meet performance requirements. ETL processes need to run
+periodically to keep the data in the data warehouse synchronized.
+Once the data has been imported into the data warehouse it can be
+queried and analyzed. Typically, there are two classes of queries
+executed on a data warehouse. The first type are periodic report queries
+that compute business-relevant statistics such as revenue, user growth,
+or production output. These metrics are assembled into reports that
+help the management to assess the business’s overall health. The
+second type are ad-hoc queries that aim to provide answers to specific
+questions and support business-critical decisions, for example a query
+to collect revenue numbers and spending on radio commercials to
+evaluate the effectiveness of a marketing campaign. Both kinds of
+
+
+queries are executed by a data warehouse in a batch processing fashion,
+as shown in Figure 1-3.
+Figure 1-3. A traditional data warehouse architecture for data analytics
+Today, components of the Apache Hadoop ecosystem are integral parts
+in the IT infrastructures of many enterprises. Instead of inserting all
+data into a relational database system, significant amounts of data, such
+as log files, social media, or web click logs, are written into Hadoop’s
+distributed filesystem (HDFS), S3, or other bulk datastores, like
+Apache HBase, which provide massive storage capacity at a small cost.
+Data that resides in such storage systems can be queried with and
+processed by a SQL-on-Hadoop engine, for example Apache Hive,
+
+
+Apache Drill, or Apache Impala. However, the infrastructure remains
+basically the same as a traditional data warehouse architecture.
+Stateful Stream Processing
+Virtually all data is created as continuous streams of events. Think of
+user interactions on websites or in mobile apps, placements of orders,
+server logs, or sensor measurements; all of these are streams of events.
+In fact, it is difficult to find examples of finite, complete datasets that
+are generated all at once. Stateful stream processing is an application
+design pattern for processing unbounded streams of events and is
+applicable to many different use cases in the IT infrastructure of a
+company. Before we discuss its use cases, we briefly explain how
+stateful stream processing works.
+Any application that processes a stream of events and does not just
+perform trivial record-at-a-time transformations needs to be stateful,
+with the ability to store and access intermediate data. When an
+application receives an event, it can perform arbitrary computations
+that involve reading data from or writing data to the state. In principle,
+state can be stored and accessed in many different places including
+program variables, local files, or embedded or external databases.
+Apache Flink stores the application state locally in memory or in an
+embedded database. Since Flink is a distributed system, the local state
+needs to be protected against failures to avoid data loss in case of
+application or machine failure. Flink guarantees this by periodically
+writing a consistent checkpoint of the application state to a remote and
+durable storage. State, state consistency, and Flink’s checkpointing
+
+
+mechanism will be discussed in more detail in the following chapters,
+but, for now, Figure 1-4 shows a stateful streaming Flink application.
+Figure 1-4. A stateful streaming application
+Stateful stream processing applications often ingest their incoming
+events from an event log. An event log stores and distributes event
+streams. Events are written to a durable, append-only log, which means
+that the order of written events cannot be changed. A stream that is
+written to an event log can be read many times by the same or different
+
+
+consumers. Due to the append-only property of the log, events are
+always published to all consumers in exactly the same order. There are
+several event log systems available as open source software, Apache
+Kafka being the most popular, or as integrated services offered by
+cloud computing providers.
+Connecting a stateful streaming application running on Flink and an
+event log is interesting for multiple reasons. In this architecture the
+event log persists the input events and can replay them in deterministic
+order. In case of a failure, Flink recovers a stateful streaming
+application by restoring its state from a previous checkpoint and
+resetting the read position on the event log. The application will replay
+(and fast forward) the input events from the event log until it reaches
+the tail of the stream. This technique is used to recover from failures
+but can also be leveraged to update an application, fix bugs and repair
+previously emitted results, migrate an application to a different cluster,
+or perform A/B tests with different application versions.
+As previously stated, stateful stream processing is a versatile and
+flexible design architecture that can be used for many different use
+cases. In the following, we present three classes of applications that are
+commonly implemented using stateful stream processing: (1) event
+driven applications, (2) data pipeline applications, and (3) data
+analytics applications.
+REAL-WORLD STREAMING USE-CASES AND DEPLOYMENTS
+If you are interested in learning more about real-world use cases and deployments,
+check out Apache Flink’s Powered By page and the talk recordings and slide
+
+
+decks of Flink Forward presentations.
+We describe the classes of applications as distinct patterns to
+emphasize the versatility of stateful stream processing, but most real
+world applications share the properties of more than one class.
+Event-Driven Applications
+Event-driven applications are stateful streaming applications that ingest
+event streams and process the events with application-specific business
+logic. Depending on the business logic, an event-driven application can
+trigger actions such as sending an alert or an email or write events to an
+outgoing event stream to be consumed by another event-driven
+application.
+Typical use cases for event-driven applications include:
+Real-time recommendations (e.g., for recommending products
+while customers browse a retailer’s website)
+Pattern detection or complex event processing (e.g., for fraud
+detection in credit card transactions)
+Anomaly detection (e.g., to detect attempts to intrude a
+computer network)
+Event-driven applications are an evolution of microservices. They
+communicate via event logs instead of REST calls and hold application
+data as local state instead of writing it to and reading it from an
+external datastore, such as a relational database or key-value store.
+Figure 1-5 shows a service architecture composed of event-driven
+
+
+streaming applications.
+Figure 1-5. An event-driven application architecture
+The applications in Figure 1-5 are connected by event logs. One
+application emits its output to an event log and another application
+consumes the events the other application emitted. The event log
+decouples senders and receivers and provides asynchronous,
+nonblocking event transfer. Each application can be stateful and can
+
+
+locally manage its own state without accessing external datastores.
+Applications can also be individually operated and scaled.
+Event-driven applications offer several benefits compared to
+transactional applications or microservices. Local state access provides
+very good performance compared to reading and writing queries
+against remote datastores. Scaling and fault tolerance are handled by
+the stream processor, and by leveraging an event log as the input
+source the complete input of an application is reliably stored and can
+be deterministically replayed. Furthermore, Flink can reset the state of
+an application to a previous savepoint, making it possible to evolve or
+rescale an application without losing its state.
+Event-driven applications have quite high requirements on the stream
+processor that runs them. Not all stream processors are equally well
+suited to run event-driven applications. The expressiveness of the API
+and the quality of state handling and event-time support determine the
+business logic that can be implemented and executed. This aspect
+depends on the APIs of the stream processor, what kinds of state
+primitives it provides, and the quality of its support for event-time
+processing. Moreover, exactly-once state consistency and the ability to
+scale an application are fundamental requirements for event-driven
+applications. Apache Flink checks all these boxes and is a very good
+choice to run this class of applications.
+Data Pipelines
+Today’s IT architectures include many different datastores, such as
+relational and special-purpose database systems, event logs, distributed
+
+
+filesystems, in-memory caches, and search indexes. All of these
+systems store data in different formats and data structures that provide
+the best performance for their specific access pattern. It is common that
+companies store the same data in multiple different systems to improve
+the performance of data accesses. For example, information for a
+product that is offered in a webshop can be stored in a transactional
+database, a web cache, and a search index. Due to this replication of
+data, the data stores must be kept in sync.
+A traditional approach to synchronize data in different storage systems
+is periodic ETL jobs. However, they do not meet the latency
+requirements for many of today’s use cases. An alternative is to use an
+event log to distribute updates. The updates are written to and
+distributed by the event log. Consumers of the log incorporate the
+updates into the affected data stores. Depending on the use case, the
+transferred data may need to be normalized, enriched with external
+data, or aggregated before it is ingested by the target data store.
+Ingesting, transforming, and inserting data with low latency is another
+common use case for stateful stream processing applications. This type
+of application is called a data pipeline. Data pipelines must be able to
+process large amounts of data in a short time. A stream processor that
+operates a data pipeline should also feature many source and sink
+connectors to read data from and write data to various storage systems.
+Again, Flink does all of this.
+Streaming Analytics
+ETL jobs periodically import data into a datastore and the data is
+
+
+processed by ad-hoc or scheduled queries. This is batch processing
+regardless of whether the architecture is based on a data warehouse or
+components of the Hadoop ecosystem. While periodically loading data
+into a data analysis system has been the state of the art for many years,
+it adds considerable latency to the analytics pipeline.
+Depending on the scheduling intervals it may take hours or days until a
+data point is included in a report. To some extent, the latency can be
+reduced by importing data into the datastore with a data pipeline
+application. However, even with continuous ETL there will always be
+a delay until an event is processed by a query. While this kind of delay
+may have been acceptable in the past, applications today must be able
+to collect data in real-time and immediately act on it (e.g., by adjusting
+to changing conditions in a mobile game or by personalizing user
+experiences for an online retailer).
+Instead of waiting to be periodically triggered, a streaming analytics
+application continuously ingests streams of events and updates its
+result by incorporating the latest events with low latency. This is
+similar to the maintenance techniques database systems use to update
+materialized views. Typically, streaming applications store their result
+in an external data store that supports efficient updates, such as a
+database or key-value store. The live updated results of a streaming
+analytics application can be used to power dashboard applications as
+shown in Figure 1-6.
+
+
+Figure 1-6. A streaming analytics application
+Besides the much shorter time needed for an event to be incorporated
+into an analytics result, there is another, less obvious, advantage of
+streaming analytics applications. Traditional analytics pipelines consist
+of several individual components such as an ETL process, a storage
+system, and in the case of a Hadoop-based environment, a data
+processor and scheduler to trigger jobs or queries. In contrast, a stream
+processor that runs a stateful streaming application takes care of all
+these processing steps, including event ingestion, continuous
+computation including state maintenance, and updating the results.
+Moreover, the stream processor can recover from failures with exactly
+once state consistency guarantees and can adjust the compute resources
+of an application. Stream processors like Flink also support event-time
+processing to produce correct and deterministic results and the ability
+to process large amounts of data in little time.
+
+
+Streaming analytics applications are commonly used for:
+Monitoring the quality of cellphone networks
+Analyzing user behavior in mobile applications
+Ad-hoc analysis of live data in consumer technology
+Although we don’t cover it here, Flink also provides support for
+analytical SQL queries over streams.
+The Evolution of Open Source Stream
+Processing
+Data stream processing is not a novel technology. Some of the first
+research prototypes and commercial products date back to the late
+1990s. However, the growing adoption of stream processing
+technology in the recent past has been driven to a large extent by the
+availability of mature open source stream processors. Today,
+distributed open source stream processors power business-critical
+applications in many enterprises across different industries such as
+(online) retail, social media, telecommunication, gaming, and banking.
+Open source software is a major driver of this trend, mainly due to two
+reasons:
+1. Open source stream processing software is a commodity that
+everybody can evaluate and use.
+2. Scalable stream processing technology is rapidly maturing and
+evolving due to the efforts of many open source communities.
+The Apache Software Foundation alone is the home of more than a
+
+
+dozen projects related to stream processing. New distributed stream
+processing projects are continuously entering the open source stage and
+are challenging the state of the art with new features and capabilities.
+Open source communities are constantly improving the capabilities of
+their projects and are pushing the technical boundaries of stream
+processing. We will take a brief look into the past to see where open
+source stream processing came from and where it is today.
+A Bit of History
+The first generation of distributed open source stream processors
+(2011) focused on event processing with millisecond latencies and
+provided guarantees against loss of events in the case of failures. These
+systems had rather low-level APIs and did not provide built-in support
+for accurate and consistent results of streaming applications because
+the results depended on the timing and order of arriving events.
+Moreover, even though events were not lost, they could be processed
+more than once. In contrast to batch processors, the first open source
+stream processors traded result accuracy for better latency. The
+observation that data processing systems (at this point in time) could
+either provide fast or accurate results led to the design of the so-called
+lambda architecture, which is depicted in Figure 1-7.
+
+
+Figure 1-7. The lambda architecture
+The lambda architecture augments the traditional periodic batch
+processing architecture with a speed layer that is powered by a low
+latency stream processor. Data arriving at the lambda architecture is
+ingested by the stream processor and also written to batch storage. The
+stream processor computes approximated results in near real time and
+writes them into a speed table. The batch processor periodically
+processes the data in batch storage, writes the exact results into a batch
+table, and drops the corresponding inaccurate results from the speed
+table. Applications consume the results by merging approximated
+results from the speed table and the accurate results from the batch
+table.
+
+
+The lambda architecture is no longer state of the art, but is still used in
+many places. The original goals of this architecture were to improve
+the high result latency of the original batch analytics architecture.
+However, it has a few notable drawbacks. First of all, it requires two
+semantically equivalent implementations of the application logic for
+two separate processing systems with different APIs. Second, the
+results computed by the stream processor are only approximate. Third,
+the lambda architecture is hard to set up and maintain.
+Improving on the first generation, the next generation of distributed
+open source stream processors (2013) provided better failure
+guarantees and ensured that in case of a failure each input record
+affects the result exactly once. In addition, programming APIs evolved
+from rather low-level operator interfaces to high-level APIs with more
+built-in primitives. However, some improvements such as higher
+throughput and better failure guarantees came at the cost of increasing
+processing latencies from milliseconds to seconds. Moreover, results
+were still dependent on timing and order of arriving events.
+The third generation of distributed open source stream processors
+(2015) addressed the dependency of results on the timing and order of
+arriving events. In combination with exactly-once failure semantics,
+systems of this generation are the first open source stream processors
+capable of computing consistent and accurate results. By only
+computing results based on actual data, these systems are also able to
+process historical data in the same way as “live” data. Another
+improvement was the dissolution of the latency/throughput tradeoff.
+While previous stream processors only provide either high throughput
+or low latency, systems of the third generation are able to serve both
+
+
+ends of the spectrum. Stream processors of this generation made the
+lambda architecture obsolete.
+In addition to the system properties discussed so far, such as failure
+tolerance, performance, and result accuracy, stream processors have
+also continuously added new operational features such as highly
+available setups, tight integration with resource managers, such as
+YARN or Kubernetes, and the ability to dynamically scale streaming
+applications. Other features include support to upgrade application
+code or migrate a job to a different cluster or a new version of the
+stream processor without losing the current state.
+A Quick Look at Flink
+Apache Flink is a third-generation distributed stream processor with a
+competitive feature set. It provides accurate stream processing with
+high throughput and low latency at scale. In particular, the following
+features make Flink stand out:
+Event-time and processing-time semantics. Event-time
+semantics provide consistent and accurate results despite out
+of-order events. Processing-time semantics can be used for
+applications with very low latency requirements.
+Exactly-once state consistency guarantees.
+Millisecond latencies while processing millions of events per
+second. Flink applications can be scaled to run on thousands
+of cores.
+Layered APIs with varying tradeoffs for expressiveness and
+ease of use. This book covers the DataStream API and process
+
+
+functions, which provide primitives for common stream
+processing operations, such as windowing and asynchronous
+operations, and interfaces to precisely control state and time.
+Flink’s relational APIs, SQL and the LINQ-style Table API,
+are not discussed in this book.
+Connectors to the most commonly used storage systems such
+as Apache Kafka, Apache Cassandra, Elasticsearch, JDBC,
+Kinesis, and (distributed) filesystems such as HDFS and S3.
+Ability to run streaming applications 24/7 with very little
+downtime due to its highly available setup (no single point of
+failure), tight integration with Kubernetes, YARN, and
+Apache Mesos, fast recovery from failures, and the ability to
+dynamically scale jobs.
+Ability to update the application code of jobs and migrate jobs
+to different Flink clusters without losing the state of the
+application.
+Detailed and customizable collection of system and
+application metrics to identify and react to problems ahead of
+time.
+Last but not least, Flink is also a full-fledged batch processor.
+In addition to these features, Flink is a very developer-friendly
+framework due to its easy-to-use APIs. The embedded execution mode
+starts an application and the whole Flink system in a single JVM
+process, which can be used to run and debug Flink jobs within an IDE.
+This feature comes in handy when developing and testing Flink
+applications.
+Running Your First Flink Application
+In the following, we will guide you through the process of starting a
+1
+
+
+local cluster and executing a streaming application to give you a first
+look at Flink. The application we are going to run converts and
+aggregates randomly generated temperature sensor readings by time.
+For this example, your system needs Java 8 installed. We describe the
+steps for a UNIX environment, but if you are running Windows, we
+recommend setting up a virtual machine with Linux, Cygwin (a Linux
+environment for Windows), or the Windows Subsystem for Linux,
+introduced with Windows 10. The following steps show you how to
+start a local Flink cluster and submit an application for execution.
+1. Go to the Apache Flink webpage and download the Hadoop
+free binary distribution of Apache Flink 1.7.1 for Scala 2.12.
+2. Extract the archive file:
+$ tar xvfz flink-1.7.1-binscala_2.12.tgz
+3. Start a local Flink cluster:
+$ cd flink-1.7.1 $ ./bin/start-cluster.sh Starting cluster. Starting standalonesession daemon on host xxx. Starting taskexecutor daemon on host xxx.
+4. Open Flink’s Web UI by entering the URL
+http://localhost:8081 in your browser. As shown in
+Figure 1-8, you will see some statistics about the local Flink
+cluster you just started. It will show that a single TaskManager
+(Flink’s worker processes) is connected and that a single task
+
+
+slot (resource units provided by a TaskManager) is available.
+Figure 1-8. Screenshot of Apache Flink’s web dashboard showing the overview
+5. Download the JAR file that includes examples in this book:
+$ wget https://streaming-withflink.github.io/\
+
+
+examples/download/examples-scala.jar
+NOTE
+You can also build the JAR file yourself by following the steps in the
+repository’s README file.
+6. Run the example on your local cluster by specifying the
+application’s entry class and JAR file:
+$ ./bin/flink run \ -c io.github.streamingwithflink.chapter1.Av erageSensorReadings \ examples-scala.jar Starting execution of program Job has been submitted with JobID cfde9dbe315ce162444c475a08cf93d9
+7. Inspect the web dashboard. You should see a job listed under
+“Running Jobs.” If you click on that job, you will see the
+dataflow and live metrics about the operators of the running
+job similar to the screenshot in Figure 1-9.
+
+
+Figure 1-9. Screenshot of Apache Flink’s web dashboard showing a running job
+8. The output of the job is written to the standard out of Flink’s
+worker process, which is redirected into a file in the ./log
+folder by default. You can monitor the constantly produced
+output using the tail command as follows:
+
+
+$ tail -f ./log/flink-<user>taskexecutor-<n>-<hostname>.out
+You should see lines like this being written to the file:
+SensorReading(sensor_1,1547718199000,35. 80018327300259) SensorReading(sensor_6,1547718199000,15. 402984393403084) SensorReading(sensor_7,1547718199000,6.7 20945201171228) SensorReading(sensor_10,1547718199000,38 .101067604893444)
+The first field of the SensorReading is a sensorId, the
+second field is the timestamp in milliseconds since 1970
+01-01-00:00:00.000, and the third field is an average
+temperature computed over 5 seconds.
+9. Since you are running a streaming application, the application
+will continue to run until you cancel it. You can do this by
+selecting the job in the web dashboard and clicking the Cancel
+button at the top of the page.
+10. Finally, you should stop the local Flink cluster:
+$ ./bin/stop-cluster.sh
+That’s it. You just installed and started your first local Flink cluster and
+ran your first Flink DataStream API program! Of course, there is much
+more to learn about stream processing with Apache Flink and that’s
+what this book is about.
+
+
+Summary
+In this chapter, we introduced stateful stream processing, discussed its
+use cases, and had a first look at Apache Flink. We started with a recap
+of traditional data infrastructures, how business applications are
+commonly designed, and how data is collected and analyzed in most
+companies today. Then we introduced the idea of stateful stream
+processing and explained how it addresses a wide spectrum of use
+cases, ranging from business applications and microservices to ETL
+and data analytics. We discussed how open source stream processing
+systems have evolved since their inception in the early 2010s and how
+stream processing became a viable solution for many use cases of
+today’s businesses. Finally, we took a look at Apache Flink and the
+extensive features it offers and showed how to install a local Flink
+setup and run a first stream processing application.
+1
+Flink’s batch processing API, the DataSet API, and its operators are separate from their corresponding streaming counterparts. However, the vision of the Flink community is to treat batch processing as a special case of stream processing—the processing of bounded streams. An ongoing effort of the Flink community is to evolve Flink toward a system with a truly unified batch and streaming API and runtime.
+
+
+Chapter 2. Stream Processing
+Fundamentals
+So far, you have seen how stream processing addresses some of the
+limitations of traditional batch processing and how it enables new
+applications and architectures. You also know a little bit about the
+evolution of the open source stream processing space and what a Flink
+streaming application looks like. In this chapter, you will enter the
+streaming world for good.
+The goal of this chapter is to introduce the fundamental concepts of
+stream processing and the requirements of its frameworks. We hope
+that after reading this chapter, you will be able to evaluate the features
+of modern stream processing systems.
+Introduction to Dataflow Programming
+Before we delve into the fundamentals of stream processing, let’s look
+at the background on dataflow programming and the terminology we
+will use throughout this book.
+Dataflow Graphs
+As the name suggests, a dataflow program describes how data flows
+between operations. Dataflow programs are commonly represented as
+directed graphs, where nodes are called operators and represent
+
+
+computations and edges represent data dependencies. Operators are the
+basic functional units of a dataflow application. They consume data
+from inputs, perform a computation on them, and produce data to
+outputs for further processing. Operators without input ports are called
+data sources and operators without output ports are called data sinks. A
+dataflow graph must have at least one data source and one data sink.
+Figure 2-1 shows a dataflow program that extracts and counts hashtags
+from an input stream of tweets.
+Figure 2-1. A logical dataflow graph to continuously count hashtags (nodes represent operators and edges denote data dependencies)
+Dataflow graphs like the one in Figure 2-1 are called logical because
+they convey a high-level view of the computation logic. In order to
+execute a dataflow program, its logical graph is converted into a
+physical dataflow graph, which specifies in detail how the program is
+executed. For instance, if we are using a distributed processing engine,
+each operator might have several parallel tasks running on different
+physical machines. Figure 2-2 shows a physical dataflow graph for the
+logical graph of Figure 2-1. While in the logical dataflow graph the
+nodes represent operators, in the physical dataflow, the nodes are tasks.
+The “Extract hashtags" and “Count" operators have two parallel
+
+
+operator tasks, each performing a computation on a subset of the input
+data.
+Figure 2-2. A physical dataflow plan for counting hashtags (nodes represent tasks)
+Data Parallelism and Task Parallelism
+You can exploit parallelism in dataflow graphs in different ways. First,
+you can partition your input data and have tasks of the same operation
+execute on the data subsets in parallel. This type of parallelism is called
+data parallelism. Data parallelism is useful because it allows for
+processing large volumes of data and spreading the computation load
+
+
+across several computing nodes. Second, you can have tasks from
+different operators performing computations on the same or different
+data in parallel. This type of parallelism is called task parallelism.
+Using task parallelism, you can better utilize the computing resources
+of a cluster.
+Data Exchange Strategies
+Data exchange strategies define how data items are assigned to tasks in
+a physical dataflow graph. Data exchange strategies can be
+automatically chosen by the execution engine depending on the
+semantics of the operators or explicitly imposed by the dataflow
+programmer. Here, we briefly review some common data exchange
+strategies, as shown in Figure 2-3.
+The forward strategy sends data from a task to a receiving
+task. If both tasks are located on the same physical machine
+(which is often ensured by task schedulers), this exchange
+strategy avoids network communication.
+The broadcast strategy sends every data item to all parallel
+tasks of an operator. Because this strategy replicates data and
+involves network communication, it is fairly expensive.
+The key-based strategy partitions data by a key attribute and
+guarantees that data items having the same key will be
+processed by the same task. In Figure 2-2, the output of the
+“Extract hashtags” operator is partitioned by the key (the
+hashtag), so that the count operator tasks can correctly
+compute the occurrences of each hashtag.
+The random strategy uniformly distributes data items to
+operator tasks in order to evenly distribute the load across
+
+
+computing tasks.
+
+
+
+
+Figure 2-3. Data exchange strategies
+Processing Streams in Parallel
+Now that you are familiar with the basics of dataflow programming,
+it’s time to see how these concepts apply to processing data streams in
+parallel. But first, let’s define the term data stream: a data stream is a
+potentially unbounded sequence of events.
+Events in a data stream can represent monitoring data, sensor
+measurements, credit card transactions, weather station observations,
+online user interactions, web searches, etc. In this section, you are
+going to learn how to process infinite streams in parallel, using the
+dataflow programming paradigm.
+Latency and Throughput
+In Chapter 1, you learned that streaming applications have different
+operational requirements than traditional batch programs.
+Requirements also differ when it comes to evaluating performance. For
+batch applications, we usually care about the total execution time of a
+job, or how long it takes for our processing engine to read the input,
+perform the computation, and write back the result. Since streaming
+applications run continuously and the input is potentially unbounded,
+there is no notion of total execution time in data stream processing.
+Instead, streaming applications must provide results for incoming data
+as fast as possible while being able to handle high ingest rates of
+events. We express these performance requirements in terms of latency
+and throughput.
+
+
+LATENCY
+Latency indicates how long it takes for an event to be processed.
+Essentially, it is the time interval between receiving an event and
+seeing the effect of processing this event in the output. To understand
+latency intuitively, consider your daily visit to your favorite coffee
+shop. When you enter the coffee shop, there might be other customers
+inside already. Thus, you wait in line and when it is your turn you
+place an order. The cashier receives your payment and passes your
+order to the barista who prepares your beverage. Once your coffee is
+ready, the barista calls your name and you can pick up your coffee
+from the counter. The service latency is the time you spend in the
+coffee shop, from the moment you enter until you have your first sip of
+coffee.
+In data streaming, latency is measured in units of time, such as
+milliseconds. Depending on the application, you might care about
+average latency, maximum latency, or percentile latency. For example,
+an average latency value of 10 ms means that events are processed
+within 10 ms on average. Alternately, a 95th-percentile latency value
+of 10 ms means that 95% of events are processed within 10 ms.
+Average values hide the true distribution of processing delays and
+might make it hard to detect problems. If the barista runs out of milk
+right before preparing your cappuccino, you will have to wait until they
+bring some from the supply room. While you might get annoyed by
+this delay, most other customers will still be happy.
+Ensuring low latency is critical for many streaming applications, such
+as fraud detection, system alarms, network monitoring, and offering
+
+
+services with strict service-level agreements. Low latency is a key
+characteristic of stream processing and it enables what we call real
+time applications. Modern stream processors, like Apache Flink, can
+offer latencies as low as a few milliseconds. In contrast, traditional
+batch processing latencies typically range from a few minutes to
+several hours. In batch processing, you first need to gather the events in
+batches and only then can you process them. Thus, the latency is
+bounded by the arrival time of the last event in each batch and naturally
+depends on the batch size. True stream processing does not introduce
+such artificial delays and thus can achieve really low latencies. In a true
+streaming model, events can be processed as soon as they arrive in the
+system and latency more closely reflects the actual work that has to be
+performed on each event.
+THROUGHPUT
+Throughput is a measure of the system’s processing capacity—its rate
+of processing. That is, throughput tells us how many events the system
+can process per time unit. Revisiting the coffee shop example, if the
+shop is open from 7 a.m. to 7 p.m. and it serves 600 customers in one
+day, then its average throughput would be 50 customers per hour.
+While you want latency to be as low as possible, you generally want
+throughput to be as high as possible.
+Throughput is measured in events or operations per time unit. It is
+important to note that the rate of processing depends on the rate of
+arrival; low throughput does not necessarily indicate bad performance.
+In streaming systems you usually want to ensure that your system can
+handle the maximum expected rate of events. That is, you are primarily
+
+
+concerned with determining the peak throughput—the performance
+limit when your system is at its maximum load. To better understand
+the concept of peak throughput, let’s consider a stream processing
+application that does not receive any incoming data and thus does not
+consume any system resources. When the first event comes in, it will
+be immediately processed with the minimum latency possible. For
+example, if you are the first customer showing up at the coffee shop
+right after it opened its doors in the morning, you will be served
+immediately. Ideally, you would like this latency to remain constant
+and independent of the rate of the incoming events. However, once we
+reach a rate of incoming events such that the system resources are fully
+used, we will have to start buffering events. In the coffee shop
+example, you will probably see this happening right after lunch. Many
+people show up at the same time and have to wait in line. At this point,
+the system has reached its peak throughput and further increasing the
+event rate will only result in worse latency. If the system continues to
+receive data at a higher rate than it can handle, buffers might become
+unavailable and data might get lost. This situation is commonly known
+as backpressure and there are different strategies to deal with it.
+LATENCY VERSUS THROUGHPUT
+At this point, it should be clear that latency and throughput are not
+independent metrics. If events take a long time to travel in the data
+processing pipeline, we cannot easily ensure high throughput.
+Similarly, if a system’s capacity is small, events will be buffered and
+have to wait before they get processed.
+Let’s revisit the coffee shop example to clarify how latency and
+
+
+throughput affect each other. First, it should be clear that there is
+optimal latency when there is no load. That is, you will get the fastest
+service if you are the only customer in the coffee shop. However,
+during busy times, customers will have to wait in line and latency will
+increase. Another factor that affects latency and consequently
+throughput is the time it takes to process an event, or the time it takes
+for each customer to be served in the coffee shop. Imagine that during
+the Christmas holiday season, baristas have to draw a Santa Claus on
+the cup of each coffee they serve. This means the time needed to
+prepare a single beverage will increase, causing each person to spend
+more time in the coffees hop, thus lowering the overall throughput.
+So, can you get both low latency and high throughput or is this a
+hopeless endeavor? You may be able to lower the latency in our coffee
+shop example by hiring a more skilled barista—one that prepares
+coffees faster. At high load, this change will also increase throughput,
+because more customers will be served in the same amount of time.
+Another way to achieve the same result is to hire a second barista and
+exploit parallelism. The main takeaway here is that lowering latency
+increases throughput. Naturally, if a system can perform operations
+faster, it can perform more operations in the same amount of time. In
+fact, that’s what happens when you exploit parallelism in a stream
+processing pipeline. By processing several streams in parallel, you
+lower the latency while processing more events at the same time.
+Operations on Data Streams
+Stream processing engines usually provide a set of built-in operations
+to ingest, transform, and output streams. These operators can be
+
+
+combined into dataflow processing graphs to implement the logic of
+streaming applications. In this section, we describe the most common
+streaming operations.
+Operations can be either stateless or stateful. Stateless operations do
+not maintain any internal state. That is, the processing of an event does
+not depend on any events seen in the past and no history is kept.
+Stateless operations are easy to parallelize, since events can be
+processed independently of each other and of their arriving order.
+Moreover, in the case of a failure, a stateless operator can be simply
+restarted and continue processing from where it left off. In contrast,
+stateful operators may maintain information about the events they have
+received before. This state can be updated by incoming events and can
+be used in the processing logic of future events. Stateful stream
+processing applications are more challenging to parallelize and operate
+in a fault-tolerant manner because state needs to be efficiently
+partitioned and reliably recovered in the case of failures. You will learn
+more about stateful stream processing, failure scenarios, and
+consistency at the end of this chapter.
+DATA INGESTION AND DATA EGRESS
+Data ingestion and data egress operations allow the stream processor to
+communicate with external systems. Data ingestion is the operation of
+fetching raw data from external sources and converting it into a format
+suitable for processing. Operators that implement data ingestion logic
+are called data sources. A data source can ingest data from a TCP
+socket, a file, a Kafka topic, or a sensor data interface. Data egress is
+the operation of producing output in a form suitable for consumption
+
+
+by external systems. Operators that perform data egress are called data
+sinks and examples include files, databases, message queues, and
+monitoring interfaces.
+TRANSFORMATION OPERATIONS
+Transformation operations are single-pass operations that process each
+event independently. These operations consume one event after the
+other and apply some transformation to the event data, producing a
+new output stream. The transformation logic can be either integrated in
+the operator or provided by a user-defined function, as shown in
+Figure 2-4. Functions are written by the application programmer and
+implement custom computation logic.
+Figure 2-4. A streaming operator with a function that turns each incoming event into a darker event
+Operators can accept multiple inputs and produce multiple output
+streams. They can also modify the structure of the dataflow graph by
+either splitting a stream into multiple streams or merging streams into a
+single flow. We discuss the semantics of all operators available in
+Flink in Chapter 5.
+ROLLING AGGREGATIONS
+
+
+A rolling aggregation is an aggregation, such as sum, minimum, and
+maximum, that is continuously updated for each input event.
+Aggregation operations are stateful and combine the current state with
+the incoming event to produce an updated aggregate value. Note that to
+be able to efficiently combine the current state with an event and
+produce a single value, the aggregation function must be associative
+and commutative. Otherwise, the operator would have to store the
+complete stream history. Figure 2-5 shows a rolling minimum
+aggregation. The operator keeps the current minimum value and
+accordingly updates it for each incoming event.
+Figure 2-5. A rolling minimum aggregation operation
+WINDOW OPERATIONS
+
+
+Transformations and rolling aggregations process one event at a time to
+produce output events and potentially update state. However, some
+operations must collect and buffer records to compute their result.
+Consider, for example, a streaming join operation or a holistic
+aggregate, such as the median function. In order to evaluate such
+operations efficiently on unbounded streams, you need to limit the
+amount of data these operations maintain. In this section, we discuss
+window operations, which provide this service.
+Apart from having a practical value, windows also enable semantically
+interesting queries on streams. You have seen how rolling aggregations
+encode the history of the whole stream in an aggregate value and
+provide us with a low-latency result for every event. This is fine for
+some applications, but what if you are only interested in the most
+recent data? Consider an application that provides real-time traffic
+information to drivers so that they can avoid congested routes. In this
+scenario, you want to know if there has been an accident in a certain
+location within the last few minutes. On the other hand, knowing about
+all accidents that have ever happened might not be so interesting in this
+case. What’s more, by reducing the stream history to a single
+aggregate, you lose the information about how your data varies over
+time. For instance, you might want to know how many vehicles cross
+an intersection every 5 minutes.
+Window operations continuously create finite sets of events called
+buckets from an unbounded event stream and let us perform
+computations on these finite sets. Events are usually assigned to
+buckets based on data properties or based on time. To properly define
+window operator semantics we need to determine both how events are
+
+
+assigned to buckets and how often the window produces a result. The
+behavior of windows is defined by a set of policies. Window policies
+decide when new buckets are created, which events are assigned to
+which buckets, and when the contents of a bucket get evaluated. The
+latter decision is based on a trigger condition. When the trigger
+condition is met, the bucket contents are sent to an evaluation function
+that applies the computation logic on the bucket elements. Evaluation
+functions can be aggregations like sum or minimum or custom
+operations applied on the bucket’s collected elements. Policies can be
+based on time (e.g., events received in the last five seconds), on count
+(e.g., the last one hundred events), or on a data property. Next, we
+describe the semantics of common window types.
+Tumbling windows assign events into nonoverlapping buckets
+of fixed size. When the window border is passed, all the
+events are sent to an evaluation function for processing.
+Count-based tumbling windows define how many events are
+collected before triggering evaluation. Figure 2-6 shows a
+count-based tumbling window that discretizes the input stream
+into buckets of four elements. Time-based tumbling windows
+define a time interval during which events are buffered in the
+bucket. Figure 2-7 shows a time-based tumbling window that
+gathers events into buckets and triggers computation every 10
+minutes.
+
+
+Figure 2-6. Count-based tumbling window
+Figure 2-7. Time-based tumbling window
+Sliding windows assign events into overlapping buckets of
+fixed size. Thus, an event might belong to multiple buckets.
+We define sliding windows by providing their length and their
+slide. The slide value defines the interval at which a new
+bucket is created. The sliding count-based window
+of Figure 2-8 has a length of four events and slide of three
+events.
+
+
+Figure 2-8. Sliding count-based window with a length of four events and a slide of three events
+Session windows are useful in common real-world scenarios
+where neither tumbling nor sliding windows can be applied.
+Consider an application that analyzes online user behavior. In
+such applications, we would like to group together events that
+originate from the same period of user activity or session.
+Sessions are comprised of a series of events happening in
+adjacent times followed by a period of inactivity. For example,
+user interactions with a series of news articles one after the
+other could be considered a session. Since the length of a
+session is not defined beforehand but depends on the actual
+data, tumbling and sliding windows cannot be applied in this
+scenario. Instead, we need a window operation that assigns
+events belonging to the same session in the same bucket.
+Session windows group events in sessions based on a session
+gap value that defines the time of inactivity to consider a
+session closed. Figure 2-9 shows a session window.
+
+
+Figure 2-9. Session window
+All the window types that you have seen so far are windows that
+operate on the full stream. But in practice you might want to partition a
+stream into multiple logical streams and define parallel windows. For
+instance, if you are receiving measurements from different sensors, you
+probably want to group the stream by sensor ID before applying a
+window computation. In parallel windows, each partition applies the
+window policies independently of other partitions. Figure 2-10 shows a
+parallel count-based tumbling window of length 2 that is partitioned by
+event color.
+
+
+Figure 2-10. A parallel count-based tumbling window of length 2
+Window operations are closely related to two dominant concepts in
+stream processing: time semantics and state management. Time is
+perhaps the most important aspect of stream processing. Even though
+low latency is an attractive feature of stream processing, its true value
+is way beyond just fast analytics. Real-world systems, networks, and
+communication channels are far from perfect, and streaming data can
+often be delayed or arrive out of order. It is crucial to understand how
+to deliver accurate and deterministic results under such conditions.
+What’s more, streaming applications that process events as they are
+produced should also be able to process historical events in the same
+way, thus enabling offline analytics or even time travel analyses. Of
+course, none of this matters if your system cannot guard state against
+
+
+failures. All the window types that you have seen so far need to buffer
+data before producing a result. In fact, if you want to compute anything
+interesting in a streaming application, even a simple count, you need to
+maintain state. Considering that streaming applications might run for
+several days, months, or even years, you need to make sure that state
+can be reliably recovered under failures and that your system can
+guarantee accurate results even if things break. In the rest of this
+chapter, we are going to look deeper into the concepts of time and state
+guarantees under failures in data stream processing.
+Time Semantics
+In this section, we introduce time semantics and describe the different
+notions of time in streaming. We discuss how a stream processor can
+provide accurate results with out-of-order events and how you can
+perform historical event processing and time travel with streaming.
+What Does One Minute Mean in Stream Processing?
+When dealing with a potentially unbounded stream of continuously
+arriving events, time becomes a central aspect of applications. Let’s
+assume you want to compute results continuously, maybe every
+minute. What would one minute really mean in the context of our
+streaming application?
+Consider a program that analyzes events generated by users playing an
+online mobile game. Users are organized in teams and the application
+collects a team’s activity and provides rewards in the game, such as
+extra lives and level-ups, based on how fast the team’s members meet
+
+
+the game’s goals. For example, if all users in a team pop 500 bubbles
+within one minute, they get a level-up. Alice is a devoted player who
+plays the game every morning during her commute to work. The
+problem is that Alice lives in Berlin and takes the subway to work. And
+everyone knows that the mobile internet connection in the Berlin
+subway is lousy. Consider the case where Alice starts popping bubbles
+while her phone is connected to the network and sends events to the
+analysis application. Then suddenly the train enters a tunnel and her
+phone gets disconnected. Alice keeps on playing and the game events
+are buffered in her phone. When the train exits the tunnel, she comes
+back online, and pending events are sent to the application. What
+should the application do? What’s the meaning of one minute in this
+case? Does it include the time Alice was offline or not? Figure 2-11
+illustrates this problem.
+
+
+Figure 2-11. An application receiving online mobile game events played on the subway would experience a gap when the network connection is lost, but events are buffered in the player’s phone and delivered when the connection is restored
+Online gaming is a simple scenario showing how operator semantics
+should depend on the time when events actually happen and not the
+time when the application receives the events. In the case of a mobile
+game, consequences can be as bad as Alice and her team getting
+disappointed and never playing again. But there are much more time
+critical applications whose semantics we need to guarantee. If we only
+consider how much data we receive within one minute, our results will
+
+
+vary and depend on the speed of the network connection or the speed
+of the processing. Instead, what really defines the amount of events in
+one minute is the time of the data itself.
+In Alice’s game example, the streaming application could operate with
+two different notions of time: processing time or event time. We
+describe both notions in the following sections.
+Processing Time
+Processing time is the time of the local clock on the machine where the
+operator processing the stream is being executed. A processing-time
+window includes all events that happen to have arrived at the window
+operator within a time period, as measured by the wall clock of its
+machine. As shown in Figure 2-12, in Alice’s case, a processing-time
+window would continue counting time when her phone gets
+disconnected, thus not accounting for her game activity during that
+time.
+
+
+Figure 2-12. A processing-time window continues counting time even after Alice’s phone gets disconnected
+Event Time
+Event time is the time when an event in the stream actually happened.
+Event time is based on a timestamp that is attached to the events of the
+stream. Timestamps usually exist inside the event data before they
+enter the processing pipeline (e.g., the event creation time). Figure 2
+13 shows that an event-time window would correctly place events in a
+
+
+window, reflecting the reality of how things happened, even though
+some events were delayed.
+Figure 2-13. Event time correctly places events in a window, reflecting the reality of how things happened
+Event time completely decouples the processing speed from the results.
+Operations based on event time are predictable and their results are
+deterministic. An event time window computation will yield the same
+result no matter how fast the stream is processed or when the events
+
+
+arrive at the operator.
+Handling delayed events is only one of the challenges that you can
+overcome with event time. The ubiquitous problem of out-of-order data
+can also be solved with it. Consider Bob, another player of the online
+mobile game, who happens to be on the same train as Alice. Bob and
+Alice play the same game but have different mobile providers. While
+Alice’s phone loses connection when inside the tunnel, Bob’s phone
+remains connected and delivers events to the gaming application.
+By relying on event time, we can guarantee result correctness even in
+cases of out-of-order data. What’s more, when combined with
+replayable streams, the determinism of timestamps gives you the
+ability to fast forward the past. That is, you can replay a stream and
+analyze historic data as if events are happening in real time.
+Additionally, you can fast forward the computation to the present so
+that once your program catches up with the events happening now, it
+can continue as a real-time application using exactly the same program
+logic.
+Watermarks
+In our discussion about event-time windows so far, we have
+overlooked one very important aspect: how do we decide when to
+trigger an event-time window? That is, how long do we have to wait
+before we can be certain that we have received all events that happened
+before a certain point of time? And how do we even know that data
+will be delayed? Given the unpredictable reality of distributed systems
+and arbitrary delays that might be caused by external components,
+
+
+there are no categorically correct answers to these questions. In this
+section, we will see how to use watermarks to configure event-time
+window behavior.
+A watermark is a global progress metric that indicates the point in time
+when we are confident that no more delayed events will arrive. In
+essence, watermarks provide a logical clock that informs the system
+about the current event time. When an operator receives a watermark
+with time T, it can assume that no further events with timestamp less
+than T will be received. Watermarks are essential for both event-time
+windows and operators handling out-of-order events. Once a
+watermark has been received, operators are signaled that all timestamps
+for a certain time interval have been observed and either trigger
+computation or order received events.
+Watermarks provide a configurable tradeoff between results confidence
+and latency. Eager watermarks ensure low latency but provide lower
+confidence. In this case, late events might arrive after the watermark,
+and we should provide some code to handle them. On the other hand, if
+watermarks are too relaxed, you have high confidence but you might
+unnecessarily increase processing latency.
+In many real-world applications, the system does not have enough
+knowledge to perfectly determine watermarks. In the mobile gaming
+example, it is practically impossible to know how long a user might
+remain disconnected; they could be going through a tunnel, boarding a
+plane, or never playing again. No matter if watermarks are user defined
+or automatically generated, tracking global progress in a distributed
+system might be problematic in the presence of straggler tasks. Hence,
+
+
+simply relying on watermarks might not always be a good idea.
+Instead, it is crucial that the stream processing system provide some
+mechanism to deal with events that might arrive after the watermark.
+Depending on the application requirements, you might want to ignore
+such events, log them, or use them to correct previous results.
+Processing Time Versus Event Time
+At this point, you might be wondering why we would even bother with
+processing time if event time solves all of our problems. The truth is,
+processing time can indeed be useful in some cases. Processing-time
+windows introduce the lowest latency possible. Since you do not take
+into consideration late events and out-of-order events, a window
+simply needs to buffer up events and immediately trigger computation
+once the specified time length is reached. Thus, for applications where
+speed is more important than accuracy, processing time comes in
+handy. Another case is when you need to periodically report results in
+real time, independently of their accuracy. An example application
+would be a real-time monitoring dashboard that displays event
+aggregates as they are received. Finally, processing-time windows
+offer a faithful representation of the streams themselves, which might
+be a desirable property for some use cases. For instance, you might be
+interested in observing the stream and counting the number of events
+per second to detect outages. To recap, processing time offers low
+latency but results depend on the speed of processing and are not
+deterministic. On the other hand, event time guarantees deterministic
+results and allows you to deal with events that are late or even out of
+order.
+
+
+State and Consistency Models
+We now turn to another extremely important aspect of stream
+processing—state. State is ubiquitous in data processing. It is required
+by any nontrivial computation. To produce a result, a function
+accumulates state over a period of time or number of events (e.g., to
+compute an aggregation or detect a pattern). Stateful operators use both
+incoming events and internal state to compute their output. Take, for
+example, a rolling aggregation operator that outputs the current sum of
+all the events it has seen so far. The operator keeps the current value of
+the sum as its internal state and updates it every time it receives a new
+event. Similarly, consider an operator that raises an alert when it
+detects a “high temperature” event followed by a “smoke” event within
+10 minutes. The operator needs to store the “high temperature” event in
+its internal state until it sees the “smoke” event or the until 10-minute
+time period expires.
+The importance of state becomes even more evident if we consider the
+case of using a batch processing system to analyze an unbounded
+dataset. Before the rise of modern stream processors, a common
+approach to process unbounded data was to repeatedly schedule jobs
+over small batches of incoming events on a batch processing system.
+When a job finishes, the result is written to persistent storage, and all
+operator state is lost. Once a job is scheduled for execution on the next
+batch, it cannot access the state of the previous job. This problem is
+commonly solved by delegating state management to an external
+system, such as a database. In contrast, in continuously running
+streaming jobs, state is durable across events and we can expose it as a
+first-class citizen in the programming model. Arguably, we could use
+
+
+an external system to also manage streaming state, even though this
+design choice might introduce additional latency.
+Since streaming operators process potentially unbounded data, caution
+should be taken to not allow internal state to grow indefinitely. To limit
+the state size, operators usually maintain some kind of summary or
+synopsis of the events seen so far. Such a summary can be a count, a
+sum, a sample of the events seen so far, a window buffer, or a custom
+data structure that preserves some property of interest to the running
+application.
+As you might imagine, supporting stateful operators comes with a few
+implementation challenges:
+State management
+The system needs to efficiently manage the state and make sure it is
+protected from concurrent updates.
+State partitioning
+Parallelization gets complicated, since results depend on both the
+state and incoming events. Fortunately, in many cases, you can
+partition the state by a key and manage the state of each partition
+independently. For example, if you are processing a stream of
+measurements from a set of sensors, you can use a partitioned
+operator state to maintain state for each sensor independently.
+State recovery
+The third and biggest challenge that comes with stateful operators
+is ensuring that state can be recovered and results will be correct
+even in the presence of failures.
+
+
+In the next section, we discuss task failures and result guarantees in
+detail.
+Task Failures
+Operator state in streaming jobs is very valuable and should be guarded
+against failures. If state gets lost during a failure, results will be
+incorrect after recovery. Streaming jobs run for long periods of time,
+and thus state might be collected over several days or even months.
+Reprocessing all input to reproduce lost state in the case of failures
+would be both very expensive and time-consuming.
+In the beginning of this chapter, you saw how you can model streaming
+programs as dataflow graphs. Before execution, these are translated
+into physical dataflow graphs of connected parallel tasks, each running
+some operator logic, consuming input streams and producing output
+streams for other tasks. Typical real-world setups can easily have
+hundreds of such tasks running in parallel on many physical machines.
+In long-running, streaming jobs, each of these tasks can fail at any
+time. How can you ensure that such failures are handled transparently
+so that your streaming job can continue to run? In fact, you would like
+your stream processor to not only continue processing in the case of
+task failures, but also provide correctness guarantees about the result
+and operator state. We discuss all these matters in this section.
+WHAT IS A TASK FAILURE?
+For each event in the input stream, a task is a processing step that
+performs the following steps: (1) receives the event, storing it in a local
+buffer; (2) possibly updates internal state; and (3) produces an output
+
+
+record. A failure can occur during any of these steps and the system
+has to clearly define its behavior in a failure scenario. If the task fails
+during the first step, will the event get lost? If it fails after it has
+updated its internal state, will it update it again after it recovers? And in
+those cases, will the output be deterministic?
+NOTE
+We assume reliable network connections, and that no records are dropped or
+duplicated and all events are eventually delivered to their destination in FIFO
+order. Note that Flink uses TCP connections, and thus these requirements are
+guaranteed. We also assume perfect failure detectors and that no task will
+intentionally act maliciously, meaning all nonfailed tasks follow the above steps.
+In a batch processing scenario, all these questions are answered
+because a batch job can be simply restarted from the beginning. Hence,
+no events are lost and the state is completely built up from scratch. In
+the streaming world, however, dealing with failures is not a trivial
+problem. Streaming systems define their behavior in the presence of
+failures by offering result guarantees. Next, we review the types of
+guarantees offered by modern stream processors and some of the
+mechanisms systems implement to achieve those guarantees.
+Result Guarantees
+Before we describe the different types of guarantees, we need to clarify
+a few points that are often the source of confusion when discussing
+task failures in stream processors. In the rest of this chapter, when we
+talk about “result guarantees” we mean the consistency of the internal
+
+
+state of the stream processor. That is, we are concerned with what the
+application code sees as state value after recovering from a failure.
+Note that guaranteeing the consistency of an application’s state is not
+the same a guaranteeing consistency of its output. Once data has been
+emitted to a sink, it is difficult to guarantee result correctness, unless
+the sink system supports transactions.
+AT-MOST-ONCE
+The simplest thing to do when a task fails is to do nothing to recover
+lost state and replay lost events. At-most-once is the trivial case that
+guarantees processing of each event at most once. In other words,
+events can be simply dropped and nothing is done to ensure result
+correctness. This type of guarantee is also known as “no guarantee”
+since even a system that drops every event can provide this guarantee.
+Having no guarantees whatsoever sounds like a terrible idea, but it
+might be fine if you can live with approximate results and all you care
+about is providing the lowest latency possible.
+AT-LEAST-ONCE
+In most real-world applications, the expectation is that events should
+not get lost. This type of guarantee is called at-least-once, and it means
+that all events will be processed, and there is a chance that some of
+them are processed more than once. Duplicate processing might be
+acceptable if application correctness only depends on the completeness
+of information. For example, determining whether a specific event
+occurs in the input stream can be correctly realized with at-least-once
+guarantees. In the worst case, you will locate the event more than once.
+However, counting how many times a specific event occurs in the input
+
+
+stream might return the wrong result under at-least-once guarantees.
+In order to ensure at-least-once result correctness, you need to have a
+way to replay events—either from the source or from some buffer.
+Persistent event logs write all events to durable storage, so that they
+can be replayed if a task fails. Another way to achieve equivalent
+functionality is using record acknowledgments. This method stores
+every event in a buffer until its processing has been acknowledged by
+all tasks in the pipeline, at which point the event can be discarded.
+EXACTLY-ONCE
+Exactly-once is the strictest guarantee and hard to achieve. Exactly
+once means that not only will there be no event loss, but also updates
+on the internal state will be applied exactly once for each event. In
+essence, exactly-once guarantees mean that our application will
+provide the correct result, as though a failure never happened.
+Providing exactly-once guarantees requires at-least-once guarantees,
+and thus a data replay mechanism is again necessary. Additionally, the
+stream processor needs to ensure internal state consistency. That is,
+after recovery, it should know whether an event update has already
+been reflected on the state or not. Transactional updates are one way to
+achieve this result, but they can incur substantial performance
+overhead. Instead, Flink uses a lightweight snapshotting mechanism to
+achieve exactly-once result guarantees. We discuss Flink’s fault
+tolerance algorithm in “Checkpoints, Savepoints, and State Recovery”.
+END-TO-END EXACTLY-ONCE
+
+
+The types of guarantees you have seen so far refer to the state of an
+application that is managed by the stream processor. In a real-world
+streaming application however, there will be at least one source and
+one sink apart from the stream processor. End-to-end guarantees refer
+to result correctness across the whole data processing pipeline. Each
+component provides its own guarantees and the end-to-end guarantee
+of the complete pipeline would be the weakest of each of its
+components. It is important to note that sometimes you can get stronger
+semantics with weaker guarantees. A common case is when a task
+performs idempotent operations, like maximum or minimum. In this
+case, you can achieve exactly-once semantics with at-least-once
+guarantees.
+Summary
+In this chapter, you learned the fundamentals of data stream
+processing. We looked at the dataflow programming model and learned
+how streaming applications can be expressed as distributed dataflow
+graphs. Next, you learned the requirements of processing infinite
+streams in parallel and saw the importance of latency and throughput
+for stream applications. We covered basic streaming operations and
+how to compute meaningful results on unbounded input data using
+windows. You learned the meaning of time in stream processing and
+compared the notions of event time and processing time. Finally, we
+learned why state is important in streaming applications and how to
+guard it against failures and guarantee correct results.
+Up to this point, we have considered streaming concepts independently
+of Apache Flink. In the rest of this book, we are going to see how Flink
+
+
+actually implements these concepts and how you can use its
+DataStream API to write applications that use all of the features we
+have introduced so far.
+
+
+Chapter 3. The Architecture of
+Apache Flink
+Chapter 2 discussed important concepts of distributed stream
+processing, such as parallelization, time, and state. In this chapter, we
+give a high-level introduction to Flink’s architecture and describe how
+Flink addresses the aspects of stream processing we discussed earlier.
+In particular, we explain Flink’s distributed architecture, show how it
+handles time and state in streaming applications, and discuss its fault
+tolerance mechanisms. This chapter provides relevant background
+information to successfully implement and operate advanced streaming
+applications with Apache Flink. It will help you to understand Flink’s
+internals and to reason about the performance and behavior of
+streaming applications.
+System Architecture
+Flink is a distributed system for stateful parallel data stream
+processing. A Flink setup consists of multiple processes that typically
+run distributed across multiple machines. Common challenges that
+distributed systems need to address are allocation and management of
+compute resources in a cluster, process coordination, durable and
+highly available data storage, and failure recovery.
+Flink does not implement all this functionality by itself. Instead, it
+
+
+focuses on its core function—distributed data stream processing—and
+leverages existing cluster infrastructure and services. Flink is well
+integrated with cluster resource managers, such as Apache Mesos,
+YARN, and Kubernetes, but can also be configured to run as a stand
+alone cluster. Flink does not provide durable, distributed storage.
+Instead, it takes advantage of distributed filesystems like HDFS or
+object stores such as S3. For leader election in highly available setups,
+Flink depends on Apache ZooKeeper.
+In this section, we describe the different components of a Flink setup
+and how they interact with each other to execute an application. We
+discuss two different styles of deploying Flink applications and the
+way each distributes and executes tasks. Finally, we explain how
+Flink’s highly available mode works.
+Components of a Flink Setup
+A Flink setup consists of four different components that work together
+to execute streaming applications. These components are a
+JobManager, a ResourceManager, a TaskManager, and a Dispatcher.
+Since Flink is implemented in Java and Scala, all components run on
+Java Virtual Machines (JVMs). Each component has the following
+responsibilities:
+The JobManager is the master process that controls the
+execution of a single application—each application is
+controlled by a different JobManager. The JobManager
+receives an application for execution. The application consists
+of a so-called JobGraph, a logical dataflow graph (see
+“Introduction to Dataflow Programming”), and a JAR file that
+
+
+bundles all the required classes, libraries, and other resources.
+The JobManager converts the JobGraph into a physical
+dataflow graph called the ExecutionGraph, which consists of
+tasks that can be executed in parallel. The JobManager
+requests the necessary resources (TaskManager slots) to
+execute the tasks from the ResourceManager. Once it receives
+enough TaskManager slots, it distributes the tasks of the
+ExecutionGraph to the TaskManagers that execute them.
+During execution, the JobManager is responsible for all
+actions that require a central coordination such as the
+coordination of checkpoints (see “Checkpoints, Savepoints,
+and State Recovery”).
+Flink features multiple ResourceManagers for different
+environments and resource providers such as YARN, Mesos,
+Kubernetes, and standalone deployments. The
+ResourceManager is responsible for managing TaskManager
+slots, Flink’s unit of processing resources. When a
+JobManager requests TaskManager slots, the
+ResourceManager instructs a TaskManager with idle slots to
+offer them to the JobManager. If the ResourceManager does
+not have enough slots to fulfill the JobManager’s request, the
+ResourceManager can talk to a resource provider to provision
+containers in which TaskManager processes are started. The
+ResourceManager also takes care of terminating idle
+TaskManagers to free compute resources.
+TaskManagers are the worker processes of Flink. Typically,
+there are multiple TaskManagers running in a Flink setup.
+Each TaskManager provides a certain number of slots. The
+number of slots limits the number of tasks a TaskManager can
+execute. After it has been started, a TaskManager registers its
+slots to the ResourceManager. When instructed by the
+ResourceManager, the TaskManager offers one or more of its
+slots to a JobManager. The JobManager can then assign tasks
+
+
+to the slots to execute them. During execution, a TaskManager
+exchanges data with other TaskManagers that run tasks of the
+same application. The execution of tasks and the concept of
+slots is discussed in “Task Execution”.
+The Dispatcher runs across job executions and provides a
+REST interface to submit applications for execution. Once an
+application is submitted for execution, it starts a JobManager
+and hands the application over. The REST interface enables
+the dispatcher to serve as an HTTP entry point to clusters that
+are behind a firewall. The dispatcher also runs a web
+dashboard to provide information about job executions.
+Depending on how an application is submitted for execution
+(discussed in “Application Deployment”), a dispatcher might
+not be required.
+Figure 3-1 shows how Flink’s components interact with each other
+when an application is submitted for execution.
+
+
+Figure 3-1. Application submission and component interactions
+NOTE
+Figure 3-1 is a high-level sketch to visualize the responsibilities and interactions
+of the components of an application. Depending on the environment (YARN,
+Mesos, Kubernetes, standalone cluster), some steps can be omitted or components
+might run in the same JVM process. For instance, in a standalone setup—a setup
+without a resource provider—the ResourceManager can only distribute the slots
+of available TaskManagers and cannot start new TaskManagers on its own. In
+“Deployment Modes”, we will discuss how to set up and configure Flink for
+different environments.
+Application Deployment
+Flink applications can be deployed in two different styles.
+
+
+Framework style In this mode, Flink applications are packaged into a JAR file and submitted by a client to a running service. The service can be a Flink Dispatcher, a Flink JobManager, or YARN’s ResourceManager. In any case, there is a service running that accepts the Flink application and ensures it is executed. If the application was submitted to a JobManager, it immediately starts to execute the application. If the application was submitted to a Dispatcher or YARN ResourceManager, it will spin up a JobManager and hand over the application, and the JobManager will start to execute the application.
+Library style In this mode, the Flink application is bundled in an applicationspecific container image, such as a Docker image. The image also includes the code to run a JobManager and ResourceManager. When a container is started from the image, it automatically launches the ResourceManager and JobManager and submits the bundled job for execution. A second, job-independent image is used to deploy TaskManager containers. A container that is started from this image automatically starts a TaskManager, which connects to the ResourceManager and registers its slots. Typically, an external resource manager such as Kubernetes takes care of starting the images and ensures that containers are restarted in case of a failure.
+The framework style follows the traditional approach of submitting an
+application (or query) via a client to a running service. In the library
+style, there is no Flink service. Instead, Flink is bundled as a library
+together with the application in a container image. This deployment
+mode is common for microservices architectures. We discuss the topic
+of application deployment in more detail in “Running and Managing
+Streaming Applications”.
+
+
+Task Execution
+A TaskManager can execute several tasks at the same time. These tasks
+can be subtasks of the same operator (data parallelism), a different
+operator (task parallelism), or even from a different application (job
+parallelism). A TaskManager offers a certain number of processing
+slots to control the number of tasks it is able to concurrently execute. A
+processing slot can execute one slice of an application—one parallel
+task of each operator of the application. Figure 3-2 shows the
+relationships between TaskManagers, slots, tasks, and operators.
+
+
+Figure 3-2. Operators, tasks, and processing slots
+On the left-hand side of Figure 3-2 you see a JobGraph—the
+nonparallel representation of an application—consisting of five
+operators. Operators A and C are sources and operator E is a sink.
+Operators C and E have a parallelism of two. The other operators have
+a parallelism of four. Since the maximum operator parallelism is four,
+the application requires at least four available processing slots to be
+executed. Given two TaskManagers with two processing slots each,
+this requirement is fulfilled. The JobManager spans the JobGraph into
+
+
+an ExecutionGraph and assigns the tasks to the four available slots.
+The tasks of the operators with a parallelism of four are assigned to
+each slot. The two tasks of operators C and E are assigned to slots 1.1
+and 2.1 and slots 1.2 and 2.2, respectively. Scheduling tasks as slices to
+slots has the advantage that many tasks are colocated on the
+TaskManager, which means they can efficiently exchange data within
+the the same process and without accessing the network. However, too
+many colocated tasks can also overload a TaskManager and result in
+bad performance. In “Controlling Task Scheduling” we discuss how to
+control the scheduling of tasks.
+A TaskManager executes its tasks multithreaded in the same JVM
+process. Threads are more lightweight than separate processes and
+have lower communication costs but do not strictly isolate tasks from
+each other. Hence, a single misbehaving task can kill a whole
+TaskManager process and all tasks that run on it. By configuring only a
+single slot per TaskManager, you can isolate applications across
+TaskManagers. By leveraging thread parallelism inside a TaskManager
+and deploying several TaskManager processes per host, Flink offers a
+lot of flexibility to trade off performance and resource isolation when
+deploying applications. We will discuss the configuration and setup of
+Flink clusters in detail in Chapter 9.
+Highly Available Setup
+Streaming applications are typically designed to run 24/7. Hence, it is
+important that their execution does not stop even if an involved process
+fails. To recover from failures, the system first needs to restart failed
+processes, and second, restart the application and recover its state. In
+
+
+this section, you will learn how Flink restarts failed processes.
+Restoring the state of an application is described in “Recovery from a
+Consistent Checkpoint”.
+TASKMANAGER FAILURES
+As discussed before, Flink requires a sufficient number of processing
+slots in order to execute all tasks of an application. Given a Flink setup
+with four TaskManagers that provide two slots each, a streaming
+application can be executed with a maximum parallelism of eight. If
+one of the TaskManagers fails, the number of available slots drops to
+six. In this situation, the JobManager will ask the ResourceManager to
+provide more processing slots. If this is not possible—for example,
+because the application runs in a standalone cluster—the JobManager
+can not restart the application until enough slots become available. The
+application’s restart strategy determines how often the JobManager
+restarts the application and how long it waits between restart attempts.
+JOBMANAGER FAILURES
+A more challenging problem than TaskManager failures are
+JobManager failures. The JobManager controls the execution of a
+streaming application and keeps metadata about its execution, such as
+pointers to completed checkpoints. A streaming application cannot
+continue processing if the responsible JobManager process disappears.
+This makes the JobManager a single point of failure for applications in
+Flink. To overcome this problem, Flink supports a high-availability
+mode that migrates the responsibility and metadata for a job to another
+JobManager in case the original JobManager disappears.
+1
+
+
+Flink’s high-availability mode is based on Apache ZooKeeper, a
+system for distributed services that require coordination and consensus.
+Flink uses ZooKeeper for leader election and as a highly available and
+durable datastore. When operating in high-availability mode, the
+JobManager writes the JobGraph and all required metadata, such as the
+application’s JAR file, into a remote persistent storage system. In
+addition, the JobManager writes a pointer to the storage location into
+ZooKeeper’s datastore. During the execution of an application, the
+JobManager receives the state handles (storage locations) of the
+individual task checkpoints. Upon completion of a checkpoint—when
+all tasks have successfully written their state into the remote storage
+the JobManager writes the state handles to the remote storage and a
+pointer to this location to ZooKeeper. Hence, all data that is required to
+recover from a JobManager failure is stored in the remote storage and
+ZooKeeper holds pointers to the storage locations. Figure 3-3
+illustrates this design.
+
+
+Figure 3-3. A highly available Flink setup
+When a JobManager fails, all tasks that belong to its application are
+automatically cancelled. A new JobManager that takes over the work
+of the failed master performs the following steps:
+1. It requests the storage locations from ZooKeeper to fetch the
+JobGraph, the JAR file, and the state handles of the last
+checkpoint of the application from the remote storage.
+
+
+2. It requests processing slots from the ResourceManager to
+continue executing the application.
+3. It restarts the application and resets the state of all its tasks to
+the last completed checkpoint.
+When running an application as a library deployment in a container
+environment, such as Kubernetes, failed JobManager or TaskManager
+containers are usually automatically restarted by the container
+orchestration service. When running on YARN or on Mesos, Flink’s
+remaining processes trigger the restart of JobManager or TaskManager
+processes. Flink does not provide tooling to restart failed processes
+when running in a standalone cluster. Hence, it can be useful to run
+standby JobManagers and TaskManagers that can take over the work
+of failed processes. We will discuss the configuration of highly
+available Flink setups later in “Highly Available Setups”.
+Data Transfer in Flink
+The tasks of a running application are continuously exchanging data.
+The TaskManagers take care of shipping data from sending tasks to
+receiving tasks. The network component of a TaskManager collects
+records in buffers before they are shipped, i.e., records are not shipped
+one by one but batched into buffers. This technique is fundamental to
+effectively using the networking resource and achieving high
+throughput. The mechanism is similar to the buffering techniques used
+in networking or disk I/O protocols.
+NOTE
+Note that shipping records in buffers does imply that Flink’s processing model is
