@@ -1,0 +1,1123 @@
+醫學影像成像原理
+Instructor: Cheng-Ying Chou, Ph.D.
+Department of Biomechatronics Engineeirng
+National Taiwan University
+
+
+Electromagnetic Spectrum
+2
+
+
+The EM Spectrum
+3
+
+
+Medical Imaging Modalities
+p X-ray radiography
+p Computed tomography
+p Nuclear imaging
+p Ultrasound Imaging
+p Magnetic resonance imaging
+4
+
+
+X-RAY SYSTEM
+
+
+Discovery of X-rays — The Nobel Prize in Physics 1901
+Wilhelm Conrad Röntgen
+Munich University
+Munich, Germany
+(1845-1923)
+6
+
+
+Basic Construct
+7
+
+
+X-ray Transmission Images of Various Parts of the Body
+8
+
+
+X-ray Generation
+p Two primary methods for X-ray Generation:
+■ Rearrangement of atomic-electron configurations “Characteristic” X-rays.
+■ The deflection of charged particles in the vicinity of the atomic nucleus “Continuous X-rays or Bremsstrahlung”.
+9
+
+
+Bremsstrahlung X-ray
+p Bremsstrahlung radiation
+■ Collide with nucleus or paths are close to the nucleus.
+■ More common than characteristic radiation.
+10
+
+
+X-ray tube components
+p Filament: controls tube current (mA)
+p Cathode and focusing cup
+p Anode is switched to high potential
+■ 30-150kVp
+■ Made of tungsten
+■ Bremsstrahlung is 1%
+■ Heat is 99%
+■ Spins at 3,200-3,600 rpm
+p Glass housing: vacuum
+11
+
+
+Exposure control
+p kVp applied for short duration
+■ Fixed timer (silicon controlled rectifier, SCR), or
+■ Automatic exposure control (AEC), 5 mm thick ionization chamber
+triggers SCR
+p Tube current mA controlled by
+■ Filament current, and kVp
+p mA times exposure time yields mAs
+■ mAs measures X-ray exposure
+12
+
+
+kVp = energy mAs = amount
+13
+
+
+Bremsstrahlung (Braking Radiation) Spectrum
+p Electrons lose energy through photon emission while being deflected
+(decelerated) in the electric field of the atomic nucleus.
+p For energies < 100 keV, the photons are emitted at 90 deg to the
+direction of the incident electron.
+p For higher energies the direction of the emitted radiation is shifted
+forward.
+14
+
+
+Radiative vs. Collisional Energy Loss
+p Predominant energy loss of electrons at energies below 1 MeV are
+collisions leading to excitation and ionization resulting in heat.
+p Assuming a tungsten (W, Z=74) target:
+■ X-ray diagnostic
+p At 100 keV the ratio is about 0.9%, therefore, ~99% of the energy result in heat.
+■ Radiation therapy
+p At 6 MeV the ratio is about 0.54, therefore, most of the energy results in X-rays.
+15
+
+
+Heel Effect
+p Heel effect refers to a reduction in beam intensity toward the
+anode side due to the attenuation in the anode.
+16
+
+
+Filtration and Collimation
+p Inherent filtration due to tube window (1-2 mm thickness)
+made of glass (SiO2) or aluminum, effectively removing all
+radiation below 15 keV.
+p Added filtration due to added metal sheets to intentionally
+adjust the effective energy (main goal is further reduction in
+low-energy flux which will be absorbed in patient and only
+lead to unnecessary dose).
+p Collimators adjust the size and shape of the X-ray field
+emerging from the tube port and the additional tungsten due
+to internal filament and anode evaporation.
+p Compensation or equalization filters are used to deliver a
+more uniform exposure to the detector compensating
+inhomogeneous attenuation in the patient.
+17
+
+
+Compensation filters
+p Goal: to even out film exposure
+18
+
+
+X-ray spectrum
+19
+
+
+INTERACTIONS OF X-RAYS
+20
+
+
+Interaction of X-rays with Tissues
+p Primary radiation: a certain fraction of X-rays pass straight through the body and undergo no interactions with tissue.
+p Secondary radiation: X-rays can be scattered, an interaction that alters their trajectory between source and detector.
+p Absorbed radiation: X-rays can be absorbed completely in tissue and not reach the detector at all.
+21
+
+
+Interactions in Diagnostic Radiology
+p In the X-ray energy range (25–150 keV) used for diagnostic radiology, three dominant mechanisms describe the interaction of X-rays with tissue:
+■ Coherent scatter and Compton scatter are both involved in the production of secondary radiation.
+■ Photoelectric interactions result in Xray absorption.
+22
+
+
+Rayleigh Scattering
+p Elastic (coherent, classical) scattering
+■ Scatter with direction change but no energy loss.
+hυincident = hυscattered ;
+λincident = λscattered
+p Characteristics
+■ An interaction of the x-ray with the entire atom via a refractory mechanism (wavelength ~ atomic radius).
+■ Occurs for longer wavelengths (low x-ray energies in the mammography range - 15 - 30keV).
+■ Reduces imaging quality in x-ray imaging. E(keV) P(%)
+~30 <12
+>70 <5
+P: probability
+
+
+Compton Scattering
+p Compton scattering refers to the interaction between an incident X-ray and a loosely bound electron in an outer shell of an atom in tissue.
+p A fraction of the X-ray energy is transferred to the electron, the electron is ejected, and the X-ray is deflected from its original path.
+p The probability of an X-ray undergoing Compton scattering is
+■ Essentially independent of the effective atomic number of the tissue.
+■ Linearly proportional to the tissue electron density.
+■ Weakly dependent on the energy of the incident X-ray.
+24
+
+
+Photoelectric Effect (I)
+p Photoelectric interactions in the body involve the energy of an incident X-ray being absorbed by an atom in tissue, with a tightly bound electron being emitted from the K or L shell as a “photoelectron.”
+p The kinetic energy of the photoelectron is equal to the difference between the energy of the incident X-ray and the binding energy of the electron.
+p A second electron from a higher energy level then fills the “hole” created by the ejection of the photoelectron, a process accompanied by the emission of a “characteristic” X-ray with an energy equal to the difference in the binding energies of the outer electron and the photoelectron.
+25
+
+
+X-Ray Mass Attenuation Coefficients for Some Materials
+p Body Level One
+■ Body Level Two
+p Body Level Three
+▪ Body Level Four
+▪ Body Level Five
+Source: Hubbell and Seltzer, NIST online tables. 26
+
+
+SCATTER CONTROL AND DETECTORS
+27
+
+
+Scatter control
+p Ideal X-ray path: a line
+p Compton scattering causes blurring
+p How to reduce scatter
+■ Airgap
+■ Scanning slit
+■ Grid
+28
+
+
+Antiscatter Grids(I)
+Ideal situation Contribution of Compton
+scattered X-rays
+Only Compton-scattered
+X-rays
+29
+
+
+Antiscatter Grids(II)
+The black areas represent thin
+lead septa, separated by the
+aluminum support.
+• A one-dimensional representation of the
+antiscatter grid.
+• Primary X-rays pass between the lead
+septa, whereas those X-rays that have
+undergone a significant deviation in
+trajectory from Compton scattering are
+absorbed by the septa.
+30
+
+
+Grids
+p Effectiveness in scatter reduction
+p Grid ratio= h/b
+p Radiography
+■ 6:1 to 16:1
+p Mammography
+■ 2:1 to 5:1
+31
+
+
+Stationary grids
+p You can change the mAs or the kVp to compensate the grids, but
+it is not recommended to do both.
+p Grids clean up scatter, they do not create scatter.
+p Know the grid ratios!!
+Grid Ratio mAs increase kVp increase
+No grid 1x 1x
+5:1 2x +8~10
+8:1 4x +13~15
+12:1 5x +20~25
+16:1 6x +30~40 32
+
+
+Problem with grids
+p Radiation is absorbed by grid
+■ Grid conversion factor
+p The amount of additional exposure required for a particular grid.
+■
+■ Typical range 3< GCF < 8
+p Grid visible on X-ray film
+■ Move grid during exposure
+■ Linear or circular motion
+GCF = mAs w/ grid
+mAs w/o grid
+33
+
+
+Film-Screen Detector
+p Film stops only 1~2% of X-rays
+p Film stops light really well
+p Phosphor (calcium tungstate CaWO4) transforms x-ray photons into light photons.
+p Flash of light lasts second.
+p About 1,000 light photons per 50 keV X-ray photon.
+1 × 10−10
+34
+
+
+Intensifying Screen
+p The intrinsic sensitivity of photographic film to X-rays is very low,
+■ i.e., its use would require high patient doses of radiation to produce highquality images.
+Effect of the thickness of the intensifying screen
+on the spatial resolution of the image. 35
+
+
+X-ray Image Intensifier — used in fluoroscopy
+p Image intensifier, coupled to camera
+p At phosphor screen: X-rays converted into light; at photocathode: then
+into electrons.
+p Electrons accelerated and focused in tube with electromagnetic fields.
+p Converted back into light at output screen, coupled to camera.
+p Advantages:
+■ Dynamic real-time imaging
+p Disadvantages:
+■ Worse spatial resolution (camera) ■ More noise (conversions) ■ Geometric pin cushion ■ Distortion, especially at edges
+36
+
+
+Digital radiology
+p Replace the intensifying screen/X-ray film by
+■ Flat panel detectors (FPD) using thin-film transistor (TFT) arrays.
+■ A scintillator
+p Consisting of many thin, rod-shaped cesium iodide (CsI) crystals.
+p When an X-ray is absorbed in a CsI rod, the CsI scintillate and produces light.
+p The light is converted into an electrical signal by a photodiode in the TFT array.
+p The electrical signal is amplified and converted to a digital value using an A/D converter.
+p A typical commercial DR system has flat panel dimensions of 41x41 cm, with an TFT array of 2048x2048 elements.
+Ref: Webb, Introduction to biomedical imaging, Sec. 1.5.5. 37
+
+
+Current main-stream X-ray detector technologies
+p Integrating X-ray detectors predominantly based on
+p Scintillators (e.g. CsI or Gd2O2S)
+p Arrays of photodiodes made from crystalline silicon (Si) or
+amorphous silicon (a-Si)
+p Or semiconductors (e.g. Se) with active a-Si readout matrices.
+38
+
+
+IMAGE CONTRAST & QUALITY
+49
+
+
+Measures of X-ray beam
+p Photon counts
+■ Photon fluence
+■ Photon fluence rate
+p Energy flow
+■ Energy fluence
+■ Energy fluence rate
+■ Intensity
+Φ= N
+A
+φ= N
+AΔt
+Ψ = Nhν
+A
+ψ = Nhν
+AΔt
+( = ψ) I(E ) = NE
+AΔt
+50
+
+
+Spectrum of X-ray
+p The x-ray beam produced by an x-ray tube (mainly
+Bremsstrahlung) is polyenergetic (consisting photons with different
+energies or frequencies)
+p X-ray spectrum :
+■ The number of photons with energy E per unit area per unit time
+p Photon fluence rate from spectrum
+p Intensity from spectrum
+S(E )
+φ=∫
+∞
+0
+S(E′)dE′
+I=∫
+∞
+0
+E′S(E′)dE′
+51
+
+
+Spectrum of X-ray
+52
+
+
+p The reduction in the beam intensity should be a property of the
+object along the line.
+p Where is the linear attenuation coefficient and in general is a
+function of .
+μ
+x, y, and z → μ(x, y, z)
+Beer’s law
+L
+−dI
+I = μdz
+I = I0e−μL
+N = N0e−μL
+53
+
+
+Linear attenuation coefficient of biological samples
+Medical imaging signals and systems, by J. L. Prince and J. Links.
+54
+
+
+Quality Metrics
+p SNR (Signal to noise ratio)
+p DQE (Detective quantum efficiency)
+p MTF (Modulation transfer function)
+p NPS (Noise power spectrum)
+p NEQ (Noise equivalent quanta)
+55
+
+
+Effect of Noise
+p Source of noise:
+■ Detector does not faithfully reproduce the incident intensity.
+■ X-rays arrive in discrete packets of energy. This discrete nature can lead to fluctuations in the image.
+■ Local contrast .
+■ Signal is .
+■ Noise is due to Poisson behavior.
+■ Variance of noise in background:
+■ Signal to noise ratio
+C = It − Ib
+Ib
+It − Ib
+σ2
+SNR = It − Ib
+σb = CIb
+σb
+56
+
+
+Example
+p What is the local contrast of the blood vessel?
+p What is the local contrast of the blood vessel when contrast agent
+is injected?
+Blood vessel μ=0.2
+w/ contrast μ=20
+Soft tissue μ=0.4
+57
+
+
+Poisson Noise Analysis
+p Assuming the number of photons in each burst follows the Poisson distribution
+Variance = mean =
+p Let denote the average number of photons per burst per area.
+p Let denote the effective energy for the X-ray source.
+p The average background intensity is .
+p The variance of photon intensity is .
+p The .
+p SNR can be improved by
+■ Increasing incident photon count ■ Improving contrast
+P(N = k) = ak
+k! e−a
+a
+Nb
+hν
+Ib = Nbhν
+AΔt
+σb2 = Nb (
+hν
+AΔt )
+2
+SNR = C Nb
+58
+
+
+Detective Quantum Efficiency
+p Related to image quality in radiography and refers to the efficiency
+of information transfer from the input to the output of the system.
+■ Consider
+p Potential SNR before detection.
+p Actual SNR upon detection.
+■ Detective quantum efficiency
+■ Degradation of SNR during detection.
+DQE = (
+SNRout
+SNRin )
+2
+59
+
+
+Example
+p Suppose an X-ray tube is set up to fire bursts of photons each with N=10000 photons and the detector’s output (# of detected photons per burst) x has a mean =8000, variance=40000. What is its DQE?
+p Solution:
+■ The actual # of photons fired at the X-ray tube follows the Poisson process (mean=variance=10000)
+■ The # of detected photons has mean=8000, variance=40000
+■ This means that only about 16%of photons are detected correctly.
+SNRin = mean / variance = 10000 = 100
+SNRout = mean / variance = 8000/ 40000 = 40
+DQE = (
+SNRout
+SNRin )
+2
+= 0.16
+60
+
+
+Effect of Compton Scattering
+p Compton scattering causes the incident photons to be deflected
+from their straight line path
+■ Add a constant intensity in both target and background intensity (“fog”)
+■ Decrease in image contrast
+■ Decrease in SNR
+Is
+61
+
+
+Modulation
+p Modulation of a periodic signal
+p For a sinusoidal signal ,
+p Modulation transfer function (MTF)
+■ The ratio of the output modulation to the input modulation as a function of
+spatial frequency.
+f(x, y)
+f(x, y) = A + B sin(2πu0x) mf = B/A
+MTF(u) = mg
+mf = | H(u,0) |
+H(0,0)
+mf = fmax − fmin
+fmax + fmin
+g(x, y) = AH(0,0) + B | H(u0,0) | sin(2πu0x)
+gmax = AH(0,0) + B | H(u0,0) |
+62
+
+
+A Typical MTF of a Medical Imaging System
+63
+MTF quantifies the degradation of the contrast
+of a system as a function of spatial frequency.
+
+
+Impact of the MTF of a medical imaging system
+64
+
+
+Noise Power Spectrum
+p Also known as the power spectral density, of a signal
+p The Fourier transform of the noise autocorrelation.
+p It gives the intensity of noise as a function of spatial frequency.
+W(u, v) = < lim
+X,Y→∞
+1
+2X
+1
+2Y | ∫
++X
+−X ∫
++Y
+−Y
+Δg(x, y)e−2πi(ux+vy)dxdy |2 >
+
+
+Noise Equivalent Quanta
+p
+■ : number of quanta incident on the detector per unit area
+■ : spatial frequency
+p An equivalent quanta per unit area required by an ideal imaging system to give the same SNR achieved by an actual system.
+p Gives the minimum number of x-ray quanta required to produce a specified SNR.
+NEQ(ω) ≡ T × DQE(ω)
+T
+ω
+DQE = NEQ
+T
+The information content available in an x-ray image relative to an ideal detector.
+
+
+Summary
+p Projection radiography system consists of an x-ray tube, devices for beam filtration and restriction, compensation filters, grids, and a filmscreen detector (or digital detector, filmless).
+p The detector reading (or image gray level) is proportional to the number of unabsorbed x-ray photons arriving at the detector, which depends on the overall attenuation in the path from the source to the detector.
+p The above relation must be modified to take into account of inverse square law, obliquity, anode heel effect, extended source and detector impulse response.
+p Both detector noise and Compton scattering reduce contrast and SNR of the formed image. 76
+
+
+COMPUTED TOMOGRAPHY (CT)
+
+
+CT
+p The Nobel Prize in Physiology or Medicine 1979
+for the development of computer assisted tomography (CT)
+Alan M. Cormack
+Tufts University
+Medford, MA, USA
+(1924-1998)
+Sir Godfrey N. Hounsfield
+Central Research
+Laboratories, EMI
+London, UK
+(1919-2004)
+78
+
+
+CT number
+p Consistency across CT scanners is desired.
+p CT number is defined as
+■ : Hounsfield units (HU)
+p Usually rounded or truncated to nearest integer.
+p Range: -1,000 ~ 3,000
+h = 1000 × μ − μwater
+μwater
+h
+79
+
+
+HUs observed in several materials and tissue classes in human body
+Material/Tissue HU
+Air -1000
+Lung -600 to -400
+Fat -100 to -60
+Water 0
+Muscle 10 to 40
+Blood 30 to 45
+Soft tissue 40 to 80
+Bone 400 to 3000
+80
+
+
+Tomographic vs. Projection Images
+Cone beam
+body Image
+(shadow)
+Parallel projection
+Image
+(shadow)
+Tomographic image 81
+
+
+Illustration of forward projecting 4 pixels image into 2 projections
+p Projection
+p An integral operation along the path of the ray.
+p It sums the pixel values along its path, generating a vector of
+projection values.
+82
+
+
+Radon transform
+p p(l, θ) = ∫
+∞
+−∞ ∫
+∞
+−∞
+f(x, y)δ(x cos θ + y sin θ − l)dxdy
+x
+y
+θ
+x cos θ + y sin θ = l
+Figure 8.5: The blue line is uniquely described by its distance s to the origin and the angle θ which defines its normal vector (cos θ, sin θ)!. This representation immediately gives rise to the implicit line equation.
+Figure 8.6: f (x, y) has a constant non-zero value inside the blue circle and vanishes everywhere else. We see a single projection on the left and where it fits into the whole sinogram on the right.
+p(l,θ)
+p(l, θ)
+p(l, θ)
+l
+83
+
+
+p 1D Fourier transform of a parallel projection equals a slice of the 2D Fourier transform of the original object.
+p Given projection data, it should then be possible to estimate the object by simply performing the 2D inverse Fourier transform.
+Start by defining the 2D Fourier transform of the object function as
+F(u, v) = ∫
+∞
+−∞ ∫
+∞
+−∞
+f (x, y)e−j2π(ux+vy)d xd y
+Projection at θ=0,
+Pθ=0(x) = ∫
+∞
+−∞
+f (x, y)dy
+Fourier Slice Theorem
+Leads to v = 0
+F(u,0) = ∫
+∞
+−∞ ∫
+∞
+−∞
+f (x, y)e−j2πuxd xdy
+F(u,0) = ∫
+∞
+−∞ [ ∫
+∞
+−∞
+f (x, y)d y]e−j2πuxd x = ∫
+∞
+−∞
+Pθ=0(x)e−j2πuxd x
+F (u,0) S =0 (u)
+=θ
+u
+Fourier transform
+v
+84
+
+
+Fourier Slice Theorem
+Pθ=0(x) = ∫
+∞
+−∞
+f(x, y)dy Sθ(w) = ∫
+∞
+−∞
+Pθ(t)e−j2πρtdt
+85
+
+
+Example
+p Consider an image slice which contains a single square in the
+center. What are its projections along 0, 45, 90, 135 degrees?
+0 100 200 300
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6 0o
+0 100 200 300
+0
+0.2
+0.4
+0.6
+0.8
+1 45o
+0 100 200 300
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6 90o
+0 100 200 300
+0
+0.2
+0.4
+0.6
+0.8
+1 135o
+86
+
+
+Sinogram
+p CT data acquired for a collection of and
+p CT scanner acquires a sinogram
+lθ
+87
+
+
+Illustrating the problem of image reconstruction on a simple 4 pixels image with 2 projections
+• A projection is an integral operation along the path of the ray. In other words, it sums the pixel values along its path, generating a vector of projection values.
+88
+
+
+The CT Inverse problem
+p Determine the original image from the
+p projection data only
+67
+6+5 7+5
+6+8 7+8 8
+5
+89
+
+
+Solving the problem using linear algebra
+A+B = 5
+C+D = 8
+C+A = 6
+D+B = 7
+1100
+0011
+1010
+0101
+A
+B
+C
+D
+=
+5
+8
+6
+7
+A xb
+Determinant of A is zero. No unique solution exist. Infinite number of solutions. Use least square approaches.
+90
+
+
+Example
+p Continue with the example of the image with a square in the
+center. Determine the backprojected image from each projection
+and the reconstruction by summing different number of
+backprojections.
+91
+
+
+The Fourier method
+p The projection slice theorem leads to the following conceptually simple reconstruction method
+■ Take 1D FT of each projection to obtain for all
+■ Convert to Cartesian grid
+■ Take inverse 2D FT to obtain
+p Not used because
+■ Difficult to interpolate polar data onto a Cartesian grid
+■ Inverse 2D FT is time consuming
+p But is important for conceptual understanding
+■ Take inverse 2D FT on on the polar coordinate leads to the widely
+used Filtered Backprojection algorithm
+G(ρ, θ) θ
+G(ρ, θ) F(u, v)
+f(x, y)
+G(ρ, θ)
+92
+
+
+Filtered backprojection
+p Algorithm:
+■ For each
+■ Take 1D FT of for each
+■ Frequency domain filtering:
+■ Take inverse 1D FT:
+■ Backprojecting to image domain
+p Sum of backprojected images for all
+θ
+g(l, θ) θ → G(ρ, θ)
+G(ρ, θ) → Q(ρ, θ) = | ρ | G(ρ, θ)
+G(ρ, θ) → g(l, θ) g(l, θ) → bθ(x, y)
+θ
+f(x, y) = ∫
+π
+0 [ ∫ ρ G(ρ, θ)ej2πρldρ]l=x cos θ+y sin θ
+dθ
+93
+
+
+Ramp filter
+p Filter response:
+■
+■ High pass filter
+p is more densely sampled when is small, and vice verse
+p The ramp filter compensate for the sparser sampling at higher .
+c(ρ) = | ρ |
+G(ρ, θ) ρ
+ρ
+94
+
+
+Step 1: Convolution
+p Convolve every projection with
+p The horizontal direction in the sinogram
+c(l)
+95
+
+
+Step 2: backprojection
+p 1D projection --> 2D laminar function
+96
+
+
+Step 3: summation
+p Accumulate sum of backprojection images
+97
+
+
+4 projections 16 projections 128 projections
+Backprojection
+Filtered
+Backprojection
+CT image reconstruction
+98
+
+
+Matlab implementation
+p MATLAB (image toolbox) has several built-in functions:
+■ phantom: create phantom images of size NxN
+p I = PHANTOM(DEF,N) DEF=‘Shepp-Logan’,`Modified Shepp-Logan’
+p Can also construct your own phantom, or use an arbitrary image
+■ radon: generate projection data from a phantom
+p Can specify sampling of θ
+p R = radon(I,theta)
+p The number of samples per projection angle = sqrt(2) N
+■ iradon: reconstruct an image from measured projections
+p Can choose different filters and different interpolation methods for performing backprojection
+p [I,H]=iradon(R,theta, interpolation, filter, frequency_Scaling, OUTPUT_SIZE)
+■ Use ‘help radon’ etc. to learn the specifics
+■ Other useful commands:
+p imshow, imagesc, colormap
+99
+
+
+Radioisotope Imaging
+Instructor: Cheng-Ying Chou, Ph.D.
+100
+
+
+Nuclear radiation results from unstable nuclei
+p Nuclear stability is a balance between electromagnetic repulsion of protons and strong force interaction among all nucleons (protons and neutrons).
+p There are ~ 2,450 isotopes of the ~ 100 elements in the Periodic Table, ~300 of which are naturally occurring, the others are human-made.
+p Several mechanisms for unstable nuclei to decay to stable isotopes: fission, α-, β-, γ-emission, e- capture.
+p Frequently there are multiple decay steps to reach stability.
+p Each decay step is described by an exponential process with a characteristic decay time —-> Half-life of the isotope.
+■ : half-life
+■ , where is the decay constant.
+T1/2 = ln(2)/λ
+N = N0e−λt λ
+101
+
+
+Decay Modes
+p Four main modes of decay
+■ alpha particles (2 protons, 2 neutrons)
+■ beta particles (electrons)
+■ positrons (anti-matter electrons)
+■ isometric transition (gamma rays produced)
+p Medical imaging is only with
+■ Positrons (PET)
+■ Gamma rays (scintigraphy, SPECT)
+p Ionizing radiation modes
+■ Particulate radiation
+p Alphas, betas, positrons
+■ Electromagnetic radiation
+p Gamma rays
+102
+
+
+p Radioactive decay, emits an alpha particle (two protons and two neutrons bound together into a helium nucleus)
+p Alpha decay occurs most often in massive nuclei that have too large a proton to neutron ratio. Alpha radiation reduces the ratio of protons to neutrons in the parent nucleus, bringing it to a more stable configuration.
+p mono-energetic
+p Loses energy in a more or less continuous slowing down process as it travels through matter.
+p The distance it travels (range) depends only upon its initial energy and its average energy loss rate in the medium.
+p The range for an α particle emitted in tissue is on the order of microns.
+α decay (not used for imaging)
+103
+
+
+Beta decay
+p Occurs when too many protons or too many neutrons in a
+nucleus, one of the protons or neutrons is transformed into the
+other.
+p Mass number A does not change after decay, proton number Z
+increases or decreases.
+p Beta minus decay (or simply Beta decay): A neutron changes
+into a proton, an electron (beta particle) and an antineutrino.
+n → p + e− + ν ̄
+104
+
+
+Positron decay and electron capture
+pAlso known as Beta Plus decay
+pA proton changes to a neutron, a positron (positive electron), and a neutrino (P -> n+β++ν)
+pMass number A does not change, proton number Z reduces.
+pPositron: antimatter electron
+pNeutrino, emitted with positron, a massless, chargeless subatomic particle.
+pThe positron may later annihilate a free electron, generate two gamma photons in opposite directions.
+pThese gamma rays are used for medical imaging (Positron Emission Tomography).
+pElectron capture: P+e- -> n+ν. 105
+
+
+Gamma decay (isometric transition)
+p A nucleus (which is unstable) changes from a higher energy
+state to a lower energy state through the emission of
+electromagnetic radiation (photons) (called gamma rays).
+■ The daughter and parent atoms are isomers.
+■ The gamma photon is used in Single photon emission computed
+tomography (SPECT)
+p Gamma rays have the same property as X-rays, but are
+generated different:
+■ X-ray through energetic electron interactions
+■ Gamma-ray through isometric transition in nucleus.
+106
+
+
+Measurement of radioactivity
+p Radioactivity, , # disintegrations per second (dps)
+1 Bq= 1 dps
+p The intensity of radiation incident on a detector at range from a
+radioactive source is
+p : radioactivity of the material; : energy of each photon.
+A
+1 Ci = 3.7 × 1010 Bq
+r
+I = AE
+4π r2
+AE
+Bq=Bequerel Ci=Curie
+107
+
+
+Radioactive decay law
+p : the number of radioactive atoms at a given time
+p : is proportional to
+p Number of photons generated (= number of disintegrations) during time
+N(t) A(t) N(t)
+A = − dN
+dt = λN
+N(t) = N0e−λt
+A(t) = A0e−λt = λN0e−λt
+T
+ΔN = ∫
+T
+0
+A(t)dt = ∫
+T
+0
+λN0e−λtdt = N0(1 − e−λT)
+108
+
+
+Statistics of decay
+p The exponential decay law only gives the expected number of atoms at a
+certain time .
+p The number of disintegrated atoms over a short time after time
+with atoms follows Poisson distribution
+p can be interpreted as the probabilities of having 1 disintegration
+from all atoms during interval .
+p is called the Poisson rate.
+t
+Δt < < T1/2
+t = 0 N0
+Pr{ΔN = k} = ak
+k! e−a
+a = λN0Δt
+N Δt
+λN0
+109
+
+
+Radiotracers
+p Decay mode:
+■ Desire clean gamma decay: do not emit alpha or beta particles.
+■ Positron decay: positron will annihilate with electrons to produce gamma rays.
+p Energy of photon:
+■ Should be high so that can leave the body w/ little attenuation.
+■ Hard to detect if the energy is too high.
+■ Desired energy range: 70-511 KeV.
+p Half-life
+■ Should not be too short (before detector can capture) or too long (longer patient scan time).
+■ Minutes to hours desired.
+p Monoenergetic
+■ Energy sensitive detectors can discriminate the primary photons from scattered ones.
+110
+
+
+List of Nuclear Medicine Radionuclides
+Isotope Gamma energy(keV) Half-life
+• Tc99m 140.5 6.03 hours
+• I-131 364, 637 8.06 days
+• I-123 159 13.0 hours
+• I-125 35 60.2 days
+• In-111 172, 247 2.81 days
+• Tl-201 ~70, 167 3.044 days
+• Ga-67 93, 185, 300 3.25 days
+Positron emitter
+• Fluorine-18 202 110 mins
+• Oxygen-15 696 2 mins
+http://en.wikipedia.org/wiki/Radiopharmaceutical
+Thyroid function
+Kidney function
+Oxygen metabolism
+111
+
+
+Effective half-life Te
+p , physical half-life of the radionuclide
+p , the biological half-life of the pharmaceutical;
+■ Arises from body processes that metabolize or clear the pharmaceutical.
+p The effective half-life combines the physical and biological
+half-lives:
+Tp
+Tb
+Te Tp Tb
+1
+Te = 1
+Tp + 1
+Tb
+112
+
+
+Common Radionuclides in Nuclear Medicine (1 of 2)
+113
+
+
+Common Radionuclides in Nuclear Medicine (2 of 2)
+114
+
+
+Summary
+p Nuclear medicine relies on radiation (gamma rays) generated through
+radioactive decay.
+■ Radioactive decay is the process when a unstable nuclide is changed to a more stable one.
+p Four modes of decay, generating alpha particles, beta particles, positrons and
+gamma rays respectively.
+p Radioactivity follows an exponential decay law, characterized by the decay
+constant or the half-life.
+p Desired properties for radio tracers.
+p Common radiotracers in nuclear medicine.
+115
+
+
+SINGLE PHOTON EMISSION
+TOMOGRAPHY (SPECT)
+116
+
+
+Single Photon Emission Tomography
+CT scanner
+117
+
+
+Imaging Equation: θ = 0
+φ(z, l) = ∫
+R
+−∞
+A(x, y, z)
+4π(y − R)2 exp {− ∫
+R
+y
+μ(x, y′, z; E)dy′} dy
+R
+118
+
+
+Imaging Equation: General Case
+p
+p Two unknowns:
+■
+■
+p Generally intractable
+■ Ignore attenuation (often done)
+■ Assume constant
+■ Measure and apply attenuation correction
+φ(l, θ) = ∫
+R
+−∞
+A(x(s), y(s))
+4π(s − R)2 exp {− ∫
+R
+s
+μ(x(s′), y(s′); E)ds′} ds
+A(x, y) μ(x, y)
+119
