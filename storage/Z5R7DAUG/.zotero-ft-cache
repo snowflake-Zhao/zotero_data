@@ -1,0 +1,456 @@
+arXiv:1309.6392v2 [stat.AP] 20 Mar 2014
+
+Peeking Inside the Black Box: Visualizing Statistical Learning with Plots of Individual
+Conditional Expectation
+Alex Goldstein∗, Adam Kapelner†, Justin Bleich‡, and Emil Pitkin§
+The Wharton School of the University of Pennsylvania
+March 21, 2014
+Abstract
+This article presents Individual Conditional Expectation (ICE) plots, a tool for visualizing the model estimated by any supervised learning algorithm. Classical partial dependence plots (PDPs) help visualize the average partial relationship between the predicted response and one or more features. In the presence of substantial interaction eﬀects, the partial response relationship can be heterogeneous. Thus, an average curve, such as the PDP, can obfuscate the complexity of the modeled relationship. Accordingly, ICE plots reﬁne the partial dependence plot by graphing the functional relationship between the predicted response and the feature for individual observations. Speciﬁcally, ICE plots highlight the variation in the ﬁtted values across the range of a covariate, suggesting where and to what extent heterogeneities might exist. In addition to providing a plotting suite for exploratory analysis, we include a visual test for additive structure in the data generating model. Through simulated examples and real data sets, we demonstrate how ICE plots can shed light on estimated models in ways PDPs cannot. Procedures outlined are available in the R package ICEbox.
+1 Introduction
+The goal of this article is to present Individual Conditional Expectation (ICE) plots, a toolbox for visualizing models produced by “black box” algorithms. These algorithms use training data {xi, yi}Ni=1 (where xi = (xi,1, . . . , xi,p) is a vector of predictors and yi is the
+∗Electronic address: alexg@wharton.upenn.edu; Principal Corresponding author †Electronic address: kapelner@wharton.upenn.edu; Corresponding author ‡Electronic address: jbleich@wharton.upenn.edu; Corresponding author §Electronic address: pitkin@wharton.upenn.edu; Corresponding author
+1
+
+response) to construct a model fˆ that maps the features x to ﬁtted values fˆ(x). Though these algorithms can produce ﬁtted values that enjoy low generalization error, it is often diﬃcult to understand how the resultant fˆ uses x to generate predictions. The ICE toolbox helps visualize this mapping.
+ICE plots extend Friedman (2001)’s Partial Dependence Plot (PDP), which highlights the average partial relationship between a set of predictors and the predicted response. ICE plots disaggregate this average by displaying the estimated functional relationship for each observation. Plotting a curve for each observation helps identify interactions in fˆ as well as extrapolations in predictor space.
+The paper proceeds as follows. Section 2 gives background on visualization in machine learning and introduces PDPs more formally. Section 3 describes the procedure for generating ICE plots and its associated plots. In Section 4 simulated data examples illustrate that ICE plots can be used to identify features of fˆ that are not visible in PDPs, or where the PDPs may even be misleading. Each example is chosen to illustrate a particular principle. Section 5 provides examples of ICE plots on real data. In Section 6 we shift the focus from the ﬁtted fˆ to a data generating process f and use ICE plots as part of a visual test for additivity in f . Section 7 concludes.
+2 Background
+2.1 Survey of Black Box Visualization
+There is an extensive literature that attests to the superiority of black box machine learning algorithms in minimizing predictive error, both from a theoretical and an applied perspective. Breiman (2001b), summarizing, states “accuracy generally requires more complex prediction methods ...[and] simple and interpretable functions do not make the most accurate predictors.” Problematically, black box models oﬀer little in the way of interpretability, unless the data is of very low dimension. When we are willing to compromise interpretability for improved predictive accuracy, any window into black box’s internals can be beneﬁcial.
+Authors have devised a variety of algorithm-speciﬁc techniques targeted at improving the interpretability of a particular statistical learning procedure’s output. Rao and Potts (1997) oﬀers a technique for visualizing the decision boundary produced by bagging decision trees. Although applicable to high dimensional settings, their work primarily focuses on the low dimensional case of two covariates. Tzeng (2005) develops visualization of the layers of neural networks to understand dependencies between the inputs and model outputs and yields insight into classiﬁcation uncertainty. Jakulin et al. (2005) improves the interpretability of support vector machines by using a device called “nomograms” which provide graphical representation of the contribution of variables to the model ﬁt. Pre-speciﬁed interaction eﬀects of interest can be displayed in the nomograms as well. Breiman (2001a) uses randomization of out-of-bag observations to compute a variable importance metric for Random Forests (RF). Those variables for which predictive performance degrades the most vis-a-vis the original model are considered the strongest contributors to forecasting accuracy. This method is also applicable to stochastic gradient boosting (Friedman, 2002). Plate et al. (2000) plots neural network predictions in a scatterplot for each variable by sampling points from covari-
+2
+
+ate space. Amongst the existing literature, this work is the most similar to ICE, but was only applied to neural networks and does not have a readily available implementation.
+Other visualization proposals are model agnostic and can be applied to a host of supervised learning procedures. For instance, Strumbelj and Kononenko (2011) consider a game-theoretic approach to assess the contributions of diﬀerent features to predictions that relies on an eﬃcient approximation of the Shapley value. Jiang and Owen (2002) use quasiregression estimation of black box functions. Here, the function is expanded into an orthonormal basis of coeﬃcients which are approximated via Monte Carlo simulation. These estimated coeﬃcients can then be used to determine which covariates inﬂuence the function and whether any interactions exist.
+
+2.2 Friedman’s PDP
+Another particularly useful model agnostic tool is Friedman (2001)’s PDP, which this paper extends. The PDP plots the change in the average predicted value as speciﬁed feature(s) vary over their marginal distribution. Many supervised learning models applied across a number of disciplines have been better understood thanks to PDPs. Green and Kern (2010) use PDPs to understand the relationship between predictors and the conditional average treatment eﬀect for a voter mobilization experiment, with the predictions being made by Bayesian Additive Regression Trees (BART, Chipman et al., 2010). Berk and Bleich (2013) demonstrate the advantage of using RF and the associated PDPs to accurately model predictor-response relationships under asymmetric classiﬁcation costs that often arise in criminal justice settings. In the ecological literature, Elith et al. (2008), who rely on stochastic gradient boosting, use PDPs to understand how diﬀerent environmental factors inﬂuence the distribution of a particular freshwater eel.
+To formally deﬁne the PDP, let S ⊂ {1, ..., p} and let C be the complement set of S. Here S and C index subsets of predictors; for example, if S = {1, 2, 3}, then xS refers to a 3 × 1 vector containing the values of the ﬁrst three coordinates of x. Then the partial dependence function of f on xS is given by
+
+fS = ExC [f (xS, xC)] = f (xS, xC)dP (xC) .
+
+(1)
+
+Each subset of predictors S has its own partial dependence function fS, which gives the average value of f when xS is ﬁxed and xC varies over its marginal distribution dP (xC). As neither the true f nor dP (xC) are known, we estimate Equation 1 by computing
+
+fˆS
+
+=
+
+1 N
+
+N
+
+fˆ(xS, xCi)
+
+(2)
+
+i=1
+
+where {xC1, ..., xCN } represent the diﬀerent values of xC that are observed in the training data. Note that the approximation here is twofold: we estimate the true model with fˆ, the output of a statistical learning algorithm, and we estimate the integral over xC by averaging over the N xC values observed in the training set.
+
+3
+
+This is a visualization tool in the following sense: if fˆS is evaluated at the xS observed in the data, a set of N ordered pairs will result: {(xS , fˆS )}N=1, where fˆS refers to the estimated partial dependence function evaluated at the th coordinate of xS, denoted xS . Then for one or two dimensional xS, Friedman (2001) proposes plotting the N xS ’s versus their associated fˆS ’s, conventionally joined by lines. The resulting graphic, which is called a partial dependence plot, displays the average value of fˆ as a function of xS. For the remainder of the paper we consider a single predictor of interest at a time (|S| = 1) and
+write xS without boldface accordingly. As an extended example, consider the following data generating process with a simple
+interaction:
+
+Y = 0.2X1 − 5X2 + 10X21X3≥0 + E,
+
+(3)
+
+E i∼id N (0, 1) , X1, X2, X3 i∼id U (−1, 1) .
+
+We generate 1,000 observations from this model and ﬁt a stochastic gradient boosting model (SGB) via the R package gbm (Ridgeway, 2013) where the number of trees is chosen via cross-validation and the interaction depth is set to 3. We now consider the association between predicted Y values and X2 (S = X2). In Figure 1a we plot X2 versus Y in our sample. Figure 1b displays the ﬁtted model’s partial dependence plot for predictor X2. The PDP suggests that on average, X2 is not meaningfully associated with the predicted Y . In light of Figure 1a, this conclusion is plainly wrong. Clearly X2 is associated with Y ; it is simply that the averaging inherent in the PDP shields this discovery from view.
+
+partial yhat −6 −4 −2 0 2 4 6
+
+(a) Scatterplot of Y versus X2
+
+−1.0 −0.5 0.0
+
+0.5
+
+1.0
+
+x_2
+
+(b) PDP
+
+Figure 1: Scatterplot and PDP of X2 versus Y for a sample of size 1000 from the process described in Equation 3. In this example fˆ is ﬁt using SGB. The PDP incorrectly suggests that there is no meaningful relationship between X2 and the predicted Y .
+
+In fact, the original work introducing PDPs argues that the PDP can be a useful summary for the chosen subset of variables if their dependence on the remaining features is not too strong. When the dependence is strong, however – that is, when interactions are present – the PDP can be misleading. Nor is the PDP particularly eﬀective at revealing extrapolations in X -space. ICE plots are intended to address these issues.
+
+4
+
+3 The ICE Toolbox
+3.1 The ICE Procedure
+Visually, ICE plots disaggregate the output of classical PDPs. Rather than plot the target covariates’ average partial eﬀect on the predicted response, we instead plot the N estimated conditional expectation curves: each reﬂects the predicted response as a function of covariate xS, conditional on an observed xC.
+Consider the observations {(xSi, xCi)}Ni=1, and the estimated response function fˆ. For each of the N observed and ﬁxed values of xC, a curve fˆS(i) is plotted against the observed values of xS. Therefore, at each x-coordinate, xS is ﬁxed and the xC varies across N observations. Each curve deﬁnes the conditional relationship between xS and fˆ at ﬁxed values of xC. Thus, the ICE algorithm gives the user insight into the several variants of conditional relationships estimated by the black box.
+The ICE algorithm is given in Algorithm 1 in Appendix A. Note that the PDP curve is the average of the N ICE curves and can thus be viewed as a form of post-processing. Although in this paper we focus on the case where |S| = 1, the pseudocode is general. All plots in this paper are produced using the R package ICEbox, available on CRAN.
+Returning to the simulated data described by Equation 3, Figure 2 shows the ICE plot for the SGB when S = X2. In contrast to the PDP in Figure 1b, the ICE plot makes it clear that the ﬁtted values are related to X2. Speciﬁcally, the SGB’s predicted values are approximately linearly increasing or decreasing in X2 depending upon which region of X an observation is in.
+Figure 2: SGB ICE plot for X2 from 1000 realizations of the data generating process described by Equation 3. We see that the SGB’s ﬁtted values are either approximately linearly increasing or decreasing in X2.
+Now consider the well known Boston Housing Data (BHD). The goal in this dataset is to predict a census tract’s median home price using features of the census tract itself. It is important to note that the median home prices for the tracts are truncated at 50, and hence one may observe potential ceiling eﬀects when analyzing the data. We use Random Forests
+5
+
+(RF) implemented in R (Liaw and Wiener, 2002) to ﬁt fˆ. The ICE plot in Figure 3 examines the association between the average age of homes in a census tract and the corresponding median home value for that tract (S = age). The PDP is largely ﬂat, perhaps displaying a slight decrease in predicted median home price as age increases. The ICE plot shows those observations for which increasing age is actually associated with higher predicted values, thereby describing how individual behavior departs from the average behavior.
+
+Figure 3: RF ICE plot for BHD for predictor age. The highlighted thick line is the PDP. For each curve, the location of its observed age is marked by a point. For some observations, higher age is associated with a higher predicted values. The upper set of tick marks on the horizontal axis indicate the observed deciles of age.
+
+3.2 The Centered ICE Plot
+When the curves have a wide range of intercepts and are consequently “stacked” on each other, heterogeneity in the model can be diﬃcult to discern. In Figure 3, for example, the variation in eﬀects between curves and cumulative eﬀects are veiled. In such cases the “centered ICE” plot (the “c-ICE”), which removes level eﬀects, is useful.
+c-ICE works as follows. Choose a location x∗ in the range of xS and join or “pinch” all prediction lines at that point. We have found that choosing x∗ as the minimum or the maximum observed value results in the most interpretable plots. For each curve fˆ(i) in the ICE plot, the corresponding c-ICE curve is given by
+
+fˆc(ei)nt = fˆ(i) − 1fˆ(x∗, xCi),
+
+(4)
+
+where the unadorned fˆ denotes the ﬁtted model and 1 is a vector of 1’s of the appropriate dimension. Hence the point (x∗, fˆ(x∗, xCi)) acts as a “base case” for each curve. If x∗ is the
+minimum value of xS, for example, this ensures that all curves originate at 0, thus removing
+the diﬀerences in level due to the diﬀerent xCi’s. At the maximum xS value, each centered curve’s level reﬂects the cumulative eﬀect of xS on fˆ relative to the base case. The result is a plot that better isolates the combined eﬀect of xS on fˆ, holding xC ﬁxed.
+
+6
+
+Figure 4 shows a c-ICE plot for the predictor age of the BHD for the same RF model as examined previously. From the c-ICE plot we can now see clearly that the cumulative eﬀect of age on predicted median value increases for some cases, and decreases for others. Such divergences of the centered curves suggest the existence of interactions between xS and xC in the model. Also, the magnitude of the eﬀect, as a fraction of the range of y, can be seen in the vertical axis displayed on the right of the graph.
+
+Figure 4: c-ICE plot for age with x∗ set to the minimum value of age. The right vertical axis displays changes in fˆ over the baseline as a fraction of y’s observed range. In this example,
+interactions between age and other predictors create cumulative diﬀerences in ﬁtted values
+of up to about 14% of the range of y.
+
+3.3 The Derivative ICE Plot
+To further explore the presence of interaction eﬀects, we develop plots of the partial derivative of fˆ with respect to xS. To illustrate, consider the scenario in which xS does not interact with the other predictors in the ﬁtted model. This implies fˆ can be written as
+
+fˆ(x) = fˆ(xS, xC) = g(xS) + h(xC),
+
+so that
+
+∂fˆ(x) ∂xS = g (xS),
+
+(5)
+
+meaning the relationship between xS and fˆ does not depend on xC. Thus the ICE plot for xS would display a set of N curves that share a single common shape but diﬀer by level shifts according to the values of xC.
+As it can be diﬃcult to visually assess derivatives from ICE plots, it is useful to plot an estimate of the partial derivative directly. The details of this procedure are given in Algorithm 2 in Appendix A. We call this a “derivative ICE” plot, or “d-ICE.” When no interactions are present in the ﬁtted model, all curves in the d-ICE plot are equivalent, and the plot shows a single line. When interactions do exist, the derivative lines will be heterogeneous.
+
+7
+
+As an example, consider the d-ICE plot for the RF model in Figure 5. The plot suggests that when age is below approximately 60, g ≈ 0 for all observed values of xC. In contrast, when age is above 60 there are observations for which g > 0 and others for which g < 0, suggesting an interaction between age and the other predictors. Also, the standard deviation of the partial derivatives at each point, plotted in the lower panel, serves as a useful summary to highlight regions of heterogeneity in the estimated derivatives (i.e., potential evidence of interactions in the ﬁtted model).
+Figure 5: d-ICE plot for age in the BHD. The left vertical axis’ scale gives the partial derivative of the ﬁtted model. Below the d-ICE plot we plot the standard deviation of the derivative estimates at each value of age. The scale for this standard deviation plot is on the bottom of the right vertical axis.
+3.4 Visualizing a Second Feature
+Color allows overloading of ICE, c-ICE and d-ICE plots with information regarding a second predictor of interest xk. Speciﬁcally, one can assess how the second predictor inﬂuences the relationship between xS and fˆ. If xk is categorical, we assign colors to its levels and plot each prediction line fˆ(i) in the color of xik’s level. If xk is continuous, we vary the color shade from light (low xk) to dark (high xk).
+We replot the c-ICE from Figure 4 with lines colored by a newly constructed predictor, x = 1(rm > median(rm)). Lines are colored red if the average number of rooms in a census tract is greater than the median number of rooms across all all census tracts and are colored blue otherwise. Figure 6 suggests that for census tracts with a larger number of average rooms, predicted median home price value is positively associated with age and for census tracts with a lesser number of average rooms, the association is negative.
+8
+
+Figure 6: The c-ICE plot for age of Figure 4 in the BHD. Red lines correspond to observations with rm greater than the median rm and blue lines correspond to those with fewer.
+4 Simulations
+Each of the following examples is designed to emphasize a particular model characteristic that the ICE toolbox can detect. To more clearly demonstrate given scenarios with minimal interference from issues that one typically encounters in actual data, such as noise and model misspeciﬁcation, the examples are purposely stylized.
+4.1 Additivity Assessment
+We begin by showing that ICE plots can be used as a diagnostic in evaluating the extent to which a ﬁtted model fˆ ﬁts an additive model.
+Consider again the prediction task in which fˆ(x) = g(xS) + h(xC). For arbitrary vectors xCi and xCj, fˆ(xS, xCi) − fˆ(xS, xCj) = h(xCi) − h(xCj) for all values of xS. The term h(xCi) − h(xCj) represents the shift in level due to the diﬀerence between xCi and xCj and is independent of the value of xS. Thus the ICE plot for xS will display a set of N curves that share a common shape but diﬀer by level shifts according to the unique values of xC.
+As an illustration, consider the following additive data generating model
+Y = X12 + X2 + E, X1, X2 i∼id U (−1, 1) , E i∼id N (0, 1) .
+We simulate 1000 independent (Xi, Yi) pairs according to the above and ﬁt a generalized additive model (GAM, Hastie and Tibshirani, 1986) via the R package gam (Hastie, 2013). As we have speciﬁed it, the GAM assumes
+f (X) = f1(X1) + f2(X2) + f3(X1X2)
+where f1, f2 and f3 are unknown functions estimated internally by the procedure using smoothing splines. Because f3 appears in the model speciﬁcation but not in the data gener-
+9
+
+ating process, any interaction eﬀects that GAM ﬁts are spurious.1 Here, ICE plots inform us of the degree to which interactions were ﬁt. Were there no interaction in fˆ between X1 and X2, the ICE plots for X1 would display a set of curves equivalent in shape but diﬀering in level.
+Figure 7a displays the ICE plots for X1 and indicates that this is indeed the case: all curves display a similar parabolic relationship between fˆ and X1, shifted by a constant, and independent of the value of X2. Accordingly, the associated d-ICE plot in Figure 7b displays little variation between curves. The ICE suite makes it apparent that f3 (correctly) contributes relatively little to the GAM model ﬁt. Note that additive structure cannot be
+observed from the PDP alone in this example (or any other).
+
+(a) ICE
+
+(b) d-ICE
+
+Figure 7: ICE and d-ICE plots for S = X1 when fˆ is a GAM with possible interaction eﬀects between X1 and X2. So as to keep the plot uncluttered we plot only a fraction of all 1000 curves. In the ICE plots the dots indicate the actual location of X1 for each curve.
+
+4.2 Finding interactions and regions of interactions
+As noted in Friedman (2001), the PDP is most instructive when there are no interactions between xS and the other features. In the presence of interaction eﬀects, the averaging procedure in the PDP can obscure any heterogeneity in fˆ. Let us return to the simple interaction model
+
+Y = 0.2X1 − 5X2 + 10X21X3≥0 + E,
+
+(6)
+
+E i∼id N (0, 1) , X1, X2, X3 i∼id U (−1, 1)
+
+to examine the relationship between SGB’s fˆ and X3. Figure 8a displays an ICE plot for X3. Similar to the PDP we saw in Section 1, the plot suggests that averaged over X1 and X2,
+
+1If we were to eliminate f3 from the GAM then we would know a priori that fˆ would not display interaction eﬀects.
+
+10
+
+fˆ is not associated with X3. By following the non-parallel ICE curves, however, it is clear that X3 modulates the ﬁtted value through interactions with X1 and X2.
+Where in the range of X3 do these interactions occur? The d-ICE plot of Figure 8b shows that interactions are in a neighborhood around X3 ≈ 0. This is expected; in the model given by Equation 6, being above or below X3 = 0 changes the response level. The plot suggests that the ﬁtted model’s interactions are concentrated in X3 ∈ [−0.025, 0.025] which we call the “region of interaction” (ROI).
+Generally, ROIs are identiﬁed by noting where the derivative lines are variable. In our example, the lines have highly variable derivatives (both positive and negative) in [−0.025, 0.025]. The more heterogeneity in these derivative lines, the larger the eﬀect of the interaction between xS and xC on the model ﬁt. ROIs can be seen most easily by plotting the standard deviation of the derivative lines at each xS value. In this example, the standard deviation function is plotted in the bottom pane of Figure 8b and demonstrates that ﬁtted interactions peak at X3 ≈ 0.
+
+(a) ICE (10 curves)
+
+(b) d-ICE
+
+Figure 8: ICE plots for an SGB ﬁt to the simple interaction model of Equation 6.
+
+4.3 Extrapolation Detection
+As the number of predictors p increases, the sample vectors x1, . . . xN are increasingly sparse in the feature space X . A consequence of this curse of dimensionality is that for many x ∈ X , fˆ(x) represents an extrapolation rather than an interpolation (see Hastie et al., 2009 for a more complete discussion).
+Extrapolation may be of particular concern when using a black-box algorithm to forecast xnew. Not only may fˆ(xnew) be an extrapolation of the (x, y) relationship observed in the training data, but the black-box nature of fˆ precludes us from gaining any insight into what the extrapolation might look like. Fortunately, ICE plots can cast light into these extrapolations.
+Recall that each curve in the ICE plot includes the ﬁtted value fˆ(xSi, xCi) where xSi is actually observed in the training data for the ith observation. The other points on this curve
+11
+
+represent extrapolations in X . Marking each curve in the ICE plot at the observed point helps us assess the presence and nature of fˆ’s hypothesized extrapolations in X .
+Consider the following model:
+
+Y = 10X12 + 1X2≥0 + E ,
+
+(7)
+
+E i∼id N 0, .12 ,
+
+U (−1, 0) , U (−1, 0)
+
+
+
+
+
+X1 X2
+
+U (0, 1) , U (−1, 0) ∼
+U (−1, 0) , U (0, 1)
+
+
+
+
+
+U (0, 1) , U (0, 1)
+
+w.p.
+
+1 3
+
+w.p.
+
+1 3
+
+w.p.
+
+1 3
+
+w.p. 0.
+
+Notice P (X1 > 0, X2 > 0) = 0, leaving the quadrant [0, 1] × [0, 1] empty. We simulate 1000 observations and ﬁt a RF model to the data. The ICE plot for x1 is displayed in Figure 9a with the points corresponding to the 1000 observed (x1, x2) values marked by dots. We highlight observations with x2 < 0 in red and those with x2 ≥ 0 in blue. The two subsets are plotted separately in Figures 9b and 9c.
+The absence on the blue curves of points where both x1, x2 > 0 conﬁrms that the probability of X1 > 0 and X2 > 0 equals zero. From Figure 9c, we see that in this region of X , fˆ increases roughly in proportion with x21 even though no data exists. Ostensibly the RF model has extrapolated the polynomial relationship from the observed X -space to where both x1 > 0 and x2 > 0.
+Whether it is desirable for fˆ to display such behavior in unknown regions of X is dependent on the character of the extrapolations in conjunction with the application at hand. Moreover, diﬀerent algorithms will likely give diﬀerent extrapolations. Examining the ICE plots can reveal the nature of these extrapolations and guide the user to a suitable choice.
+
+(a) All observations
+
+(b) Observations with x2 < 0 (c) Observations with x2 ≥ 0
+
+Figure 9: ICE plots for S = x1 of a RF model ﬁt to Equation 7. The left plot shows the ICE plot for the entire dataset where x2 < 0 is colored red and x2 ≥ 0 in blue. The middle plot shows only the red curves and the right only the blue. Recall that there is no training data in the quadrant [0, 1] × [0, 1], and so Figure 9c contains no points for observed values when x1 > 0 (when both x1 and x2 are positive). Nevertheless, from Figure 9c’s ICE curves it is apparent that the ﬁtted values are increasing in x1 for values above 0. Here, the ICE plot elucidates the existence and nature of the RF’s extrapolation outside the observed X -space.
+
+12
+
+5 Real Data
+We now demonstrate the ICE toolbox on three real data examples. We emphasize features of fˆ that might otherwise have been overlooked.
+5.1 Depression Clinical Trial
+The ﬁrst dataset comes from a depression clinical trial (DeRubeis et al., 2014). The response variable is the Hamilton Depression Rating Scale (a common composite score of symptoms of depression where lower scores correspond to being less depressed) after 15 weeks of treatment. The treatments are placebo, cognitive therapy (a type of one-on-one counseling), and paroxetine (an anti-depressant medication). The study also collected 37 covariates which are demographic (e.g. age, gender, income) or related to the medical history of the subject (e.g. prior medications and whether the subject was previously treated). For this illustration, we drop the placebo subjects to focus on the 156 subjects who received either of the two active treatments.
+The goal of the analysis in DeRubeis et al. (2014) is to understand how diﬀerent subjects respond to diﬀerent treatments, conditional on their personal covariates. The diﬀerence between the two active treatments, assuming the classic linear (and additive) model for treatment, was found to be statistically insigniﬁcant. If the clinician believes that the treatment eﬀect is heterogeneous and the relationship between the covariates and response is complex, then ﬂexible nonparametric models could be an attractive exploratory tool.
+Using the ICE toolbox, one can visualize the impact of the treatment variable on an fˆ given by a black box algorithm. Note that extrapolations in the treatment indicator (i.e. predicting at 0 for an observed 1 or vice versa) correspond to counterfactuals in a clinical setting, allowing the researcher to see how the same patient might have responded to a diﬀerent treatment.
+We ﬁrst modeled the response as a function of the 37 covariates as well as treatment to obtain the best ﬁt of the functional relationship using the black-box algorithm BART (implemented by Kapelner and Bleich, 2014) and obtained an in-sample R2 ≈ 0.40.
+Figure 10a displays an ICE plot of the binary treatment variable, with cognitive therapy coded as “0” and paroxetine coded as “1”, colored by marital status (blue if married and red if unmarried). The plot shows a ﬂat PDP, demonstrating no relationship between the predicted response and treatment when averaging over the eﬀects of other covariates. However, the crossing of ICE curves indicates the presence of interactions in fˆ, which is conﬁrmed by the c-ICE plot in Figure 10b. After centering, it becomes clear that the ﬂat PDP obscures a complex relationship: the model predicts between -3 and +3 points on the Hamilton scale, which is a highly clinically signiﬁcant range (and almost 20% of the observed response’s range). Further, we can see that BART ﬁts an interaction between treatment and marital status: married subjects are generally predicted to do better on cognitive therapy and unmarried subjects are predicted to do better with paroxetine.
+13
+
+(a) ICE
+
+(b) c-ICE
+
+Figure 10: ICE plots of a BART model for the eﬀect of treatment on depression score after 15 weeks. Married subjects are colored in blue and unmarried subjects are colored in red.
+
+5.2 White Wine
+The second data set concerns 5,000 white wines produced in the vinto verde region of Portugal obtained from the UCI repository (Bache and Lichman, 2013). The response variable is a wine quality metric, taken to be the median preference score of three blind tasters on a scale of 1-10, treated as continuous. The 11 covariates are physicochemical metrics that are commonly collected for wine quality control such as citric acid content, sulphates, etc. The model is ﬁt with a neural network (NN) using the R package nnet (Venables and Ripley, 2002). We ﬁt a NN with 3 hidden units and a small parameter value for weight decay2 and achieved an in-sample R2 of approximately 0.37.
+We ﬁnd the covariate pH to be the most illustrative. The c-ICE plot is displayed in Figure 11a. Wines with high alcohol content are colored blue and wines with low alcohol content are colored red. Note that the PDP shows a linear trend, indicating that on average, higher pH is associated with higher ﬁtted preference scores. While this is the general trend for wines with higher alcohol content, the ICE plots reveal that interaction eﬀects are present in fˆ. For many white wines with low alcohol content, the illustration suggests a nonlinear and cumulatively negative association. For these wines, the predicted preference score is actually negatively associated with pH for low values of pH and then begins to increase — a severe departure from what the PDP suggests. However, the area of increase contains no data points, signifying that the increase is merely an extrapolation likely driven by the positive trend of the high alcohol wines. Overall, the ICE plots indicate that for more alcoholic wines, the predicted score is increasing in pH while the opposite is true for wines with low alcohol content. Also, the diﬀerence in cumulative eﬀect is meaningful; when varied from the minimum to maximum values of pH, white wine scores vary by roughly 40% of the range
+2Note that NN models are highly sensitive to the number of hidden units and weight decay parameter. We therefore oﬀer the following results as merely representative of the type of plots which NN models can generate.
+
+14
+
+(a) c-ICE for NN
+
+(b) d-ICE for NN
+
+Figure 11: ICE plots of NN model for wine ratings versus pH of white wine colored by whether the alcohol content is high (blue) or low (red). To prevent cluttering, only a fraction of the 5,000 observations are plotted.
+
+of the response variable. Examining the derivative plot of Figure 11b conﬁrms the observations made above. The
+NN model suggests interactions exist for lower values of pH in particular. Wines with high alcohol content have mostly positive derivatives while those with low alcohol content have mostly negative derivatives. As pH increases, the standard deviation of the derivatives decreases, suggesting that interactions are less prevalent at higher levels of pH.
+5.3 Diabetes Classiﬁcation in Pima Indians
+The last dataset consists of 332 Pima Indians (Smith and Everhart, 1988) obtained from the R library MASS. Of the 332 subjects, 109 were diagnosed with diabetes, the binary response variable which was ﬁt using seven predictors (with body metrics such as blood pressure, glucose concentration, etc.). We model the data using a RF and achieve an out-of-bag misclassiﬁcation rate of 22%.
+Once again, ICE plots oﬀer the practitioner a more comprehensive view of the output of the black box. For example, the covariate skin thickness about the triceps is plotted as a c-ICE in Figure 12a. The PDP clearly shows an increase in the predicted centered log odds of contracting diabetes. This is expected given that skin is a proxy for obesity, a major risk factor for diabetes. However, the ICE plot illustrates a more elaborate model ﬁt. Many subjects with high skin have a ﬂat risk of diabetes according to fˆ; others with comparable thickness exhibit a much larger centered log-odds increase.3 Figure 12b shows that the RF model ﬁts interactions across the range of skin with the largest heterogeneity in eﬀect occurring when skin is slightly above 30. This can be seen in the standard deviation of the derivative in the bottom pane of Figure 12b.
+3The curves at the top of the ﬁgure mainly correspond to younger people. Their estimated eﬀect of high thickness is seen to be an extrapolation.
+
+15
+
+(a) c-ICE
+
+(b) d-ICE
+
+Figure 12: ICE plots of a RF model for estimated centered logit of the probability of contracting diabetes versus skin colored by subject age.
+
+6 A Visual Test for Additivity
+Thus far we have used the ICE toolbox to explore the output of black box models. We have explored whether fˆ has additive structure or if interactions exist, and also examined fˆ’s extrapolations in X -space. To better visualize interactions, we plotted individual curves in colors according to the value of a second predictor xk. We have not asked whether these ﬁndings are reﬂective of phenomena in any underlying model.
+When heterogeneity in ICE plots is observed, the researcher can adopt two mindsets. When one considers fˆ to be the ﬁtted model used for subsequent predictions, the heterogeneity is of interest because it determines future ﬁtted values. This is the mindset we have considered thus far. Separately, it might be interesting to ascertain whether interactions between xS and xC exist in the data generating model, denoted f . This question exists for other discoveries made using ICE plots, but we focus here on interactions.
+The problem of assessing the statistical validity of discoveries made by examining plots is addressed in Buja et al. (2009) and Wickham et al. (2010). The central idea in these papers is to insert the observed plot randomly into a lineup of null plots generated from data sampled under a null distribution. If the single real plot is correctly identiﬁed amongst 19 null plots, for example, then “the discovery can be assigned a p-value of 0.05” (Buja et al., 2009). A beneﬁt of this approach is that the procedure is valid despite the fact that we have not speciﬁed the form of the alternative distribution — the simple instruction “ﬁnd the plot that appears diﬀerent” is suﬃcient.
+
+6.1 Procedure
+We adapt this framework to the speciﬁc problem of using ICE plots to evaluate additivity in a statistically rigorous manner. For the exposition in this section, suppose that the response y is continuous, the covariates x are ﬁxed, and y = f (x) + E. Further assume E [E] = 0 and
+
+16
+
+f (x) = g(xS) + h(xC),
+
+(8)
+
+meaning the true x-conditional expectation of y is additive in functions of xS and xC. Let F be the distribution of fˆ when Equation 8 holds and f is additive. We wish to test H0: fˆ ∼ F versus Ha: H0 is false.
+Recall that ICE plots displaying non-parallel curves suggest that fˆ is not additive in functions of xS and xC. Thus if we can correctly identify a plot displaying such features amongst K − 1 null plots generated under F , the discovery is valid at α = 1/K.
+We sample from F by using backﬁtting (Breiman and Friedman, 1985) to generate g and h , estimates of g and h, and then bootstrapping the residuals. Both g and h can be obtained via any supervised learning procedures. The general procedure for |S| = 1 proceeds is as follows.
+
+1 Using backﬁtting, obtain g and h . Then compute a vector of ﬁtted values yˆ = g (xS) + h (xC) and a vector of residuals r := y − yˆ .
+2 Let rb be a random resampling of r . If heteroscedasticity is of concern, one can keep r ’s absolute values ﬁxed and let rb be a permutation of r ’s signs. Deﬁne yb := yˆ + rb. Note that E [yb | x] is additive in g (xS) and h (xC).
+3 Fit yb to X using the same learning algorithm that generated the original ICE (c-ICE or d-ICE) plot to produce fˆb. This yields a potentially non-additive approximation to null data generated using an additive model.
+4 Display an ICE (or c-ICE or d-ICE) plot for fˆb. Deviations from additivity observed in this plot must be due to sources other than interactions between xS and xC in the underlying data.
+5 Repeat steps (2) - (4) K −1 times, then randomly insert the true plot amongst these K −1 null plots.
+6 If the viewer can correctly identify the true plot amongst all K plots, the discovery is valid for level α = 1/K. Note that the discovery is conditional on the procedures for generating g and h .
+
+6.2 Examples
+An application of this visual test where g is taken to be the “supersmoother” (Friedman, 1984) and h is a BART model is illustrated using the depression data of Section 5.1. We sample rb by permuting signs. The data analyst might be curious if the ICE plot is consistent with the treatment being additive in the model. We employ the additivity lineup test in Figure 13 using 20 images. We reject the null hypothesis of additivity of the treatment eﬀect at α = 1/20 = 0.05 since the true plot (row 2, column 2) is clearly identiﬁable. This procedure can be a useful test in clinical settings when the treatment eﬀect is commonly considered linear and additive and can alert the practitioner that interactions should be investigated.
+
+17
+
+Figure 13: Additivity lineup test for the predictor treatment in the depression clinical trial dataset of Section 5.1.
+Another application of this visual test where g is taken to be the supersmoother and h is a NN model is illustrated using the wine data of Section 5.2. Here again we sample rb by permuting signs. The data analyst may want to know if the ﬁtted model is suggestive of interactions between pH and the remaining features in the underlying model. We employ the additivity lineup test in Figure 14, again using 20 images.
+Looking closely one sees that the ﬁrst and third plots in the last row have the largest range of cumulative eﬀects and exhibit more curvature in individual curves than most of the other plots, making them the most extreme violations of the null. Readers that singled out the ﬁrst plot in the last row would have a valid discovery at α = .05, but clearly the evidence of non-additivity is much weaker here than in the previous example. Whereas Figure 13 suggests the real plot is identiﬁable amongst more than 20 images, it would be easy to confuse Figure 14’s true plot with the one in row 4, column 3. Hence there is only modest evidence that pH’s impact on fˆ is diﬀerent from what a NN might generate if there were no interactions between pH and the other predictors.
+7 Discussion
+We developed a suite of tools for visualizing the ﬁtted values generated by an arbitrary supervised learning procedure. Our work extends the classical partial dependence plot (PDP), which has rightfully become a very popular visualization tool for black-box machine learning output. The partial functional relationship, however, often varies conditionally on the values of the other variables. The PDP oﬀers the average of these relationships and thus individual conditional relationships are consequently masked, unseen by the researcher. These individual conditional relationships can now be visualized, giving researchers additional insight into how a given black box learning algorithm makes use of covariates to generate predictions.
+The ICE plot, our primary innovation, plots an entire distribution of individual conditional expectation functions for a variable xS. Through simulations and real data examples,
+18
+
+Figure 14: Additivity lineup test for the predictor pH in the white wine dataset of Section 5.2.
+we illustrated much of what can be learned about the estimated model fˆ with the help of ICE. For instance, when the remaining features xC do not inﬂuence the association between xS and fˆ, all ICE curves lie on top of another. When fˆ is additive in functions of xC and xS, the curves lie parallel to each other. And when the partial eﬀect of xS on fˆ is inﬂuenced by xC, the curves will diﬀer from each other in shape. Additionally, by marking each curve at the xS value observed in the training data, one can better understand fˆ’s extrapolations. Sometimes these properties are more easily distinguished in the complementary “centered ICE” (c-ICE) and “derivative ICE” (d-ICE) plots. In sum, the suite of ICE plots provides a tool for visualizing an arbitrary ﬁtted model’s map between predictors and predicted values.
+The ICE suite has a number of possible uses that were not explored in this work. While we illustrate ICE plots using the same data as was used to ﬁt fˆ, out-of-sample ICE plots could also be valuable. For instance, ICE plots generated from random vectors in Rp can be used to explore other parts of X space, an idea advocated by Plate et al. (2000). Further, for a single out-of-sample observation, plotting an ICE curve for each predictor can illustrate the sensitivity of the ﬁtted value to changes in each predictor for this particular observation, which is the goal of the “contribution plots” of Strumbelj and Kononenko (2011). Additionally, investigating ICE plots from fˆ’s produced by multiple statistical learning algorithms can help the researcher compare models. Exploring other functionality oﬀered by the ICEbox package, such as the ability to cluster ICE curves, is similarly left for subsequent research.
+The tools summarized thus far pertain to exploratory analysis. Many times the ICE toolbox provides evidence of interactions, but how does this evidence compare to what these plots would have looked like if no interactions existed? Section 6 proposed a testing methodology. By generating additive models from a null distribution and introducing the actual ICE plot into the lineup, interaction eﬀects can be distinguished from noise, providing a test at a known level of signiﬁcance. Future work will extend the testing methodology to other null hypotheses of interest.
+19
+
+Supplementary Materials
+The procedures outlined in Section 3 are implemented in the R package ICEbox available on CRAN. Simulated results, tables, and ﬁgures speciﬁc to this paper can be replicated via the script included in the supplementary materials. The depression data of Section 5.1 cannot be released due to privacy concerns.
+Acknowledgements
+We thank Richard Berk for insightful comments on multiple drafts and suggesting color overloading. We thank Andreas Buja for helping conceive the testing methodology. We thank Abba Krieger for his helpful suggestions. We also wish to thank Zachary Cohen for the depression data of Section 5.1 and helpful comments. Alex Goldstein acknowledges support from the Simons Foundation Autism Research Initiative. Adam Kapelner acknowledges support from the National Science Foundation’s Graduate Research Fellowship Program.
+References
+Bache, K. and Lichman, M. (2013). UCI machine learning repository.
+Berk, R. and Bleich, J. (2013). Statistical procedures for forecasting criminal behavior: A comparative assessment. Criminology and Public Policy, 12:513–544.
+Breiman, L. (2001a). Random Forests. Machine learning, pages 5–32.
+Breiman, L. (2001b). Statistical Modeling: The Two Cultures. Statistical Science, 16(3):199– 231.
+Breiman, L. and Friedman, J. (1985). Estimating Optimal Transformations for Multiple Regression and Correlation. Journal of the American Statistical Association, 80(391):580– 598.
+Buja, A., Cook, D., Hofmann, H., Lawrence, M., Lee, E., Swayne, D., and Wickham, H. (2009). Statistical inference for exploratory data analysis and model diagnostics. Philosophical transactions. Series A, Mathematical, physical, and engineering sciences, 367(1906):4361–83.
+Chipman, H., George, E., and McCulloch, R. (2010). BART: Bayesian Additive Regressive Trees. The Annals of Applied Statistics, 4(1):266–298.
+DeRubeis, R., Cohen, Z., Forand, N., Fournier, J., Gelfand, L., and Lorenzo-Luaces, L. (2014). The personalized advantage index: Translating research on prediction into individual treatment recommendations a demonstration. PloS one, 9(1):e83875.
+Elith, J., Leathwick, J., and Hastie, T. (2008). A working guide to boosted regression trees. The Journal of Animal Ecology, 77(4):802–13.
+20
+
+Friedman, J. (1984). A variable span smoother. Technical Report LCS-TR-5, Stanford University, Lab for Computational Statistics.
+Friedman, J. (2001). Greedy Function Approximation: A Gradient Boosting Machine. The Annals of Statistics, 29(5):1189–1232.
+Friedman, J. (2002). Stochastic gradient boosting. Computational Statistics & Data Analysis, 38(4):367–378.
+Green, D. and Kern, H. (2010). Modeling heterogeneous treatment eﬀects in large-scale experiments using Bayesian Additive Regression Trees. In The annual summer meeting of the society of political methodology.
+Hastie, T. (2013). GAM: Generalized Additive Models. R package version 1.09.
+Hastie, T. and Tibshirani, R. (1986). Generalized additive models. Statistical Science, 1(3):297–310.
+Hastie, T., Tibshirani, R., and Friedman, J. (2009). The Elements of Statistical Learning. Springer Science, second edition.
+Jakulin, A., Mozina, M., and Demsar, J. (2005). Nomograms for visualizing support vector machines. In KDD, pages 108–117.
+Jiang, T. and Owen, A. (2002). Quasi-regression for visualization and interpretation of black box functions. Technical report, Stanford University mimeo.
+Kapelner, A. and Bleich, J. (2014). bartMachine: Machine learning with bayesian additive regression trees. ArXiv e-prints.
+Liaw, A. and Wiener, M. (2002). Classiﬁcation and regression by randomforest. R News, 2(3):18–22.
+Plate, T., Bert, J., Grace, J., and Band, P. (2000). Visualizing the function computed by a feedforward neural network. Neural computation, 12(6):1337–53.
+Rao, J. and Potts, W. (1997). Visualizing Bagged Decision Trees. In KDD, pages 243–246.
+Ridgeway, G. (2013). GBM: Generalized Boosted Regression Models. R package version 2.0-8.
+Smith, J. and Everhart, J. (1988). Using the ADAP learning algorithm to forecast the onset of diabetes mellitus. In Proceedings of the Symposium on Computer Applications and Medical Care, pages 261–265. IEEE Computer Society Press.
+Strumbelj, E. and Kononenko, I. (2011). A General Method for Visualizing and Explaining Black-Box Regression Models. In Dobnikar, A., Lotric, R., and Ster, B., editors, Adaptive and Natural Computing Algorithms, Part II, chapter 3, pages 21–30. Springer.
+Tzeng, F. (2005). Opening the Black Box - Data Driven Visualization of Neural Networks. In Visualization, pages 383–390. IEEE.
+21
+
+Venables, W. and Ripley, B. (2002). Modern Applied Statistics with S. Springer, New York, fourth edition.
+Wickham, H., Cook, D., Hofmann, H., and Buja, A. (2010). Graphical Inference for Infovis. IEEE Transactions on Visualization and Computer Graphics, 16(6):973–9.
+
+A Algorithms
+
+Algorithm 1 ICE algorithm: Given X, the N × p feature matrix, fˆ, the ﬁtted model, S ⊂
+{1, . . . , p}, the subset of predictors for which to compute partial dependence, return fˆS(1), . . . , fˆS(N), the estimated partial dependence curves for constant values of xC.
+
+1: function ICE(X, fˆ, S)
+
+2: for i ← 1 . . . N do
+
+3:
+
+fˆS(i) ← 0N×1
+
+4:
+
+xC ← X[i, C]
+
+5:
+
+for ← 1 . . . N do
+
+ﬁx xC at the ith observation’s C columns
+
+6:
+
+xS ← X[ , S]
+
+7:
+
+fˆS(i) ← fˆ([xS, xC ])
+
+8:
+
+end for
+
+vary xS the ith curve’s th coordinate
+
+9: end for 10: return [fˆS(1), . . . , fˆS(N)]
+11: end function
+
+Algorithm 2 d-ICE algorithm: Given X, the N × p feature matrix; fˆS(1), . . . , fˆS(N), the estimated
+partial dependence functions for subset S in the ICE plot; D, a function that computes the numerical derivative; returns dfˆS(1), . . . , dfˆS(N), the derivatives of the estimated partial dependence. In our implementation D ﬁrst smooths the ICE plot using the “supersmoother” and subsequently
+estimates the derivative from the smoothed ICE plot.
+
+1: function d-ICE(X, fˆS(1), . . . , fˆS(N), D)
+
+2: for i ← 1 . . . N do
+
+3:
+
+dfˆS(i) ← 0N×1
+
+4:
+
+xC ← X[i, C]
+
+row of the ith observation, columns corresponding to C
+
+5:
+
+for ← 1 . . . N do
+
+6:
+
+xS ← X[ , S]
+
+7:
+
+dfˆS(i) ← D fˆ(i)(xS, xC )
+
+numerical partial derivative at fˆ(i)(xS, xC ) w.r.t. xS
+
+8:
+
+end for
+
+9: end for 10: return [dfˆS(1), . . . , dfˆS(N)]
+11: end function
+
+22
+
