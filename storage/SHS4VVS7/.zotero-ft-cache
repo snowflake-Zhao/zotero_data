@@ -1,0 +1,2040 @@
+For other titles published in this series, go to
+G. Casella S. Fienberg I. Olkin
+www.springer.com/series/417
+Series Editors
+Springer Texts in Statistics
+
+
+
+
+Robert H. Shumway • David S. Stoffer
+With R Examples
+Its Applications
+Third edition
+Time Series Analysis and
+
+
+subject to proprietary rights.
+Printed on acid-free paper
+Springer is part of Springer Science+Business Media (www.springer.com)
+ISSN 1431-875X
+Springer New York Dordrecht Heidelberg London
+© Springer Science+Business Media, LLC 2011 All rights reserved. This work may not be translated or copied in whole or in part without the written permission of the publisher (Springer Science+Business Media, LLC, 233 Spring Street, New York, NY 10013, USA), except for brief excerpts in connection with reviews or scholarly analysis. Use in connection with any form of information storage and retrieval, electronic adaptation, computer software, or by similar or dissimilar methodology now known or hereafter developed is forbidden. The use in this publication of trade names, trademarks, service marks, and similar terms, even if they are not identified as such, is not to be taken as an expression of opinion as to whether or not they are
+ISBN 978-1-4419-7864-6 DOI 10.1007/978-1-4419-7865-3
+University of California Davis, California
+Department of Statistics
+USA
+Department of Statistics University of Pittsburgh Pittsburgh, Pennsylvania
+Prof. David S. Stoffer
+e-ISBN 978-1-4419-7865-3
+USA
+Prof. Robert H. Shumway
+
+
+To my wife, Ruth, for her support and joie de vivre, and to the memory of my thesis adviser, Solomon Kullback. R.H.S.
+To my family and friends, who constantly remind me what is important. D.S.S.
+
+
+
+
+Preface to the Third Edition
+The goals of this book are to develop an appreciation for the richness and versatility of modern time series analysis as a tool for analyzing data, and still maintain a commitment to theoretical integrity, as exemplified by the seminal works of Brillinger (1975) and Hannan (1970) and the texts by Brockwell and Davis (1991) and Fuller (1995). The advent of inexpensive powerful computing has provided both real data and new software that can take one considerably beyond the fitting of simple time domain models, such as have been elegantly described in the landmark work of Box and Jenkins (1970). This book is designed to be useful as a text for courses in time series on several different levels and as a reference work for practitioners facing the analysis of timecorrelated data in the physical, biological, and social sciences. We have used earlier versions of the text at both the undergraduate and graduate levels over the past decade. Our experience is that an undergraduate course can be accessible to students with a background in regression analysis and may include §1.1–§1.6, §2.1–§2.3, the results and numerical parts of §3.1§3.9, and briefly the results and numerical parts of §4.1–§4.6. At the advanced undergraduate or master’s level, where the students have some mathematical statistics background, more detailed coverage of the same sections, with the inclusion of §2.4 and extra topics from Chapter 5 or Chapter 6 can be used as a one-semester course. Often, the extra topics are chosen by the students according to their interests. Finally, a two-semester upper-level graduate course for mathematics, statistics, and engineering graduate students can be crafted by adding selected theoretical appendices. For the upper-level graduate course, we should mention that we are striving for a broader but less rigorous level of coverage than that which is attained by Brockwell and Davis (1991), the classic entry at this level. The major difference between this third edition of the text and the second edition is that we provide R code for almost all of the numerical examples. In addition, we provide an R supplement for the text that contains the data and scripts in a compressed file called tsa3.rda; the supplement is available on the website for the third edition, http://www.stat.pitt.edu/stoffer/tsa3/,
+
+
+viii Preface to the Third Edition
+or one of its mirrors. On the website, we also provide the code used in each example so that the reader may simply copy-and-paste code directly into R. Specific details are given in Appendix R and on the website for the text. Appendix R is new to this edition, and it includes a small R tutorial as well as providing a reference for the data sets and scripts included in tsa3.rda. So there is no misunderstanding, we emphasize the fact that this text is about time series analysis, not about R. R code is provided simply to enhance the exposition by making the numerical examples reproducible. We have tried, where possible, to keep the problem sets in order so that an instructor may have an easy time moving from the second edition to the third edition. However, some of the old problems have been revised and there are some new problems. Also, some of the data sets have been updated. We added one section in Chapter 5 on unit roots and enhanced some of the presentations throughout the text. The exposition on state-space modeling, ARMAX models, and (multivariate) regression with autocorrelated errors in Chapter 6 have been expanded. In this edition, we use standard R functions as much as possible, but we use our own scripts (included in tsa3.rda) when we feel it is necessary to avoid problems with a particular R function; these problems are discussed in detail on the website for the text under R Issues. We thank John Kimmel, Executive Editor, Springer Statistics, for his guidance in the preparation and production of this edition of the text. We are grateful to Don Percival, University of Washington, for numerous suggestions that led to substantial improvement to the presentation in the second edition, and consequently in this edition. We thank Doug Wiens, University of Alberta, for help with some of the R code in Chapters 4 and 7, and for his many suggestions for improvement of the exposition. We are grateful for the continued help and advice of Pierre Duchesne, University of Montreal, and Alexander Aue, University of California, Davis. We also thank the many students and other readers who took the time to mention typographical errors and other corrections to the first and second editions. Finally, work on the this edition was supported by the National Science Foundation while one of us (D.S.S.) was working at the Foundation under the Intergovernmental Personnel Act.
+Davis, CA Robert H. Shumway Pittsburgh, PA David S. Stoffer September 2010
+
+
+Contents
+Preface to the Third Edition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . vii
+1 Characteristics of Time Series . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 1.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 1.2 The Nature of Time Series Data . . . . . . . . . . . . . . . . . . . . . . . . . . . 3 1.3 Time Series Statistical Models . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11 1.4 Measures of Dependence: Autocorrelation and Cross-Correlation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17 1.5 Stationary Time Series . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22 1.6 Estimation of Correlation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28 1.7 Vector-Valued and Multidimensional Series . . . . . . . . . . . . . . . . . 33 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+2 Time Series Regression and Exploratory Data Analysis . . . . 47 2.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47 2.2 Classical Regression in the Time Series Context . . . . . . . . . . . . . 48 2.3 Exploratory Data Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 57 2.4 Smoothing in the Time Series Context . . . . . . . . . . . . . . . . . . . . . 70 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 78
+3 ARIMA Models . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 83 3.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 83 3.2 Autoregressive Moving Average Models . . . . . . . . . . . . . . . . . . . . 84 3.3 Difference Equations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 97 3.4 Autocorrelation and Partial Autocorrelation . . . . . . . . . . . . . . . . 102 3.5 Forecasting . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 108 3.6 Estimation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 121 3.7 Integrated Models for Nonstationary Data . . . . . . . . . . . . . . . . . 141 3.8 Building ARIMA Models . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 144 3.9 Multiplicative Seasonal ARIMA Models . . . . . . . . . . . . . . . . . . . . 154 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 162
+
+
+x Contents
+4 Spectral Analysis and Filtering . . . . . . . . . . . . . . . . . . . . . . . . . . . . 173 4.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 173 4.2 Cyclical Behavior and Periodicity . . . . . . . . . . . . . . . . . . . . . . . . . . 175 4.3 The Spectral Density . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 180 4.4 Periodogram and Discrete Fourier Transform . . . . . . . . . . . . . . . 187 4.5 Nonparametric Spectral Estimation . . . . . . . . . . . . . . . . . . . . . . . . 196 4.6 Parametric Spectral Estimation . . . . . . . . . . . . . . . . . . . . . . . . . . . 212 4.7 Multiple Series and Cross-Spectra . . . . . . . . . . . . . . . . . . . . . . . . . 216 4.8 Linear Filters . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 221 4.9 Dynamic Fourier Analysis and Wavelets . . . . . . . . . . . . . . . . . . . . 228 4.10 Lagged Regression Models . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 242 4.11 Signal Extraction and Optimum Filtering . . . . . . . . . . . . . . . . . . . 247 4.12 Spectral Analysis of Multidimensional Series . . . . . . . . . . . . . . . . 252 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 255
+5 Additional Time Domain Topics . . . . . . . . . . . . . . . . . . . . . . . . . . . 267 5.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 267 5.2 Long Memory ARMA and Fractional Differencing . . . . . . . . . . . 267 5.3 Unit Root Testing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 277 5.4 GARCH Models . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 280 5.5 Threshold Models . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 289 5.6 Regression with Autocorrelated Errors . . . . . . . . . . . . . . . . . . . . . 293 5.7 Lagged Regression: Transfer Function Modeling . . . . . . . . . . . . . 296 5.8 Multivariate ARMAX Models . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 301 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 315
+6 State-Space Models . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 319 6.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 319 6.2 Filtering, Smoothing, and Forecasting . . . . . . . . . . . . . . . . . . . . . 325 6.3 Maximum Likelihood Estimation . . . . . . . . . . . . . . . . . . . . . . . . . 335 6.4 Missing Data Modifications . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 344 6.5 Structural Models: Signal Extraction and Forecasting . . . . . . . . 350 6.6 State-Space Models with Correlated Errors . . . . . . . . . . . . . . . . . 354 6.6.1 ARMAX Models . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 355 6.6.2 Multivariate Regression with Autocorrelated Errors . . . . 356 6.7 Bootstrapping State-Space Models . . . . . . . . . . . . . . . . . . . . . . . . 359 6.8 Dynamic Linear Models with Switching . . . . . . . . . . . . . . . . . . . . 365 6.9 Stochastic Volatility . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 378 6.10 Nonlinear and Non-normal State-Space Models Using Monte Carlo Methods . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 387 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 398
+
+
+Contents xi
+7 Statistical Methods in the Frequency Domain . . . . . . . . . . . . . 405 7.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 405 7.2 Spectral Matrices and Likelihood Functions . . . . . . . . . . . . . . . . . 409 7.3 Regression for Jointly Stationary Series . . . . . . . . . . . . . . . . . . . . 410 7.4 Regression with Deterministic Inputs . . . . . . . . . . . . . . . . . . . . . . 420 7.5 Random Coefficient Regression . . . . . . . . . . . . . . . . . . . . . . . . . . . 429 7.6 Analysis of Designed Experiments . . . . . . . . . . . . . . . . . . . . . . . . . 434 7.7 Discrimination and Cluster Analysis . . . . . . . . . . . . . . . . . . . . . . . 450 7.8 Principal Components and Factor Analysis . . . . . . . . . . . . . . . . . 468 7.9 The Spectral Envelope . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 485 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 501
+Appendix A: Large Sample Theory . . . . . . . . . . . . . . . . . . . . . . . . . . . . 507 A.1 Convergence Modes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 507 A.2 Central Limit Theorems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 515 A.3 The Mean and Autocorrelation Functions . . . . . . . . . . . . . . . . . . . 518
+Appendix B: Time Domain Theory . . . . . . . . . . . . . . . . . . . . . . . . . . . . 527 B.1 Hilbert Spaces and the Projection Theorem . . . . . . . . . . . . . . . . . 527 B.2 Causal Conditions for ARMA Models . . . . . . . . . . . . . . . . . . . . . . 531 B.3 Large Sample Distribution of the AR(p) Conditional Least Squares Estimators . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 533 B.4 The Wold Decomposition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 537
+Appendix C: Spectral Domain Theory . . . . . . . . . . . . . . . . . . . . . . . . . 539 C.1 Spectral Representation Theorem . . . . . . . . . . . . . . . . . . . . . . . . . . 539 C.2 Large Sample Distribution of the DFT and Smoothed Periodogram . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 543 C.3 The Complex Multivariate Normal Distribution . . . . . . . . . . . . . 554
+Appendix R: R Supplement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 559 R.1 First Things First . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 559 R.1.1 Included Data Sets . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 560 R.1.2 Included Scripts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 562 R.2 Getting Started . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 567 R.3 Time Series Primer . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 571
+References . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 577
+Index . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 591
+
+
+
+
+1
+Characteristics of Time Series
+1.1 Introduction
+The analysis of experimental data that have been observed at different points in time leads to new and unique problems in statistical modeling and inference. The obvious correlation introduced by the sampling of adjacent points in time can severely restrict the applicability of the many conventional statistical methods traditionally dependent on the assumption that these adjacent observations are independent and identically distributed. The systematic approach by which one goes about answering the mathematical and statistical questions posed by these time correlations is commonly referred to as time series analysis. The impact of time series analysis on scientific applications can be partially documented by producing an abbreviated listing of the diverse fields in which important time series problems may arise. For example, many familiar time series occur in the field of economics, where we are continually exposed to daily stock market quotations or monthly unemployment figures.
+ments. An epidemiologist might be interested in the number of influenza cases observed over some time period. In medicine, blood pressure measurements traced over time could be useful for evaluating drugs used in treating hypertension. Functional magnetic resonance imaging of brain-wave time series patterns might be used to study how the brain reacts to certain stimuli under various experimental conditions. Many of the most intensive and sophisticated applications of time series methods have been to problems in the physical and environmental sciences. This fact accounts for the basic engineering flavor permeating the language of time series analysis. One of the earliest recorded series is the monthly sunspot numbers studied by Schuster (1906). More modern investigations may center on whether a warming is present in global temperature measurements
+1
+Social scientists follow population series, such as birthrates or school enroll
+Springer Texts in Statistics, DOI 10.1007/978-1-4419-7865-3_1, © Springer Science+Business Media, LLC 2011
+R.H. Shumway and D.S. Stoffer, Time Series Analysis and Its Applications: With R Examples,
+
+
+2 1 Characteristics of Time Series
+or whether levels of pollution may influence daily mortality in Los Angeles. The modeling of speech series is an important problem related to the efficient transmission of voice recordings. Common features in a time series characteristic known as the power spectrum are used to help computers recognize and translate speech. Geophysical time series such as those produced by yearly depositions of various kinds can provide long-range proxies for temperature and rainfall. Seismic recordings can aid in mapping fault lines or in distinguishing between earthquakes and nuclear explosions. The above series are only examples of experimental databases that can be used to illustrate the process by which classical statistical methodology can be applied in the correlated time series framework. In our view, the first step in any time series investigation always involves careful scrutiny of the recorded data plotted over time. This scrutiny often suggests the method of analysis as well as statistics that will be of use in summarizing the information in the data. Before looking more closely at the particular statistical methods, it is appropriate to mention that two separate, but not necessarily mutually exclusive, approaches to time series analysis exist, commonly identified as the time domain approach and the frequency domain approach. The time domain approach is generally motivated by the presumption that correlation between adjacent points in time is best explained in terms of a dependence of the current value on past values. The time domain approach focuses on modeling some future value of a time series as a parametric function of the current and past values. In this scenario, we begin with linear regressions of the present value of a time series on its own past values and on the past values of other series. This modeling leads one to use the results of the time domain approach as a forecasting tool and is particularly popular with economists for this reason. One approach, advocated in the landmark work of Box and Jenkins (1970; see also Box et al., 1994), develops a systematic class of models called autoregressive integrated moving average (ARIMA) models to handle timecorrelated modeling and forecasting. The approach includes a provision for treating more than one input series through multivariate ARIMA or through transfer function modeling. The defining feature of these models is that they are multiplicative models, meaning that the observed data are assumed to result from products of factors involving differential or difference equation operators responding to a white noise input. A more recent approach to the same problem uses additive models more familiar to statisticians. In this approach, the observed data are assumed to result from sums of series, each with a specified time series structure; for example, in economics, assume a series is generated as the sum of trend, a seasonal effect, and error. The state-space model that results is then treated by making judicious use of the celebrated Kalman filters and smoothers, developed originally for estimation and control in space applications. Two relatively complete presentations from this point of view are in Harvey (1991) and Kitagawa and Gersch (1996). Time series regression is introduced in Chapter 2, and ARIMA
+
+
+1.2 The Nature of Time Series Data 3
+and related time domain models are studied in Chapter 3, with the emphasis on classical, statistical, univariate linear regression. Special topics on time domain analysis are covered in Chapter 5; these topics include modern treatments of, for example, time series with long memory and GARCH models for the analysis of volatility. The state-space model, Kalman filtering and smoothing, and related topics are developed in Chapter 6. Conversely, the frequency domain approach assumes the primary characteristics of interest in time series analyses relate to periodic or systematic sinusoidal variations found naturally in most data. These periodic variations are often caused by biological, physical, or environmental phenomena of interest. A series of periodic shocks may influence certain areas of the brain; wind may affect vibrations on an airplane wing; sea surface temperatures caused by El Nin ̃o oscillations may affect the number of fish in the ocean. The study of periodicity extends to economics and social sciences, where one may be interested in yearly periodicities in such series as monthly unemployment or monthly birth rates. In spectral analysis, the partition of the various kinds of periodic variation in a time series is accomplished by evaluating separately the variance associated with each periodicity of interest. This variance profile over frequency is called the power spectrum. In our view, no schism divides time domain and frequency domain methodology, although cliques are often formed that advocate primarily one or the other of the approaches to analyzing data. In many cases, the two approaches may produce similar answers for long series, but the comparative performance over short samples is better done in the time domain. In some cases, the frequency domain formulation simply provides a convenient means for carrying out what is conceptually a time domain calculation. Hopefully, this book will demonstrate that the best path to analyzing many data sets is to use the two approaches in a complementary fashion. Expositions emphasizing primarily the frequency domain approach can be found in Bloomfield (1976, 2000), Priestley (1981), or Jenkins and Watts (1968). On a more advanced level, Hannan (1970), Brillinger (1981, 2001), Brockwell and Davis (1991), and Fuller (1996) are available as theoretical sources. Our coverage of the frequency domain is given in Chapters 4 and 7. The objective of this book is to provide a unified and reasonably complete exposition of statistical methods used in time series analysis, giving serious consideration to both the time and frequency domain approaches. Because a myriad of possible methods for analyzing any particular experimental series can exist, we have integrated real data from a number of subject fields into the exposition and have suggested methods for analyzing these data.
+1.2 The Nature of Time Series Data
+Some of the problems and questions of interest to the prospective time series analyst can best be exposed by considering real experimental data taken
+
+
+4 1 Characteristics of Time Series
+Fig. 1.1. Johnson & Johnson quarterly earnings per share, 84 quarters, 1960-I to 1980-IV.
+from different subject areas. The following cases illustrate some of the common kinds of experimental time series data as well as some of the statistical questions that might be asked about such data.
+Example 1.1 Johnson & Johnson Quarterly Earnings
+Figure 1.1 shows quarterly earnings per share for the U.S. company Johnson & Johnson, furnished by Professor Paul Griffin (personal communication) of the Graduate School of Management, University of California, Davis. There are 84 quarters (21 years) measured from the first quarter of 1960 to the last quarter of 1980. Modeling such series begins by observing the primary patterns in the time history. In this case, note the gradually increasing underlying trend and the rather regular variation superimposed on the trend that seems to repeat over quarters. Methods for analyzing data such as these are explored in Chapter 2 (see Problem 2.1) using regression techniques and in Chapter 6, §6.5, using structural equation modeling. To plot the data using the R statistical package, type the following:1 1 load("tsa3.rda") # SEE THE FOOTNOTE 2 plot(jj, type="o", ylab="Quarterly Earnings per Share")
+Example 1.2 Global Warming
+Consider the global temperature series record shown in Figure 1.2. The data are the global mean land–ocean temperature index from 1880 to 2009, with
+1 We assume that tsa3.rda has been downloaded to a convenient directory. See Appendix R for further details.
+
+
+1.2 The Nature of Time Series Data 5
+Fig. 1.2. Yearly average global temperature deviations (1880–2009) in degrees centigrade.
+the base period 1951-1980. In particular, the data are deviations, measured in degrees centigrade, from the 1951-1980 average, and are an update of Hansen et al. (2006). We note an apparent upward trend in the series during the latter part of the twentieth century that has been used as an argument for the global warming hypothesis. Note also the leveling off at about 1935 and then another rather sharp upward trend at about 1970. The question of interest for global warming proponents and opponents is whether the overall trend is natural or whether it is caused by some human-induced interface. Problem 2.8 examines 634 years of glacial sediment data that might be taken as a long-term temperature proxy. Such percentage changes in temperature do not seem to be unusual over a time period of 100 years. Again, the question of trend is of more interest than particular periodicities. The R code for this example is similar to the code in Example 1.1: 1 plot(gtemp, type="o", ylab="Global Temperature Deviations")
+Example 1.3 Speech Data
+More involved questions develop in applications to the physical sciences. Figure 1.3 shows a small .1 second (1000 point) sample of recorded speech for the phrase aaa · · · hhh, and we note the repetitive nature of the signal and the rather regular periodicities. One current problem of great interest is computer recognition of speech, which would require converting this particular signal into the recorded phrase aaa · · · hhh. Spectral analysis can be used in this context to produce a signature of this phrase that can be compared with signatures of various library syllables to look for a match.
+
+
+6 1 Characteristics of Time Series
+Time
+speech
+0 200 400 600 800 1000
+0 1000 2000 3000 4000
+Fig. 1.3. Speech recording of the syllable aaa · · · hhh sampled at 10,000 points per second with n = 1020 points.
+One can immediately notice the rather regular repetition of small wavelets. The separation between the packets is known as the pitch period and represents the response of the vocal tract filter to a periodic sequence of pulses stimulated by the opening and closing of the glottis. In R, you can reproduce Figure 1.3 as follows: 1 plot(speech)
+Example 1.4 New York Stock Exchange
+As an example of financial time series data, Figure 1.4 shows the daily returns (or percent change) of the New York Stock Exchange (NYSE) from February 2, 1984 to December 31, 1991. It is easy to spot the crash of October 19, 1987 in the figure. The data shown in Figure 1.4 are typical of return data. The mean of the series appears to be stable with an average return of approximately zero, however, the volatility (or variability) of data changes over time. In fact, the data show volatility clustering; that is, highly volatile periods tend to be clustered together. A problem in the analysis of these type of financial data is to forecast the volatility of future returns. Models such as ARCH and GARCH models (Engle, 1982; Bollerslev, 1986) and stochastic volatility models (Harvey, Ruiz and Shephard, 1994) have been developed to handle these problems. We will discuss these models and the analysis of financial data in Chapters 5 and 6. The R code for this example is similar to the previous examples: 1 plot(nyse, ylab="NYSE Returns")
+
+
+1.2 The Nature of Time Series Data 7
+Time
+NYSE Returns
+0 500 1000 1500 2000
+−0.15 −0.10 −0.05 0.00 0.05
+Fig. 1.4. Returns of the NYSE. The data are daily value weighted market returns from February 2, 1984 to December 31, 1991 (2000 trading days). The crash of October 19, 1987 occurs at t = 938.
+Example 1.5 El Nin ̃o and Fish Population
+We may also be interested in analyzing several time series at once. Figure 1.5 shows monthly values of an environmental series called the Southern Oscillation Index (SOI) and associated Recruitment (number of new fish) furnished by Dr. Roy Mendelssohn of the Pacific Environmental Fisheries Group (personal communication). Both series are for a period of 453 months ranging over the years 1950–1987. The SOI measures changes in air pressure, related to sea surface temperatures in the central Pacific Ocean. The central Pacific warms every three to seven years due to the El Nin ̃o effect, which has been blamed, in particular, for the 1997 floods in the midwestern portions of the United States. Both series in Figure 1.5 tend to exhibit repetitive behavior, with regularly repeating cycles that are easily visible. This periodic behavior is of interest because underlying processes of interest may be regular and the rate or frequency of oscillation characterizing the behavior of the underlying series would help to identify them. One can also remark that the cycles of the SOI are repeating at a faster rate than those of the Recruitment series. The Recruitment series also shows several kinds of oscillations, a faster frequency that seems to repeat about every 12 months and a slower frequency that seems to repeat about every 50 months. The study of the kinds of cycles and their strengths is the subject of Chapter 4. The two series also tend to be somewhat related; it is easy to imagine that somehow the fish population is dependent on the SOI. Perhaps even a lagged relation exists, with the SOI signaling changes in the fish population. This possibility
+
+
+8 1 Characteristics of Time Series
+Southern Oscillation Index
+1950 1960 1970 1980
+−1.0 −0.5 0.0 0.5 1.0
+Recruitment
+1950 1960 1970 1980
+0 20 40 60 80 100
+Fig. 1.5. Monthly SOI and Recruitment (estimated new fish), 1950-1987.
+suggests trying some version of regression analysis as a procedure for relating the two series. Transfer function modeling, as considered in Chapter 5, can be applied in this case to obtain a model relating Recruitment to its own past and the past values of the SOI. The following R code will reproduce Figure 1.5: 1 par(mfrow = c(2,1)) # set up the graphics 2 plot(soi, ylab="", xlab="", main="Southern Oscillation Index") 3 plot(rec, ylab="", xlab="", main="Recruitment")
+Example 1.6 fMRI Imaging
+A fundamental problem in classical statistics occurs when we are given a collection of independent series or vectors of series, generated under varying experimental conditions or treatment configurations. Such a set of series is shown in Figure 1.6, where we observe data collected from various locations in the brain via functional magnetic resonance imaging (fMRI). In this example, five subjects were given periodic brushing on the hand. The stimulus was applied for 32 seconds and then stopped for 32 seconds; thus, the signal period is 64 seconds. The sampling rate was one observation every 2 seconds for 256 seconds (n = 128). For this example, we averaged the results over subjects (these were evoked responses, and all subjects were in phase). The
+
+
+1.2 The Nature of Time Series Data 9
+Cortex
+BOLD
+0 20 40 60 80 100 120
+−0.6 −0.2 0.2 0.6
+Thalamus & Cerebellum
+BOLD
+0 20 40 60 80 100 120
+−0.6 −0.2 0.2 0.4 0.6
+Time (1 pt = 2 sec)
+Fig. 1.6. fMRI data from various locations in the cortex, thalamus, and cerebellum; n = 128 points, one observation taken every 2 seconds.
+series shown in Figure 1.6 are consecutive measures of blood oxygenationlevel dependent (bold) signal intensity, which measures areas of activation in the brain. Notice that the periodicities appear strongly in the motor cortex series and less strongly in the thalamus and cerebellum. The fact that one has series from different areas of the brain suggests testing whether the areas are responding differently to the brush stimulus. Analysis of variance techniques accomplish this in classical statistics, and we show in Chapter 7 how these classical techniques extend to the time series case, leading to a spectral analysis of variance. The following R commands were used to plot the data: 1 par(mfrow=c(2,1), mar=c(3,2,1,0)+.5, mgp=c(1.6,.6,0)) 2 ts.plot(fmri1[,2:5], lty=c(1,2,4,5), ylab="BOLD", xlab="", main="Cortex") 3 ts.plot(fmri1[,6:9], lty=c(1,2,4,5), ylab="BOLD", xlab="", main="Thalamus & Cerebellum") 4 mtext("Time (1 pt = 2 sec)", side=1, line=2)
+Example 1.7 Earthquakes and Explosions
+As a final example, the series in Figure 1.7 represent two phases or arrivals along the surface, denoted by P (t = 1, . . . , 1024) and S (t = 1025, . . . , 2048),
+
+
+10 1 Characteristics of Time Series
+Earthquake
+Time
+EQ5
+0 500 1000 1500 2000
+−0.4 0.0 0.4
+Explosion
+Time
+EXP6
+0 500 1000 1500 2000
+−0.4 0.0 0.4
+Fig. 1.7. Arrival phases from an earthquake (top) and explosion (bottom) at 40 points per second.
+at a seismic recording station. The recording instruments in Scandinavia are observing earthquakes and mining explosions with one of each shown in Figure 1.7. The general problem of interest is in distinguishing or discriminating between waveforms generated by earthquakes and those generated by explosions. Features that may be important are the rough amplitude ratios of the first phase P to the second phase S, which tend to be smaller for earthquakes than for explosions. In the case of the two events in Figure 1.7, the ratio of maximum amplitudes appears to be somewhat less than .5 for the earthquake and about 1 for the explosion. Otherwise, note a subtle difference exists in the periodic nature of the S phase for the earthquake. We can again think about spectral analysis of variance for testing the equality of the periodic components of earthquakes and explosions. We would also like to be able to classify future P and S components from events of unknown origin, leading to the time series discriminant analysis developed in Chapter 7. To plot the data as in this example, use the following commands in R: 1 par(mfrow=c(2,1)) 2 plot(EQ5, main="Earthquake") 3 plot(EXP6, main="Explosion")
+
+
+1.3 Time Series Statistical Models 11
+1.3 Time Series Statistical Models
+The primary objective of time series analysis is to develop mathematical models that provide plausible descriptions for sample data, like that encountered in the previous section. In order to provide a statistical setting for describing the character of data that seemingly fluctuate in a random fashion over time, we assume a time series can be defined as a collection of random variables indexed according to the order they are obtained in time. For example, we may consider a time series as a sequence of random variables, x1, x2, x3, . . . , where the random variable x1 denotes the value taken by the series at the first time point, the variable x2 denotes the value for the second time period, x3 denotes the value for the third time period, and so on. In general, a collection of random variables, {xt}, indexed by t is referred to as a stochastic process. In this text, t will typically be discrete and vary over the integers t = 0, ±1, ±2, ..., or some subset of the integers. The observed values of a stochastic process are referred to as a realization of the stochastic process. Because it will be clear from the context of our discussions, we use the term time series whether we are referring generically to the process or to a particular realization and make no notational distinction between the two concepts. It is conventional to display a sample time series graphically by plotting the values of the random variables on the vertical axis, or ordinate, with the time scale as the abscissa. It is usually convenient to connect the values at adjacent time periods to reconstruct visually some original hypothetical continuous time series that might have produced these values as a discrete sample. Many of the series discussed in the previous section, for example, could have been observed at any continuous point in time and are conceptually more properly treated as continuous time series. The approximation of these series by discrete time parameter series sampled at equally spaced points in time is simply an acknowledgment that sampled data will, for the most part, be discrete because of restrictions inherent in the method of collection. Furthermore, the analysis techniques are then feasible using computers, which are limited to digital computations. Theoretical developments also rest on the idea that a continuous parameter time series should be specified in terms of finite-dimensional distribution functions defined over a finite number of points in time. This is not to say that the selection of the sampling interval or rate is not an extremely important consideration. The appearance of data can be changed completely by adopting an insufficient sampling rate. We have all seen wagon wheels in movies appear to be turning backwards because of the insufficient number of frames sampled by the camera. This phenomenon leads to a distortion called aliasing (see §4.2). The fundamental visual characteristic distinguishing the different series shown in Examples 1.1–1.7 is their differing degrees of smoothness. One possible explanation for this smoothness is that it is being induced by the supposition that adjacent points in time are correlated, so the value of the series at time t, say, xt, depends in some way on the past values xt−1, xt−2, . . .. This
+
+
+12 1 Characteristics of Time Series
+model expresses a fundamental way in which we might think about generating realistic-looking time series. To begin to develop an approach to using collections of random variables to model time series, consider Example 1.8.
+Example 1.8 White Noise
+A simple kind of generated series might be a collection of uncorrelated random variables, wt, with mean 0 and finite variance σ2w. The time series generated from uncorrelated variables is used as a model for noise in engineering applications, where it is called white noise; we shall sometimes denote this process as wt ∼ wn(0, σ2w). The designation white originates from the analogy with white light and indicates that all possible periodic oscillations are present with equal strength. We will, at times, also require the noise to be independent and identically distributed (iid) random variables with mean 0 and variance σ2w. We shall distinguish this case by saying white independent noise, or by writing wt ∼ iid(0, σ2w). A particularly useful white noise series is Gaussian white noise, wherein the wt are independent normal random variables, with mean 0 and variance σ2w; or more succinctly, wt ∼ iid N(0, σ2w). Figure 1.8 shows in the
+upper panel a collection of 500 such random variables, with σ2w = 1, plotted in the order in which they were drawn. The resulting series bears a slight resemblance to the explosion in Figure 1.7 but is not smooth enough to serve as a plausible model for any of the other experimental series. The plot tends to show visually a mixture of many different kinds of oscillations in the white noise series.
+If the stochastic behavior of all time series could be explained in terms of the white noise model, classical statistical methods would suffice. Two ways of introducing serial correlation and more smoothness into time series models are given in Examples 1.9 and 1.10.
+Example 1.9 Moving Averages
+We might replace the white noise series wt by a moving average that smooths the series. For example, consider replacing wt in Example 1.8 by an average of its current value and its immediate neighbors in the past and future. That is, let
+vt = 1
+3
+(wt−1 + wt + wt+1
+), (1.1)
+which leads to the series shown in the lower panel of Figure 1.8. Inspecting the series shows a smoother version of the first series, reflecting the fact that the slower oscillations are more apparent and some of the faster oscillations are taken out. We begin to notice a similarity to the SOI in Figure 1.5, or perhaps, to some of the fMRI series in Figure 1.6. To reproduce Figure 1.8 in R use the following commands. A linear combination of values in a time series such as in (1.1) is referred to, generically, as a filtered series; hence the command filter.
+
+
+1.3 Time Series Statistical Models 13
+white noise
+Time
+w
+0 100 200 300 400 500
+−3 −1 0 1 2
+moving average
+v
+0 100 200 300 400 500
+−1.5 −0.5 0.5 1.5
+Fig. 1.8. Gaussian white noise series (top) and three-point moving average of the Gaussian white noise series (bottom).
+1 w = rnorm(500,0,1) # 500 N(0,1) variates 2 v = filter(w, sides=2, rep(1/3,3)) # moving average 3 par(mfrow=c(2,1)) 4 plot.ts(w, main="white noise") 5 plot.ts(v, main="moving average")
+The speech series in Figure 1.3 and the Recruitment series in Figure 1.5, as well as some of the MRI series in Figure 1.6, differ from the moving average series because one particular kind of oscillatory behavior seems to predominate, producing a sinusoidal type of behavior. A number of methods exist for generating series with this quasi-periodic behavior; we illustrate a popular one based on the autoregressive model considered in Chapter 3.
+Example 1.10 Autoregressions
+Suppose we consider the white noise series wt of Example 1.8 as input and calculate the output using the second-order equation
+xt = xt−1 − .9xt−2 + wt (1.2)
+successively for t = 1, 2, . . . , 500. Equation (1.2) represents a regression or prediction of the current value xt of a time series as a function of the past two values of the series, and, hence, the term autoregression is suggested
+
+
+14 1 Characteristics of Time Series
+autoregression
+x
+0 100 200 300 400 500
+−6 −4 −2 0 2 4 6
+Fig. 1.9. Autoregressive series generated from model (1.2).
+for this model. A problem with startup values exists here because (1.2) also depends on the initial conditions x0 and x−1, but, for now, we assume that we are given these values and generate the succeeding values by substituting into (1.2). The resulting output series is shown in Figure 1.9, and we note the periodic behavior of the series, which is similar to that displayed by the speech series in Figure 1.3. The autoregressive model above and its generalizations can be used as an underlying model for many observed series and will be studied in detail in Chapter 3. One way to simulate and plot data from the model (1.2) in R is to use the following commands (another way is to use arima.sim). 1 w = rnorm(550,0,1) # 50 extra to avoid startup problems
+2 x = filter(w, filter=c(1,-.9), method="recursive")[-(1:50)] 3 plot.ts(x, main="autoregression")
+Example 1.11 Random Walk with Drift
+A model for analyzing trend such as seen in the global temperature data in Figure 1.2, is the random walk with drift model given by
+xt = δ + xt−1 + wt (1.3)
+for t = 1, 2, . . ., with initial condition x0 = 0, and where wt is white noise. The constant δ is called the drift, and when δ = 0, (1.3) is called simply a random walk. The term random walk comes from the fact that, when δ = 0, the value of the time series at time t is the value of the series at time t − 1 plus a completely random movement determined by wt. Note that we may rewrite (1.3) as a cumulative sum of white noise variates. That is,
+xt = δ t +
+t
+∑
+j=1
+wj (1.4)
+
+
+1.3 Time Series Statistical Models 15
+random walk
+0 50 100 150 200
+0 10 20 30 40 50
+Fig. 1.10. Random walk, σw = 1, with drift δ = .2 (upper jagged line), without drift, δ = 0 (lower jagged line), and a straight line with slope .2 (dashed line).
+for t = 1, 2, . . .; either use induction, or plug (1.4) into (1.3) to verify this statement. Figure 1.10 shows 200 observations generated from the model with δ = 0 and .2, and with σw = 1. For comparison, we also superimposed the straight line .2t on the graph. To reproduce Figure 1.10 in R use the following code (notice the use of multiple commands per line using a semicolon).
+1 set.seed(154) # so you can reproduce the results 2 w = rnorm(200,0,1); x = cumsum(w) # two commands in one line 3 wd = w +.2; xd = cumsum(wd) 4 plot.ts(xd, ylim=c(-5,55), main="random walk") 5 lines(x); lines(.2*(1:200), lty="dashed")
+Example 1.12 Signal in Noise
+Many realistic models for generating time series assume an underlying signal with some consistent periodic variation, contaminated by adding a random noise. For example, it is easy to detect the regular cycle fMRI series displayed on the top of Figure 1.6. Consider the model
+xt = 2 cos(2πt/50 + .6π) + wt (1.5)
+for t = 1, 2, . . . , 500, where the first term is regarded as the signal, shown in the upper panel of Figure 1.11. We note that a sinusoidal waveform can be written as A cos(2πωt + φ), (1.6)
+where A is the amplitude, ω is the frequency of oscillation, and φ is a phase shift. In (1.5), A = 2, ω = 1/50 (one cycle every 50 time points), and φ = .6π.
+
+
+16 1 Characteristics of Time Series
+2cos2t 50  0.6
+0 100 200 300 400 500
+−2 −1 0 1 2
+2cos2t 50  0.6  N01
+0 100 200 300 400 500
+−4 −2 0 2 4
+2cos2t 50  0.6  N025
+0 100 200 300 400 500
+−15 −5 0 5 10 15
+Fig. 1.11. Cosine wave with period 50 points (top panel) compared with the cosine wave contaminated with additive white Gaussian noise, σw = 1 (middle panel) and σw = 5 (bottom panel); see (1.5).
+An additive noise term was taken to be white noise with σw = 1 (middle panel) and σw = 5 (bottom panel), drawn from a normal distribution. Adding the two together obscures the signal, as shown in the lower panels of Figure 1.11. Of course, the degree to which the signal is obscured depends on the amplitude of the signal and the size of σw. The ratio of the amplitude of the signal to σw (or some function of the ratio) is sometimes called the signal-to-noise ratio (SNR); the larger the SNR, the easier it is to detect the signal. Note that the signal is easily discernible in the middle panel of Figure 1.11, whereas the signal is obscured in the bottom panel. Typically, we will not observe the signal but the signal obscured by noise. To reproduce Figure 1.11 in R, use the following commands: 1 cs = 2*cos(2*pi*1:500/50 + .6*pi) 2 w = rnorm(500,0,1) 3 par(mfrow=c(3,1), mar=c(3,2,2,1), cex.main=1.5) 4 plot.ts(cs, main=expression(2*cos(2*pi*t/50+.6*pi))) 5 plot.ts(cs+w, main=expression(2*cos(2*pi*t/50+.6*pi) + N(0,1))) 6 plot.ts(cs+5*w, main=expression(2*cos(2*pi*t/50+.6*pi) + N(0,25)))
+In Chapter 4, we will study the use of spectral analysis as a possible technique for detecting regular or periodic signals, such as the one described
+
+
+1.4Measures of Dependence 17
+in Example 1.12. In general, we would emphasize the importance of simple additive models such as given above in the form
+xt = st + vt, (1.7)
+where st denotes some unknown signal and vt denotes a time series that may be white or correlated over time. The problems of detecting a signal and then in estimating or extracting the waveform of st are of great interest in many areas of engineering and the physical and biological sciences. In economics, the underlying signal may be a trend or it may be a seasonal component of a series. Models such as (1.7), where the signal has an autoregressive structure, form the motivation for the state-space model of Chapter 6. In the above examples, we have tried to motivate the use of various combinations of random variables emulating real time series data. Smoothness characteristics of observed time series were introduced by combining the random variables in various ways. Averaging independent random variables over adjacent time points, as in Example 1.9, or looking at the output of difference equations that respond to white noise inputs, as in Example 1.10, are common ways of generating correlated data. In the next section, we introduce various theoretical measures used for describing how time series behave. As is usual in statistics, the complete description involves the multivariate distribution function of the jointly sampled values x1, x2, . . . , xn, whereas more economical descriptions can be had in terms of the mean and autocorrelation functions. Because correlation is an essential feature of time series analysis, the most useful descriptive measures are those expressed in terms of covariance and correlation functions.
+1.4 Measures of Dependence: Autocorrelation and Cross-Correlation
+A complete description of a time series, observed as a collection of n random variables at arbitrary integer time points t1, t2, . . . , tn, for any positive integer n, is provided by the joint distribution function, evaluated as the probability that the values of the series are jointly less than the n constants, c1, c2, . . . , cn; i.e.,
+F (c1, c2, . . . , cn) = P (xt1 ≤ c1, xt2 ≤ c2, . . . , xtn ≤ cn
+). (1.8)
+Unfortunately, the multidimensional distribution function cannot usually be written easily unless the random variables are jointly normal, in which case the joint density has the well-known form displayed in (1.31). Although the joint distribution function describes the data completely, it is an unwieldy tool for displaying and analyzing time series data. The distribution function (1.8) must be evaluated as a function of n arguments, so any plotting of the corresponding multivariate density functions is virtually impossible. The marginal distribution functions
+
+
+18 1 Characteristics of Time Series
+Ft(x) = P {xt ≤ x}
+or the corresponding marginal density functions
+ft(x) = ∂Ft(x)
+∂x ,
+when they exist, are often informative for examining the marginal behavior of a series.2 Another informative marginal descriptive measure is the mean function.
+Definition 1.1 The mean function is defined as
+μxt = E(xt) =
+∫∞
+−∞
+xft(x) dx, (1.9)
+provided it exists, where E denotes the usual expected value operator. When no confusion exists about which time series we are referring to, we will drop a subscript and write μxt as μt.
+Example 1.13 Mean Function of a Moving Average Series
+If wt denotes a white noise series, then μwt = E(wt) = 0 for all t. The top series in Figure 1.8 reflects this, as the series clearly fluctuates around a mean value of zero. Smoothing the series as in Example 1.9 does not change the mean because we can write
+μvt = E(vt) = 1
+3 [E(wt−1) + E(wt) + E(wt+1)] = 0.
+Example 1.14 Mean Function of a Random Walk with Drift
+Consider the random walk with drift model given in (1.4),
+xt = δ t +
+t
+∑
+j=1
+wj, t = 1, 2, . . . .
+Because E(wt) = 0 for all t, and δ is a constant, we have
+μxt = E(xt) = δ t +
+t
+∑
+j=1
+E(wj) = δ t
+which is a straight line with slope δ. A realization of a random walk with drift can be compared to its mean function in Figure 1.10.
+2 If xt is Gaussian with mean μt and variance σ2
+t , abbreviated as xt ∼ N(μt, σ2
+t ),
+the marginal density is given by ft(x) = 1
+σt
+√2π exp
+{
+−1
+2σt2
+(x − μt)2}
+.
+
+
+1.4Measures of Dependence 19
+Example 1.15 Mean Function of Signal Plus Noise
+A great many practical applications depend on assuming the observed data have been generated by a fixed signal waveform superimposed on a zeromean noise process, leading to an additive signal model of the form (1.5). It is clear, because the signal in (1.5) is a fixed function of time, we will have
+μxt = E(xt) = E[2 cos(2πt/50 + .6π) + wt
+]
+= 2 cos(2πt/50 + .6π) + E(wt)
+= 2 cos(2πt/50 + .6π),
+and the mean function is just the cosine wave.
+The lack of independence between two adjacent values xs and xt can be assessed numerically, as in classical statistics, using the notions of covariance and correlation. Assuming the variance of xt is finite, we have the following definition.
+Definition 1.2 The autocovariance function is defined as the second moment product
+γx(s, t) = cov(xs, xt) = E[(xs − μs)(xt − μt)], (1.10)
+for all s and t. When no possible confusion exists about which time series we are referring to, we will drop the subscript and write γx(s, t) as γ(s, t).
+Note that γx(s, t) = γx(t, s) for all time points s and t. The autocovariance measures the linear dependence between two points on the same series observed at different times. Very smooth series exhibit autocovariance functions that stay large even when the t and s are far apart, whereas choppy series tend to have autocovariance functions that are nearly zero for large separations. The autocovariance (1.10) is the average cross-product relative to the joint distribution F (xs, xt). Recall from classical statistics that if γx(s, t) = 0, xs and xt are not linearly related, but there still may be some dependence structure between them. If, however, xs and xt are bivariate normal, γx(s, t) = 0 ensures their independence. It is clear that, for s = t, the autocovariance reduces to the (assumed finite) variance, because
+γx(t, t) = E[(xt − μt)2] = var(xt). (1.11)
+Example 1.16 Autocovariance of White Noise The white noise series wt has E(wt) = 0 and
+γw(s, t) = cov(ws, wt) =
+{
+σ2w s = t,
+0 s 6= t. (1.12)
+A realization of white noise with σ2w = 1 is shown in the top panel of Figure 1.8.
+
+
+20 1 Characteristics of Time Series
+Example 1.17 Autocovariance of a Moving Average
+Consider applying a three-point moving average to the white noise series wt of the previous example as in Example 1.9. In this case,
+γv(s, t) = cov(vs, vt) = cov { 1
+3 (ws−1 + ws + ws+1) , 1
+3 (wt−1 + wt + wt+1)} .
+When s = t we have3
+γv(t, t) = 1
+9 cov{(wt−1 + wt + wt+1), (wt−1 + wt + wt+1)}
+=1
+9 [cov(wt−1, wt−1) + cov(wt, wt) + cov(wt+1, wt+1)]
+=3
+9 σ2
+w.
+When s = t + 1,
+γv(t + 1, t) = 1
+9 cov{(wt + wt+1 + wt+2), (wt−1 + wt + wt+1)}
+=1
+9 [cov(wt, wt) + cov(wt+1, wt+1)]
+=2
+9 σ2
+w,
+using (1.12). Similar computations give γv(t − 1, t) = 2σ2w/9, γv(t + 2, t) =
+γv(t − 2, t) = σ2w/9, and 0 when |t − s| > 2. We summarize the values for all s and t as
+γv(s, t) =
+
+    
+    
+3
+9 σ2w s = t,
+2
+9 σ2w |s − t| = 1,
+1
+9 σ2w |s − t| = 2,
+0 |s − t| > 2.
+(1.13)
+Example 1.17 shows clearly that the smoothing operation introduces a covariance function that decreases as the separation between the two time points increases and disappears completely when the time points are separated by three or more time points. This particular autocovariance is interesting because it only depends on the time separation or lag and not on the absolute location of the points along the series. We shall see later that this dependence suggests a mathematical model for the concept of weak stationarity.
+Example 1.18 Autocovariance of a Random Walk For the random walk model, xt = ∑t
+j=1 wj , we have
+γx(s, t) = cov(xs, xt) = cov
+
+
+s
+∑
+j=1
+wj ,
+t
+∑
+k=1
+wk
+
+ = min{s, t} σ2
+w,
+because the wt are uncorrelated random variables. Note that, as opposed to the previous examples, the autocovariance function of a random walk
+3 If the random variables U = ∑m
+j=1 aj Xj and V = ∑r
+k=1 bkYk are linear combinations of random variables {Xj} and {Yk}, respectively, then cov(U, V ) =
+∑m j=1
+∑r
+k=1 ajbkcov(Xj, Yk). Furthermore, var(U ) = cov(U, U ).
+
+
+1.4Measures of Dependence 21
+depends on the particular time values s and t, and not on the time separation or lag. Also, notice that the variance of the random walk, var(xt) = γx(t, t) = t σ2w, increases without bound as time t increases. The effect of this variance increase can be seen in Figure 1.10 where the processes start to move away from their mean functions δ t (note that δ = 0 and .2 in that example).
+As in classical statistics, it is more convenient to deal with a measure of association between −1 and 1, and this leads to the following definition.
+Definition 1.3 The autocorrelation function (ACF) is defined as
+ρ(s, t) = γ(s, t)
+√γ(s, s)γ(t, t) . (1.14)
+The ACF measures the linear predictability of the series at time t, say xt, using only the value xs. We can show easily that −1 ≤ ρ(s, t) ≤ 1 using the Cauchy–Schwarz inequality.4 If we can predict xt perfectly from xs through a linear relationship, xt = β0 + β1xs, then the correlation will be +1 when β1 > 0, and −1 when β1 < 0. Hence, we have a rough measure of the ability to forecast the series at time t from the value at time s. Often, we would like to measure the predictability of another series yt from the series xs. Assuming both series have finite variances, we have the following definition.
+Definition 1.4 The cross-covariance function between two series, xt and yt, is
+γxy(s, t) = cov(xs, yt) = E[(xs − μxs)(yt − μyt)]. (1.15)
+There is also a scaled version of the cross-covariance function.
+Definition 1.5 The cross-correlation function (CCF) is given by
+ρxy(s, t) = γxy(s, t)
+√γx(s, s)γy(t, t) . (1.16)
+We may easily extend the above ideas to the case of more than two series, say, xt1, xt2, . . . , xtr; that is, multivariate time series with r components. For example, the extension of (1.10) in this case is
+γjk(s, t) = E[(xsj − μsj)(xtk − μtk)] j, k = 1, 2, . . . , r. (1.17)
+In the definitions above, the autocovariance and cross-covariance functions may change as one moves along the series because the values depend on both s
+4 The Cauchy–Schwarz inequality implies |γ(s, t)|2 ≤ γ(s, s)γ(t, t).
+
+
+22 1 Characteristics of Time Series
+and t, the locations of the points in time. In Example 1.17, the autocovariance function depends on the separation of xs and xt, say, h = |s − t|, and not on where the points are located in time. As long as the points are separated by h units, the location of the two points does not matter. This notion, called weak stationarity, when the mean is constant, is fundamental in allowing us to analyze sample time series data when only a single series is available.
+1.5 Stationary Time Series
+The preceding definitions of the mean and autocovariance functions are completely general. Although we have not made any special assumptions about the behavior of the time series, many of the preceding examples have hinted that a sort of regularity may exist over time in the behavior of a time series. We introduce the notion of regularity using a concept called stationarity.
+Definition 1.6 A strictly stationary time series is one for which the probabilistic behavior of every collection of values
+{xt1 , xt2 , . . . , xtk }
+is identical to that of the time shifted set
+{xt1+h, xt2+h, . . . , xtk+h}.
+That is,
+P {xt1 ≤ c1, . . . , xtk ≤ ck} = P {xt1+h ≤ c1, . . . , xtk+h ≤ ck} (1.18)
+for all k = 1, 2, ..., all time points t1, t2, . . . , tk, all numbers c1, c2, . . . , ck, and all time shifts h = 0, ±1, ±2, ... .
+If a time series is strictly stationary, then all of the multivariate distribution functions for subsets of variables must agree with their counterparts in the shifted set for all values of the shift parameter h. For example, when k = 1, (1.18) implies that
+P {xs ≤ c} = P {xt ≤ c} (1.19)
+for any time points s and t. This statement implies, for example, that the probability that the value of a time series sampled hourly is negative at 1 am is the same as at 10 am. In addition, if the mean function, μt, of the series xt exists, (1.19) implies that μs = μt for all s and t, and hence μt must be constant. Note, for example, that a random walk process with drift is not strictly stationary because its mean function changes with time; see Example 1.14 on page 18. When k = 2, we can write (1.18) as
+
+
+1.5 Stationary Time Series 23
+P {xs ≤ c1, xt ≤ c2} = P {xs+h ≤ c1, xt+h ≤ c2} (1.20)
+for any time points s and t and shift h. Thus, if the variance function of the process exists, (1.20) implies that the autocovariance function of the series xt satisfies
+γ(s, t) = γ(s + h, t + h)
+for all s and t and h. We may interpret this result by saying the autocovariance function of the process depends only on the time difference between s and t, and not on the actual times. The version of stationarity in Definition 1.6 is too strong for most applications. Moreover, it is difficult to assess strict stationarity from a single data set. Rather than imposing conditions on all possible distributions of a time series, we will use a milder version that imposes conditions only on the first two moments of the series. We now have the following definition.
+Definition 1.7 A weakly stationary time series, xt, is a finite variance process such that
+(i) the mean value function, μt, defined in (1.9) is constant and does not depend on time t, and (ii) the autocovariance function, γ(s, t), defined in (1.10) depends on s and t only through their difference |s − t|.
+Henceforth, we will use the term stationary to mean weakly stationary; if a process is stationary in the strict sense, we will use the term strictly stationary.
+It should be clear from the discussion of strict stationarity following Definition 1.6 that a strictly stationary, finite variance, time series is also stationary. The converse is not true unless there are further conditions. One important case where stationarity implies strict stationarity is if the time series is Gaussian [meaning all finite distributions, (1.18), of the series are Gaussian]. We will make this concept more precise at the end of this section. Because the mean function, E(xt) = μt, of a stationary time series is independent of time t, we will write
+μt = μ. (1.21)
+Also, because the autocovariance function, γ(s, t), of a stationary time series, xt, depends on s and t only through their difference |s − t|, we may simplify the notation. Let s = t + h, where h represents the time shift or lag. Then
+γ(t + h, t) = cov(xt+h, xt) = cov(xh, x0) = γ(h, 0)
+because the time difference between times t + h and t is the same as the time difference between times h and 0. Thus, the autocovariance function of a stationary time series does not depend on the time argument t. Henceforth, for convenience, we will drop the second argument of γ(h, 0).
+
+
+24 1 Characteristics of Time Series
+−4 −2 0 2 4
+0.00 0.15 0.30
+Lag
+ACovF
+Fig. 1.12. Autocovariance function of a three-point moving average.
+Definition 1.8 The autocovariance function of a stationary time series will be written as
+γ(h) = cov(xt+h, xt) = E[(xt+h − μ)(xt − μ)]. (1.22)
+Definition 1.9 The autocorrelation function (ACF) of a stationary time series will be written using (1.14) as
+ρ(h) = γ(t + h, t)
+√γ(t + h, t + h)γ(t, t) = γ(h)
+γ(0) . (1.23)
+The Cauchy–Schwarz inequality shows again that −1 ≤ ρ(h) ≤ 1 for all h, enabling one to assess the relative importance of a given autocorrelation value by comparing with the extreme values −1 and 1.
+Example 1.19 Stationarity of White Noise
+The mean and autocovariance functions of the white noise series discussed in Examples 1.8 and 1.16 are easily evaluated as μwt = 0 and
+γw(h) = cov(wt+h, wt) =
+{
+σ2w h = 0,
+0 h 6= 0.
+Thus, white noise satisfies the conditions of Definition 1.7 and is weakly stationary or stationary. If the white noise variates are also normally distributed or Gaussian, the series is also strictly stationary, as can be seen by evaluating (1.18) using the fact that the noise would also be iid.
+Example 1.20 Stationarity of a Moving Average
+The three-point moving average process of Example 1.9 is stationary because, from Examples 1.13 and 1.17, the mean and autocovariance functions μvt = 0, and
+
+
+1.5 Stationary Time Series 25
+γv(h) =
+
+   
+   
+3
+9 σ2w h = 0,
+2
+9 σ2w h = ±1,
+1
+9 σ2w h = ±2,
+0 |h| > 2
+are independent of time t, satisfying the conditions of Definition 1.7. Figure 1.12 shows a plot of the autocovariance as a function of lag h with σ2w = 1. Interestingly, the autocovariance function is symmetric about lag zero and decays as a function of lag.
+The autocovariance function of a stationary process has several useful properties (also, see Problem 1.25). First, the value at h = 0, namely
+γ(0) = E[(xt − μ)2] (1.24)
+is the variance of the time series; note that the Cauchy–Schwarz inequality implies |γ(h)| ≤ γ(0).
+A final useful property, noted in the previous example, is that the autocovariance function of a stationary series is symmetric around the origin; that is, γ(h) = γ(−h) (1.25)
+for all h. This property follows because shifting the series by h means that
+γ(h) = γ(t + h − t)
+= E[(xt+h − μ)(xt − μ)] = E[(xt − μ)(xt+h − μ)] = γ(t − (t + h)) = γ(−h),
+which shows how to use the notation as well as proving the result. When several series are available, a notion of stationarity still applies with additional conditions.
+Definition 1.10 Two time series, say, xt and yt, are said to be jointly stationary if they are each stationary, and the cross-covariance function
+γxy(h) = cov(xt+h, yt) = E[(xt+h − μx)(yt − μy)] (1.26)
+is a function only of lag h.
+Definition 1.11 The cross-correlation function (CCF) of jointly stationary time series xt and yt is defined as
+ρxy(h) = γxy(h)
+√γx(0)γy(0) . (1.27)
+
+
+26 1 Characteristics of Time Series
+Again, we have the result −1 ≤ ρxy(h) ≤ 1 which enables comparison with the extreme values −1 and 1 when looking at the relation between xt+h and yt. The cross-correlation function is not generally symmetric about zero [i.e., typically ρxy(h) 6= ρxy(−h)]; however, it is the case that
+ρxy(h) = ρyx(−h), (1.28)
+which can be shown by manipulations similar to those used to show (1.25).
+Example 1.21 Joint Stationarity
+Consider the two series, xt and yt, formed from the sum and difference of two successive values of a white noise process, say,
+xt = wt + wt−1
+and
+yt = wt − wt−1,
+where wt are independent random variables with zero means and variance σ2w. It is easy to show that γx(0) = γy(0) = 2σ2w and γx(1) = γx(−1) =
+σ2w, γy(1) = γy(−1) = −σ2w. Also,
+γxy(1) = cov(xt+1, yt) = cov(wt+1 + wt, wt − wt−1) = σ2
+w
+because only one term is nonzero (recall footnote 3 on page 20). Similarly, γxy(0) = 0, γxy(−1) = −σ2w. We obtain, using (1.27),
+ρxy(h) =
+
+   
+   
+0 h = 0,
+1/2 h = 1,
+−1/2 h = −1,
+0 |h| ≥ 2.
+Clearly, the autocovariance and cross-covariance functions depend only on the lag separation, h, so the series are jointly stationary.
+Example 1.22 Prediction Using Cross-Correlation
+As a simple example of cross-correlation, consider the problem of determining possible leading or lagging relations between two series xt and yt. If the model
+yt = Axt−` + wt
+holds, the series xt is said to lead yt for ` > 0 and is said to lag yt for ` < 0. Hence, the analysis of leading and lagging relations might be important in predicting the value of yt from xt. Assuming, for convenience, that xt and yt have zero means, and the noise wt is uncorrelated with the xt series, the cross-covariance function can be computed as
+
+
+1.5 Stationary Time Series 27
+γyx(h) = cov(yt+h, xt) = cov(Axt+h−` + wt+h, xt)
+= cov(Axt+h−`, xt) = Aγx(h − `).
+The cross-covariance function will look like the autocovariance of the input series xt, with a peak on the positive side if xt leads yt and a peak on the negative side if xt lags yt.
+The concept of weak stationarity forms the basis for much of the analysis performed with time series. The fundamental properties of the mean and autocovariance functions (1.21) and (1.22) are satisfied by many theoretical models that appear to generate plausible sample realizations. In Examples 1.9 and 1.10, two series were generated that produced stationary looking realizations, and in Example 1.20, we showed that the series in Example 1.9 was, in fact, weakly stationary. Both examples are special cases of the so-called linear process.
+Definition 1.12 A linear process, xt, is defined to be a linear combination of white noise variates wt, and is given by
+xt = μ +
+∞
+∑
+j=−∞
+ψj wt−j ,
+∞
+∑
+j=−∞
+|ψj| < ∞. (1.29)
+For the linear process (see Problem 1.11), we may show that the autocovariance function is given by
+γ(h) = σ2
+w
+∞
+∑
+j=−∞
+ψj+hψj (1.30)
+for h ≥ 0; recall that γ(−h) = γ(h). This method exhibits the autocovariance function of the process in terms of the lagged products of the coefficients. Note that, for Example 1.9, we have ψ0 = ψ−1 = ψ1 = 1/3 and the result in Example 1.20 comes out immediately. The autoregressive series in Example 1.10 can also be put in this form, as can the general autoregressive moving average processes considered in Chapter 3. Finally, as previously mentioned, an important case in which a weakly stationary series is also strictly stationary is the normal or Gaussian series.
+Definition 1.13 A process, {xt}, is said to be a Gaussian process if the n-dimensional vectors xxx = (xt1 , xt2 , . . . , xtn )′, for every collection of time points t1, t2, . . . , tn, and every positive integer n, have a multivariate normal distribution.
+Defining the n × 1 mean vector E(xxx) ≡ μμμ = (μt1 , μt2 , . . . , μtn )′ and the n × n covariance matrix as var(xxx) ≡ Γ = {γ(ti, tj); i, j = 1, . . . , n}, which is
+
+
+28 1 Characteristics of Time Series
+assumed to be positive definite, the multivariate normal density function can be written as
+f (xxx) = (2π)−n/2|Γ |−1/2 exp
+{
+−1
+2 (xxx − μμμ)′Γ −1(xxx − μμμ)
+}
+, (1.31)
+where |·| denotes the determinant. This distribution forms the basis for solving problems involving statistical inference for time series. If a Gaussian time series, {xt}, is weakly stationary, then μt = μ and γ(ti, tj) = γ(|ti − tj|), so that the vector μμμ and the matrix Γ are independent of time. These facts imply that all the finite distributions, (1.31), of the series {xt} depend only on time lag and not on the actual times, and hence the series must be strictly stationary.
+1.6 Estimation of Correlation
+Although the theoretical autocorrelation and cross-correlation functions are useful for describing the properties of certain hypothesized models, most of the analyses must be performed using sampled data. This limitation means the sampled points x1, x2, . . . , xn only are available for estimating the mean, autocovariance, and autocorrelation functions. From the point of view of classical statistics, this poses a problem because we will typically not have iid copies of xt that are available for estimating the covariance and correlation functions. In the usual situation with only one realization, however, the assumption of stationarity becomes critical. Somehow, we must use averages over this single realization to estimate the population means and covariance functions. Accordingly, if a time series is stationary, the mean function (1.21) μt = μ is constant so that we can estimate it by the sample mean,
+x ̄ = 1
+n
+n
+∑
+t=1
+xt. (1.32)
+The standard error of the estimate is the square root of var(x ̄), which can be computed using first principles (recall footnote 3 on page 20), and is given by
+var(x ̄) = var
+(
+1 n
+n
+∑
+t=1
+xt
+)
+=1
+n2 cov
+(n ∑
+t=1
+xt,
+n
+∑
+s=1
+xs
+)
+=1
+n2
+(
+nγx(0) + (n − 1)γx(1) + (n − 2)γx(2) + · · · + γx(n − 1)
++ (n − 1)γx(−1) + (n − 2)γx(−2) + · · · + γx(1 − n)
+)
+=1
+n
+n
+∑
+h=−n
+(
+1 − |h|
+n
+)
+γx(h). (1.33)
+
+
+1.6 Estimation of Correlation 29
+If the process is white noise, (1.33) reduces to the familiar σx2/n recalling that
+γx(0) = σx2. Note that, in the case of dependence, the standard error of x ̄ may be smaller or larger than the white noise case depending on the nature of the correlation structure (see Problem 1.19) The theoretical autocovariance function, (1.22), is estimated by the sample autocovariance function defined as follows.
+Definition 1.14 The sample autocovariance function is defined as
+̂γ(h) = n−1
+n−h
+∑
+t=1
+(xt+h − x ̄)(xt − x ̄), (1.34)
+with ̂γ(−h) = ̂γ(h) for h = 0, 1, . . . , n − 1.
+The sum in (1.34) runs over a restricted range because xt+h is not available for t + h > n. The estimator in (1.34) is preferred to the one that would be obtained by dividing by n−h because (1.34) is a non-negative definite function. The autocovariance function, γ(h), of a stationary process is non-negative definite (see Problem 1.25) ensuring that variances of linear combinations of the variates xt will never be negative. And, because var(a1xt1 + · · · + anxtn ) is never negative, the estimate of that variance should also be non-negative. The estimator in (1.34) guarantees this result, but no such guarantee exists if we divide by n − h; this is explored further in Problem 1.25. Note that neither dividing by n nor n − h in (1.34) yields an unbiased estimator of γ(h).
+Definition 1.15 The sample autocorrelation function is defined, analogously to (1.23), as
+̂ρ(h) = ̂γ(h)
+̂γ(0) . (1.35)
+The sample autocorrelation function has a sampling distribution that allows us to assess whether the data comes from a completely random or white series or whether correlations are statistically significant at some lags.
+Property 1.1 Large-Sample Distribution of the ACF
+Under general conditions,5 if xt is white noise, then for n large, the sample ACF, ̂ρx(h), for h = 1, 2, . . . , H, where H is fixed but arbitrary, is approximately normally distributed with zero mean and standard deviation given by
+σρˆx(h) = √1n . (1.36)
+5 The general conditions are that xt is iid with finite fourth moment. A sufficient condition for this to hold is that xt is white Gaussian noise. Precise details are given in Theorem A.7 in Appendix A.
+
+
+30 1 Characteristics of Time Series
+Based on the previous result, we obtain a rough method of assessing whether peaks in ̂ρ(h) are significant by determining whether the observed
+peak is outside the interval ±2/√n (or plus/minus two standard errors); for a white noise sequence, approximately 95% of the sample ACFs should be within these limits. The applications of this property develop because many statistical modeling procedures depend on reducing a time series to a white noise series using various kinds of transformations. After such a procedure is applied, the plotted ACFs of the residuals should then lie roughly within the limits given above.
+Definition 1.16 The estimators for the cross-covariance function, γxy(h), as given in (1.26) and the cross-correlation, ρxy(h), in (1.27) are given, respectively, by the sample cross-covariance function
+̂γxy(h) = n−1
+n−h
+∑
+t=1
+(xt+h − x ̄)(yt − y ̄), (1.37)
+where ̂γxy(−h) = ̂γyx(h) determines the function for negative lags, and the sample cross-correlation function
+̂ρxy(h) = ̂γxy(h)
+√
+̂γx(0)̂γy(0) . (1.38)
+The sample cross-correlation function can be examined graphically as a function of lag h to search for leading or lagging relations in the data using the property mentioned in Example 1.22 for the theoretical cross-covariance function. Because −1 ≤ ̂ρxy(h) ≤ 1, the practical importance of peaks can be assessed by comparing their magnitudes with their theoretical maximum values. Furthermore, for xt and yt independent linear processes of the form (1.29), we have the following property.
+Property 1.2 Large-Sample Distribution of Cross-Correlation Under Independence
+The large sample distribution of ̂ρxy(h) is normal with mean zero and
+σρˆxy = √1n (1.39)
+if at least one of the processes is independent white noise (see Theorem A.8 in Appendix A).
+Example 1.23 A Simulated Time Series
+To give an example of the procedure for calculating numerically the autocovariance and cross-covariance functions, consider a contrived set of data
+
+
+1.6 Estimation of Correlation 31
+Table 1.1. Sample Realization of the Contrived Series yt
+t 1 2 3 4 5 6 7 8 9 10
+Coin H H T H T T T H T H xt 1 1 −1 1 −1 −1 −1 1 −1 1 yt 6.7 5.3 3.3 6.7 3.3 4.7 4.7 6.7 3.3 6.7 yt − y ̄ 1.56 .16 −1.84 1.56 −1.84 −.44 −.44 1.56 −1.84 1.56
+generated by tossing a fair coin, letting xt = 1 when a head is obtained and xt = −1 when a tail is obtained. Construct yt as
+yt = 5 + xt − .7xt−1. (1.40)
+Table 1.1 shows sample realizations of the appropriate processes with x0 = −1 and n = 10. The sample autocorrelation for the series yt can be calculated using (1.34) and (1.35) for h = 0, 1, 2, . . .. It is not necessary to calculate for negative values because of the symmetry. For example, for h = 3, the autocorrelation becomes the ratio of
+̂γy(3) = 1
+10
+7
+∑
+t=1
+(yt+3 − y ̄)(yt − y ̄)
+=1
+10
+[
+(1.56)(1.56) + (−1.84)(.16) + (−.44)(−1.84) + (−.44)(1.56)
++ (1.56)(−1.84) + (−1.84)(−.44) + (1.56)(−.44)
+]
+= −.048
+to ̂γy(0) = 1
+10 [(1.56)2 + (.16)2 + · · · + (1.56)2] = 2.030
+so that
+̂ρy(3) = −.048
+2.030 = −.024.
+The theoretical ACF can be obtained from the model (1.40) using the fact that the mean of xt is zero and the variance of xt is one. It can be shown that
+ρy(1) = −.7
+1 + .72 = −.47
+and ρy(h) = 0 for |h| > 1 (Problem 1.24). Table 1.2 compares the theoretical ACF with sample ACFs for a realization where n = 10 and another realization where n = 100; we note the increased variability in the smaller size sample.
+
+
+32 1 Characteristics of Time Series
+Table 1.2. Theoretical and Sample ACFs for n = 10 and n = 100
+n = 10 n = 100 h ρy(h) ̂ρy(h) ̂ρy(h)
+0 1.00 1.00 1.00 ±1 −.47 −.55 −.45 ±2 .00 .17 −.12 ±3 .00 −.02 .14 ±4 .00 .15 .01 ±5 .00 −.46 −.01
+Example 1.24 ACF of a Speech Signal
+Computing the sample ACF as in the previous example can be thought of as matching the time series h units in the future, say, xt+h against itself, xt. Figure 1.13 shows the ACF of the speech series of Figure 1.3. The original series appears to contain a sequence of repeating short signals. The ACF confirms this behavior, showing repeating peaks spaced at about 106-109 points. Autocorrelation functions of the short signals appear, spaced at the intervals mentioned above. The distance between the repeating signals is known as the pitch period and is a fundamental parameter of interest in systems that encode and decipher speech. Because the series is sampled at 10,000 points per second, the pitch period appears to be between .0106 and .0109 seconds. To put the data into speech as a time series object (if it is not there already from Example 1.3) and compute the sample ACF in R, use 1 acf(speech, 250)
+Example 1.25 SOI and Recruitment Correlation Analysis
+The autocorrelation and cross-correlation functions are also useful for analyzing the joint behavior of two stationary series whose behavior may be related in some unspecified way. In Example 1.5 (see Figure 1.5), we have considered simultaneous monthly readings of the SOI and the number of new fish (Recruitment) computed from a model. Figure 1.14 shows the autocorrelation and cross-correlation functions (ACFs and CCF) for these two series. Both of the ACFs exhibit periodicities corresponding to the correlation between values separated by 12 units. Observations 12 months or one year apart are strongly positively correlated, as are observations at multiples such as 24, 36, 48, . . . Observations separated by six months are negatively correlated, showing that positive excursions tend to be associated with negative excursions six months removed. This appearance is rather characteristic of the pattern that would be produced by a sinusoidal component with a period of 12 months. The cross-correlation function peaks at h = −6, showing that the SOI measured at time t − 6 months is associated with the Recruitment series at time t. We could say the SOI leads the Recruitment series by
+
+
+1.7 Vector-Valued and Multidimensional Series 33
+0 50 100 150 200 250
+−0.5 0.0 0.5 1.0
+Lag
+ACF
+Fig. 1.13. ACF of the speech series.
+six months. The sign of the ACF is negative, leading to the conclusion that the two series move in different directions; that is, increases in SOI lead to decreases in Recruitment and vice versa. Again, note the periodicity of 12
+months in the CCF. The flat lines shown on the plots indicate ±2/√453, so that upper values would be exceeded about 2.5% of the time if the noise were white [see (1.36) and (1.39)]. To reproduce Figure 1.14 in R, use the following commands: 1 par(mfrow=c(3,1)) 2 acf(soi, 48, main="Southern Oscillation Index") 3 acf(rec, 48, main="Recruitment") 4 ccf(soi, rec, 48, main="SOI vs Recruitment", ylab="CCF")
+1.7 Vector-Valued and Multidimensional Series
+We frequently encounter situations in which the relationships between a number of jointly measured time series are of interest. For example, in the previous sections, we considered discovering the relationships between the SOI and Recruitment series. Hence, it will be useful to consider the notion of a vector time series xxxt = (xt1, xt2, . . . , xtp)′, which contains as its components p univariate time series. We denote the p × 1 column vector of the observed series as xxxt. The row vector xxx′t is its transpose. For the stationary case, the p × 1 mean vector μμμ = E(xxxt) (1.41)
+of the form μμμ = (μt1, μt2, . . . , μtp)′ and the p × p autocovariance matrix
+
+
+34 1 Characteristics of Time Series
+01234
+−0.4 0.0 0.4 0.8
+ACF
+Southern Oscillation Index
+01234
+−0.2 0.2 0.6 1.0
+ACF
+Recruitment
+−4 −2 0 2 4
+−0.6 −0.2 0.2
+Lag
+CCF
+SOI vs Recruitment
+Fig. 1.14. Sample ACFs of the SOI series (top) and of the Recruitment series (middle), and the sample CCF of the two series (bottom); negative lags indicate SOI leads Recruitment. The lag axes are in terms of seasons (12 months).
+Γ (h) = E[(xxxt+h − μμμ)(xxxt − μμμ)′] (1.42)
+can be defined, where the elements of the matrix Γ (h) are the cross-covariance functions γij(h) = E[(xt+h,i − μi)(xtj − μj)] (1.43)
+for i, j = 1, . . . , p. Because γij(h) = γji(−h), it follows that
+Γ (−h) = Γ ′(h). (1.44)
+Now, the sample autocovariance matrix of the vector series xxxt is the p × p matrix of sample cross-covariances, defined as
+̂Γ (h) = n−1
+n−h
+∑
+t=1
+(xxxt+h − xx ̄x)(xxxt − xx ̄x)′, (1.45)
+
+
+1.7 Vector-Valued and Multidimensional Series 35
+rows
+20
+40
+60
+cols
+10
+20
+30
+temperature
+4
+6
+8
+10
+Fig. 1.15. Two-dimensional time series of temperature measurements taken on a rectangular field (64 × 36 with 17-foot spacing). Data are from Bazza et al. (1988).
+where
+xx ̄x = n−1
+n
+∑
+t=1
+xxxt (1.46)
+denotes the p × 1 sample mean vector. The symmetry property of the theoretical autocovariance (1.44) extends to the sample autocovariance (1.45), which is defined for negative values by taking
+̂Γ (−h) = ̂Γ (h)′. (1.47)
+In many applied problems, an observed series may be indexed by more than time alone. For example, the position in space of an experimental unit might be described by two coordinates, say, s1 and s2. We may proceed in these cases by defining a multidimensional process xsss as a function of the r ×1 vector sss = (s1, s2, . . . , sr)′, where si denotes the coordinate of the ith index.
+Example 1.26 Soil Surface Temperatures
+As an example, the two-dimensional (r = 2) temperature series xs1,s2 in Figure 1.15 is indexed by a row number s1 and a column number s2 that
+
+
+36 1 Characteristics of Time Series
+represent positions on a 64 × 36 spatial grid set out on an agricultural field. The value of the temperature measured at row s1 and column s2, is denoted by xsss = xs1,s2. We can note from the two-dimensional plot that a distinct change occurs in the character of the two-dimensional surface starting at about row 40, where the oscillations along the row axis become fairly stable and periodic. For example, averaging over the 36 columns, we may compute an average value for each s1 as in Figure 1.16. It is clear that the noise present in the first part of the two-dimensional series is nicely averaged out, and we see a clear and consistent temperature signal. To generate Figures 1.15 and 1.16 in R, use the following commands: 1 persp(1:64, 1:36, soiltemp, phi=30, theta=30, scale=FALSE, expand=4, ticktype="detailed", xlab="rows", ylab="cols", zlab="temperature") 2 plot.ts(rowMeans(soiltemp), xlab="row", ylab="Average Temperature")
+The autocovariance function of a stationary multidimensional process, xsss, can be defined as a function of the multidimensional lag vector, say, hhh = (h1, h2, . . . , hr)′, as
+γ(hhh) = E[(xsss+hhh − μ)(xsss − μ)], (1.48)
+where μ = E(xsss) (1.49)
+does not depend on the spatial coordinate sss. For the two dimensional temperature process, (1.48) becomes
+γ(h1, h2) = E[(xs1+h1,s2+h2 − μ)(xs1,s2 − μ)], (1.50)
+which is a function of lag, both in the row (h1) and column (h2) directions. The multidimensional sample autocovariance function is defined as
+̂γ(hhh) = (S1S2 · · · Sr)−1 ∑
+s1
+∑
+s2
+···
+∑
+sr
+(xsss+hhh − x ̄)(xsss − x ̄), (1.51)
+where sss = (s1, s2, . . . , sr)′ and the range of summation for each argument is 1 ≤ si ≤ Si−hi, for i = 1, . . . , r. The mean is computed over the r-dimensional array, that is,
+x ̄ = (S1S2 · · · Sr)−1 ∑
+s1
+∑
+s2
+···
+∑
+sr
+xs1,s2,··· ,sr , (1.52)
+where the arguments si are summed over 1 ≤ si ≤ Si. The multidimensional sample autocorrelation function follows, as usual, by taking the scaled ratio
+̂ρ(hhh) = ̂γ(hhh)
+̂γ(0) . (1.53)
+
+
+1.7 Vector-Valued and Multidimensional Series 37
+row
+Average Temperature
+0 10 20 30 40 50 60
+5.5 6.0 6.5 7.0 7.5
+Fig. 1.16. Row averages of the two-dimensional soil temperature profile. x ̄s1 =
+∑
+s2 xs1,s2 /36.
+Example 1.27 Sample ACF of the Soil Temperature Series
+The autocorrelation function of the two-dimensional (2d) temperature process can be written in the form
+̂ρ(h1, h2) = ̂γ(h1, h2)
+̂γ(0, 0) ,
+where
+̂γ(h1, h2) = (S1S2)−1 ∑
+s1
+∑
+s2
+(xs1+h1,s2+h2 − x ̄)(xs1,s2 − x ̄)
+Figure 1.17 shows the autocorrelation function for the temperature data, and we note the systematic periodic variation that appears along the rows. The autocovariance over columns seems to be strongest for h1 = 0, implying columns may form replicates of some underlying process that has a periodicity over the rows. This idea can be investigated by examining the mean series over columns as shown in Figure 1.16. The easiest way (that we know of) to calculate a 2d ACF in R is by using the fast Fourier transform (FFT) as shown below. Unfortunately, the material needed to understand this approach is given in Chapter 4, §4.4. The 2d autocovariance function is obtained in two steps and is contained in cs below; ̂γ(0, 0) is the (1,1) element so that ̂ρ(h1, h2) is obtained by dividing each element by that value. The 2d ACF is contained in rs below, and the rest of the code is simply to arrange the results to yield a nice display.
+
+
+38 1 Characteristics of Time Series
+rowlags
+−40
+−20
+0
+20
+40
+columnlags
+−20
+−10
+0
+10
+20
+ACF
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Fig. 1.17. Two-dimensional autocorrelation function for the soil temperature data.
+1 fs = abs(fft(soiltemp-mean(soiltemp)))^2/(64*36) 2 cs = Re(fft(fs, inverse=TRUE)/sqrt(64*36)) # ACovF 3 rs = cs/cs[1,1] # ACF 4 rs2 = cbind(rs[1:41,21:2], rs[1:41,1:21]) 5 rs3 = rbind(rs2[41:2,], rs2) 6 par(mar = c(1,2.5,0,0)+.1) 7 persp(-40:40, -20:20, rs3, phi=30, theta=30, expand=30, scale="FALSE", ticktype="detailed", xlab="row lags", ylab="column lags", zlab="ACF")
+The sampling requirements for multidimensional processes are rather severe because values must be available over some uniform grid in order to compute the ACF. In some areas of application, such as in soil science, we may prefer to sample a limited number of rows or transects and hope these are essentially replicates of the basic underlying phenomenon of interest. Onedimensional methods can then be applied. When observations are irregular in time space, modifications to the estimators need to be made. Systematic approaches to the problems introduced by irregularly spaced observations have been developed by Journel and Huijbregts (1978) or Cressie (1993). We shall not pursue such methods in detail here, but it is worth noting that the introduction of the variogram
+
+
+Problems 39
+2Vx(hhh) = var{xsss+hhh − xsss} (1.54)
+and its sample estimator
+2
+̂Vx(hhh) = 1
+N (hhh)
+∑
+sss
+(xsss+hhh − xsss)2 (1.55)
+play key roles, where N (hhh) denotes both the number of points located within hhh, and the sum runs over the points in the neighborhood. Clearly, substantial indexing difficulties will develop from estimators of the kind, and often it will be difficult to find non-negative definite estimators for the covariance function. Problem 1.27 investigates the relation between the variogram and the autocovariance function in the stationary case.
+Problems
+Section 1.2
+1.1 To compare the earthquake and explosion signals, plot the data displayed in Figure 1.7 on the same graph using different colors or different line types and comment on the results. (The R code in Example 1.11 may be of help on how to add lines to existing plots.)
+1.2 Consider a signal-plus-noise model of the general form xt = st + wt, where wt is Gaussian white noise with σ2w = 1. Simulate and plot n = 200 observations from each of the following two models (Save the data or your code for use in Problem 1.22 ):
+(a) xt = st + wt, for t = 1, ..., 200, where
+st =
+{ 0, t = 1, . . . , 100 10 exp{− (t−100)
+20 } cos(2πt/4), t = 101, . . . , 200.
+Hint:
+1 s = c(rep(0,100), 10*exp(-(1:100)/20)*cos(2*pi*1:100/4)) 2 x = ts(s + rnorm(200, 0, 1)) 3 plot(x)
+(b) xt = st + wt, for t = 1, . . . , 200, where
+st =
+{ 0, t = 1, . . . , 100 10 exp{− (t−100)
+200 } cos(2πt/4), t = 101, . . . , 200.
+(c) Compare the general appearance of the series (a) and (b) with the earthquake series and the explosion series shown in Figure 1.7. In addition, plot (or sketch) and compare the signal modulators (a) exp{−t/20} and (b) exp{−t/200}, for t = 1, 2, . . . , 100.
+
+
+40 1 Characteristics of Time Series
+Section 1.3
+1.3 (a) Generate n = 100 observations from the autoregression
+xt = −.9xt−2 + wt
+with σw = 1, using the method described in Example 1.10, page 13. Next, apply the moving average filter
+vt = (xt + xt−1 + xt−2 + xt−3)/4
+to xt, the data you generated. Now plot xt as a line and superimpose vt as a dashed line. Comment on the behavior of xt and how applying the moving average filter changes that behavior. [Hints: Use v = filter(x, rep(1/4, 4), sides = 1) for the filter and note that the R code in Example 1.11 may be of help on how to add lines to existing plots.] (b) Repeat (a) but with xt = cos(2πt/4).
+(c) Repeat (b) but with added N(0, 1) noise,
+xt = cos(2πt/4) + wt.
+(d) Compare and contrast (a)–(c).
+Section 1.4
+1.4 Show that the autocovariance function can be written as
+γ(s, t) = E[(xs − μs)(xt − μt)] = E(xsxt) − μsμt,
+where E[xt] = μt.
+1.5 For the two series, xt, in Problem 1.2 (a) and (b):
+(a) Compute and plot the mean functions μx(t), for t = 1, . . . , 200. (b) Calculate the autocovariance functions, γx(s, t), for s, t = 1, . . . , 200.
+Section 1.5
+1.6 Consider the time series
+xt = β1 + β2t + wt,
+where β1 and β2 are known constants and wt is a white noise process with variance σ2w.
+(a) Determine whether xt is stationary. (b) Show that the process yt = xt − xt−1 is stationary.
+
+
+Problems 41
+(c) Show that the mean of the moving average
+vt = 1
+2q + 1
+q
+∑
+j=−q
+xt−j
+is β1 +β2t, and give a simplified expression for the autocovariance function.
+1.7 For a moving average process of the form
+xt = wt−1 + 2wt + wt+1,
+where wt are independent with zero means and variance σ2w, determine the autocovariance and autocorrelation functions as a function of lag h = s − t and plot the ACF as a function of h.
+1.8 Consider the random walk with drift model
+xt = δ + xt−1 + wt,
+for t = 1, 2, . . . , with x0 = 0, where wt is white noise with variance σ2w.
+(a) Show that the model can be written as xt = δt + ∑t
+k=1 wk.
+(b) Find the mean function and the autocovariance function of xt. (c) Argue that xt is not stationary.
+(d) Show ρx(t − 1, t) =
+√
+t−1
+t → 1 as t → ∞. What is the implication of this
+result? (e) Suggest a transformation to make the series stationary, and prove that the transformed series is stationary. (Hint: See Problem 1.6b.)
+1.9 A time series with a periodic component can be constructed from
+xt = U1 sin(2πω0t) + U2 cos(2πω0t),
+where U1 and U2 are independent random variables with zero means and E(U12) = E(U22) = σ2. The constant ω0 determines the period or time it takes the process to make one complete cycle. Show that this series is weakly stationary with autocovariance function
+γ(h) = σ2 cos(2πω0h).
+1.10 Suppose we would like to predict a single stationary series xt with zero mean and autocorrelation function γ(h) at some time in the future, say, t + `, for ` > 0.
+(a) If we predict using only xt and some scale multiplier A, show that the mean-square prediction error
+M SE(A) = E[(xt+` − Axt)2]
+is minimized by the value
+A = ρ(`).
+
+
+42 1 Characteristics of Time Series
+(b) Show that the minimum mean-square prediction error is
+M SE(A) = γ(0)[1 − ρ2(`)].
+(c) Show that if xt+` = Axt, then ρ(`) = 1 if A > 0, and ρ(`) = −1 if A < 0.
+1.11 Consider the linear process defined in (1.29).
+(a) Verify that the autocovariance function of the process is given by (1.30). Use the result to verify your answer to Problem 1.7. (b) Show that xt exists as a limit in mean square (see Appendix A).
+1.12 For two weakly stationary series xt and yt, verify (1.28).
+1.13 Consider the two series
+xt = wt
+yt = wt − θwt−1 + ut,
+where wt and ut are independent white noise series with variances σ2w and σ2u, respectively, and θ is an unspecified constant.
+(a) Express the ACF, ρy(h), for h = 0, ±1, ±2, . . . of the series yt as a function of σ2w, σ2u, and θ. (b) Determine the CCF, ρxy(h) relating xt and yt. (c) Show that xt and yt are jointly stationary.
+1.14 Let xt be a stationary normal process with mean μx and autocovariance function γ(h). Define the nonlinear time series
+yt = exp{xt}.
+(a) Express the mean function E(yt) in terms of μx and γ(0). The moment generating function of a normal random variable x with mean μ and variance σ2 is
+Mx(λ) = E[exp{λx}] = exp
+{
+μλ + 1
+2 σ2λ2
+}
+.
+(b) Determine the autocovariance function of yt. The sum of the two normal random variables xt+h + xt is still a normal random variable.
+1.15 Let wt, for t = 0, ±1, ±2, . . . be a normal white noise process, and consider the series
+xt = wtwt−1.
+Determine the mean and autocovariance function of xt, and state whether it is stationary.
+
+
+Problems 43
+1.16 Consider the series xt = sin(2πU t),
+t = 1, 2, . . ., where U has a uniform distribution on the interval (0, 1).
+(a) Prove xt is weakly stationary. (b) Prove xt is not strictly stationary. [Hint: consider the joint bivariate cdf (1.18) at the points t = 1, s = 2 with h = 1, and find values of ct, cs where strict stationarity does not hold.]
+1.17 Suppose we have the linear process xt generated by
+xt = wt − θwt−1,
+t = 0, 1, 2, . . ., where {wt} is independent and identically distributed with characteristic function φw(·), and θ is a fixed constant. [Replace “characteristic function” with “moment generating function” if instructed to do so.]
+(a) Express the joint characteristic function of x1, x2, . . . , xn, say,
+φx1,x2,...,xn (λ1, λ2, . . . , λn),
+in terms of φw(·). (b) Deduce from (a) that xt is strictly stationary.
+1.18 Suppose that xt is a linear process of the form (1.29). Prove
+∞
+∑
+h=−∞
+|γ(h)| < ∞.
+Section 1.6
+1.19 Suppose x1, . . . , xn is a sample from the process xt = μ + wt − .8wt−1, where wt ∼ wn(0, σ2w).
+(a) Show that mean function is E(xt) = μ. (b) Use (1.33) to calculate the standard error of x ̄ for estimating μ. (c) Compare (b) to the case where xt is white noise and show that (b) is smaller. Explain the result.
+1.20 (a) Simulate a series of n = 500 Gaussian white noise observations as in Example 1.8 and compute the sample ACF, ̂ρ(h), to lag 20. Compare the sample ACF you obtain to the actual ACF, ρ(h). [Recall Example 1.19.] (b) Repeat part (a) using only n = 50. How does changing n affect the results?
+1.21 (a) Simulate a series of n = 500 moving average observations as in Example 1.9 and compute the sample ACF, ̂ρ(h), to lag 20. Compare the sample ACF you obtain to the actual ACF, ρ(h). [Recall Example 1.20.] (b) Repeat part (a) using only n = 50. How does changing n affect the results?
+
+
+44 1 Characteristics of Time Series
+1.22 Although the model in Problem 1.2(a) is not stationary (Why?), the sample ACF can be informative. For the data you generated in that problem, calculate and plot the sample ACF, and then comment.
+1.23 Simulate a series of n = 500 observations from the signal-plus-noise model presented in Example 1.12 with σ2w = 1. Compute the sample ACF to lag 100 of the data you generated and comment.
+1.24 For the time series yt described in Example 1.23, verify the stated result that ρy(1) = −.47 and ρy(h) = 0 for h > 1.
+1.25 A real-valued function g(t), defined on the integers, is non-negative def
+inite if and only if
+n
+∑
+i=1
+n
+∑
+j=1
+aig(ti − tj)aj ≥ 0
+for all positive integers n and for all vectors aaa = (a1, a2, . . . , an)′ and ttt = (t1, t2, . . . , tn)′. For the matrix G = {g(ti − tj); i, j = 1, 2, . . . , n}, this implies that aaa′Gaaa ≥ 0 for all vectors aaa. It is called positive definite if we can replace ‘≥’ with ‘>’ for all aaa 6= 000, the zero vector.
+(a) Prove that γ(h), the autocovariance function of a stationary process, is a non-negative definite function. (b) Verify that the sample autocovariance ̂γ(h) is a non-negative definite function.
+Section 1.7
+1.26 Consider a collection of time series x1t, x2t, . . . , xNt that are observing some common signal μt observed in noise processes e1t, e2t, . . . , eNt, with a model for the j-th observed series given by
+xjt = μt + ejt.
+Suppose the noise series have zero means and are uncorrelated for different j. The common autocovariance functions of all series are given by γe(s, t). Define the sample mean
+x ̄t = 1
+N
+N
+∑
+j=1
+xjt.
+(a) Show that E[x ̄t] = μt. (b) Show that E[(x ̄t − μ)2)] = N −1γe(t, t). (c) How can we use the results in estimating the common signal?
+
+
+Problems 45
+1.27 A concept used in geostatistics, see Journel and Huijbregts (1978) or Cressie (1993), is that of the variogram, defined for a spatial process xsss, sss = (s1, s2), for s1, s2 = 0, ±1, ±2, ..., as
+Vx(hhh) = 1
+2 E[(xsss+hhh − xsss)2],
+where hhh = (h1, h2), for h1, h2 = 0, ±1, ±2, ... Show that, for a stationary process, the variogram and autocovariance functions can be related through
+Vx(hhh) = γ(000) − γ(hhh),
+where γ(hhh) is the usual lag hhh covariance function and 000 = (0, 0). Note the easy extension to any spatial dimension.
+The following problems require the material given in Appendix A
+1.28 Suppose xt = β0 + β1t, where β0 and β1 are constants. Prove as n → ∞, ̂ρx(h) → 1 for fixed h, where ̂ρx(h) is the ACF (1.35).
+1.29 (a) Suppose xt is a weakly stationary time series with mean zero and with absolutely summable autocovariance function, γ(h), such that
+∞
+∑
+h=−∞
+γ(h) = 0.
+Prove that √n x ̄ p → 0, where x ̄ is the sample mean (1.32). (b) Give an example of a process that satisfies the conditions of part (a). What is special about this process?
+1.30 Let xt be a linear process of the form (A.43)–(A.44). If we define
+γ ̃(h) = n−1
+n
+∑
+t=1
+(xt+h − μx)(xt − μx),
+show that n1/2(γ ̃(h) − ̂γ(h)) = op(1).
+Hint: The Markov Inequality
+P {|x| ≥ } < E|x|
+can be helpful for the cross-product terms.
+1.31 For a linear process of the form
+xt =
+∞
+∑
+j=0
+φj wt−j ,
+
+
+46 1 Characteristics of Time Series
+where {wt} satisfies the conditions of Theorem A.7 and |φ| < 1, show that
+√n (̂ρx(1) − ρx(1))
+√1 − ρ2x(1)
+→d N (0, 1),
+and construct a 95% confidence interval for φ when ̂ρx(1) = .64 and n = 100.
+1.32 Let {xt; t = 0, ±1, ±2, . . .} be iid(0, σ2).
+(a) For h ≥ 1 and k ≥ 1, show that xtxt+h and xsxs+k are uncorrelated for all s 6= t.
+(b) For fixed h ≥ 1, show that the h × 1 vector
+σ−2n−1/2
+n
+∑
+t=1
+(xtxt+1, . . . , xtxt+h)′ →d (z1, . . . , zh)′
+where z1, . . . , zh are iid N(0, 1) random variables. [Note: the sequence {xtxt+h; t = 1, 2, . . .} is h-dependent and white noise (0, σ4). Also, recall the Cram ́er-Wold device.]
+(c) Show, for each h ≥ 1,
+n−1/2
+[n ∑
+t=1
+xtxt+h −
+n−h
+∑
+t=1
+(xt − x ̄)(xt+h − x ̄)
+]
+p → 0 as n → ∞
+where x ̄ = n−1 ∑n
+t=1 xt.
+(d) Noting that n−1 ∑n
+t=1 xt2
+→p σ2, conclude that
+n1/2 [̂ρ(1), . . . , ̂ρ(h)]′ →d (z1, . . . , zh)′
+where ̂ρ(h) is the sample ACF of the data x1, . . . , xn.
+
+
+2
+Time Series Regression and Exploratory
+Data Analysis
+2.1 Introduction
+The linear model and its applications are at least as dominant in the time series context as in classical statistics. Regression models are important for time domain models discussed in Chapters 3, 5, and 6, and in the frequency domain models considered in Chapters 4 and 7. The primary ideas depend on being able to express a response series, say xt, as a linear combination of inputs, say zt1, zt2, . . . , ztq. Estimating the coefficients β1, β2, . . . , βq in the linear combinations by least squares provides a method for modeling xt in terms of the inputs. In the time domain applications of Chapter 3, for example, we will express xt as a linear combination of previous values xt−1, xt−2, . . . , xt−p, of the currently observed series. The outputs xt may also depend on lagged values of another series, say yt−1, yt−2, . . . , yt−q, that have influence. It is easy to see that forecasting becomes an option when prediction models can be formulated in this form. Time series smoothing and filtering can be expressed in terms of local regression models. Polynomials and regression splines also provide important techniques for smoothing. If one admits sines and cosines as inputs, the frequency domain ideas that lead to the periodogram and spectrum of Chapter 4 follow from a regression model. Extensions to filters of infinite extent can be handled using regression in the frequency domain. In particular, many regression problems in the frequency domain can be carried out as a function of the periodic components of the input and output series, providing useful scientific intuition into fields like acoustics, oceanographics, engineering, biomedicine, and geophysics. The above considerations motivate us to include a separate chapter on regression and some of its applications that is written on an elementary level and is formulated in terms of time series. The assumption of linearity, stationarity, and homogeneity of variances over time is critical in the regression
+© Springer Science+Business Media, LLC 2011
+R.H. Shumway and D.S. Stoffer, Time Series Analysis and Its Applications: With R Examples, Springer Texts in Statistics, DOI 10.1007/978-1-4419-7865-3_2,
+47
+
+
+48 2 Time Series Regression and Exploratory Data Analysis
+context, and therefore we include some material on transformations and other techniques useful in exploratory data analysis.
+2.2 Classical Regression in the Time Series Context
+We begin our discussion of linear regression in the time series context by assuming some output or dependent time series, say, xt, for t = 1, . . . , n, is being influenced by a collection of possible inputs or independent series, say, zt1, zt2, . . . , ztq, where we first regard the inputs as fixed and known. This assumption, necessary for applying conventional linear regression, will be relaxed later on. We express this relation through the linear regression model
+xt = β1zt1 + β2zt2 + · · · + βqztq + wt, (2.1)
+where β1, β2, . . . , βq are unknown fixed regression coefficients, and {wt} is a random error or noise process consisting of independent and identically distributed (iid) normal variables with mean zero and variance σ2w; we will relax the iid assumption later. A more general setting within which to embed mean square estimation and linear regression is given in Appendix B, where we introduce Hilbert spaces and the Projection Theorem.
+Example 2.1 Estimating a Linear Trend
+Consider the global temperature data, say xt, shown in Figures 1.2 and 2.1. As discussed in Example 1.2, there is an apparent upward trend in the series that has been used to argue the global warming hypothesis. We might use simple linear regression to estimate that trend by fitting the model
+xt = β1 + β2t + wt, t = 1880, 1857, . . . , 2009.
+This is in the form of the regression model (2.1) when we make the identification q = 2, zt1 = 1 and zt2 = t. Note that we are making the assumption that the errors, wt, are an iid normal sequence, which may not be true. We will address this problem further in §2.3; the problem of autocorrelated errors is discussed in detail in §5.5. Also note that we could have used, for example, t = 1, . . . , 130, without affecting the interpretation of the slope coefficient, β2; only the intercept, β1, would be affected. Using simple linear regression, we obtained the estimated coefficients ̂β1 = −11.2, and ̂β2 = .006 (with a standard error of .0003) yielding a highly significant estimated increase of .6 degrees centigrade per 100 years. We discuss the precise way in which the solution was accomplished after the example. Finally, Figure 2.1 shows the global temperature data, say xt, with the estimated trend, say ̂xt = −11.2 + .006t, superimposed. It is apparent that the estimated trend line obtained via simple linear regression does not quite capture the trend of the data and better models will be needed. To perform this analysis in R, use the following commands:
+
+
+2.2 Classical Regression in the Time Series Context 49
+Fig. 2.1. Global temperature deviations shown in Figure 1.2 with fitted linear trend line.
+1 summary(fit <- lm(gtemp~time(gtemp))) # regress gtemp on time 2 plot(gtemp, type="o", ylab="Global Temperature Deviation") 3 abline(fit) # add regression line to the plot
+The linear model described by (2.1) above can be conveniently written in a more general notation by defining the column vectors zzzt = (zt1, zt2, . . . , ztq)′ and βββ = (β1, β2, . . . , βq)′, where ′ denotes transpose, so (2.1) can be written in the alternate form
+xt = βββ′zzzt + wt. (2.2)
+where wt ∼ iid N(0, σ2w). It is natural to consider estimating the unknown coefficient vector βββ by minimizing the error sum of squares
+Q=
+n
+∑
+t=1
+w2
+t=
+n
+∑
+t=1
+(xt − βββ′zzzt)2, (2.3)
+with respect to β1, β2, . . . , βq. Minimizing Q yields the ordinary least squares estimator of βββ. This minimization can be accomplished by differentiating (2.3) with respect to the vector βββ or by using the properties of projections. In the notation above, this procedure gives the normal equations
+(n ∑
+t=1
+zzztzzz′
+t
+)
+̂βββ =
+n
+∑
+t=1
+zzztxt. (2.4)
+The notation can be simplified by defining Z = [zzz1 | zzz2 | · · · | zzzn]′ as the n × q matrix composed of the n samples of the input variables, the observed n × 1 vector xxx = (x1, x2, . . . , xn)′ and the n × 1 vector of errors
+
+
+50 2 Time Series Regression and Exploratory Data Analysis
+www = (w1, w2, . . . , wn)′. In this case, model (2.2) may be written as
+xxx = Zβββ + www. (2.5)
+The normal equations, (2.4), can now be written as
+(Z′Z) ̂βββ = Z′xxx (2.6)
+and the solution
+̂βββ = (Z′Z)−1Z′xxx (2.7)
+when the matrix Z′Z is nonsingular. The minimized error sum of squares (2.3), denoted SSE, can be written as
+SSE =
+n
+∑
+t=1
+(xt − ̂βββ′zzzt)2
+= (xxx − Z ̂βββ)′(xxx − Z ̂βββ)
+= xxx′xxx − ̂βββ′Z′xxx
+= xxx′xxx − xxx′Z(Z′Z)−1Z′xxx,
+(2.8)
+to give some useful versions for later reference. The ordinary least squares estimators are unbiased, i.e., E(̂βββ) = βββ, and have the smallest variance within the class of linear unbiased estimators. If the errors wt are normally distributed, ̂βββ is also the maximum likelihood estimator for βββ and is normally distributed with
+cov(̂βββ) = σ2
+w
+(n ∑
+t=1
+zzztzzz′
+t
+)−1
+= σ2
+w(Z′Z)−1 = σ2
+wC, (2.9)
+where C = (Z′Z)−1 (2.10)
+is a convenient notation for later equations. An unbiased estimator for the variance σ2w is
+s2
+w = MSE = SSE
+n − q , (2.11)
+where M SE denotes the mean squared error, which is contrasted with the maximum likelihood estimator ̂σ2w = SSE/n. Under the normal assumption,
+s2w is distributed proportionally to a chi-squared random variable with n − q degrees of freedom, denoted by χ2n−q, and independently of ̂β. It follows that
+tn−q = ( ̂βi − βi)
+sw
+√cii
+(2.12)
+has the t-distribution with n − q degrees of freedom; cii denotes the i-th diagonal element of C, as defined in (2.10).
+
+
+2.2 Classical Regression in the Time Series Context 51
+Table 2.1. Analysis of Variance for Regression
+Source df Sum of Squares Mean Square
+zt,r+1, . . . , zt,q q − r SSR = SSEr − SSE M SR = SSR/(q − r) Error n − q SSE M SE = SSE/(n − q) Total n − r SSEr
+Various competing models are of interest to isolate or select the best subset of independent variables. Suppose a proposed model specifies that only a subset r < q independent variables, say, zzzt:r = (zt1, zt2, . . . , ztr)′ is influencing the dependent variable xt. The reduced model is
+xxx = Zrβββr + www (2.13)
+where βββr = (β1, β2, . . . , βr)′ is a subset of coefficients of the original q variables
+and Zr = [zzz1:r | · · · | zzzn:r]′ is the n × r matrix of inputs. The null hypothesis in this case is H0: βr+1 = · · · = βq = 0. We can test the reduced model (2.13) against the full model (2.2) by comparing the error sums of squares under the two models using the F -statistic
+Fq−r,n−q = (SSEr − SSE)/(q − r)
+SSE/(n − q) , (2.14)
+which has the central F -distribution with q − r and n − q degrees of freedom when (2.13) is the correct model. Note that SSEr is the error sum of squares under the reduced model (2.13) and it can be computed by replacing Z with Zr in (2.8). The statistic, which follows from applying the likelihood ratio criterion, has the improvement per number of parameters added in the numerator compared with the error sum of squares under the full model in the denominator. The information involved in the test procedure is often summarized in an Analysis of Variance (ANOVA) table as given in Table 2.1 for this particular case. The difference in the numerator is often called the regression sum of squares In terms of Table 2.1, it is conventional to write the F -statistic (2.14) as the ratio of the two mean squares, obtaining
+Fq−r,n−q = M SR
+M SE , (2.15)
+where MSR, the mean squared regression, is the numerator of (2.14). A special case of interest is r = 1 and zt1 ≡ 1, when the model in (2.13) becomes
+xt = β1 + wt,
+and we may measure the proportion of variation accounted for by the other variables using
+
+
+52 2 Time Series Regression and Exploratory Data Analysis
+R2 = SSE1 − SSE
+SSE1
+, (2.16)
+where the residual sum of squares under the reduced model
+SSE1 =
+n
+∑
+t=1
+(xt − x ̄)2, (2.17)
+in this case is just the sum of squared deviations from the mean x ̄. The measure R2 is also the squared multiple correlation between xt and the variables zt2, zt3, . . . , ztq.
+The techniques discussed in the previous paragraph can be used to test various models against one another using the F test given in (2.14), (2.15), and the ANOVA table. These tests have been used in the past in a stepwise manner, where variables are added or deleted when the values from the F test either exceed or fail to exceed some predetermined levels. The procedure, called stepwise multiple regression, is useful in arriving at a set of useful variables. An alternative is to focus on a procedure for model selection that does not proceed sequentially, but simply evaluates each model on its own merits. Suppose we consider a normal regression model with k coefficients and denote the maximum likelihood estimator for the variance as
+̂σ2
+k = SSEk
+n , (2.18)
+where SSEk denotes the residual sum of squares under the model with k regression coefficients. Then, Akaike (1969, 1973, 1974) suggested measuring the goodness of fit for this particular model by balancing the error of the fit against the number of parameters in the model; we define the following.1
+Definition 2.1 Akaike’s Information Criterion (AIC)
+AIC = log ̂σ2
+k + n + 2k
+n , (2.19)
+where ̂σ2
+k is given by (2.18) and k is the number of parameters in the model.
+The value of k yielding the minimum AIC specifies the best model. The idea is roughly that minimizing ̂σ2
+k would be a reasonable objective, except that it decreases monotonically as k increases. Therefore, we ought to penalize the error variance by a term proportional to the number of parameters. The choice for the penalty term given by (2.19) is not the only one, and a considerable literature is available advocating different penalty terms. A corrected
+1 Formally, AIC is defined as −2 log Lk + 2k where Lk is the maximized loglikelihood and k is the number of parameters in the model. For the normal regression problem, AIC can be reduced to the form given by (2.19). AIC is an estimate of the Kullback-Leibler discrepency between a true model and a candidate model; see Problems 2.4 and 2.5 for further details.
+
+
+2.2 Classical Regression in the Time Series Context 53
+form, suggested by Sugiura (1978), and expanded by Hurvich and Tsai (1989), can be based on small-sample distributional results for the linear regression model (details are provided in Problems 2.4 and 2.5). The corrected form is defined as follows.
+Definition 2.2 AIC, Bias Corrected (AICc)
+AICc = log ̂σ2
+k+ n+k
+n − k − 2 , (2.20)
+where ̂σ2
+k is given by (2.18), k is the number of parameters in the model, and n is the sample size.
+We may also derive a correction term based on Bayesian arguments, as in Schwarz (1978), which leads to the following.
+Definition 2.3 Bayesian Information Criterion (BIC)
+BIC = log ̂σ2
+k + k log n
+n , (2.21)
+using the same notation as in Definition 2.2.
+BIC is also called the Schwarz Information Criterion (SIC); see also Rissanen (1978) for an approach yielding the same statistic based on a minimum description length argument. Various simulation studies have tended to verify that BIC does well at getting the correct order in large samples, whereas AICc tends to be superior in smaller samples where the relative number of parameters is large; see McQuarrie and Tsai (1998) for detailed comparisons. In fitting regression models, two measures that have been used in the past are adjusted R-squared, which is essentially s2w, and Mallows Cp, Mallows (1973), which we do not consider in this context.
+Example 2.2 Pollution, Temperature and Mortality
+The data shown in Figure 2.2 are extracted series from a study by Shumway et al. (1988) of the possible effects of temperature and pollution on weekly mortality in Los Angeles County. Note the strong seasonal components in all of the series, corresponding to winter-summer variations and the downward trend in the cardiovascular mortality over the 10-year period. A scatterplot matrix, shown in Figure 2.3, indicates a possible linear relation between mortality and the pollutant particulates and a possible relation to temperature. Note the curvilinear shape of the temperature mortality curve, indicating that higher temperatures as well as lower temperatures are associated with increases in cardiovascular mortality. Based on the scatterplot matrix, we entertain, tentatively, four models where Mt denotes cardiovascular mortality, Tt denotes temperature and Pt denotes the particulate levels. They are
+
+
+54 2 Time Series Regression and Exploratory Data Analysis
+Cardiovascular Mortality
+1970 1972 1974 1976 1978 1980
+70 80 90 110 130
+Temperature
+1970 1972 1974 1976 1978 1980
+50 60 70 80 90 100
+Particulates
+1970 1972 1974 1976 1978 1980
+20 40 60 80 100
+Fig. 2.2. Average weekly cardiovascular mortality (top), temperature (middle) and particulate pollution (bottom) in Los Angeles County. There are 508 six-day smoothed averages obtained by filtering daily values over the 10 year period 19701979.
+Mt = β1 + β2t + wt (2.22)
+Mt = β1 + β2t + β3(Tt − T·) + wt (2.23)
+Mt = β1 + β2t + β3(Tt − T·) + β4(Tt − T·)2 + wt (2.24)
+Mt = β1 + β2t + β3(Tt − T·) + β4(Tt − T·)2 + β5Pt + wt (2.25)
+where we adjust temperature for its mean, T· = 74.6, to avoid scaling problems. It is clear that (2.22) is a trend only model, (2.23) is linear temperature, (2.24) is curvilinear temperature and (2.25) is curvilinear temperature and pollution. We summarize some of the statistics given for this particular case in Table 2.2. The values of R2 were computed by noting that SSE1 = 50, 687 using (2.17). We note that each model does substantially better than the one before it and that the model including temperature, temperature squared, and particulates does the best, accounting for some 60% of the variability and with the best value for AIC and BIC (because of the large sample size, AIC
+
+
+2.2 Classical Regression in the Time Series Context 55
+Mortality
+50 60 70 80 90 100
+70 80 90 100 120
+50 60 70 80 90 100
+Temperature
+70 80 90 100 120 20 40 60 80 100
+20 40 60 80 100
+Particulates
+Fig. 2.3. Scatterplot matrix showing plausible relations between mortality, temperature, and pollution.
+Table 2.2. Summary Statistics for Mortality Models
+Model k SSE df MSE R2 AIC BIC
+(2.22) 2 40,020 506 79.0 .21 5.38 5.40 (2.23) 3 31,413 505 62.2 .38 5.14 5.17 (2.24) 4 27,985 504 55.5 .45 5.03 5.07 (2.25) 5 20,508 503 40.8 .60 4.72 4.77
+and AICc are nearly the same). Note that one can compare any two models using the residual sums of squares and (2.14). Hence, a model with only trend could be compared to the full model using q = 5, r = 2, n = 508, so
+F3,503 = (40, 020 − 20, 508)/3
+20, 508/503 = 160,
+
+
+56 2 Time Series Regression and Exploratory Data Analysis
+which exceeds F3,503(.001) = 5.51. We obtain the best prediction model,
+̂Mt = 81.59 − .027(.002)t − .473(.032)(Tt − 74.6)
++ .023(.003)(Tt − 74.6)2 + .255(.019)Pt,
+for mortality, where the standard errors, computed from (2.9)-(2.11), are given in parentheses. As expected, a negative trend is present in time as well as a negative coefficient for adjusted temperature. The quadratic effect of temperature can clearly be seen in the scatterplots of Figure 2.3. Pollution weights positively and can be interpreted as the incremental contribution to daily deaths per unit of particulate pollution. It would still be essential to check the residuals ̂wt = Mt − ̂Mt for autocorrelation (of which there is a substantial amount), but we defer this question to to §5.6 when we discuss regression with correlated errors. Below is the R code to plot the series, display the scatterplot matrix, fit the final regression model (2.25), and compute the corresponding values of AIC, AICc and BIC.2 Finally, the use of na.action in lm() is to retain the time series attributes for the residuals and fitted values. 1 par(mfrow=c(3,1)) 2 plot(cmort, main="Cardiovascular Mortality", xlab="", ylab="") 3 plot(tempr, main="Temperature", xlab="", ylab="") 4 plot(part, main="Particulates", xlab="", ylab="")
+5 dev.new() # open a new graphic device for the scatterplot matrix 6 pairs(cbind(Mortality=cmort, Temperature=tempr, Particulates=part)) 7 temp = tempr-mean(tempr) # center temperature 8 temp2 = temp^2 9 trend = time(cmort) # time 10 fit = lm(cmort~ trend + temp + temp2 + part, na.action=NULL) 11 summary(fit) # regression results 12 summary(aov(fit)) # ANOVA table (compare to next line)
+13 summary(aov(lm(cmort~cbind(trend, temp, temp2, part)))) # Table 2.1 14 num = length(cmort) # sample size 15 AIC(fit)/num - log(2*pi) # AIC 16 AIC(fit, k=log(num))/num - log(2*pi) # BIC 17 (AICc = log(sum(resid(fit)^2)/num) + (num+5)/(num-5-2)) # AICc
+As previously mentioned, it is possible to include lagged variables in time series regression models and we will continue to discuss this type of problem throughout the text. This concept is explored further in Problems 2.2 and 2.11. The following is a simple example of lagged regression.
+2 The easiest way to extract AIC and BIC from an lm() run in R is to use the command AIC(). Our definitions differ from R by terms that do not change from model to model. In the example, we show how to obtain (2.19) and (2.21) from the R output. It is more difficult to obtain AICc.
+
+
+2.3 Exploratory Data Analysis 57
+Example 2.3 Regression With Lagged Variables
+In Example 1.25, we discovered that the Southern Oscillation Index (SOI) measured at time t − 6 months is associated with the Recruitment series at time t, indicating that the SOI leads the Recruitment series by six months. Although there is evidence that the relationship is not linear (this is discussed further in Example 2.7), we may consider the following regression,
+Rt = β1 + β2St−6 + wt, (2.26)
+where Rt denotes Recruitment for month t and St−6 denotes SOI six months prior. Assuming the wt sequence is white, the fitted model is
+̂Rt = 65.79 − 44.28(2.78)St−6 (2.27)
+with ̂σw = 22.5 on 445 degrees of freedom. This result indicates the strong predictive ability of SOI for Recruitment six months in advance. Of course, it is still essential to check the the model assumptions, but again we defer this until later. Performing lagged regression in R is a little difficult because the series must be aligned prior to running the regression. The easiest way to do this is to create a data frame that we call fish using ts.intersect, which aligns the lagged series.
+1 fish = ts.intersect(rec, soiL6=lag(soi,-6), dframe=TRUE) 2 summary(lm(rec~soiL6, data=fish, na.action=NULL))
+2.3 Exploratory Data Analysis
+In general, it is necessary for time series data to be stationary, so averaging lagged products over time, as in the previous section, will be a sensible thing to do. With time series data, it is the dependence between the values of the series that is important to measure; we must, at least, be able to estimate autocorrelations with precision. It would be difficult to measure that dependence if the dependence structure is not regular or is changing at every time point. Hence, to achieve any meaningful statistical analysis of time series data, it will be crucial that, if nothing else, the mean and the autocovariance functions satisfy the conditions of stationarity (for at least some reasonable stretch of time) stated in Definition 1.7. Often, this is not the case, and we will mention some methods in this section for playing down the effects of nonstationarity so the stationary properties of the series may be studied. A number of our examples came from clearly nonstationary series. The Johnson & Johnson series in Figure 1.1 has a mean that increases exponentially over time, and the increase in the magnitude of the fluctuations around this trend causes changes in the covariance function; the variance of the process, for example, clearly increases as one progresses over the length of the series. Also, the global temperature series shown in Figure 1.2 contains some
+
+
+58 2 Time Series Regression and Exploratory Data Analysis
+evidence of a trend over time; human-induced global warming advocates seize on this as empirical evidence to advance their hypothesis that temperatures are increasing. Perhaps the easiest form of nonstationarity to work with is the trend stationary model wherein the process has stationary behavior around a trend. We may write this type of model as
+xt = μt + yt (2.28)
+where xt are the observations, μt denotes the trend, and yt is a stationary process. Quite often, strong trend, μt, will obscure the behavior of the stationary process, yt, as we shall see in numerous examples. Hence, there is some advantage to removing the trend as a first step in an exploratory analysis of such time series. The steps involved are to obtain a reasonable estimate of the trend component, say ̂μt, and then work with the residuals
+̂yt = xt − ̂μt. (2.29)
+Consider the following example.
+Example 2.4 Detrending Global Temperature Here we suppose the model is of the form of (2.28),
+xt = μt + yt,
+where, as we suggested in the analysis of the global temperature data presented in Example 2.1, a straight line might be a reasonable model for the trend, i.e.,
+μt = β1 + β2 t.
+In that example, we estimated the trend using ordinary least squares3 and found ̂μt = −11.2 + .006 t.
+Figure 2.1 shows the data with the estimated trend line superimposed. To obtain the detrended series we simply subtract ̂μt from the observations, xt, to obtain the detrended series
+̂yt = xt + 11.2 − .006 t.
+The top graph of Figure 2.4 shows the detrended series. Figure 2.5 shows the ACF of the original data (top panel) as well as the ACF of the detrended data (middle panel).
+3 Because the error term, yt, is not assumed to be iid, the reader may feel that weighted least squares is called for in this case. The problem is, we do not know the behavior of yt and that is precisely what we are trying to assess at this stage. A notable result by Grenander and Rosenblatt (1957, Ch 7), however, is that under mild conditions on yt, for polynomial regression or periodic regression, asymptotically, ordinary least squares is equivalent to weighted least squares.
+
+
+2.3 Exploratory Data Analysis 59
+Fig. 2.4. Detrended (top) and differenced (bottom) global temperature series. The original data are shown in Figures 1.2 and 2.1.
+To detrend in the series in R, use the following commands. We also show how to difference and plot the differenced data; we discuss differencing after this example. In addition, we show how to generate the sample ACFs displayed in Figure 2.5.
+1 fit = lm(gtemp~time(gtemp), na.action=NULL) # regress gtemp on time 2 par(mfrow=c(2,1)) 3 plot(resid(fit), type="o", main="detrended") 4 plot(diff(gtemp), type="o", main="first difference") 5 par(mfrow=c(3,1)) # plot ACFs 6 acf(gtemp, 48, main="gtemp") 7 acf(resid(fit), 48, main="detrended") 8 acf(diff(gtemp), 48, main="first difference")
+In Example 1.11 and the corresponding Figure 1.10 we saw that a random walk might also be a good model for trend. That is, rather than modeling trend as fixed (as in Example 2.4), we might model trend as a stochastic component using the random walk with drift model,
+μt = δ + μt−1 + wt, (2.30)
+
+
+60 2 Time Series Regression and Exploratory Data Analysis
+0 10 20 30 40
+−0.2 0.2 0.6 1.0
+ACF
+gtemp
+0 10 20 30 40
+−0.2 0.2 0.6 1.0
+ACF
+detrended
+0 10 20 30 40
+−0.2 0.2 0.6 1.0
+Lag
+ACF
+first difference
+Fig. 2.5. Sample ACFs of the global temperature (top), and of the detrended (middle) and the differenced (bottom) series.
+where wt is white noise and is independent of yt. If the appropriate model is (2.28), then differencing the data, xt, yields a stationary process; that is,
+xt − xt−1 = (μt + yt) − (μt−1 + yt−1) (2.31)
+= δ + wt + yt − yt−1.
+It is easy to show zt = yt − yt−1 is stationary using footnote 3 of Chapter 1 on page 20. That is, because yt is stationary,
+γz(h) = cov(zt+h, zt) = cov(yt+h − yt+h−1, yt − yt−1)
+= 2γy(h) − γy(h + 1) − γy(h − 1)
+is independent of time; we leave it as an exercise (Problem 2.7) to show that xt − xt−1 in (2.31) is stationary.
+
+
+2.3 Exploratory Data Analysis 61
+One advantage of differencing over detrending to remove trend is that no parameters are estimated in the differencing operation. One disadvantage, however, is that differencing does not yield an estimate of the stationary process yt as can be seen in (2.31). If an estimate of yt is essential, then detrending may be more appropriate. If the goal is to coerce the data to stationarity, then differencing may be more appropriate. Differencing is also a viable tool if the trend is fixed, as in Example 2.4. That is, e.g., if μt = β1 + β2 t in the model (2.28), differencing the data produces stationarity (see Problem 2.6):
+xt − xt−1 = (μt + yt) − (μt−1 + yt−1) = β2 + yt − yt−1.
+Because differencing plays a central role in time series analysis, it receives its own notation. The first difference is denoted as
+∇xt = xt − xt−1. (2.32)
+As we have seen, the first difference eliminates a linear trend. A second difference, that is, the difference of (2.32), can eliminate a quadratic trend, and so on. In order to define higher differences, we need a variation in notation that we will use often in our discussion of ARIMA models in Chapter 3.
+Definition 2.4 We define the backshift operator by
+Bxt = xt−1
+and extend it to powers B2xt = B(Bxt) = Bxt−1 = xt−2, and so on. Thus,
+Bkxt = xt−k. (2.33)
+It is clear that we may then rewrite (2.32) as
+∇xt = (1 − B)xt, (2.34)
+and we may extend the notion further. For example, the second difference becomes
+∇2xt = (1 − B)2xt = (1 − 2B + B2)xt = xt − 2xt−1 + xt−2
+by the linearity of the operator. To check, just take the difference of the first difference ∇(∇xt) = ∇(xt − xt−1) = (xt − xt−1) − (xt−1 − xt−2).
+Definition 2.5 Differences of order d are defined as
+∇d = (1 − B)d, (2.35)
+where we may expand the operator (1−B)d algebraically to evaluate for higher integer values of d. When d = 1, we drop it from the notation.
+
+
+62 2 Time Series Regression and Exploratory Data Analysis
+The first difference (2.32) is an example of a linear filter applied to eliminate a trend. Other filters, formed by averaging values near xt, can produce adjusted series that eliminate other kinds of unwanted fluctuations, as in Chapter 3. The differencing technique is an important component of the ARIMA model of Box and Jenkins (1970) (see also Box et al., 1994), to be discussed in Chapter 3.
+Example 2.5 Differencing Global Temperature
+The first difference of the global temperature series, also shown in Figure 2.4, produces different results than removing trend by detrending via regression. For example, the differenced series does not contain the long middle cycle we observe in the detrended series. The ACF of this series is also shown in Figure 2.5. In this case it appears that the differenced process shows minimal autocorrelation, which may imply the global temperature series is nearly a random walk with drift. It is interesting to note that if the series is a random walk with drift, the mean of the differenced series, which is an estimate of the drift, is about .0066 (but with a large standard error): 1 mean(diff(gtemp)) # = 0.00659 (drift) 2 sd(diff(gtemp))/sqrt(length(diff(gtemp))) # = 0.00966 (SE)
+An alternative to differencing is a less-severe operation that still assumes stationarity of the underlying time series. This alternative, called fractional differencing, extends the notion of the difference operator (2.35) to fractional powers −.5 < d < .5, which still define stationary processes. Granger and Joyeux (1980) and Hosking (1981) introduced long memory time series, which corresponds to the case when 0 < d < .5. This model is often used for environmental time series arising in hydrology. We will discuss long memory processes in more detail in §5.2. Often, obvious aberrations are present that can contribute nonstationary as well as nonlinear behavior in observed time series. In such cases, transformations may be useful to equalize the variability over the length of a single series. A particularly useful transformation is
+yt = log xt, (2.36)
+which tends to suppress larger fluctuations that occur over portions of the series where the underlying values are larger. Other possibilities are power transformations in the Box–Cox family of the form
+yt =
+{
+(xtλ − 1)/λ λ 6= 0,
+log xt λ = 0. (2.37)
+Methods for choosing the power λ are available (see Johnson and Wichern, 1992, §4.7) but we do not pursue them here. Often, transformations are also used to improve the approximation to normality or to improve linearity in predicting the value of one series from another.
+
+
+2.3 Exploratory Data Analysis 63
+varve
+0 100 200 300 400 500 600
+0 50 100 150
+log(varve)
+0 100 200 300 400 500 600
+2345
+Fig. 2.6. Glacial varve thicknesses (top) from Massachusetts for n = 634 years compared with log transformed thicknesses (bottom).
+Example 2.6 Paleoclimatic Glacial Varves
+Melting glaciers deposit yearly layers of sand and silt during the spring melting seasons, which can be reconstructed yearly over a period ranging from the time deglaciation began in New England (about 12,600 years ago) to the time it ended (about 6,000 years ago). Such sedimentary deposits, called varves, can be used as proxies for paleoclimatic parameters, such as temperature, because, in a warm year, more sand and silt are deposited from the receding glacier. Figure 2.6 shows the thicknesses of the yearly varves collected from one location in Massachusetts for 634 years, beginning 11,834 years ago. For further information, see Shumway and Verosub (1992). Because the variation in thicknesses increases in proportion to the amount deposited, a logarithmic transformation could remove the nonstationarity observable in the variance as a function of time. Figure 2.6 shows the original and transformed varves, and it is clear that this improvement has occurred. We may also plot the histogram of the original and transformed data, as in Problem 2.8, to argue that the approximation to normality is improved. The ordinary first differences (2.34) are also computed in Problem 2.8, and we note that the first differences have a significant negative correlation at
+
+
+64 2 Time Series Regression and Exploratory Data Analysis
+lag h = 1. Later, in Chapter 5, we will show that perhaps the varve series has long memory and will propose using fractional differencing. Figure 2.6 was generated in R as follows: 1 par(mfrow=c(2,1)) 2 plot(varve, main="varve", ylab="") 3 plot(log(varve), main="log(varve)", ylab="" )
+Next, we consider another preliminary data processing technique that is used for the purpose of visualizing the relations between series at different lags, namely, scatterplot matrices. In the definition of the ACF, we are essentially interested in relations between xt and xt−h; the autocorrelation function tells us whether a substantial linear relation exists between the series and its own lagged values. The ACF gives a profile of the linear correlation at all possible lags and shows which values of h lead to the best predictability. The restriction of this idea to linear predictability, however, may mask a possible nonlinear relation between current values, xt, and past values, xt−h. This idea extends to two series where one may be interested in examining scatterplots of yt versus xt−h
+Example 2.7 Scatterplot Matrices, SOI and Recruitment
+To check for nonlinear relations of this form, it is convenient to display a lagged scatterplot matrix, as in Figure 2.7, that displays values of the SOI, St, on the vertical axis plotted against St−h on the horizontal axis. The sample autocorrelations are displayed in the upper right-hand corner and superimposed on the scatterplots are locally weighted scatterplot smoothing (lowess) lines that can be used to help discover any nonlinearities. We discuss smoothing in the next section, but for now, think of lowess as a robust method for fitting nonlinear regression. In Figure 2.7, we notice that the lowess fits are approximately linear, so that the sample autocorrelations are meaningful. Also, we see strong positive linear relations at lags h = 1, 2, 11, 12, that is, between St and St−1, St−2, St−11, St−12, and a negative linear relation at lags h = 6, 7. These results match up well with peaks noticed in the ACF in Figure 1.14. Similarly, we might want to look at values of one series, say Recruitment, denoted Rt plotted against another series at various lags, say the SOI, St−h, to look for possible nonlinear relations between the two series. Because, for example, we might wish to predict the Recruitment series, Rt, from current or past values of the SOI series, St−h, for h = 0, 1, 2, ... it would be worthwhile to examine the scatterplot matrix. Figure 2.8 shows the lagged scatterplot of the Recruitment series Rt on the vertical axis plotted against the SOI index St−h on the horizontal axis. In addition, the figure exhibits the sample cross-correlations as well as lowess fits. Figure 2.8 shows a fairly strong nonlinear relationship between Recruitment, Rt, and the SOI series at St−5, St−6, St−7, St−8, indicating the SOI series tends to lead the Recruitment series and the coefficients are negative, implying that increases in the SOI lead to decreases in the Recruitment. The
+
+
+2.3 Exploratory Data Analysis 65
+−1.0 −0.5 0.0 0.5 1.0
+−1.0 0.0 0.5 1.0
+soi(t−1)
+soi(t)
+0.6
+−1.0 −0.5 0.0 0.5 1.0
+−1.0 0.0 0.5 1.0
+soi(t−2)
+soi(t)
+0.37
+−1.0 −0.5 0.0 0.5 1.0
+−1.0 0.0 0.5 1.0
+soi(t−3)
+soi(t)
+0.21
+−1.0 −0.5 0.0 0.5 1.0
+−1.0 0.0 0.5 1.0
+soi(t−4)
+soi(t)
+0.05
+−1.0 −0.5 0.0 0.5 1.0
+−1.0 0.0 0.5 1.0
+soi(t−5)
+soi(t)
+−0.11
+−1.0 −0.5 0.0 0.5 1.0
+−1.0 0.0 0.5 1.0
+soi(t−6)
+soi(t)
+−0.19
+−1.0 −0.5 0.0 0.5 1.0
+−1.0 0.0 0.5 1.0
+soi(t−7)
+soi(t)
+−0.18
+−1.0 −0.5 0.0 0.5 1.0
+−1.0 0.0 0.5 1.0
+soi(t−8)
+soi(t)
+−0.1
+−1.0 −0.5 0.0 0.5 1.0
+−1.0 0.0 0.5 1.0
+soi(t−9)
+soi(t)
+0.05
+−1.0 −0.5 0.0 0.5 1.0
+−1.0 0.0 0.5 1.0
+soi(t−10)
+soi(t)
+0.22
+−1.0 −0.5 0.0 0.5 1.0
+−1.0 0.0 0.5 1.0
+soi(t−11)
+soi(t)
+0.36
+−1.0 −0.5 0.0 0.5 1.0
+−1.0 0.0 0.5 1.0
+soi(t−12)
+soi(t)
+0.41
+Fig. 2.7. Scatterplot matrix relating current SOI values, St, to past SOI values, St−h, at lags h = 1, 2, ..., 12. The values in the upper right corner are the sample autocorrelations and the lines are a lowess fit.
+nonlinearity observed in the scatterplots (with the help of the superimposed lowess fits) indicate that the behavior between Recruitment and the SOI is different for positive values of SOI than for negative values of SOI. Simple scatterplot matrices for one series can be obtained in R using the lag.plot command. Figures 2.7 and 2.8 may be reproduced using the following scripts provided with the text (see Appendix R for detials): 1 lag.plot1(soi, 12) # Fig 2.7 2 lag.plot2(soi, rec, 8) # Fig 2.8
+As a final exploratory tool, we discuss assessing periodic behavior in time series data using regression analysis and the periodogram; this material may be thought of as an introduction to spectral analysis, which we discuss in
+
+
+66 2 Time Series Regression and Exploratory Data Analysis
+−1.0 −0.5 0.0 0.5 1.0
+0 20 40 60 80 100
+soi(t−0)
+rec(t)
+0.02
+−1.0 −0.5 0.0 0.5 1.0
+0 20 40 60 80 100
+soi(t−1)
+rec(t)
+0.01
+−1.0 −0.5 0.0 0.5 1.0
+0 20 40 60 80 100
+soi(t−2)
+rec(t)
+−0.04
+−1.0 −0.5 0.0 0.5 1.0
+0 20 40 60 80 100
+soi(t−3)
+rec(t)
+−0.15
+−1.0 −0.5 0.0 0.5 1.0
+0 20 40 60 80 100
+soi(t−4)
+rec(t)
+−0.3
+−1.0 −0.5 0.0 0.5 1.0
+0 20 40 60 80 100
+soi(t−5)
+rec(t)
+−0.53
+−1.0 −0.5 0.0 0.5 1.0
+0 20 40 60 80 100
+soi(t−6)
+rec(t)
+−0.6
+−1.0 −0.5 0.0 0.5 1.0
+0 20 40 60 80 100
+soi(t−7)
+rec(t)
+−0.6
+−1.0 −0.5 0.0 0.5 1.0
+0 20 40 60 80 100
+soi(t−8)
+rec(t)
+−0.56
+Fig. 2.8. Scatterplot matrix of the Recruitment series, Rt, on the vertical axis plotted against the SOI series, St−h, on the horizontal axis at lags h = 0, 1, . . . , 8. The values in the upper right corner are the sample cross-correlations and the lines are a lowess fit.
+detail in Chapter 4. In Example 1.12, we briefly discussed the problem of identifying cyclic or periodic signals in time series. A number of the time series we have seen so far exhibit periodic behavior. For example, the data from the pollution study example shown in Figure 2.2 exhibit strong yearly cycles. Also, the Johnson & Johnson data shown in Figure 1.1 make one cycle every year (four quarters) on top of an increasing trend and the speech data in Figure 1.2 is highly repetitive. The monthly SOI and Recruitment series in Figure 1.6 show strong yearly cycles, but hidden in the series are clues to the El Nin ̃o cycle.
+
+
+2.3 Exploratory Data Analysis 67
+Example 2.8 Using Regression to Discover a Signal in Noise In Example 1.12, we generated n = 500 observations from the model
+xt = A cos(2πωt + φ) + wt, (2.38)
+where ω = 1/50, A = 2, φ = .6π, and σw = 5; the data are shown on the bottom panel of Figure 1.11 on page 16. At this point we assume the frequency of oscillation ω = 1/50 is known, but A and φ are unknown parameters. In this case the parameters appear in (2.38) in a nonlinear way, so we use a trigonometric identity4 and write
+A cos(2πωt + φ) = β1 cos(2πωt) + β2 sin(2πωt),
+where β1 = A cos(φ) and β2 = −A sin(φ). Now the model (2.38) can be written in the usual linear regression form given by (no intercept term is needed here)
+xt = β1 cos(2πt/50) + β2 sin(2πt/50) + wt. (2.39)
+Using linear regression on the generated data, the fitted model is
+̂xt = −.71(.30) cos(2πt/50) − 2.55(.30) sin(2πt/50) (2.40)
+with ̂σw = 4.68, where the values in parentheses are the standard errors. We note the actual values of the coefficients for this example are β1 = 2 cos(.6π) = −.62 and β2 = −2 sin(.6π) = −1.90. Because the parameter estimates are significant and close to the actual values, it is clear that we are able to detect the signal in the noise using regression, even though the signal appears to be obscured by the noise in the bottom panel of Figure 1.11. Figure 2.9 shows data generated by (2.38) with the fitted line, (2.40), superimposed. To reproduce the analysis and Figure 2.9 in R, use the following commands:
+1 set.seed(1000) # so you can reproduce these results 2 x = 2*cos(2*pi*1:500/50 + .6*pi) + rnorm(500,0,5) 3 z1 = cos(2*pi*1:500/50); z2 = sin(2*pi*1:500/50) 4 summary(fit <- lm(x~0+z1+z2)) # zero to exclude the intercept 5 plot.ts(x, lty="dashed") 6 lines(fitted(fit), lwd=2)
+Example 2.9 Using the Periodogram to Discover a Signal in Noise The analysis in Example 2.8 may seem like cheating because we assumed we knew the value of the frequency parameter ω. If we do not know ω, we could try to fit the model (2.38) using nonlinear regression with ω as a parameter. Another method is to try various values of ω in a systematic way. Using the
+4 cos(α ± β) = cos(α) cos(β) ∓ sin(α) sin(β).
+
+
+68 2 Time Series Regression and Exploratory Data Analysis
+Time
+x
+0 100 200 300 400 500
+−15 −10 −5 0 5 10
+Fig. 2.9. Data generated by (2.38) [dashed line] with the fitted [solid] line, (2.40), superimposed.
+regression results of §2.2, we can show the estimated regression coefficients in Example 2.8 take on the special form given by
+̂β1 =
+∑n
+t=1 xt cos(2πt/50)
+∑n
+t=1 cos2(2πt/50) = 2
+n
+n
+∑
+t=1
+xt cos(2πt/50); (2.41)
+̂β2 =
+∑n
+t=1 xt sin(2πt/50)
+∑n
+t=1 sin2(2πt/50) = 2
+n
+n
+∑
+t=1
+xt sin(2πt/50). (2.42)
+This suggests looking at all possible regression parameter estimates,5 say
+̂β1(j/n) = 2
+n
+n
+∑
+t=1
+xt cos(2πt j/n); (2.43)
+̂β2(j/n) = 2
+n
+n
+∑
+t=1
+xt sin(2πt j/n), (2.44)
+where, n = 500 and j = 1, . . . , n
+2 − 1, and inspecting the results for large
+values. For the endpoints, j = 0 and j = n/2, we have ̂β1(0) = n−1 ∑n
+t=1 xt
+and ̂β1( 1
+2 ) = n−1 ∑n
+t=1(−1)txt, and ̂β2(0) = ̂β2( 1
+2 ) = 0. For this particular example, the values calculated in (2.41) and (2.42) are ̂β1(10/500) and ̂β2(10/500). By doing this, we have regressed a series, xt, of
+5 In the notation of §2.2, the estimates are of the form ∑n
+t=1 xtzt
+/ ∑n
+t=1 z2
+t where zt = cos(2πtj/n) or zt = sin(2πtj/n). In this setup, unless j = 0 or j = n/2 if n is even, ∑n
+t=1 z2
+t = n/2; see Problem 2.10.
+
+
+2.3 Exploratory Data Analysis 69
+0.0 0.1 0.2 0.3 0.4 0.5
+01234567
+Frequency
+Scaled Periodogram
+Fig. 2.10. The scaled periodogram, (2.45), of the 500 observations generated by (2.38); the data are displayed in Figures 1.11 and 2.9.
+length n using n regression parameters, so that we will have a perfect fit. The point, however, is that if the data contain any cyclic behavior we are likely to catch it by performing these saturated regressions. Next, note that the regression coefficients ̂β1(j/n) and ̂β2(j/n), for each j, are essentially measuring the correlation of the data with a sinusoid oscillating at j cycles in n time points.6 Hence, an appropriate measure of the presence of a frequency of oscillation of j cycles in n time points in the data would be
+P (j/n) = ̂β2
+1 (j/n) + ̂β2
+2 (j/n), (2.45)
+which is basically a measure of squared correlation. The quantity (2.45) is sometimes called the periodogram, but we will call P (j/n) the scaled periodogram and we will investigate its properties in Chapter 4. Figure 2.10 shows the scaled periodogram for the data generated by (2.38), and it easily discovers the periodic component with frequency ω = .02 = 10/500 even though it is difficult to visually notice that component in Figure 1.11 due to the noise. Finally, we mention that it is not necessary to run a large regression
+xt =
+n/2
+∑
+j=0
+β1(j/n) cos(2πtj/n) + β2(j/n) sin(2πtj/n) (2.46)
+to obtain the values of β1(j/n) and β2(j/n) [with β2(0) = β2(1/2) = 0] because they can be computed quickly if n (assumed even here) is a highly
+6 Sample correlations are of the form ∑
+t xtzt
+/ (∑
+t x2
+t
+∑
+t z2
+t
+)1/2 .
+
+
+70 2 Time Series Regression and Exploratory Data Analysis
+composite integer. There is no error in (2.46) because there are n observations and n parameters; the regression fit will be perfect. The discrete Fourier transform (DFT) is a complex-valued weighted average of the data given by
+d(j/n) = n−1/2
+n
+∑
+t=1
+xt exp(−2πitj/n)
+= n−1/2
+(n ∑
+t=1
+xt cos(2πtj/n) − i
+n
+∑
+t=1
+xt sin(2πtj/n)
+) (2.47)
+where the frequencies j/n are called the Fourier or fundamental frequencies. Because of a large number of redundancies in the calculation, (2.47) may be computed quickly using the fast Fourier transform (FFT)7, which is available in many computing packages such as Matlab©R , S-PLUS R © and R. Note that8
+|d(j/n)|2 = 1
+n
+(n ∑
+t=1
+xt cos(2πtj/n)
+)2
++1
+n
+(n ∑
+t=1
+xt sin(2πtj/n)
+)2
+(2.48)
+and it is this quantity that is called the periodogram; we will write
+I(j/n) = |d(j/n)|2.
+We may calculate the scaled periodogram, (2.45), using the periodogram as
+P (j/n) = 4
+n I(j/n). (2.49)
+We will discuss this approach in more detail and provide examples with data in Chapter 4. Figure 2.10 can be created in R using the following commands (and the data already generated in x):
+1 I = abs(fft(x))^2/500 # the periodogram
+2 P = (4/500)*I[1:250] # the scaled periodogram 3 f = 0:249/500 # frequencies 4 plot(f, P, type="l", xlab="Frequency", ylab="Scaled Periodogram")
+2.4 Smoothing in the Time Series Context
+In §1.4, we introduced the concept of smoothing a time series, and in Example 1.9, we discussed using a moving average to smooth white noise. This method is useful in discovering certain traits in a time series, such as long-term
+7 Different packages scale the FFT differently; consult the documentation. R calculates (2.47) without scaling by n−1/2. 8 If z = a − ib is complex, then |z|2 = zz = (a − ib)(a + ib) = a2 + b2.
+
+
+2.4 Smoothing in the Time Series Context 71
+Fig. 2.11. The weekly cardiovascular mortality series discussed in Example 2.2 smoothed using a five-week moving average and a 53-week moving average.
+trend and seasonal components. In particular, if xt represents the observations, then
+mt =
+k
+∑
+j=−k
+ajxt−j , (2.50)
+where aj = a−j ≥ 0 and ∑k
+j=−k aj = 1 is a symmetric moving average of the data.
+Example 2.10 Moving Average Smoother
+For example, Figure 2.11 shows the weekly mortality series discussed in Example 2.2, a five-point moving average (which is essentially a monthly average with k = 2) that helps bring out the seasonal component and a 53-point moving average (which is essentially a yearly average with k = 26) that helps bring out the (negative) trend in cardiovascular mortality. In both cases, the weights, a−k, . . . , a0, . . . , ak, we used were all the same, and equal to 1/(2k + 1).9 To reproduce Figure 2.11 in R:
+1 ma5 = filter(cmort, sides=2, rep(1,5)/5) 2 ma53 = filter(cmort, sides=2, rep(1,53)/53) 3 plot(cmort, type="p", ylab="mortality") 4 lines(ma5); lines(ma53)
+9 Sometimes, the end weights, a−k and ak are set equal to half the value of the other weights.
+
+
+72 2 Time Series Regression and Exploratory Data Analysis
+Fig. 2.12. The weekly cardiovascular mortality series with a cubic trend and cubic trend plus periodic regression.
+Many other techniques are available for smoothing time series data based on methods from scatterplot smoothers. The general setup for a time plot is
+xt = ft + yt, (2.51)
+where ft is some smooth function of time, and yt is a stationary process. We may think of the moving average smoother mt, given in (2.50), as an estimator of ft. An obvious choice for ft in (2.51) is polynomial regression
+ft = β0 + β1t + · · · + βptp. (2.52)
+We have seen the results of a linear fit on the global temperature data in Example 2.1. For periodic data, one might employ periodic regression
+ft = α0 + α1 cos(2πω1t) + β1 sin(2πω1t)
++ · · · + αp cos(2πωpt) + βp sin(2πωpt), (2.53)
+where ω1, . . . , ωp are distinct, specified frequencies. In addition, one might consider combining (2.52) and (2.53). These smoothers can be applied using classical linear regression.
+Example 2.11 Polynomial and Periodic Regression Smoothers
+Figure 2.12 shows the weekly mortality series with an estimated (via ordinary least squares) cubic smoother
+̂ft = ̂β0 + ̂β1t + ̂β2t2 + ̂β3t3
+
+
+2.4 Smoothing in the Time Series Context 73
+superimposed to emphasize the trend, and an estimated (via ordinary least squares) cubic smoother plus a periodic regression
+̂ft = ̂β0 + ̂β1t + ̂β2t2 + ̂β3t3 + ̂α1 cos(2πt/52) + ̂α2 sin(2πt/52)
+superimposed to emphasize trend and seasonality. The R commands for this example are as follows (we note that the sampling rate is 1/52, so that wk below is essentially t/52). 1 wk = time(cmort) - mean(time(cmort)) 2 wk2 = wk^2; wk3 = wk^3 3 cs = cos(2*pi*wk); sn = sin(2*pi*wk) 4 reg1 = lm(cmort~wk + wk2 + wk3, na.action=NULL) 5 reg2 = lm(cmort~wk + wk2 + wk3 + cs + sn, na.action=NULL) 6 plot(cmort, type="p", ylab="mortality") 7 lines(fitted(reg1)); lines(fitted(reg2))
+Modern regression techniques can be used to fit general smoothers to the pairs of points (t, xt) where the estimate of ft is smooth. Many of the techniques can easily be applied to time series data using the R or S-PLUS statistical packages; see Venables and Ripley (1994, Chapter 10) for details on applying these methods in S-PLUS (R is similar). A problem with the techniques used in Example 2.11 is that they assume ft is the same function over the range of time, t; we might say that the technique is global. The moving average smoothers in Example 2.10 fit the data better because the technique is local; that is, moving average smoothers allow for the possibility that ft is a different function over time. We describe some other local methods in the following examples.
+Example 2.12 Kernel Smoothing
+Kernel smoothing is a moving average smoother that uses a weight function, or kernel, to average the observations. Figure 2.13 shows kernel smoothing of the mortality series, where ft in (2.51) is estimated by
+̂ft =
+n
+∑
+i=1
+wi(t)xi, (2.54)
+where
+wi(t) = K ( t−i
+b
+)
+/n ∑
+j=1
+K
+( t−j b
+) . (2.55)
+are the weights and K(·) is a kernel function. This estimator, which was originally explored by Parzen (1962) and Rosenblatt (1956b), is often called the Nadaraya–Watson estimator (Watson, 1966); typically, the normal kernel, K(z) = √12π exp(−z2/2), is used. To implement this in R, use the ksmooth function. The wider the bandwidth, b, the smoother the result. In Figure 2.13, the values of b for this example were b = 5/52 (roughly
+
+
+74 2 Time Series Regression and Exploratory Data Analysis
+Fig. 2.13. Kernel smoothers of the mortality data.
+weighted two to three week averages because b/2 is the inner quartile range of the kernel) for the seasonal component, and b = 104/52 = 2 (roughly weighted yearly averages) for the trend component. Figure 2.13 can be reproduced in R (or S-PLUS) as follows. 1 plot(cmort, type="p", ylab="mortality") 2 lines(ksmooth(time(cmort), cmort, "normal", bandwidth=5/52)) 3 lines(ksmooth(time(cmort), cmort, "normal", bandwidth=2))
+Example 2.13 Lowess and Nearest Neighbor Regression
+Another approach to smoothing a time plot is nearest neighbor regression. The technique is based on k-nearest neighbors linear regression, wherein one uses the data {xt−k/2, . . . , xt, . . . , xt+k/2} to predict xt using linear regres
+sion; the result is ̂ft. For example, Figure 2.14 shows cardiovascular mortality and the nearest neighbor method using the R (or S-PLUS) smoother supsmu. We used k = n/2 to estimate the trend and k = n/100 to estimate the seasonal component. In general, supsmu uses a variable window for smoothing (see Friedman, 1984), but it can be used for correlated data by fixing the smoothing window, as was done here. Lowess is a method of smoothing that is rather complex, but the basic idea is close to nearest neighbor regression. Figure 2.14 shows smoothing of mortality using the R or S-PLUS function lowess (see Cleveland, 1979). First, a certain proportion of nearest neighbors to xt are included in a weighting scheme; values closer to xt in time get more weight. Then, a robust weighted regression is used to predict xt and obtain the smoothed estimate of ft. The larger the fraction of nearest neighbors included, the smoother the estimate
+
+
+2.4 Smoothing in the Time Series Context 75
+nearest neighbor
+mortality
+1970 1972 1974 1976 1978 1980
+70 80 90 110 130
+lowess
+mortality
+1970 1972 1974 1976 1978 1980
+70 80 90 110 130
+Fig. 2.14. Nearest neighbor (supsmu) and locally weighted regression (lowess) smoothers of the mortality data.
+̂ft will be. In Figure 2.14, the smoother uses about two-thirds of the data to obtain an estimate of the trend component, and the seasonal component uses 2% of the data. Figure 2.14 can be reproduced in R or S-PLUS as follows. 1 par(mfrow=c(2,1)) 2 plot(cmort, type="p", ylab="mortality", main="nearest neighbor") 3 lines(supsmu(time(cmort), cmort, span=.5)) 4 lines(supsmu(time(cmort), cmort, span=.01)) 5 plot(cmort, type="p", ylab="mortality", main="lowess") 6 lines(lowess(cmort, f=.02)); lines(lowess(cmort, f=2/3))
+Example 2.14 Smoothing Splines
+An extension of polynomial regression is to first divide time t = 1, . . . , n, into k intervals, [t0 = 1, t1], [t1 + 1, t2] , . . . , [tk−1 + 1, tk = n]. The values t0, t1, . . . , tk are called knots. Then, in each interval, one fits a regression of the form (2.52); typically, p = 3, and this is called cubic splines. A related method is smoothing splines, which minimizes a compromise between the fit and the degree of smoothness given by
+
+
+76 2 Time Series Regression and Exploratory Data Analysis
+Fig. 2.15. Smoothing splines fit to the mortality data.
+n
+∑
+t=1
+[xt − ft]2 + λ
+∫(
+f
+′′ t
+)2
+dt, (2.56)
+where ft is a cubic spline with a knot at each t. The degree of smoothness is controlled by λ > 0. There is a relationship between smoothing splines and state space models, which is investigated in Problem 6.7. In R, the smoothing parameter is called spar and it is monotonically related to λ; type ?smooth.spline to view the help file for details. Figure 2.15 shows smoothing spline fits on the mortality data using generalized cross-validation, which uses the data to “optimally” assess the smoothing parameter, for the seasonal component, and spar=1 for the trend. The figure can be reproduced in R as follows.
+1 plot(cmort, type="p", ylab="mortality") 2 lines(smooth.spline(time(cmort), cmort)) 3 lines(smooth.spline(time(cmort), cmort, spar=1))
+Example 2.15 Smoothing One Series as a Function of Another
+In addition to smoothing time plots, smoothing techniques can be applied to smoothing a time series as a function of another time series. In this example, we smooth the scatterplot of two contemporaneously measured time series, mortality as a function of temperature. In Example 2.2, we discovered a nonlinear relationship between mortality and temperature. Continuing along these lines, Figure 2.16 shows scatterplots of mortality, Mt, and temperature, Tt, along with Mt smoothed as a function of Tt using lowess and using smoothing splines. In both cases, mortality increases at extreme
+
+
+2.4 Smoothing in the Time Series Context 77
+50 60 70 80 90 100
+70 80 90 110 130
+lowess
+Temperature
+Mortality
+50 60 70 80 90 100
+70 80 90 110 130
+smoothing splines
+Temperature
+Mortality
+Fig. 2.16. Smoothers of mortality as a function of temperature using lowess and smoothing splines.
+temperatures, but in an asymmetric way; mortality is higher at colder temperatures than at hotter temperatures. The minimum mortality rate seems to occur at approximately 80◦ F. Figure 2.16 can be reproduced in R as follows.
+1 par(mfrow=c(2,1), mar=c(3,2,1,0)+.5, mgp=c(1.6,.6,0)) 2 plot(tempr, cmort, main="lowess", xlab="Temperature", ylab="Mortality") 3 lines(lowess(tempr,cmort)) 4 plot(tempr, cmort, main="smoothing splines", xlab="Temperature", ylab="Mortality") 5 lines(smooth.spline(tempr, cmort))
+As a final word of caution, the methods mentioned in this section may not take into account the fact that the data are serially correlated, and most of the techniques have been designed for independent observations. That is, for example, the smoothers shown in Figure 2.16 are calculated under the false assumption that the pairs (Mt, Tt), are iid pairs of observations. In addition,
+
+
+78 2 Time Series Regression and Exploratory Data Analysis
+the degree of smoothness used in the previous examples were chosen arbitrarily to bring out what might be considered obvious features in the data set.
+Problems
+Section 2.2
+2.1 For the Johnson & Johnson data, say yt, shown in Figure 1.1, let xt = log(yt).
+(a) Fit the regression model
+xt = βt + α1Q1(t) + α2Q2(t) + α3Q3(t) + α4Q4(t) + wt
+where Qi(t) = 1 if time t corresponds to quarter i = 1, 2, 3, 4, and zero otherwise. The Qi(t)’s are called indicator variables. We will assume for now that wt is a Gaussian white noise sequence. What is the interpretation of the parameters β, α1, α2, α3, and α4? (Detailed code is given in Appendix R on page 574.)
+(b) What happens if you include an intercept term in the model in (a)? (c) Graph the data, xt, and superimpose the fitted values, say ̂xt, on the graph. Examine the residuals, xt − ̂xt, and state your conclusions. Does it appear that the model fits the data well (do the residuals look white)?
+2.2 For the mortality data examined in Example 2.2:
+(a) Add another component to the regression in (2.25) that accounts for the particulate count four weeks prior; that is, add Pt−4 to the regression in (2.25). State your conclusion. (b) Draw a scatterplot matrix of Mt, Tt, Pt and Pt−4 and then calculate the pairwise correlations between the series. Compare the relationship between Mt and Pt versus Mt and Pt−4.
+2.3 Repeat the following exercise six times and then discuss the results. Generate a random walk with drift, (1.4), of length n = 100 with δ = .01 and σw = 1. Call the data xt for t = 1, . . . , 100. Fit the regression xt = βt + wt using least squares. Plot the data, the mean function (i.e., μt = .01 t) and the fitted line, ̂xt = ̂β t, on the same graph. Discuss your results.
+The following R code may be useful:
+1 par(mfcol = c(3,2)) # set up graphics 2 for (i in 1:6){ 3 x = ts(cumsum(rnorm(100,.01,1))) # the data 4 reg = lm(x~0+time(x), na.action=NULL) # the regression 5 plot(x) # plot data
+6 lines(.01*time(x), col="red", lty="dashed") # plot mean 7 abline(reg, col="blue") } # plot regression line
+
+
+Problems 79
+2.4 Kullback-Leibler Information. Given the random vector yyy, we define the information for discriminating between two densities in the same family, indexed by a parameter θθθ, say f (yyy; θθθ1) and f (yyy; θθθ2), as
+I(θθθ1; θθθ2) = 1
+n E1 log f (yyy; θθθ1)
+f (yyy; θθθ2) , (2.57)
+where E1 denotes expectation with respect to the density determined by θθθ1.
+For the Gaussian regression model, the parameters are θθθ = (βββ′, σ2)′. Show that we obtain
+I(θθθ1; θθθ2) = 1
+2
+( σ12
+σ22
+− log σ12
+σ22
+−1
+)
++1
+2
+(βββ1 − βββ2)′Z′Z(βββ1 − βββ2) nσ22
+(2.58)
+in that case.
+2.5 Model Selection. Both selection criteria (2.19) and (2.20) are derived from information theoretic arguments, based on the well-known Kullback-Leibler discrimination information numbers (see Kullback and Leibler, 1951, Kullback, 1958). We give an argument due to Hurvich and Tsai (1989). We think of the measure (2.58) as measuring the discrepancy between the two densities, characterized by the parameter values θθθ′
+1 = (βββ′
+1, σ12)′ and θθθ′
+2 = (βββ′
+2, σ22)′. Now, if the true value of the parameter vector is θθθ1, we argue that the best model would be one that minimizes the discrepancy between the theoretical value and the sample, say I(θθθ1; ̂θθθ). Because θθθ1 will not be known, Hurvich and Tsai (1989) considered finding an unbiased estimator for E1[I(βββ1, σ12; βββˆ,σˆ2)], where
+I(βββ1, σ2
+1; βββˆ,σˆ2) = 1
+2
+( σ12
+σˆ2 − log σ12
+σˆ2 − 1
+)
++1
+2
+(βββ1 − βββˆ)′Z′Z(βββ1 − βββˆ) nσˆ2
+and βββ is a k × 1 regression vector. Show that
+E1[I(βββ1, σ2
+1; βββˆ,σˆ2)] = 1
+2
+(
+− log σ2
+1 + E1 log ̂σ2 + n + k
+n−k−2 −1
+)
+, (2.59)
+using the distributional properties of the regression coefficients and error variance. An unbiased estimator for E1 log ̂σ2 is log ̂σ2. Hence, we have shown that the expectation of the above discrimination information is as claimed. As models with differing dimensions k are considered, only the second and third terms in (2.59) will vary and we only need unbiased estimators for those two terms. This gives the form of AICc quoted in (2.20) in the chapter. You will need the two distributional results
+n
+̂σ2 σ12
+∼ χ2
+n−k and (̂βββ − βββ1)′Z′Z(̂βββ − βββ1)
+σ12
+∼ χ2
+k
+The two quantities are distributed independently as chi-squared distributions with the indicated degrees of freedom. If x ∼ χ2n, E(1/x) = 1/(n − 2).
+
+
+80 2 Time Series Regression and Exploratory Data Analysis
+Section 2.3
+2.6 Consider a process consisting of a linear trend with an additive noise term consisting of independent random variables wt with zero means and variances σ2w, that is,
+xt = β0 + β1t + wt,
+where β0, β1 are fixed constants.
+(a) Prove xt is nonstationary. (b) Prove that the first difference series ∇xt = xt − xt−1 is stationary by finding its mean and autocovariance function. (c) Repeat part (b) if wt is replaced by a general stationary process, say yt, with mean function μy and autocovariance function γy(h).
+2.7 Show (2.31) is stationary.
+2.8 The glacial varve record plotted in Figure 2.6 exhibits some nonstationarity that can be improved by transforming to logarithms and some additional nonstationarity that can be corrected by differencing the logarithms.
+(a) Argue that the glacial varves series, say xt, exhibits heteroscedasticity by computing the sample variance over the first half and the second half of the data. Argue that the transformation yt = log xt stabilizes the variance over the series. Plot the histograms of xt and yt to see whether the approximation to normality is improved by transforming the data. (b) Plot the series yt. Do any time intervals, of the order 100 years, exist where one can observe behavior comparable to that observed in the global temperature records in Figure 1.2? (c) Examine the sample ACF of yt and comment. (d) Compute the difference ut = yt − yt−1, examine its time plot and sample ACF, and argue that differencing the logged varve data produces a reasonably stationary series. Can you think of a practical interpretation for ut? Hint: For |p| close to zero, log(1 + p) ≈ p; let p = (yt − yt−1)/yt−1. (e) Based on the sample ACF of the differenced transformed series computed in (c), argue that a generalization of the model given by Example 1.23 might be reasonable. Assume
+ut = μ + wt − θwt−1
+is stationary when the inputs wt are assumed independent with mean 0 and variance σ2w. Show that
+γu(h) =
+
+ 
+ 
+σ2w(1 + θ2) if h = 0,
+−θ σ2w if h = ±1,
+0 if |h| > 1.
+
+
+Problems 81
+(f) Based on part (e), use ̂ρu(1) and the estimate of the variance of ut, ̂γu(0), to derive estimates of θ and σ2w. This is an application of the method of moments from classical statistics, where estimators of the parameters are derived by equating sample moments to theoretical moments.
+2.9 In this problem, we will explore the periodic nature of St, the SOI series displayed in Figure 1.5.
+(a) Detrend the series by fitting a regression of St on time t. Is there a significant trend in the sea surface temperature? Comment. (b) Calculate the periodogram for the detrended series obtained in part (a). Identify the frequencies of the two main peaks (with an obvious one at the frequency of one cycle every 12 months). What is the probable El Nin ̃o cycle indicated by the minor peak?
+2.10 Consider the model (2.46) used in Example 2.9,
+xt =
+n
+∑
+j=0
+β1(j/n) cos(2πtj/n) + β2(j/n) sin(2πtj/n).
+(a) Display the model design matrix Z [see (2.5)] for n = 4. (b) Show numerically that the columns of Z in part (a) satisfy part (d) and then display (Z′Z)−1 for this case. (c) If x1, x2, x3, x4 are four observations, write the estimates of the four betas, β1(0), β1(1/4), β2(1/4), β1(1/2), in terms of the observations. (d) Verify that for any positive integer n and j, k = 0, 1, . . . , [[n/2]], where [[·]] denotes the greatest integer function:10 (i) Except for j = 0 or j = n/2,
+n
+∑
+t=1
+cos2(2πtj/n) =
+n
+∑
+t=1
+sin2(2πtj/n) = n/2
+.
+(ii) When j = 0 or j = n/2,
+n
+∑
+t=1
+cos2(2πtj/n) = n but
+n
+∑
+t=1
+sin2(2πtj/n) = 0.
+(iii) For j 6= k,
+n
+∑
+t=1
+cos(2πtj/n) cos(2πtk/n) =
+n
+∑
+t=1
+sin(2πtj/n) sin(2πtk/n) = 0.
+Also, for any j and k,
+n
+∑
+t=1
+cos(2πtj/n) sin(2πtk/n) = 0.
+10 Some useful facts: 2 cos(α) = eiα + e−iα, 2i sin(α) = eiα − e−iα, and ∑n
+t=1 zt =
+z(1 − zn)/(1 − z) for z 6= 1.
+
+
+82 2 Time Series Regression and Exploratory Data Analysis
+Section 2.4
+2.11 Consider the two weekly time series oil and gas. The oil series is in dollars per barrel, while the gas series is in cents per gallon; see Appendix R for details.
+(a) Plot the data on the same graph. Which of the simulated series displayed in §1.3 do these series most resemble? Do you believe the series are stationary (explain your answer)? (b) In economics, it is often the percentage change in price (termed growth rate or return), rather than the absolute price change, that is important. Argue that a transformation of the form yt = ∇ log xt might be applied to the data, where xt is the oil or gas price series [see the hint in Problem 2.8(d)]. (c) Transform the data as described in part (b), plot the data on the same graph, look at the sample ACFs of the transformed data, and comment. [Hint: poil = diff(log(oil)) and pgas = diff(log(gas)).]
+(d) Plot the CCF of the transformed data and comment The small, but significant values when gas leads oil might be considered as feedback. [Hint: ccf(poil, pgas) will have poil leading for negative lag values.] (e) Exhibit scatterplots of the oil and gas growth rate series for up to three weeks of lead time of oil prices; include a nonparametric smoother in each plot and comment on the results (e.g., Are there outliers? Are the relationships linear?). [Hint: lag.plot2(poil, pgas, 3).] (f) There have been a number of studies questioning whether gasoline prices respond more quickly when oil prices are rising than when oil prices are falling (“asymmetry”). We will attempt to explore this question here with simple lagged regression; we will ignore some obvious problems such as outliers and autocorrelated errors, so this will not be a definitive analysis. Let Gt and Ot denote the gas and oil growth rates.
+(i) Fit the regression (and comment on the results)
+Gt = α1 + α2It + β1Ot + β2Ot−1 + wt,
+where It = 1 if Ot ≥ 0 and 0 otherwise (It is the indicator of no growth or positive growth in oil price). Hint: 1 indi = ifelse(poil < 0, 0, 1) 2 mess = ts.intersect(pgas, poil, poilL = lag(poil,-1), indi) 3 summary(fit <- lm(pgas~ poil + poilL + indi, data=mess))
+(ii) What is the fitted model when there is negative growth in oil price at time t? What is the fitted model when there is no or positive growth in oil price? Do these results support the asymmetry hypothesis? (iii) Analyze the residuals from the fit and comment.
+2.12 Use two different smoothing techniques described in §2.4 to estimate the trend in the global temperature series displayed in Figure 1.2. Comment.
+
+
+3
+ARIMA Models
+3.1 Introduction
+In Chapters 1 and 2, we introduced autocorrelation and cross-correlation functions (ACFs and CCFs) as tools for clarifying relations that may occur within and between time series at various lags. In addition, we explained how to build linear models based on classical regression theory for exploiting the associations indicated by large values of the ACF or CCF. The time domain, or regression, methods of this chapter are appropriate when we are dealing with possibly nonstationary, shorter time series; these series are the rule rather than the exception in many applications. In addition, if the emphasis is on forecasting future values, then the problem is easily treated as a regression problem. This chapter develops a number of regression techniques for time series that are all related to classical ordinary and weighted or correlated least squares. Classical regression is often insufficient for explaining all of the interesting dynamics of a time series. For example, the ACF of the residuals of the sim
+Chapter 2) reveals additional structure in the data that the regression did not capture. Instead, the introduction of correlation as a phenomenon that may be generated through lagged linear relations leads to proposing the autoregressive (AR) and autoregressive moving average (ARMA) models. Adding nonstationary models to the mix leads to the autoregressive integrated moving average (ARIMA) model popularized in the landmark work by Box and Jenkins (1970). The Box–Jenkins method for identifying a plausible ARIMA model is given in this chapter along with techniques for parameter estimation and forecasting for these models. A partial theoretical justification of the use of ARMA models is discussed in Appendix B, §B.4.
+© Springer Science+Business Media, LLC 2011
+R.H. Shumway and D.S. Stoffer, Time Series Analysis and Its Applications: With R Examples, 83
+ple linear regression fit to the global temperature data (see Example 2.4 of
+Springer Texts in Statistics, DOI 10.1007/978-1-4419-7865-3_3,
+
+
+84 3 ARIMA Models
+3.2 Autoregressive Moving Average Models
+The classical regression model of Chapter 2 was developed for the static case, namely, we only allow the dependent variable to be influenced by current values of the independent variables. In the time series case, it is desirable to allow the dependent variable to be influenced by the past values of the independent variables and possibly by its own past values. If the present can be plausibly modeled in terms of only the past values of the independent inputs, we have the enticing prospect that forecasting will be possible.
+Introduction to Autoregressive Models
+Autoregressive models are based on the idea that the current value of the series, xt, can be explained as a function of p past values, xt−1, xt−2, . . . , xt−p, where p determines the number of steps into the past needed to forecast the current value. As a typical case, recall Example 1.10 in which data were generated using the model
+xt = xt−1 − .90xt−2 + wt,
+where wt is white Gaussian noise with σ2w = 1. We have now assumed the current value is a particular linear function of past values. The regularity that persists in Figure 1.9 gives an indication that forecasting for such a model might be a distinct possibility, say, through some version such as
+xn
+n+1 = xn − .90xn−1,
+where the quantity on the left-hand side denotes the forecast at the next period n + 1 based on the observed data, x1, x2, . . . , xn. We will make this notion more precise in our discussion of forecasting (§3.5). The extent to which it might be possible to forecast a real data series from its own past values can be assessed by looking at the autocorrelation function and the lagged scatterplot matrices discussed in Chapter 2. For example, the lagged scatterplot matrix for the Southern Oscillation Index (SOI), shown in Figure 2.7, gives a distinct indication that lags 1 and 2, for example, are linearly associated with the current value. The ACF shown in Figure 1.14 shows relatively large positive values at lags 1, 2, 12, 24, and 36 and large negative values at 18, 30, and 42. We note also the possible relation between the SOI and Recruitment series indicated in the scatterplot matrix shown in Figure 2.8. We will indicate in later sections on transfer function and vector AR modeling how to handle the dependence on values taken by other series. The preceding discussion motivates the following definition.
+Definition 3.1 An autoregressive model of order p, abbreviated AR(p), is of the form
+xt = φ1xt−1 + φ2xt−2 + · · · + φpxt−p + wt, (3.1)
+
+
+3.2 Autoregressive Moving Average Models 85
+where xt is stationary, and φ1, φ2, . . . , φp are constants (φp 6= 0). Although it is not necessary yet, we assume that wt is a Gaussian white noise series with mean zero and variance σ2w, unless otherwise stated. The mean of xt in (3.1) is zero. If the mean, μ, of xt is not zero, replace xt by xt − μ in (3.1),
+xt − μ = φ1(xt−1 − μ) + φ2(xt−2 − μ) + · · · + φp(xt−p − μ) + wt,
+or write
+xt = α + φ1xt−1 + φ2xt−2 + · · · + φpxt−p + wt, (3.2)
+where α = μ(1 − φ1 − · · · − φp).
+We note that (3.2) is similar to the regression model of §2.2, and hence the term auto (or self) regression. Some technical difficulties, however, develop from applying that model because the regressors, xt−1, . . . , xt−p, are random components, whereas zzzt was assumed to be fixed. A useful form follows by using the backshift operator (2.33) to write the AR(p) model, (3.1), as
+(1 − φ1B − φ2B2 − · · · − φpBp)xt = wt, (3.3)
+or even more concisely as φ(B)xt = wt. (3.4)
+The properties of φ(B) are important in solving (3.4) for xt. This leads to the following definition.
+Definition 3.2 The autoregressive operator is defined to be
+φ(B) = 1 − φ1B − φ2B2 − · · · − φpBp. (3.5)
+We initiate the investigation of AR models by considering the first-order model, AR(1), given by xt = φxt−1 + wt. Iterating backwards k times, we get
+xt = φxt−1 + wt = φ(φxt−2 + wt−1) + wt = φ2xt−2 + φwt−1 + wt
+...
+= φkxt−k +
+k−1
+∑
+j=0
+φj wt−j .
+This method suggests that, by continuing to iterate backward, and provided that |φ| < 1 and xt is stationary, we can represent an AR(1) model as a linear process given by1
+xt =
+∞
+∑
+j=0
+φj wt−j . (3.6)
+1 Note that limk→∞ E
+(
+xt − ∑k−1
+j=0 φj wt−j
+)2
+= limk→∞ φ2kE (x2
+t−k
+) = 0, so (3.6)
+exists in the mean square sense (see Appendix A for a definition).
+
+
+86 3 ARIMA Models
+The AR(1) process defined by (3.6) is stationary with mean
+E(xt) =
+∞
+∑
+j=0
+φj E(wt−j ) = 0,
+and autocovariance function,
+γ(h) = cov(xt+h, xt) = E
+
+
+(∞ ∑
+j=0
+φj wt+h−j
+)( ∞ ∑
+k=0
+φk wt−k
+)
+
+
+= E [(wt+h + · · · + φhwt + φh+1wt−1 + · · · ) (wt + φwt−1 + · · · )]
+= σ2
+w
+∞
+∑
+j=0
+φh+j φj = σ2
+w φh
+∞
+∑
+j=0
+φ2j = σ2wφh
+1 − φ2 , h ≥ 0.
+(3.7)
+Recall that γ(h) = γ(−h), so we will only exhibit the autocovariance function for h ≥ 0. From (3.7), the ACF of an AR(1) is
+ρ(h) = γ(h)
+γ(0) = φh, h ≥ 0, (3.8)
+and ρ(h) satisfies the recursion
+ρ(h) = φ ρ(h − 1), h = 1, 2, . . . . (3.9)
+We will discuss the ACF of a general AR(p) model in §3.4.
+Example 3.1 The Sample Path of an AR(1) Process
+Figure 3.1 shows a time plot of two AR(1) processes, one with φ = .9 and one with φ = −.9; in both cases, σ2w = 1. In the first case, ρ(h) = .9h, for h ≥ 0, so observations close together in time are positively correlated with each other. This result means that observations at contiguous time points will tend to be close in value to each other; this fact shows up in the top of Figure 3.1 as a very smooth sample path for xt. Now, contrast this with the case in which φ = −.9, so that ρ(h) = (−.9)h, for h ≥ 0. This result means that observations at contiguous time points are negatively correlated but observations two time points apart are positively correlated. This fact shows up in the bottom of Figure 3.1, where, for example, if an observation, xt, is positive, the next observation, xt+1, is typically negative, and the next observation, xt+2, is typically positive. Thus, in this case, the sample path is very choppy. The following R code can be used to obtain a figure similar to Figure 3.1: 1 par(mfrow=c(2,1)) 2 plot(arima.sim(list(order=c(1,0,0), ar=.9), n=100), ylab="x", main=(expression(AR(1)~~~phi==+.9))) 3 plot(arima.sim(list(order=c(1,0,0), ar=-.9), n=100), ylab="x", main=(expression(AR(1)~~~phi==-.9)))
+
+
+3.2 Autoregressive Moving Average Models 87
+AR(1)  = +.9
+0 20 40 60 80 100
+−6 −4 −2 0 2 4
+AR(1)  = −.9
+0 20 40 60 80 100
+−6 −4 −2 0 2 4 6
+Fig. 3.1. Simulated AR(1) models: φ = .9 (top); φ = −.9 (bottom).
+Example 3.2 Explosive AR Models and Causality
+In Example 1.18, it was discovered that the random walk xt = xt−1 + wt is not stationary. We might wonder whether there is a stationary AR(1) process with |φ| > 1. Such processes are called explosive because the values of the time series quickly become large in magnitude. Clearly, because |φ|j increases without bound as j → ∞, ∑k−1
+j=0 φjwt−j will not converge (in mean square) as k → ∞, so the intuition used to get (3.6) will not work directly. We can, however, modify that argument to obtain a stationary model as follows. Write xt+1 = φxt + wt+1, in which case,
+xt = φ−1xt+1 − φ−1wt+1 = φ−1 (φ−1xt+2 − φ−1wt+2
+) − φ−1wt+1
+...
+= φ−kxt+k −
+k−1
+∑
+j=1
+φ−j wt+j , (3.10)
+by iterating forward k steps. Because |φ|−1 < 1, this result suggests the stationary future dependent AR(1) model
