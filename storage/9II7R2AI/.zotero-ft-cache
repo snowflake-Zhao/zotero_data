@@ -1,0 +1,1449 @@
+TYPE Original Research PUBLISHED 09 December 2022 DOI 10.3389/fonc.2022.1075217
+
+OPEN ACCESS
+EDITED BY
+Feifei Pu, Huazhong University of Science and Technology, China
+REVIEWED BY
+Shisheng He, Tongji University, China Guoqing Tan, Afﬁliated Hospital of Shandong University of Traditional Chinese Medicine, China
+*CORRESPONDENCE
+Jianru Xiao jianruxiao83@smmu.edu.cn Wen Mo mw2218@126.com
+†These authors contributed equally to this work and share ﬁrst authorship
+SPECIALTY SECTION
+This article was submitted to Surgical Oncology, a section of the journal Frontiers in Oncology
+RECEIVED 27 October 2022 ACCEPTED 15 November 2022 PUBLISHED 09 December 2022
+CITATION
+Yin M, Guan S, Ding X, Zhuang R, Sun Z, Wang T, Zheng J, Li L, Gao X, Wei H, Ma J, Huang Q, Xiao J and Mo W (2022) Construction and validation of a novel web-based nomogram for patients with lung cancer with bone metastasis: A realworld analysis based on the SEER database. Front. Oncol. 12:1075217. doi: 10.3389/fonc.2022.1075217
+COPYRIGHT
+© 2022 Yin, Guan, Ding, Zhuang, Sun, Wang, Zheng, Li, Gao, Wei, Ma, Huang, Xiao and Mo. This is an open-access article distributed under the terms of the Creative Commons Attribution License (CC BY). The use, distribution or reproduction in other forums is permitted, provided the original author(s) and the copyright owner(s) are credited and that the original publication in this journal is cited, in accordance with accepted academic practice. No use, distribution or reproduction is permitted which does not comply with these terms.
+
+Construction and validation of a novel web-based nomogram for patients with lung cancer with bone metastasis: A real-world analysis based on the SEER database
+Mengchen Yin , 1,2† Sisi Guan 1†, Xing Ding 1†, Ruoyu Zhuang 1†, Zhengwang Sun3, Tao Wang4, Jiale Zheng1, Lin Li 2, Xin Gao2, Haifeng Wei2, Junming Ma1, Quan Huang2, Jianru Xiao 2* and Wen Mo1*
+1Longhua Hospital, Shanghai University of Traditional Chinese Medicine, Shanghai, China, 2Changzheng Hospital, Second Afﬁliated Hospital of Naval Medical University, Shanghai, China, 3Department of Musculoskeletal Surgery, Shanghai Cancer Center, Fudan University, Shanghai, China, 4Department of Orthopaedics, The Second Hospital of Anhui Medical University, Anhui, China
+Purpose: Patients with lung cancer with bone metastasis (LCBM) often have a very poor prognosis. The purpose of this study is to characterize the prevalence and associated factors and to develop a prognostic nomogram to predict the overall survival (OS) and cancer-speciﬁc survival (CSS) for patients with LCBM using multicenter population-based data.
+Methods: Patients with LCBM at the time of diagnosis were identiﬁed using the Surveillance, Epidemiology, and End Results (SEER) Program database of the National Cancer Institute (NCI) from 2010 to 2015. Multivariable and univariate logistic regression analyses were performed to identify factors associated with all-cause mortality and lung cancer (LC)–speciﬁc mortality. The performance of the nomograms was evaluated with the calibration curves, area under the curve (AUC), and decision curve analysis (DCA). Kaplan–Meier analysis and logrank tests were used to estimate the survival times of patients with LCBM.
+Results: We ﬁnally identiﬁed 26,367 patients with LCBM who were selected for survival analysis. Multivariate analysis demonstrated age, sex, T stage, N stage, grade, histology, radiation therapy, chemotherapy, primary site, primary surgery, liver metastasis, and brain metastasis as independent predictors for LCBM. The AUC values of the nomogram for the OS prediction were 0.755, 0.746, and 0.775 in the training cohort; 0.757, 0.763, and 0.765 in the internal validation cohort; and 0.769, 0.781, and 0.867 in the external validation cohort. For CSS, the values were 0.753, 0.753, and 0.757 in the training cohort; 0.753,
+
+Frontiers in Oncology
+
+01
+
+frontiersin.org
+
+Yin et al.
+
+10.3389/fonc.2022.1075217
+0.753, and 0.757 in the internal validation cohort; and 0.767, 0.774, and 0.872 in the external validation cohort.
+Conclusions: Our study constructs a new prognostic model and clearly presents the clinicopathological features and survival analysis of patients with LCBM. The result indicated that the nomograms had favorable discrimination, good consistency, and clinical beneﬁts in patients. In addition, our constructed nomogram prediction models may assist physicians in evaluating individualized prognosis and deciding on treatment for patients.
+KEYWORDS
+lung cancer, bone metastases, SEER, overall survival, cancer-speciﬁc survival
+
+Introduction
+As the most lethal cancer worldwide, there are approximately 1.8 million new patients with lung cancer (LC) diagnosed each year (1, 2). Bone is the most common and the earliest site of metastases from LC, and 30%–40% of patients with LC already have bone metastases (BMs) upon initial diagnosis, which is usually associated with a poor prognosis (3–5). The therapy for patients with lung cancer with bone metastasis (LCBM) is diverse, including primary tumor resection, metastatic surgery, chemotherapy, and radiotherapy. However, in many cases, the survival of patients with LCBM could not be accurately assessed, and individualized therapeutic scheme could not be provided, which leads to additional distress and poorer prognosis of patients.
+In LCBM, tumor cells release cytokines and chemical mediators to stimulate the periosteum and bone, combined with the mechanical stress caused by tumor tissue in the osteolytic lesions, causing serious bone pain. Moreover, it increases the risk of complications referred to as skeletalrelated events (SREs), including pathologic fracture, spinal cord compression, and hypercalcemia of malignancy. The main therapeutic options for treating LCBM are chemotherapy and radiotherapy. The therapy for BM from solid tumors has been revolutionized over the last few decades. Since the 1990s, bisphosphonates were introduced to treat BM and became a mainstay of the management of BM. Until around the year 2000, the appearance of denosumab challenged this dominance. Based on existing studies, denosumab was found to be more effective in reducing SREs. However, aforementioned treatment development in BM was mainly dedicated to reducing SREs
+Abbreviations: LC, lung cancer; LCBM, lung cancer with bone metastasis; SEER, Surveillance, Epidemiology and End Results; CSS, cancer-speciﬁc survival; OS, overall survival; ROC, receiver operating characteristic; AUC, area under the curves; DCA, decision curve analysis.
+
+and bone pain, and the increase of overall survival (OS) was still limited. Data are still limited on the epidemiology, signatures, and prognostic factors of LCBM in general (6–8).
+For data visualization, nomograms can increase the accuracy of prognostic prediction in cancer, using the tumor size. The chart integration predicts the probability of events. In previous studies, nomograms have demonstrated its superior predictive ability to the TNM staging system (9–12). As far as we know, the current study is the ﬁrst that developed nomograms based on a large-size number of patients, which was veriﬁed by internal and external validation sets to guarantee the reliability of the results.
+The Surveillance, Epidemiology, and End Results (SEER) Program’s registry is maintained by the National Cancer Institute (NCI), which collects a large number of cancerrelated survival data from 1973 based on the US population. The cancer-related data in the SEER Program were obtained from 18 population-based registries, covering approximately 26% of the US population. Compared with any single institution, the SEER database encompasses much more population-level cancer data based on the largest sample size worldwide (13–16).
+In this study, we analyzed the data extracted from the SEER database to identify risk factors associated with prognosis. Then, we subsequently created nomograms as a comprehensive prognostic assessment system. Both internal and external validation cohorts were employed to ensure the nomogram’s accuracy and reliability.
+Materials and methods
+Patient population
+Patient data were extracted from the updated SEER database (https://seer.cancer.gov). We used the SEER Stat software
+
+Frontiers in Oncology
+
+02
+
+frontiersin.org
+
+Yin et al.
+
+10.3389/fonc.2022.1075217
+
+version 8.3.9 published by SEER to identify eligible patients in this study. In addition, the data of eligible patients with LCBM in the external validation cohort treated in these institutions were acquired. The inclusion and exclusion criteria were the same as those for the training cohort from the SEER database. Eventually, we identiﬁed the prognostic factors of LCBM through the included patients. For each cohort, patients were randomly divided into the training set (70%) and the internal validation set (30%). Prognostic factors identiﬁed from patients in the training set were used to construct the nomogram that was validated by the internal validation set. The inclusion criteria are as follows: diagnosis with BM in 2010–2015 of all ages and patients with complete information recorded. To identify patients with metastatic LC to the bone, we selected cases with LCBM at the ﬁrst diagnosis, for further research. In addition, patients who died during the study period were excluded. The independent external validation cohort was derived from patients with LCBM treated in four medical institutions (Longhua Hospital, Changzheng Hospital, Shanghai Cancer Center, and The Second Hospital of Anhui Medical University). The inclusion criteria are as follows: deﬁnite diagnosis of LCBM, 18 years of age and above, and complete follow-up information. Figure 1 demonstrates the ﬂowchart of the procedure. Analysis of the data from the SEER Program was exempted from medical ethics review, and no informed consent was required. The studies involving human participants were reviewed and approved by the Ethical Committee and Institutional Review Board. The patients/participants provided their written informed consent to participate in this study, and all procedures followed the Declaration of Helsinki.
+Data collection
+The collected clinicopathological factors included the following: age, sex, histology/behavior, malignant, histrionic, radiation recode, chemotherapy recode, brain, liver, survival months, vital status recode, the SEER data on cause-speciﬁc
+
+death classiﬁcation, the TNM stage, and pathological nodal grade. In accordance with the seventh edition of the American Joint Committee on Cancer staging system, we classiﬁed various clinicopathological factors, and the histological type of CRC patients was determined following the International Classiﬁcation of Diseases for Oncology, third edition (ICD-O3). The endpoints in our study were cancer-speciﬁc survival (CSS) and OS.
+Construction and validation of the prognostic scoring system
+Univariable and multivariable Cox regression analyses were used to calculate the effects of variables on CSS and OS in the training, testing, and external validation cohorts. We formulated the nomogram based on the independent prognostic factors identiﬁed by the Cox multivariate analysis by employing R (version 4.0.1) with the rms package (available at http:// CRAN.R-project.org/package=rms). The overall points for each patient in the training, testing, and external validation cohorts were calculated using the established nomogram, after which a Cox regression analysis of the entire cohort was carried out using the overall points as a parameter.
+The Hosmer–Lemeshow test was used to evaluate the calibration of the nomogram and displayed in the form of the calibration curve. Both 1-, 3-, and 5-year CSS and OS can be estimated by the developed nomogram, respectively. Receiver operating characteristic (ROC) curve analyses were performed to test the performance evaluation of constructed nomograms by the areas under the ROC curves (AUCs), and Harrell’s concordance index (C-index) was applied to evaluate the predictive value of the constructed nomogram. At the same time, decision curve analysis (DCA) was applied to assess the nomogram in the current research that was a novel strategy for evaluating prognostic scoring system methods and has advantages over AUROC in clinical value evaluation.
+
+FIGURE 1
+Flow chart of the study.
+
+Frontiers in Oncology
+
+03
+
+frontiersin.org
+
+Yin et al.
+
+10.3389/fonc.2022.1075217
+
+Statistical analysis
+Statistical analysis was performed by SPSS v22.0 (IBM, Armonk, NY, USA) and R for Windows v4.0.5 (https://www.rproject.org). Chi-squared test was employed to analyze the categorical variables. The survival analysis was completed through the Kaplan–Meier method and log-rank test. The measure of the effect of each variable on CSS and OS is presented as the hazard ratio (HR) and was used to identify independent risk factors. HR greater than 1 indicated that the prognostic factor is unfavorable for survival, whereas HR smaller than 1 indicated that the prognostic factor is favorable for survival compared with the reference. A value of 1 revealed that there was no signiﬁcant relationship between them. To minimize the inﬂuence of missing data, a backward stepwise method was used to further sort out prognostic factors selected in the multivariate Cox regression. The R statistical packages “rms”, “survival”, “Hmisc”, “MASS”, and “time ROC” were used to build a nomogram, plot calibration, and time-dependent ROC curves, whereas “rmda” was used to draw the DCA curves. All tests were two-sided, and P < 0.05 was considered statistically signiﬁcant (17–19).
+
+statistical signiﬁcance (P < 0.05). These are age, sex, T stage, N stage, grade, radiation, chemotherapy, histology, primary site, primary surgery, brain metastasis (mets-brain), and liver metastasis (mets-liver). Then, the multivariate logistic regression analysis showed that age, sex, T stage, N stage, grade, radiation, chemotherapy, histology, primary site, primary surgery, mets-brain, and mets-liver were the independent predictors for the OS of patients with LCBM (Tables 2 and 3) Figure 2 shows that all the above variables were signiﬁcant in relation to OS.
+On univariable logistic regression analysis in the training cohort, there were 13 factors associated with CSS that showed statistical signiﬁcance (P < 0.05). These were age, sex, T stage, N stage, grade, radiation, chemotherapy, histology, primary site, primary surgery, metastatic surgery, mets-brain, and mets-liver. Then, the multivariate logistic regression analysis showed that age, sex, T stage, N stage, grade, radiation, chemotherapy, histology, primary site, primary surgery, metastatic surgery, mets-brain, and mets-liver were the independent predictors predicting the CSS for patients with LCBM (Tables 4 and 5). Figure 3 shows that all the above variables were signiﬁcant in relation to CSS.
+
+Result
+Characteristics of the study population
+A total of 26,027 patients with LCBM were included in our research. Meanwhile, 18,220 patients were enrolled into the training set, and the remaining 7,807 patients were enrolled into the internal validation set. The external validation set was composed by 340 eligible patients with LCBM. Table 1 provides the characteristics of the 26,367 patients.
+Most of the patients with LCBM from the SEER dataset were men (57.49%) and older than 65 years (56.77%). The most common histological type was adenocarcinoma (51.52%), and the most common primary site was the upper lobe (51.67%). Compared with living patients, those deceased were more likely to have had poor tumor histological type, poor tumor stage, poor tumor grade, and higher rates of liver metastasis. In terms of treatment, only 6.07% patients underwent metastatic surgeries, 59.15% patients have received chemotherapy, and 52.82% patients have received radiation therapy.
+Independent prognostic features in patients with lung cancer with bone metastasis
+On univariable logistic regression analysis in the training cohort, there were 12 factors associated with OS that showed
+
+Construction of the nomogram
+To predict 1-, 3-, and 5-year OS and CSS of patients with LCBM, we built a nomogram in accordance with the major prognostic factors identiﬁed by the multivariable Cox regression analysis. Total points can be calculated by adding up the values for each variable corresponding to nomogram points. Subsequently, the value of total points corresponds vertically to survival chances at multiple time points (Figure 4).
+Comparison of the values of area under the curves of the nomogram with TNM stage
+We conducted the time-dependent ROC analyses at 1, 3, and 5 years in the training, internal validation, and external validation cohorts. In the training cohort, the AUC values of the nomogram for the prediction of OS (AUCOS) were 0.755, 0.746, and 0.775, compared with 0.558, 0.583, and 0.616 for the AUC values of TNM stage (AUCTNM), respectively. In the internal validation cohort, AUCOS were 0.757, 0.763, and 0.765, compared with 0.542, 0.578, and 0.587 for the AUCTNM, respectively. In the external validation cohort, AUCOS were 0.769, 0.781, and 0.867, compared with 0.566, 0.606, and 0.628 for the AUCTNM, respectively (Figure 5).
+Likewise, in the training cohort, the AUC values of the nomogram for the prediction of CSS (AUCCSS) were 0.753,
+
+Frontiers in Oncology
+
+04
+
+frontiersin.org
+
+Yin et al.
+
+10.3389/fonc.2022.1075217
+
+TABLE 1 Demographic and clinicopathological characteristics of patients in the training, internal validation, and external validation cohorts (N, %).
+
+Variables
+
+Level
+
+SEER database
+
+Patient database
+
+Training set
+
+Internal validation set
+
+External validation set
+
+Overall Alive Dead Overall Alive Dead Overall Alive Dead
+
+18,220 557 17,663 7,807 244 7,563 340
+
+11
+
+329
+
+Age (%) Sex (%) Histology (%)
+T (%) N (%) M (%) Primary site (%)
+Grade (%)
+
+<65
+≥65
+Male
+Female
+Squamous cell
+Adenocarcinoma
+Small cell
+Large cell Other T1 T2
+T3
+T4
+N0
+N1 N2
+N3
+M1a M1b
+M1NOS Main bronchus Upper lobe
+Middle lobe Lower lobe
+Overlapping lesion of lung Lung, NOS I II III
+IV
+
+7,857 (43.1)
+10,363 (56.9) 10,479 (57.5) 7,741 (42.5)
+2,617 (14.4)
+
+338 (60.7)
+219 (39.3)
+266 (47.8)
+291 (52.2)
+47 (8.4)
+
+7,519 (42.6)
+10,144 (57.4) 10,213 (57.8) 7,450 (42.2)
+2,570 (14.6)
+
+9,363 (51.4) 4,460 (24.5)
+
+397 (71.3)
+64 (11.5)
+
+8,966 (50.8) 4,396 (24.9)
+
+317 (1.7) 1,463 (8.0) 2,003 (11.0) 4,813 (26.4)
+4,771 (26.2)
+6,633 (36.4)
+3,523 (19.3)
+1,487 (8.2) 8,936 (49.0)
+4,274 (23.5)
+465 (2.6) 17,484 (96.0) 271 (1.5) 1,068 (5.9) 9,453 (51.9)
+740 (4.1) 4,694 (25.8)
+187 (1.0)
+
+4 (0.7) 45 (8.1) 92 (16.5)
+145 (26.0) 143 (25.7) 177 (31.8) 167 (30.0) 60 (10.8) 222 (39.9) 108 (19.4) 16 (2.9) 532 (95.5) 9 (1.6) 22 (3.9) 304 (54.6) 24 (4.3) 153 (27.5) 5 (0.9)
+
+313 (1.8) 1,418 (8.0) 1,911 (10.8) 4,668 (26.4)
+4,628 (26.2)
+6,456 (36.6)
+3,356 (19.0)
+1,427 (8.1) 8,714 (49.3)
+4,166 (23.6)
+449 (2.5) 16,952 (96.0) 262 (1.5) 1,046 (5.9) 9,149 (51.8)
+716 (4.1) 4,541 (25.7)
+182 (1.0)
+
+3,394 (43.5) 4,413 (56.5) 4,483 (57.4) 3,324 (42.6) 1,165 (14.9) 4,047 (51.8) 1,845 (23.6) 122 (1.6) 628 (8.0) 853 (10.9) 2,047 (26.2) 2,085 (26.7) 2,822 (36.1) 1,501 (19.2) 633 (8.1) 3,924 (50.3) 1,749 (22.4) 216 (2.8) 7,462 (95.6) 129 (1.7) 466 (6.0) 3,995 (51.2) 329 (4.2) 2,006 (25.7) 91 (1.2)
+
+144 (59.0)
+
+3,250 (43.0)
+
+136 (40.0)
+
+100 4313 (57.0) 204
+
+(41.0)
+
+(60.0)
+
+126 (51.6)
+
+4,357 (57.6)
+
+201 (59.1)
+
+118 (48.4)
+
+3,206 (42.4)
+
+139 (40.9)
+
+23 (9.4)
+
+1,142 (15.1)
+
+53 (15.6)
+
+182 (74.6)
+
+3,865 (51.1)
+
+174 (51.2)
+
+20 (8.2)
+
+1,825 (24.1)
+
+78 (22.9)
+
+2 (0.8) 120 (1.6) 4 (1.2)
+
+17 (7.0) 611 (8.1) 31 (9.1)
+
+42 (17.2) 811 (10.7) 42 (12.4)
+
+66 (27.0)
+
+1,981 (26.2)
+
+90 (26.5)
+
+73 (29.9)
+
+2,012 (26.6)
+
+90 (26.5)
+
+63 (25.8)
+
+2,759 (36.5)
+
+118 (34.7)
+
+69 (28.3)
+
+1,432 (18.9)
+
+73 (21.5)
+
+19 (7.8) 614 (8.1) 27 (7.9)
+
+99 (40.6)
+
+3,825 (50.6)
+
+160 (47.1)
+
+57 (23.4)
+
+1,692 (22.4)
+
+80 (23.5)
+
+10 (4.1) 206 (2.7) 7 (2.1)
+
+229 (93.9)
+
+7,233 (95.6)
+
+331 (97.4)
+
+5 (2.0) 124 (1.6) 2 (0.6)
+
+9 (3.7) 457 (6.0) 26 (7.6)
+
+138 (56.6)
+
+3,857 (51.0)
+
+166 (48.8)
+
+15 (6.1) 314 (4.2) 12 (3.5)
+
+65 (26.6)
+
+1,941 (25.7)
+
+80 (23.5)
+
+2 (0.8) 89 (1.2) 7 (2.1)
+
+7 (63.6)
+4 (36.4)
+5 (45.5)
+6 (54.5)
+2 (18.2)
+7 (63.6)
+2 (18.2)
+0 (0.0) 0 (0.0) 2 (18.2) 3 (27.3)
+2 (18.2)
+4 (36.4)
+4 (36.4)
+1 (9.1) 3 (27.3)
+3 (27.3)
+0 (0.0) 11
+(100.0) 0 (0.0) 1 (9.1) 8 (72.7)
+0 (0.0) 2 (18.2)
+0 (0.0)
+
+129 (39.2) 200 (60.8) 196 (59.6) 133 (40.4) 51 (15.5)
+167 (50.8) 76 (23.1)
+4 (1.2) 31 (9.4) 40 (12.2) 87 (26.4)
+88 (26.7)
+114 (34.7) 69 (21.0)
+26 (7.9) 157 (47.7)
+77 (23.4)
+7 (2.1) 320 (97.3)
+2 (0.6) 25 (7.6)
+158 (48.0) 12 (3.6) 78 (23.7)
+7 (2.1)
+
+2,078 (11.4) 291 (1.6)
+1,820 (10.0) 4,346 (23.9)
+608 (3.3)
+
+49 (8.8) 16 (2.9) 81 (14.5)
+140 (25.1) 6 (1.1)
+
+2,029 (11.5) 275 (1.6) 1,739 (9.8)
+4,206 (23.8)
+602 (3.4)
+
+920 (11.8) 144 (1.8) 745 (9.5)
+1,876 (24.0) 262 (3.4)
+
+15 (6.1) 6 (2.5) 41 (16.8) 54 (22.1)
+3 (1.2)
+
+905 (12.0) 138 (1.8) 704 (9.3)
+1,822 (24.1) 259 (3.4)
+
+49 (14.4) 7 (2.1) 30 (8.8) 82 (24.1)
+12 (3.5)
+
+0 (0.0) 0 (0.0) 2 (18.2) 1 (9.1)
+0 (0.0)
+
+49 (14.9) 7 (2.1) 28 (8.5) 81 (24.6)
+12 (3.6)
+
+(Continued)
+
+Frontiers in Oncology
+
+05
+
+frontiersin.org
+
+Yin et al.
+
+10.3389/fonc.2022.1075217
+
+TABLE 1 Continued
+Variables
+
+Level
+
+Unknown
+
+Primary surgery (%) Yes No
+
+Metastatic surgery
+
+Yes
+
+(%)
+
+No
+
+Radiation (%)
+
+Yes
+
+No
+
+Chemotherapy (%) Yes
+
+No
+
+Brain metastasis (%) Yes
+
+No
+
+Liver metastasis (%) Yes
+
+No
+
+SEER database
+
+Training set
+
+Internal validation set
+
+Patient database External validation set
+
+Overall Alive 18,220 557
+
+Dead Overall Alive 17,663 7,807 244
+
+Dead Overall Alive Dead
+
+7,563 340
+
+11
+
+329
+
+11,155 (61.2) 331 (1.8) 17,889 (98.2) 1,100 (6.0)
+
+314 (56.4) 37 (6.6) 520 (93.4) 33 (5.9)
+
+10,841 (61.4) 294 (1.7) 17,369 (98.3) 1,067 (6.0)
+
+4,780 (61.2) 125 (1.6) 7,682 (98.4) 480 (6.1)
+
+140 (57.4) 21 (8.6) 223 (91.4) 25 (10.2)
+
+4,640 (61.4) 104 (1.4) 7,459 (98.6) 455 (6.0)
+
+209 (61.5) 9 (2.6) 331 (97.4) 19 (5.6)
+
+8 (72.7)
+3 (27.3) 8 (72.7)
+0 (0.0)
+
+201 (61.1) 6 (1.8) 323 (98.2) 19 (5.8)
+
+17,120 (94.0) 9,653 (53.0)
+8,567 (47.0)
+10,778 (59.2) 7,442 (40.8)
+4,380 (24.0)
+13,840 (76.0) 5,649 (31.0)
+
+524 (94.1)
+296 (53.1)
+261 (46.9)
+450 (80.8)
+107 (19.2)
+116 (20.8)
+441 (79.2)
+83 (14.9)
+
+16,596 (94.0) 9,357 (53.0)
+8,306 (47.0)
+10,328 (58.5) 7,335 (41.5)
+4,264 (24.1)
+13,399 (75.9) 5,566 (31.5)
+
+12,571 (69.0)
+
+474 (85.1)
+
+12,097 (68.5)
+
+7,327 (93.9)
+4,095 (52.5)
+3,712 (47.5)
+4,618 (59.2)
+3,189 (40.8)
+1,813 (23.2)
+5,994 (76.8)
+2,473 (31.7)
+5,334 (68.3)
+
+219 (89.8) 137 (56.1) 107 (43.9) 203 (83.2) 41 (16.8)
+58 (23.8)
+186 (76.2) 33 (13.5)
+211 (86.5)
+
+7,108 (94.0)
+3,958 (52.3)
+3,605 (47.7)
+4,415 (58.4)
+3,148 (41.6)
+1,755 (23.2)
+5,808 (76.8)
+2,440 (32.3)
+5,123 (67.7)
+
+321 (94.4)
+170 (50.0)
+170 (50.0)
+189 (55.6)
+151 (44.4)
+90 (26.5)
+
+11 (100.0) 2 (18.2)
+9 (81.8)
+10 (90.9)
+1 (9.1)
+1 (9.1)
+
+310 (94.2)
+168 (51.1)
+161 (48.9)
+179 (54.4)
+150 (45.6)
+89 (27.1)
+
+250 (73.5)
+105 (30.9)
+235 (69.1)
+
+10 (90.9) 3 (27.3) 8 (72.7)
+
+240 (72.9)
+102 (31.0)
+227 (69.0)
+
+0.753, and 0.757, compared with 0.558, 0.579, and 0.611 for the AUCTNM stage, respectively. In the internal validation cohort, AUCCSS were 0.753, 0.753, and 0.757, compared with 0.544, 0.579, and 0.595 for the AUCTNM, respectively. In the external validation cohort, AUCCSS were 0.767, 0.774, and 0.872, compared with 0.561, 0.578, and 0.604 for the AUCTNM, respectively (Figure 6). The results showed that the novel prognostic scoring system had better efﬁcacy in predicting the prognosis of patients with LCBM than TNM stage.
+Evaluation and validation of the overall survival and cancer-speciﬁc survival prediction nomograms using receiver operating characteristic curves
+We also used time-dependent ROC curves and the AUC to validate the discrimination ability of nomograms. In the training cohort, the 1-, 3-, and 5-year AUC values of nomograms predicting OS were 0.755, 0.746, and 0.775, respectively. In the internal validation cohort, the AUC values for OS were 0.757,
+
+0.763, and 0.765, respectively. In the external validation cohort, the AUC values for OS were 0.769, 0.781, and 0.867, respectively.
+Likewise, in the training cohorts, the 1-, 3-, and 5-year AUC values of nomograms predicting for CSS were 0.751, 0.739, and 0.763, respectively. In the internal validation cohorts, the AUC values for CSS were 0.753, 0.753, and 0.757, respectively. In the external validation cohorts, the AUC values for CSS were 0.767, 0.774, and 0.872, respectively. The results showed that the novel prognostic scoring system had a favorable predictive sensitivity (Figure 7).
+C-index values for the prediction of OS and CSS were also used to evaluate the discriminatory power of the nomogram. The Cindex values for OS were 0.717 (95% CI, 0.715–0.719), 0.721 (95% CI, 0.718–0.725), and 0.731 (95% CI, 0.716–0.746) in the training, internal validation, and external validation cohorts, respectively. Likewise, the C-index values for CSS were 0.716 (95% CI, 0.714– 0.718), 0.720 (95% CI, 0.716–0.723), and 0.731 (95% CI, 0.715– 0.746) in the training, internal validation, and external validation cohorts. The result indicated that the nomogram had favorable discrimination in patients with LCBM.
+
+Frontiers in Oncology
+
+06
+
+frontiersin.org
+
+Yin et al.
+
+10.3389/fonc.2022.1075217
+
+TABLE 2 Univariate Cox regression model in the training, internal validation, and external validation cohorts of overall survival (OS) (N, %).
+
+Variables
+
+Level
+
+SEER database
+
+Patient database
+
+Training cohort
+
+Internal validation cohort External validation cohort
+
+HR (95% CI) P
+
+HR (95% CI)
+
+P
+
+HR (95% CI)
+
+P
+
+Age Sex T
+N
+M Grade
+Radiation Chemotherapy Histology
+Primary site
+Primary surgery Metastatic surgery Brain metastasis Liver metastasis
+
+<65 ≥65 Male Female T1 T2 T3 T4 N0 N1 N2 N3 M1a M1b M1NOS I II III IV Unknown Yes No Yes No Squamous cell Adenocarcinoma Small cell Large cell Other Main bronchus Upper lobe Middle lobe Lower lobe Overlapping lesion of lung Lung, NOS Yes No Yes No Yes No Yes No
+
+HR, hazard ratio.
+
+1.27 (1.23–1.31)
+0.82 (0.79–0.84)
+1.17 (1.11–1.24) 1.26 (1.2–1.33) 1.31 (1.24–1.38)
+1.05 (0.99–1.12) 1.2 (1.16–1.25) 1.15 (1.1–1.2)
+1.03 (0.94–1.13) 0.99 (0.85–1.15)
+1.04 (0.92–1.18) 1.4 (1.24–1.59) 1.55 (1.35–1.79) 1.35 (1.2–1.52)
+1.21 (1.18–1.25)
+3.04 (2.95–3.14)
+0.69 (0.66–0.72) 1.03 (0.91–1.16) 0.88 (0.83–0.94) 0.89 (0.85–0.93)
+0.85 (0.8–0.91) 0.8 (0.73–0.88) 0.87 (0.81–0.93) 1.03 (0.88–1.21) 1.01 (0.94–1.09)
+1.79 (1.59–2.01)
+1.07 (1–1.13)
+0.94 (0.91–0.98)
+0.73 (0.71–0.75)
+
+<0.001
+<0.001
+<0.001 <0.001 <0.001
+0.131 <0.001 <0.001
+0.576 0.861
+0.534 <0.001 <0.001 <0.001
+<0.001
+<0.001
+<0.001 0.637 <0.001 <0.001
+<0.001 <0.001 <0.001 0.714
+0.7
+<0.001
+0.041
+0.001
+<0.001
+
+1.3 (1.24–1.36)
+0.84 (0.8–0.88)
+1.18 (1.08–1.28) 1.32 (1.21–1.43) 1.33 (1.23–1.43)
+1.07 (0.97–1.17) 1.16 (1.09–1.23) 1.09 (1.01–1.17)
+1.08 (0.94–1.24) 0.95 (0.76–1.19)
+1.12 (0.93–1.34) 1.5 (1.27–1.79) 1.59 (1.29–1.95) 1.4 (1.18–1.66)
+1.2 (1.15–1.26)
+3.19 (3.04–3.35)
+0.65 (0.61–0.69) 1.07 (0.89–1.3) 0.89 (0.81–0.98) 0.85 (0.79–0.92)
+0.81 (0.73–0.89) 0.78 (0.67–0.9) 0.78 (0.71–0.87) 0.82 (0.65–1.02) 1.05 (0.94–1.17)
+1.85 (1.52–2.25)
+1.2 (1.09–1.32)
+0.94 (0.89–0.99)
+0.7 (0.66–0.73)
+
+<0.001
+<0.001
+<0.001 <0.001 <0.001
+0.179 0
+0.018
+0.267 0.65
+0.232 <0.001 <0.001 <0.001
+<0.001
+<0.001
+<0.001 0.456 0.021 <0.001
+<0.001 0.001 <0.001 0.079 0.401
+<0.001
+<0.001
+0.014
+<0.001
+
+1.18 (0.95–1.48)
+0.77 (0.61–0.96)
+1.16 (0.8–1.69) 1.52 (1.04–2.21) 1.38 (0.96–1.98)
+1.08 (0.69–1.7) 1.2 (0.9–1.6) 1.01 (0.73–1.4)
+0.71 (0.34–1.51) 0.69 (0.14–3.33)
+1.19 (0.52–2.73) 1.88 (0.86–4.07) 2.71 (1.06–6.93) 1.64 (0.77–3.49)
+1.1 (0.88–1.37)
+3.23 (2.57–4.06)
+0.74 (0.54–1.01) 1.64 (0.59–4.55) 1.31 (0.83–2.05) 0.99 (0.69–1.42)
+0.63 (0.41–0.97) 0.78 (0.39–1.56) 0.69 (0.44–1.08) 0.81 (0.35–1.89) 1.02 (0.63–1.66)
+3.17 (1.41–7.13)
+0.87 (0.55–1.39)
+0.73 (0.57–0.93)
+0.73 (0.58–0.93)
+
+0.135
+0.018
+0.44 0.03 0.083
+0.737 0.207 0.944
+0.379 0.644
+0.68 0.112 0.037 0.2
+0.394
+<0.001
+0.06 0.343 0.246 0.953
+0.037 0.484 0.107 0.631 0.922
+0.005
+0.564
+0.011
+0.009
+
+Frontiers in Oncology
+
+07
+
+frontiersin.org
+
+Yin et al.
+
+10.3389/fonc.2022.1075217
+
+TABLE 3 Multivariate Cox regression model in the training, internal validation, and external validation cohorts of overall survival (OS) (N, %).
+
+Variables
+
+Levels
+
+SEER database
+
+Patient database
+
+Training cohort
+
+Internal validation cohort External validation cohort
+
+HR (95% CI) P
+
+HR (95% CI)
+
+P
+
+HR (95% CI)
+
+P
+
+Age Sex T
+N
+M Grade
+Radiation Chemotherapy Histology
+Primary site
+Primary surgery Metastatic surgery Brain metastasis Liver metastasis
+
+<65 ≥65 Male Female T1 T2 T3 T4 N0 N1 N2 N3 M1a M1b M1NOS I II III IV Unknown Yes No Yes No Squamous cell Adenocarcinoma Small cell Large cell Other Main bronchus Upper lobe Middle lobe Lower lobe Overlapping lesion of lung Lung, NOS Yes No Yes No Yes No Yes No
+
+N/A, Not Applicable.
+
+1.18 (1.14–1.21)
+0.84 (0.81–0.86)
+1.13 (1.07–1.19) 1.21 (1.15–1.28) 1.23 (1.17–1.3)
+1.15 (1.08–1.22) 1.26 (1.21–1.31) 1.28 (1.22–1.34)
+NA NA
+1.06 (0.94–1.21) 1.35 (1.19–1.52) 1.38 (1.19–1.59) 1.29 (1.15–1.46)
+1.12 (1.08–1.15)
+3.24 (3.13–3.34)
+0.78 (0.74–0.81) 1.05 (0.94–1.19) 0.89 (0.83–0.95) 0.97 (0.92–1.02)
+0.89 (0.83–0.95) 0.79 (0.71–0.87) 0.9 (0.84–0.96) 1.04 (0.89–1.21) 0.98 (0.91–1.06)
+1.72 (1.53–1.94)
+1.06 (0.99–1.13)
+0.85 (0.82–0.88)
+0.74 (0.72–0.77)
+
+<0.001
+<0.001
+<0.001 <0.001 <0.001
+<0.001 <0.001 <0.001
+NA NA
+0.3446 <0.001 <0.001 <0.001
+<0.001
+<0.001
+<0.001 0.3786 <0.001 0.299
+<0.001 <0.001 0.0027 0.6493 0.6851
+<0.001
+0.0728
+<0.001
+<0.001
+
+1.15 (1.1–1.21)
+0.87 (0.83–0.91)
+1.15 (1.05–1.24) 1.24 (1.15–1.35) 1.22 (1.12–1.32)
+1.04 (0.95–1.15) 1.25 (1.17–1.33) 1.21 (1.13–1.3)
+NA NA
+1.2 (1–1.44) 1.51 (1.27–1.79) 1.55 (1.25–1.91) 1.43 (1.2–1.69)
+1.09 (1.04–1.14)
+3.37 (3.2–3.54)
+0.78 (0.73–0.83) 1.13 (0.94–1.37) 0.89 (0.81–0.99) 0.95 (0.88–1.03)
+0.9 (0.82–0.99) 0.84 (0.73–0.97) 0.87 (0.78–0.96) 0.84 (0.67–1.05) 1.13 (1.01–1.27)
+1.79 (1.47–2.18)
+1.07 (0.98–1.18)
+0.83 (0.79–0.88)
+0.71 (0.67–0.74)
+
+<0.001
+<0.001
+0.0013 <0.001 <0.001
+0.3712 <0.001 <0.001
+NA NA
+0.0526 <0.001 <0.001 <0.001
+<0.001
+<0.001
+<0.001 0.1938 0.0286 0.2403
+0.0359 0.02 0.0067 0.1334 0.034
+<0.001
+0.1481
+<0.001
+<0.001
+
+NA
+0.75 (0.59–0.94)
+1.05 (0.72–1.56) 1.27 (0.86–1.88) 1.07 (0.73–1.57)
+NA NA NA
+NA NA
+2.55 (1.08–6.04) 3.13 (1.39–7.05) 4.04 (1.49–10.99) 2.71 (1.22–5.99)
+NA
+3.97 (3.09–5.11)
+NA NA NA NA
+0.63 (0.4–0.97) 0.76 (0.37–1.55) 0.6 (0.37–0.97) 0.79 (0.33–1.88) 0.97 (0.59–1.6)
+2.25 (0.98–5.17)
+NA
+0.78 (0.61–1.01)
+0.67 (0.52–0.86)
+
+NA
+0.0118
+0.7873 0.2215 0.7204
+NA NA NA
+NA NA
+0.0333 0.006 0.0062 0.0139
+NA
+<0.001
+NA NA NA NA
+0.038 0.4503 0.0373 0.6003 0.9153
+0.0562
+NA
+0.0621
+0.0022
+
+Frontiers in Oncology
+
+08
+
+frontiersin.org
+
+Yin et al.
+
+10.3389/fonc.2022.1075217
+
+A
+
+B
+
+C
+
+D
+
+E
+
+F
+
+G
+
+H
+
+I
+
+J
+
+K
+
+L
+
+FIGURE 2
+Kaplan–Meier curves of the overall survival (OS) factors: (A) age, (B) sex, (C) T stage, (D) N stage, (E) grade, (F) radiation, (G) chemotherapy, (H) histology, (I) primary site, (J) primary surgery, (K) mets-brain, and (L) mets-liver.
+
+The result of calibration curves for the nomogram showed no obvious deviations from the reference line, indicating a high degree of credibility (Figure 8). In addition, DCA of the nomogram and TNM stage for the OS and CSS prediction of
+
+patients was used to evaluate the clinical value. The result of DCA indicated that the nomogram had better clinical outcome values compared with the TNM staging system with higher net beneﬁts (Figure 9).
+
+A
+
+B
+
+C
+
+D
+
+E
+
+F
+
+G
+
+H
+
+I
+
+J
+
+K
+
+L
+
+M
+
+FIGURE 3
+Kaplan-Meier curves of CSS (A) age, (B) sex, (C) T stage, (D) N stage, (E) grade, (F) radiation, (G) chemotherapy, (H) histology, (I) primary site, (J) primary surgery, (K) metastatic surgery, (L) mets-brain and (M) mets-liver.
+
+Frontiers in Oncology
+
+09
+
+frontiersin.org
+
+Yin et al.
+
+10.3389/fonc.2022.1075217
+
+TABLE 4 Univariate Cox regression model in the training, internal validation, and external validation cohorts of cancer-speciﬁc survival (CSS) (N, %).
+
+Variables
+
+Level
+
+SEER database
+
+Patient database
+
+Training cohort
+
+Internal validation cohort External validation cohort
+
+HR (95% CI) P
+
+HR (95% CI)
+
+P
+
+HR (95% CI)
+
+P
+
+Age Sex T
+N
+M Grade
+Radiation Chemotherapy Histology
+Primary site
+Primary surgery Metastatic surgery Brain metastasis Liver metastasis
+
+<65 ≥65 Male Female T1 T2 T3 T4 N0 N1 N2 N3 M1a M1b M1NOS I II III IV Unknown Yes No Yes No Squamous cell Adenocarcinoma Small cell Large cell Other Main bronchus Upper lobe Middle lobe Lower lobe Overlapping lesion of lung Lung, NOS Yes No Yes No Yes No Yes No
+
+1.25 (1.21–1.29)
+0.82 (0.8–0.85)
+1.18 (1.12–1.24) 1.27 (1.2–1.34) 1.32 (1.25–1.39)
+1.06 (0.99–1.13) 1.21 (1.17–1.27) 1.16 (1.1–1.21)
+1.07 (0.97–1.17) 1.02 (0.87–1.19)
+1.05 (0.92–1.2) 1.42 (1.25–1.61) 1.57 (1.36–1.82) 1.37 (1.21–1.55)
+1.19 (1.16–1.23)
+3.02 (2.92–3.12)
+0.69 (0.66–0.73) 1.04 (0.92–1.17) 0.9 (0.84–0.96) 0.9 (0.85–0.94)
+0.84 (0.79–0.9) 0.78 (0.71–0.86) 0.85 (0.79–0.91) 1.01 (0.86–1.19)
+1 (0.93–1.08)
+1.82 (1.61–2.05)
+1.08 (1.01–1.15)
+0.93 (0.9–0.96)
+0.72 (0.7–0.74)
+
+<0.001
+<0.001
+<0.001 <0.001 <0.001
+0.092 <0.001 <0.001
+0.204 0.808
+0.471 <0.001 <0.001 <0.001
+<0.001
+<0.001
+<0.001 0.515 0.001 <0.001
+<0.001 <0.001 <0.001 0.895 0.904
+<0.001
+0.018
+<0.001
+<0.001
+
+1.28 (1.22–1.34)
+0.85 (0.81–0.89)
+1.2 (1.11–1.31) 1.32 (1.22–1.44) 1.36 (1.25–1.47)
+1.08 (0.98–1.19) 1.17 (1.1–1.25) 1.11 (1.03–1.19)
+1.09 (0.95–1.26) 0.93 (0.74–1.17)
+1.14 (0.94–1.37) 1.54 (1.29–1.84) 1.64 (1.33–2.03) 1.41 (1.19–1.69)
+1.17 (1.12–1.23)
+3.15 (3–3.31)
+0.64 (0.6–0.69) 1.08 (0.89–1.31) 0.88 (0.8–0.98) 0.85 (0.79–0.92)
+0.82 (0.74–0.9) 0.79 (0.68–0.92) 0.79 (0.71–0.87) 0.87 (0.69–1.09) 1.05 (0.94–1.18)
+1.9 (1.55–2.33)
+1.19 (1.08–1.31)
+0.92 (0.87–0.97)
+0.69 (0.65–0.72)
+
+<0.001
+<0.001
+<0.001 <0.001 <0.001
+0.139 <0.001 0.006
+0.229 0.517
+0.179 <0.001 <0.001 <0.001
+<0.001
+<0.001
+<0.001 0.425 0.016 <0.001
+<0.001 0.002 <0.001 0.23 0.392
+<0.001
+<0.001
+0.003
+<0.001
+
+1.11 (0.89–1.4)
+0.72 (0.58–0.91)
+1.11 (0.76–1.64) 1.43 (0.98–2.11) 1.31 (0.91–1.9)
+1.07 (0.67–1.69) 1.13 (0.84–1.52) 0.98 (0.7–1.37)
+0.67 (0.32–1.43) 0.7 (0.14–3.35)
+1.6 (0.62–4.17) 2.58 (1.04–6.39) 3.77 (1.32–10.76) 2.1 (0.86–5.13)
+1.08 (0.86–1.34)
+3.19 (2.52–4.04)
+0.77 (0.55–1.07) 1.78 (0.64–4.97) 1.29 (0.8–2.07) 1.04 (0.72–1.51)
+0.6 (0.39–0.92) 0.71 (0.35–1.45) 0.66 (0.42–1.04) 0.82 (0.35–1.9) 0.94 (0.57–1.53)
+2.96 (1.31–6.66)
+0.81 (0.51–1.3)
+0.7 (0.55–0.9)
+0.7 (0.55–0.89)
+
+0.36
+0.006
+0.58 0.066 0.147
+0.783 0.406 0.911
+0.301 0.65
+0.332 0.04 0.013 0.101
+0.525
+<0.001
+0.114 0.268 0.296 0.83
+0.019 0.352 0.072 0.641 0.797
+0.009
+0.385
+0.006
+0.004
+
+Frontiers in Oncology
+
+10
+
+frontiersin.org
+
+Yin et al.
+
+10.3389/fonc.2022.1075217
+
+TABLE 5 Multivariate Cox regression model in the training, internal validation, and external validation cohorts of cancer-speciﬁc survival (CSS) (N, %).
+
+Variables
+
+Levels
+
+SEER database
+
+Patient database
+
+Training cohort
+
+Internal validation cohort External validation cohort
+
+HR (95% CI) P
+
+HR (95% CI)
+
+P
+
+HR (95% CI)
+
+P
+
+Age Sex T
+N
+M Grade
+Radiation Chemotherapy Histology
+Primary site
+Primary surgery Metastatic surgery Brain metastasis Liver metastasis
+
+<65 ≥65 Male Female T1 T2 T3 T4 N0 N1 N2 N3 M1a M1b M1NOS I II III IV Unknown Yes No Yes No Squamous cell Adenocarcinoma Small cell Large cell Other Main bronchus Upper lobe Middle lobe Lower lobe Overlapping lesion of lung Lung, NOS Yes No Yes No Yes No Yes No
+
+N/A, Not Applicable.
+
+1.16 (1.13–1.2)
+0.84 (0.82–0.87)
+1.14 (1.07–1.2) 1.21 (1.15–1.28) 1.24 (1.17–1.31)
+1.15 (1.08–1.23) 1.26 (1.21–1.32) 1.28 (1.22–1.35)
+NA NA
+1.07 (0.94–1.22) 1.36 (1.2–1.54) 1.39 (1.2–1.62) 1.3 (1.15–1.48)
+1.1 (1.06–1.13)
+3.23 (3.12–3.34)
+0.79 (0.75–0.82) 1.06 (0.94–1.2) 0.9 (0.84–0.97) 0.98 (0.93–1.03)
+0.88 (0.82–0.94) 0.77 (0.7–0.85) 0.89 (0.83–0.95) 1.02 (0.87–1.2) 0.98 (0.9–1.05)
+1.74 (1.55–1.97)
+1.08 (1.01–1.15)
+0.85 (0.82–0.88)
+0.73 (0.71–0.76)
+
+<0.001
+<0.001
+<0.001 <0.001 <0.001
+<0.001 <0.001 <0.001
+NA NA
+0.2936 <0.001 <0.001 <0.001
+<0.001
+<0.001
+<0.001 0.315 0.0031 0.4556
+<0.001 <0.001 <0.001 0.8241 0.5287
+<0.001
+0.0255
+<0.001
+<0.001
+
+1.14 (1.08–1.19)
+0.88 (0.84–0.92)
+1.17 (1.07–1.27) 1.25 (1.14–1.36) 1.24 (1.14–1.35)
+1.05 (0.95–1.16) 1.25 (1.17–1.33) 1.22 (1.14–1.32)
+NA NA
+1.21 (1–1.47) 1.53 (1.27–1.83) 1.57 (1.26–1.96) 1.42 (1.19–1.7)
+1.07 (1.02–1.12)
+3.35 (3.18–3.52)
+0.77 (0.72–0.83) 1.13 (0.93–1.37) 0.89 (0.8–0.98) 0.95 (0.88–1.03)
+0.92 (0.83–1.01) 0.87 (0.75–1)
+0.88 (0.79–0.98) 0.9 (0.72–1.14) 1.14 (1.02–1.28)
+1.86 (1.51–2.28)
+1.07 (0.97–1.18)
+0.83 (0.78–0.88)
+0.7 (0.66–0.73)
+
+<0.001
+<0.001
+<0.001 <0.001 <0.001
+0.309 <0.001 <0.001
+NA NA
+0.0449 <0.001 <0.001 <0.001
+0.0108
+<0.001
+<0.001 0.2294 0.0226 0.221
+0.0901 0.0567 0.0162 0.3853 0.0262
+<0.001
+0.1971
+<0.001
+<0.001
+
+NA
+0.69 (0.54–0.87)
+NA NA NA
+NA NA NA
+NA NA
+3.48 (1.3–9.29) 4.41 (1.74–11.19) 5.68 (1.89–17.08) 3.57 (1.42–8.96)
+NA
+4.06 (3.13–5.27)
+NA NA NA NA
+0.6 (0.39–0.94) 0.71 (0.34–1.48) 0.59 (0.37–0.96) 0.86 (0.36–2.04) 0.93 (0.56–1.54)
+2.1 (0.91–4.81)
+NA
+0.75 (0.57–0.97)
+0.65 (0.5–0.85)
+
+NA
+0.0019
+NA NA NA
+NA NA NA
+NA NA
+0.0128 0.0018 0.002 0.0068
+NA
+<0.001
+NA NA NA NA
+0.025 0.36 0.0329 0.7357 0.7666
+0.0802
+NA
+0.0274
+0.0013
+
+Frontiers in Oncology
+
+11
+
+frontiersin.org
+
+Yin et al. A
+
+10.3389/fonc.2022.1075217
+
+B
+
+FIGURE 4
+Evaluation of the overall survival (OS)- and cancer-speciﬁc survival (CSS)-associated nomograms for patients with lung cancer with bone metastasis (LCBM). (A) OS nomogram integrating age, sex, T stage, N stage, grade, radiation, chemotherapy, histology, primary site, primary surgery, mets-brain, and mets-liver for predicting 1-, 3-, and 5-year OS rates. (B) CSS nomogram integrating age, sex, T stage, N stage, grade, radiation, chemotherapy, histology, primary site, primary surgery, metastatic surgery, mets-brain, and mets-liver for predicting 1-, 3-, and 5-year CSS rates.
+
+Web-based nomogram
+A freely available, web-based calculator was deployed for predicting the postoperative OS and CSS of patients with LCBM (https://yiinmengchen.shinyapps.io/DynNom_os/ and https:// yiinmengchen.shinyapps.io/DynNom_css/). With the use of the web-based nomogram, we can individually assess the OS and CSS of patients based on the input clinical factors. As an example of calculating OS, we included a 60-year-old male patient with LCBM with mets-brain and mets-liver. TNM stage was T3N2. Pathological grade was I. Histology was small cell. He received chemotherapy and radiation. As shown in Figure 10, the probability of OS for this patient was estimated to
+
+be 19.5% and 3.1% at 1 and 3 years, respectively. As shown in Figure 11, the probability of CSS for this patient was estimated to be 24.5% and 5.1% at 1 and 3 years, respectively.
+Discussion
+Commonly, the symptoms associated with patients with LCBM are pain, occasional fractures, or interference with daily activities (20). BM accounts for approximately 350,000 deaths in the United States every year and nearly three times this number if patients in the European countries and Japan are also included (21). In the retrospective analysis of Swedish national inpatient
+
+Frontiers in Oncology
+
+12
+
+frontiersin.org
+
+Yin et al. A
+
+10.3389/fonc.2022.1075217
+
+B
+
+C
+
+D
+
+E
+
+F
+
+G
+
+H
+
+I
+
+FIGURE 5
+The receiver operating characteristic (ROC) curve of the TNM stage and the overall survival (OS) nomogram. (A–C) The area under the curve (AUC) values of ROC predicted 1-, 3-, and 5-year OS rates of the nomogram and TNM stage in the training cohort. (D–F) AUC values of ROC predicted 1-, 3-, and 5-year OS rates of the nomogram and TNM stage in the internal validation cohort. (G–I) AUC values of ROC predicted 1-, 3-, and 5-year OS rates of the nomogram and TNM stage in the external validation cohort.
+
+data involving 21,169 patients with LC, by Riihimaki et al., BM conferred the worst prognosis compared with other frequent metastatic sites, which was one of the most frequent metastatic sites as well (22). In another study based on the nationwide Korean health insurance database, SREs most commonly occurred in patients with LC among the 1,849 patients with BM (23). The condition of patients with LCBM can rapidly progress to an advanced stage after initial diagnosis and display metastasis, which often renders the treatment difﬁcult. Therefore, there is an urgent need for the development of more clinically applied risk predictors as well as novel tools for prediction of survival of patients with LCBM in the clinic. Based on the data extracted from the SEER database, we analyzed the survival of patients with LCBM. The prognostic factors associated with OS and CSS were also identiﬁed to accurately predict the prognosis of patients. As far as we know, this was the ﬁrst multicenter population-based study that includes internal and external validation.
+Our study found that some prognostic factors of LCBM were in accordance with previously published reports, including a
+
+male predominance, older age, and a propensity for high-grade tumors and more patients who were diagnosed with advanced stage III/IV disease (20, 24, 25). In addition to this, T, N, and M stages were correlated with shortened survival time. The effect of primary location of LC on prognosis after BM could not be deﬁned, in accordance with our ﬁndings; the primary site was a factor associated with survival. We found that patients with main bronchial neoplasm had worse prognosis compared with other locations. Although there has been a previous study that conﬁrmed that T3 centrally located early non–small cell LC (NSCLC) has a better survival than other types, more research studies obtained similar results with the present study (26, 27). This conclusion could be explained as the technical limitations of tumor resection involved in the main bronchus due to its anatomy. On the other hand, the main bronchus neoplasm had a high rate of lymph node metastasis, which was associated with worse outcomes (28).
+As one of the most common metastatic sites, the bone is a unique microenvironment that appears to promote tumor
+
+Frontiers in Oncology
+
+13
+
+frontiersin.org
+
+Yin et al.
+
+A
+
+B
+
+D
+
+E
+
+10.3389/fonc.2022.1075217 C F
+
+G
+
+H
+
+I
+
+FIGURE 6
+The receiver operating characteristic (ROC) curve of the TNM stage and the cancer-speciﬁc survival (CSS) nomogram. (A–C) The area under the curve (AUC) values of ROC predicted 1-, 3-, and 5-year CSS rates of the nomogram and TNM stage in the training cohort. (D–F) AUC values of ROC predicted 1-, 3-, and 5-year CSS rates of the nomogram and TNM stage in the internal validation cohort. (G–I) AUC values of ROC predicted 1-, 3-, and 5-year CSS rates of the nomogram and TNM stage in the external validation cohort.
+
+growth. Our results revealed that liver and brain metastases were independent predictors of survival in LCBM. According to the theory of “seed and soil hypothesis,” metastatic cancer cells can dynamically interact with particular organ microenvironment and lead to different patterns of metastatic spread. Several studies found that the site of metastasis did not signiﬁcantly inﬂuence patients’ survivals. However, our ﬁndings were supported by other researchers (20, 29). Tamura et al. reported a 1.55-fold increase in mortality in patients with liver metastasis compared with those with other metastasis (30). Most patients with LC with liver metastasis had multiple nodules morphologically and biliary tract obstruction may have been caused by LC metastatic to the lymph nodes in the porta hepatis or the hepatic parenchyma lesion. Patients would be jaundiced and would have a progressive divergence of hepatic synthetic and coagulation function. Meanwhile, the activation or metabolism of several cytotoxic drugs commonly used in
+
+various procedures for chemotherapy could be affected, in turn, leading to the limitation of chemotherapy’s administration. There were several cases reporting that patients with liver metastases could not receive conventional chemotherapy for liver dysfunction (31, 32). As one of the most common sites of metastasis in patients with LC, brain metastasis was regarded as one of the unfavorable prognostic factors in previous research studies. In one study, based on the SEER database, the cancer-speciﬁc case fatality was 91.01% after a median follow-up of 52 months in 5,974 patients with LC and with brain metastasis (33, 34). This study also revealed that patients with additional sites of metastasis (like BM) were related to worse survival. Thus, patients with LCBM combined with brain metastasis tend to exhibit poor prognosis. In the case of brain metastasis, the daily living activities of patients could be limited signiﬁcantly and they could develop severe neurological symptoms, which may lead to reduced willingness of patients
+
+Frontiers in Oncology
+
+14
+
+frontiersin.org
+
+Yin et al.
+
+10.3389/fonc.2022.1075217
+
+A
+
+B
+
+C
+
+D
+
+E
+
+F
+
+FIGURE 7
+Nomograms of time-dependent receiver operating characteristic (ROC) curves for the overall survival (OS) and cancer-speciﬁc survival (CSS) prediction of patients with lung cancer with bone metastasis (LCBM). (A–C) The training, internal validation, and external validation cohorts for the OS. (D–F) The training, internal validation, and external validation cohorts for the CSS.
+
+and doctors to pursue aggressive therapy. In addition, the use of chemotherapy for brain metastasis patients could be limited by poor efﬁcacy and high toxicity. In the case of LCBM with brain metastasis, surgical treatment is not recommended because it has no signiﬁcant impact on the long-term prognosis (32). In comparison, intracranial tumor biopsy is the gold standard for
+
+the diagnosis, which can determine not only the nature of intracranial lesions but also their source.
+We found that radiotherapy, chemotherapy, and surgery of primary lesions were of prognostic signiﬁcance in LCBM. Among them, chemotherapy contributed most signiﬁcantly to prognosis in accordance with the nomogram. As is well known,
+
+A
+
+B
+
+C
+
+D
+
+E
+
+F
+
+FIGURE 8
+Calibration curves for 1-, 3-, and 5-year overall survival (OS) and cancer-speciﬁc survival (CSS) rates of the nomogram predictions. (A–C) The training, internal validation, and external validation cohorts for the OS. (D–F) The training, internal validation, and external validation cohorts for the CSS.
+
+Frontiers in Oncology
+
+15
+
+frontiersin.org
+
+Yin et al.
+
+A
+
+B
+
+D
+
+E
+
+10.3389/fonc.2022.1075217 C F
+
+FIGURE 9
+Decision curve analysis (DCA) of the nomogram and TNM stage for the overall survival (OS) and cancer-speciﬁc survival (CSS) prediction of patients with lung cancer with bone metastasis (LCBM). (A) The training, (B) internal validation, and (C) external validation cohorts for the OS. (D) The training, (E) internal validation, and (F) external validation cohorts for the CSS.
+
+FIGURE 10
+A web-based nomogram for predicting postoperative overall survival (OS). The line segments of the graphical summary show the approximate range of overall survival rates.
+
+Frontiers in Oncology
+
+16
+
+frontiersin.org
+
+Yin et al.
+
+10.3389/fonc.2022.1075217
+
+FIGURE 11
+A web-based nomogram for predicting postoperative cancer-speciﬁc survival (CSS). The line segments of the graphical summary show the approximate range of overall survival rates.
+
+chemotherapy remains the cornerstone of therapy in the management of advanced LC. First-line chemotherapy, maintenance chemotherapy, and second-line therapy were considered as regular therapeutic regimen to advanced NSCLC for many years (35, 36). Platinum-based doublets were used for the standard ﬁrst-line chemotherapy, which could achieve symptoms remission and increased median survival by 1.5 months and the 1-year survival rate by 9%. Radiotherapy
+
+could relieve pain at the site of skeletal metastasis, reduce the incident of SRE, and could be used as an alternative treatment option for medically inoperable LC with high local control rates and with low toxicity (37). The technology of stereotactic body radiotherapy (SBRT) improved the accuracy and safety of radiotherapy for patients with LCBM, especially for those with spinal metastasis, which optimized radiation dose delivery to the BM while sparing the spinal cord.
+
+Frontiers in Oncology
+
+17
+
+frontiersin.org
+
+Yin et al.
+
+10.3389/fonc.2022.1075217
+
+We found that surgery of primary lesions was beneﬁcial for prolonging both the OS and CSS of patients with LCBM. Although it is the standard treatment for patients with advanced LC, surgeons have performed curative resection in those who present with oligometastases. In the retrospective study by Takahashi et al., patients with NSCLC and synchronous isolated BMs achieved longer survival rates following primary lung tumor resection (38). However, other studies had different opinions. Patrini et al. suggested that there was no case in which BM was considered as an oligometastatic for the infaust prognosis (39). Considering quite the low number of patients who underwent surgery of the primary site, we speculated that they received surgery for oligometastases. The role of surgery in LCBM has not been effectively identiﬁed yet, especially for those with polymetastasis.
+In addition to the previously mentioned treatments, bonetargeted pharmacological treatments including bisphosphonates and denosumab were widely used clinically to reduce pain and avoid SREs. In the last 30 years, bisphosphonate has been considered a key player in the therapy of BM from various cancers. Among bisphosphonates, zoledronic acid’s clinical effectiveness was validated in multiple studies (40). Compared with bisphosphonates, denosumab was found to be associated with delayed ﬁrst and subsequent SREs and lower incidence of renal toxicity but higher incidence of hypocalcemia in several metaanalyses. However, we failed to consider the bone-targeted pharmacological treatments as the information in this regard was not provided by the SEER data center. In recent years, the application of next-generation sequencing technology has been widely used in the auxiliary diagnosis and target therapy of cancers (40). Epidermal growth factor receptor (EGFR) is the most widely used driving gene for the targeted treatment of LC and responds well to EGFR tyrosine kinase inhibitors (41). Previous studies have shown that microRNA, Dickkopf1, and insulin-like growth factor binding protein 3 are potential therapeutic targets for LCBM (40). Mukai et al. reported a high expression of mesenchymal-to-epithelial transition (MET) in both the primary metastasis and BM of patients with LC and suggested that drugs targeted at MET ampliﬁcation, such as crizotinib and cabotinib, would have a certain effect on patients with LCBM (42). Recently, the study by Huang et al. found a high consistency of mutation patterns between primary LC lesions and matched BM, which indicated that the effective treatment of primary LC may also be suitable for matched LCBM, such as the EGFR-TKI treatment for LCBM with sensitive EGFR mutations (43). Unfortunately, the data of molecular alterations were not available in the SEER database, and our nomogram failed to include relevant factors.
+Our study also has signiﬁcant advantages. Compared with the previous studies, we identiﬁed the risk factors for BM in patients with LC and the prognostic factors of patients with LCBM. Meanwhile, we created a nomogram containing identiﬁed independent factors as a convenient and intuitive visual tool for
+
+prognostic prediction, which was veriﬁed by internal and external validation sets to guarantee the reliability of the results. As a retrospective cohort analysis with a large sample size, we point out that the validated results of current study can provide guidance to clinicians in daily routine practice and decision-making. However, some limitations are present. First, this was a retrospective study in which selection bias existed inevitably. Our study was limited by the data available in the SEER database. Second, in the process of patient screening, many failed to be enrolled to the SEER database for lack of detailed information like insurance and details on treatment. Missing data of these patients may mildly affect the accuracy of the research result. Third, the SEER database is based on the US population. The nomograms that we constructed may be limited by geographic constraints and may only be considered as a reference in the Chinese LCBM population. In the future, large multicenter studies should be performed in Chinese patients to develop a model to demonstrate its clinical validity for the Chinese population.
+Conclusion
+In conclusion, the ﬁndings of this study based on a population level identiﬁed several factors that affect the OS and CSS of patients with LCBM, namely, age, sex, T stage, N stage, grade, histology, radiation therapy, chemotherapy, primary site, primary surgery, liver metastasis, and brain metastasis. We also found that metastatic surgery was beneﬁcial for prolonging the CSS of patients with LCBM. Moreover, nomograms were developed to objectively predict 1-, 3, and 5-year OS and CSS of patients with this devastating disease. The result indicated that the nomogram had favorable discrimination, good consistency, and clinical beneﬁts in patients with LCBM. For LCBM’s extremely poor prognosis, the development of the prediction models was important for patients and meant a lot to them. We point out that nomograms could help oncologists to make better clinical decisions and provide personalized treatment plans for patients.
+Data availability statement
+The original contributions presented in the study are included in the article/supplementary material. Further inquiries can be directed to the corresponding authors.
+Author contributions
+All authors were responsible for the study concept and design. MY, SG, XD, and RZ are co-ﬁrst authors. JX and WM are co-response authors. All authors contributed to the article and approved the submitted version.
+
+Frontiers in Oncology
+
+18
+
+frontiersin.org
+
+Yin et al.
+
+10.3389/fonc.2022.1075217
+
+Funding
+The authors declare that they have received funding support from Shanghai University of Traditional Chinese Medicine combines medical care with high-level scientiﬁc innovation project: 602072D and 602064D, Shanghai Health and Family Planning Commission: 20224Y0165, and National Natural Science Foundation of China: 82205145.
+Acknowledgments
+We would like to thank the reviewers for their thorough review of our manuscript, especially under the severe circumstance of the COVID-19 pandemic, and we wish that everybody pulls through safe and sound. Many thanks to all authors who provided the cases.
+
+Conﬂict of interest
+The authors declare that the research was conducted in the absence of any commercial or ﬁnancial relationships that could be construed as a potential conﬂict of interest.
+Publisher’s note
+All claims expressed in this article are solely those of the authors and do not necessarily represent those of their afﬁliated organizations, or those of the publisher, the editors and the reviewers. Any product that may be evaluated in this article, or claim that may be made by its manufacturer, is not guaranteed or endorsed by the publisher.
+
+References
+1. Zaman A, Bivona TG. Emerging application of genomics-guided therapeutics in personalized lung cancer treatment. Ann Transl Med (2018) 6:160. doi: 10.21037/atm.2018.05.02
+2. Yu K, Chen Y, Tian Y, Kang H, Song K, Dong Y, et al. Characteristics, incidence, and risk factors for death from fatal pneumonia among patients with primary malignant bone tumors: a SEER-based observational study. Transl Cancer Res (2021) 10:3659–70. doi: 10.21037/tcr-21-306
+3. Allemani C, Weir HK, Carreira H, Harewood R, Spika D, Wang XS, et al. Global surveillance of cancer survival 1995-2009: analysis of individual data for 25,676,887 patients from 279 population-based registries in 67 countries (CONCORD-2). Lancet (2015) 385:977–1010. doi: 10.1016/S0140-6736(14) 62038-9
+4. Jarry U, Bostoen M, Pineau R, Chaillot L, Mennessier V, Montagne P, et al. Orthotopic model of lung cancer: isolation of bone micro-metastases after tumor escape from osimertinib treatment. BMC Cancer (2021) 21:530. doi: 10.1186/ s12885-021-08205-9
+5. Tam AH, Schepers AJ, Qin A, Nachar VR. Impact of extended-interval versus standard dosing of zoledronic acid on skeletal events in non-Small-Cell lung cancer and small-cell lung cancer patients with bone metastases. Ann Pharmacother (2021) 55:697–704. doi: 10.1177/1060028020967629
+6. Boudou-Rouquette P, Arrondeau J, Gervais C, Durand JP, Fabre E, De Percin S, et al. Development and validation of a host-dependent, PDL1-independent, biomarker to predict 6-month progression-free survival in metastatic non-small cell lung cancer (mNSCLC) patients treated with anti-PD1 immune checkpoint inhibitors (ICI) in the CERTIM cohort: The ELY study. EBioMedicine (2021) 73:103630. doi: 10.1016/j.ebiom.2021.103630
+7. Cao Y, Afzal MZ, Shirai K. Does denosumab offer survival beneﬁts? -our experience with denosumab in metastatic non-small cell lung cancer patients treated with immune-checkpoint inhibitors. J Thorac Dis (2021) 13:4668–77. doi: 10.21037/jtd-21-150
+8. Qin A, Zhao S, Miah A, Wei L, Patel S, Johns A, et al. Bone metastases, skeletal-related events, and survival in patients with metastatic non-small cell lung cancer treated with immune checkpoint inhibitors. J Natl Compr Canc Netw (2021) 19:915–21. doi: 10.6004/jnccn.2020.7668
+9. Li Q, Chen Q, Chen J, Wang Z, Wang P, Zhao H, et al. Prognostic nomogram for predicting long-term survival in bronchopulmonary carcinoid tumor patients receiving resection. Ann Transl Med (2021) 9:1402. doi: 10.21037/atm-21-1929
+10. He Y, Zhao F, Han Q, Zhou Y, Zhao S. Prognostic nomogram for predicting long-term cancer-speciﬁc survival in patients with lung carcinoid tumors. BMC Cancer (2021) 21:141. doi: 10.1186/s12885-021-07832-6
+11. Huang CY, Li MY, Liu W, Li XX, Xu Y, Li JY, et al. Performance of prognostic nomogram in predicting long-term survival outcomes for osteosarcoma. J Biol Regul Homeost Agents (2020) 34:1819–24. doi: 10.23812/20-105-L
+
+12. Heng Y, Zhu X, Zhou L, Zhang M, Li J, Tao L, et al. A prognostic nomogram for predicting the long-term survival outcome of hypopharyngeal squamous cell carcinoma patients after tumour resection to assist the decision-making of postoperative adjuvant treatment. Eur J Surg Oncol (2020) 46:245–51. doi: 10.1016/j.ejso.2019.09.005
+13. Tian S, Li Q, Li R, Chen X, Tao Z, Gong H, et al. Development and validation of a prognostic nomogram for hypopharyngeal carcinoma. Front Oncol (2021) 11:696952. doi: 10.3389/fonc.2021.696952
+14. Wang YQ, Liu XD, Bai WL, Li SQ. Identiﬁcation of resectable N2 in NSCLC: A single center experience and review of the SEER database. Front Oncol (2021) 11:647546. doi: 10.3389/fonc.2021.647546
+15. Duan F, Li J, Huang J, Hua X, Song C, Wang L, et al. Establishment and validation of prognostic nomograms based on serum copper level for patients with early-stage triple-negative breast cancer. Front Cell Dev Biol (2021) 9:770115. doi: 10.3389/fcell.2021.770115
+16. Yang QK, Lai QY, Wang Y, Wang Y, Yao ZX, Zhang XJ, et al. Establishment and validation of prognostic nomograms to predict overall survival and cancerspeciﬁc survival for patients with osteosarcoma. Neoplasma (2021) 68:434–46. doi: 10.4149/neo_2020_200617N639
+17. Ranstam J, Cook JA. Kaplan-Meier Curve. Br J Surg (2017) 104:442. doi: 10.1002/bjs.10238
+18. Heagerty PJ, Lumley T, Pepe MS. Time-dependent ROC curves for censored survival data and a diagnostic marker. Biometrics (2000) 56:337–44. doi: 10.1111/ j.0006-341x.2000.00337.x
+19. Vickers AJ, Elkin EB. Decision curve analysis: a novel method for evaluating prediction models. Med Decis Making (2006) 26:565–74. doi: 10.1177/ 0272989X06295361
+20. Shi S, Wang H, Liu X, Xiao J. Prediction of overall survival of non-small cell lung cancer with bone metastasis: an analysis of the surveillance, epidemiology and end results (SEER) database. Transl Cancer Res (2021) 10:5191–203. doi: 10.21037/ tcr-21-1507
+21. Mundy GR. Metastasis to bone: causes, consequences and therapeutic opportunities. Nat Rev Cancer (2002) 2:584–93. doi: 10.1038/nrc867
+22. Riihimaki M, Hemminki A, Fallah M, Thomsen H, Sundquist K, Sundquist J, et al. Metastatic sites and survival in lung cancer. Lung Cancer (2014) 86(1):78– 84. doi: 10.1016/j.lungcan.2014.07.020(2014
+23. Hong S, Youk T, Lee SJ, Kim KM, Vajdic CM, et al. Bone metastasis and skeletal-related events in patients with solid cancer: A Korean nationwide health insurance database study. PloS One (2020) 15(7):e0234927. doi: 10.1371/ journal.pone.0234927
+24. Popper HH. Progression and metastasis of lung cancer. Cancer Metastasis Rev (2016) 35:75–91. doi: 10.1007/s10555-016-9618-0
+
+Frontiers in Oncology
+
+19
+
+frontiersin.org
+
+Yin et al.
+
+10.3389/fonc.2022.1075217
+
+25. Zhang L, Gong Z. Clinical characteristics and prognostic factors in bone metastases from lung cancer. Med Sci Monit (2017) 23:4087–94. doi: 10.12659/ msm.902971
+26. Song L, Zhu Z, Mao L, Li X, Han W, Du H, et al. Clinical, conventional CT and radiomic feature-based machine learning models for predicting ALK rearrangement status in lung adenocarcinoma patients. Front Oncol (2020) 10:369. doi: 10.3389/fonc.2020.00369
+27. Li C, Liu J, Lin J, Li Z, Shang X, Wang H. Poor survival of non-small-cell lung cancer patients with main bronchus tumor: a large population-based study. Future Oncol (2019) 5(24):2819–27. doi: 10.2217/fon-2019-0098
+28. Yang L, Wang S, Gerber DE, Zhou Y, Xu F, Liu J, et al. Main bronchus location is a predictor for metastasis and prognosis in lung adenocarcinoma: A large cohort analysis. Lung Cancer (2018) 120:22–6. doi: 10.1016/ j.lungcan.2018.03.011
+29. Bilen MA, Shabto JM, Martini DJ, Liu Y, Lewis C, Collins H, et al. Sites of metastasis and association with clinical outcome in advanced stage cancer patients treated with immunotherapy. BMC Cancer (2019) 19:857. doi: 10.1186/s12885019-6073-7
+30. Tamura T, Kurishima K, Nakazawa K, Kagohashi K, Ishikawa H, Satoh H, et al. Speciﬁc organ metastases and survival in metastatic non-small-cell lung cancer. Mol Clin Oncol (2015) 3(1):217–21. doi: 10.3892/mco.2014.410(2015
+31. Cho S, Yum S, Kim K, Jheon S. Prognostic factors for post-recurrence survival in patients with completely resected stage III (N2) non-small-cell lung cancer. Eur J Cardiothorac Surg (2018) 54:554–9. doi: 10.1093/ejcts/ezy063
+32. Song IH, Yeom SW, Heo S, Choi WS, Yang HC, Jheon S, et al. Prognostic factors for post-recurrence survival in patients with completely resected stage I non-small-cell lung cancer. Eur J Cardiothorac Surg (2014) 45:262–7. doi: 10.1093/ ejcts/ezt333
+33. Achrol AS, Rennert RC, Anders C, Sofﬁetti R, Ahluwalia MS, Nayak L, et al. Brain metastases. Nat Rev Dis Primers (2019) 5:5. doi: 10.1038/s41572-018-0055-y
+34. Xing P, Mu Y, Hao X, Wang Y, Li J. Data from real world to evaluate the efﬁcacy of osimertinib in non-small cell lung cancer patients with central nervous
+
+system metastasis. Clin Transl Oncol (2019) 21:1424–31. doi: 10.1007/s12094-01902071-5
+35. Pirker R. Chemotherapy remains a cornerstone in the treatment of nonsmall cell lung cancer. Curr Opin Oncol (2020) 32:63–7. doi: 10.1097/ CCO.0000000000000592
+36. Hanna N, Johnson D, Temin S, Masters G. Systemic therapy for stage IV non-Small-Cell lung cancer: American society of clinical oncology clinical practice guideline update summary. J Oncol Pract (2017) 13:832–7. doi: 10.1200/ JOP.2017.026716
+37. Yu XJ, Dai WR, Xu Y. Survival outcome after stereotactic body radiation therapy and surgery for early stage non-small cell lung cancer: A meta-analysis. J Invest Surg (2017) 1–8. doi: 10.1080/08941939.2017.1341573
+38. Takahashi Y, Adachi H, Mizukami Y, Yokouchi H, Oizumi S, Watanabe A. Patient outcomes post-pulmonary resection for synchronous bone-metastatic non-small cell lung cancer. J Thorac Dis (2019) 11(9):3836–45. doi: 10.21037/jtd.2019.09.17(2019
+39. Patrini D, Panagiotopoulos N, Bedetti B, Mitsos S, Crisci R, Solli P, et al. Surgical approach in oligometastatic non-small cell lung cancer. Ann Transl Med (2018) 6(5):93. doi: 10.21037/atm.2018.02.16(2018
+40. Mei M, Xiang Z, Yang J, Xiang R. Efﬁcacy of zoledronic acid for prevention of bone loss in early-stage breast cancer patients receiving adjuvant therapy: A meta-analysis of 13 randomized controlled trials. Curr Probl Cancer (2020) 44 (2):100507. doi: 10.1016/j.currproblcancer.2019.100507
+41. Pang H, Ma N, Jiao M, Shen W, Xin B, Wang T, et al. The biological effects of Dickkopf1 on small cell lung cancer cells and bone metastasis. Oncol Res (2017) 25:35–42. doi: 10.3727/096504016X14719078133249
+42. Mukai S, Yorita K, Kawagoe Y, Nakahara K, Kamibeppu T, Sugie S, et al. Matriptase and MET are prominently expressed at the site of bone metastasis in renal cell carcinoma: immunohistochemical analysis. Hum Cell (2015) 28(1):44–50. doi: 10.1007/s13577-014-0101-3
+43. Huang X, Shi X, Huang D, Li B, Lin N, Pan W, et al. Mutational characteristics of bone metastasis of lung cancer. Ann Palliat Med (2021) 10:8818–26. doi: 10.21037/apm-21-1595
+
+Frontiers in Oncology
+
+20
+
+frontiersin.org
+
