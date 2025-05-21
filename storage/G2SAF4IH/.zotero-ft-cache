@@ -1,0 +1,488 @@
+Ultrasonic Texture Features for Assessing
+Cardiac Remodeling and Dysfunction
+Quincy A. Hathaway, PHD,a,* Naveena Yanamala, PHD,b,* Nanda K. Siva, BS,a Donald A. Adjeroh, PHD,c John M. Hollander, PHD,d Partho P. Sengupta, MD, DMb
+ABSTRACT
+BACKGROUND Changes in cardiac size, myocardial mass, cardiomyocyte appearance, and, ultimately, the function of the entire organ are interrelated features of cardiac remodeling that profoundly affect patient outcomes.
+OBJECTIVES This study proposes that the application of radiomics for extracting cardiac ultrasonic textural features (ultrasomics) can aid rapid, automated assessment of left ventricular (LV) structure and function without requiring manual measurements.
+METHODS This study developed machine-learning models using cardiac ultrasound images from 1,915 subjects in 3 clinical cohorts: 1) an expert-annotated cardiac point-of-care-ultrasound (POCUS) registry (n 1⁄4 943, 80% training/ testing and 20% internal validation); 2) a prospective POCUS cohort for external validation (n 1⁄4 275); and 3) a prospective external validation on high-end ultrasound systems (n 1⁄4 484). In a type 2 diabetes murine model, echocardiography of wild-type (n 1⁄4 10) and Leptr / (n 1⁄4 8) mice were assessed longitudinally at 3 and 25 weeks, and ultrasomics features were correlated with histopathological features of hypertrophy.
+RESULTS The ultrasomics model predicted LV remodeling in the POCUS and high-end ultrasound external validation studies (area under the curve: 0.78 [95% CI: 0.68-0.88] and 0.79 [95% CI: 0.73-0.86], respectively). Similarly, the ultrasomics model predicted LV remodeling was significantly associated with major adverse cardiovascular events in both cohorts (P < 0.0001 and P 1⁄4 0.0008, respectively). Moreover, on multivariate analysis, the ultrasomics probability score was an independent echocardiographic predictor of major adverse cardiovascular events in the high-end ultrasound cohort (HR: 8.53; 95% CI: 4.75-32.1; P 1⁄4 0.0003). In the murine model, cardiomyocyte hypertrophy positively correlated with 2 ultrasomics biomarkers (R2 1⁄4 0.57 and 0.52, Q < 0.05).
+CONCLUSIONS Cardiac ultrasomics-based biomarkers may aid development of machine-learning models that provide an expert-level assessment of LV structure and function. (J Am Coll Cardiol 2022;80:2187–2201) © 2022 by the American College of Cardiology Foundation.
+O
+ver the past decades, echocardiography has distinguished itself for its safety, power, and versatility with progressive improvements in image quality, anatomic definition, physiologic data, and the breadth of applications. One of the most spectacular developments has been the miniaturization of cardiac ultrasound devices with the development of point-of-care ultrasound (POCUS)
+applications. POCUS can augment the physical examination, improve medical decision making, and guide the appropriate use of downstream cardiac ultrasound imaging using high-end ultrasound systems.1 However, until recently, most POCUS assessments have been semiqualitative because the steps for gated morphometric measurements on a small screen are cumbersome, time-intensive, and difficult to
+ISSN 0735-1097/$36.00 https://doi.org/10.1016/j.jacc.2022.09.036
+From the aHeart and Vascular Institute, West Virginia University, Morgantown, West Virginia, USA; bRutgers Robert Wood Johnson Medical School, New Brunswick, New Jersey, USA; cLane Department of Computer Science and Electrical Engineering, West Virginia University, Morgantown, West Virginia, USA; and the dDivision of Exercise Physiology, West Virginia University, School of Medicine, Morgantown, West Virginia, USA. *Drs Hathaway and Yanamala contributed equally to this work. The authors attest they are in compliance with human studies committees and animal welfare regulations of the authors’ institutions and Food and Drug Administration guidelines, including patient consent where appropriate. For more information, visit the Author Center.
+Manuscript received May 11, 2022; revised manuscript received September 8, 2022, accepted September 20, 2022.
+Listen to this manuscript’s audio summary by Editor-in-Chief Dr Valentin Fuster on www.jacc.org/journal/jacc.
+JOURNAL OF THE AMERICAN COLLEGE OF CARDIOLOGY VOL. 80, NO. 23, 2022
+a 2022 BY THE AMERICAN COLLEGE OF CARDIOLOGY FOUNDATION
+PUBLISHED BY ELSEVIER
+
+
+standardize. In this regard, the recent use of artificial intelligence–based principles may aid automated image acquisition and measurements.2 However, most artificial intelligence platforms for classifying diseaseidentifying patterns in echocardiography have relied on deep-learning techniques that are inherently a “black-box,” causing uncertainty regarding how they operate and, ultimately, how they come to decisions.
+Mathematical and statistical approaches have recently been developed to extract many features from radiological images. These “radiomic” approaches typically evaluate the size, shape, and textural elements with highly interpretable spatial information on pixel or voxel distribution and patterns.3 As a result, with radiomics, quantification occurs not only at the level of individual pixels but also takes into consideration the statistical distribution over a larger region of interest, allowing this technique to quantify not only macroscopic patterns seen by an expert but also those beyond what is observable by the human eye. In cardiovascular imaging, radiomics has been examined through either cardiac magnetic resonance or computed tomography.4 As a unique extension of radiomics to ultrasound images, “ultrasomics” is the application of statistical modeling of pixels with ultrasound images.5 Although ultrasound texture and backscatter properties can identify myofiber geometry and orientation,6 little is known about the role of modern ultrasomics approaches for extracting cardiac textural properties,7 and no studies to date have explored ultrasomics signatures in cardiac POCUS images. This study investigated whether cardiac ultrasomics can be used as an imaging biomarker to detect left ventricular (LV) remodeling. Our objectives were as follows. 1) We aimed to develop a machinelearning model using ultrasomics features. This allowed us to create a probability score and associate ultrasomics biomarkers with conventional imaging features of LV remodeling (eg, hypertrophy, chamber enlargement, reduction in ejection fraction). Because LV remodeling indices are not standardized for POCUS, we specifically investigated whether the textural properties could aid the high-throughput expert-level screening of LV remodeling without requiring manual measurements. 2) We extended our POCUS model to high-end cardiac ultrasound systems to assess the incremental value of ultrasomics biomarkers over quantitative echocardiographic markers
+of LV remodeling. 3) Finally, using a preclinical murine type 2 diabetes model, we investigated whether ultrasomics features of significance used in the machine-learning model were correlated with cardiomyocyte geometry and thus represented unique tissue-level information related to LV remodeling.
+METHODS
+CLINICAL POPULATION AND STUDY DESIGN. We included 1,915 subjects, of whom 1,702 had adequate echocardiographic parasternal long-axis echocardiography image quality as defined by a reader’s ability to identify endocardial borders in the single enddiastolic frame extracted from Digital Imaging and Communications in Medicine (DICOM) videos. This resulted in 1,218 POCUS and 484 high-end ultrasound images available to develop and validate the ultrasomics pipeline. We grouped the patients into 3 distinct cohorts: 1) an expert-annotated registry of POCUS (n 1⁄4 943) used for model development; 2) a prospective external validation of the model using POCUS (n 1⁄4 275); and 3) an external validation of the model on images obtained using a high-end ultrasound system (n 1⁄4 484) (Central Illustration). Validation of the machine-learning model using high-end ultrasound systems was intended to explore the performance of the POCUS image-derived ultrasomics model on conventional indices of LV remodeling obtained using quantitative measurements (including Doppler- and tissue Dopplerbased assessments), which are only standardized for high-end ultrasound systems. Refer to the Supplemental Methods for more details including the reasons for referral for echocardiography (Supplemental Table 1). Clinical data were used to calculate the 10-year risk of incident symptomatic heart failure (HF) with the use of the ARIC (Atherosclerosis Risk In Communities) HF risk score, which has demonstrated utility in risk stratification8 and assessing the incremental value of novel LV remodeling and functional phenotypes for predicting cardiovascular events.9 All studies were in accordance with the ethical standards of the institutional and national research committee and with the 1964 Helsinki Declaration. All participants provided written consent. Participants were included regardless of gender, race, ethnicity, or other demographic factors.
+ECHOCARDIOGRAPHY ANALYSIS AND DICOM SEGMENTATION. The complete list of ultrasound devices is included in Supplemental Figure 1 and the procedures used in collecting echocardiographic
+SEE PAGE 2202
+ABBREVIATIONS
+AND ACRONYMS
+DICOM = Digital Imaging and Communications in Medicine [standard]
+HF = heart failure
+IVS = interventricular septum
+LDLGLE = large dependence low gray level emphasis
+LGLE = low gray level emphasis
+LV = left ventricle
+LVEF = left ventricular ejection fraction
+LVMI = left ventricular mass index
+MACE = major adverse cardiac events
+PLAX = parasternal long axis
+POCUS = point-of-care ultrasound
+Hathaway et al J A C C V O L . 8 0 , N O . 2 3 , 2 0 2 2
+Assessing Cardiac Remodeling by Ultrasound D E C E M B E R 6 , 2 0 2 2 : 2 1 8 7 – 2 2 0 1
+2188
+
+
+data for each study are provided online on our GitHub repository (qahathaway/Cardiac_Remodeling_Radiomics).10 The segmentation package echocv was implemented in Python (version 2.7, Python Software Foundation) (Figure 1A). We adapted the software to identify individual regions within the parasternal long-axis (PLAX) LV, including the interventricular septum (IVS), LV chamber, and posterior wall. Both the extracted frame (original image) and the region-of-interest segmentation (mask image) were used for texture-based feature analyses (Figure 1B). All DICOM frames were acquired during end-diastole, which is defined as the ventricle at its largest volume occurring shortly before the mitral
+valve closes and the mitral annulus descends. The N for the study represents unique individuals, with only a single end-diastolic frame evaluated per patient (refer to Supplemental Methods for additional details).
+MORPHOMETRY AND TEXTURE-BASED FEATURE EXTRACTION. PyRadiomics (version 3.0.1, Python Software Foundation) and SimpleITK (version 2.0.2, Insight Software Consortium) were executed in Python (version 3.8.7) to allow for feature extraction of ultrasomics features. All single, end diastolic DICOM images were converted to the same aspect ratio/size. For feature extraction, featureextractor() from
+CENTRAL ILLUSTRATION Ultrasomics Biomarkers for Predicting Cardiac Outcomes
+Hathaway QA, et al. J Am Coll Cardiol. 2022;80(23):2187–2201.
+Cardiac point-of-care ultrasound (POCUS) was acquired in participants (n 1⁄4 943) from a single parasternal long axis (PLAX) end-diastolic DICOM [Digital Imaging and Communications in Medicine] image. We developed an ultrasomics-based machine-learning algorithm to predict left ventricular (LV) structural and functional changes (primary outcome) (80% of the ASE-REWARD [American Society of Echocardiography: Remote Echocardiography With Web-based Assessments for Referrals at a Distance] participants, n 1⁄4 754) and assessed its performance in an internal validation (20% of the ASE-REWARD participants, n 1⁄4 189) and 2 prospective external validation POCUS (n 1⁄4 275) and high-end ultrasound equipment (n 1⁄4 484) cohorts. The ultrasomics prediction probabilities were also used for prospective prediction of major adverse cardiac events (MACE) (secondary outcome). Subsequently, common ultrasomics features of importance were investigated in a murine model of type 2 diabetes mellitus (n 1⁄4 10 wild-type, n 1⁄4 8 diabetic) to correlate our ultrasomics biomarkers with histological evidence of cardiomyocyte hypertrophy (biomarker discovery). IVS 1⁄4 interventricular septum; LDLGLE 1⁄4 large dependence low gray level emphasis; LGLE 1⁄4 low gray level emphasis; LVc 1⁄4 left ventricular chamber; PW 1⁄4 posterior wall.
+J A C C V O L . 8 0 , N O . 2 3 , 2 0 2 2 Hathaway et al
+D E C E M B E R 6 , 2 0 2 2 : 2 1 8 7 – 2 2 0 1 Assessing Cardiac Remodeling by Ultrasound
+2189
+
+
+PyRadiomics was used in 2 dimensions. Settings defined for extraction, including the ultrasomics features, binwidth, resampled pixel spacing, interpolator, label definition, and other parameters, are included online on our GitHub repository.10
+MACHINE-LEARNING ALGORITHM. Following feature extraction through PyRadiomics, the IVS, LV chamber, and posterior wall features were compiled together, resulting in first-order–, shape-, and texture-based measurements for each region of
+FIGURE 1 Methodology of Automated Image Processing and Machine-Learning Implementation
+A
+B
+PyRadiomics
+• First Order Statistics (6 features) • Shape-based (2D) (8 features) • GLCM (22 features) • GLRLM (16 features) • GLSZM (16 features) • NGTDM (5 features) • GLDM (14 features)
+6 8 11 5 27 34 63 87 4 8 9 3 3 54 71 81 98 8 2 5 9 7 10 23 56 92
+PLAX Segmentation
+A. Interventricular Septum (IVS) B. LV Chamber (LVc) C. Posterior Wall (PW)
+Image
+Image + Mask
+IVS
+LVc
+PW
+Point-of-Care Ultrasound Internal Validation: 943 External Validation (POCUS): 275
+High-End Equipment
+External Validation (High-End): 484
+1 Echocardiogram 2 Segmentation 3 Feature Extraction
+(A) Parasternal long-axis (PLAX) end-diastolic Digital Imaging and Communications in Medicine, DICOM, images were acquired from point-of-care ultrasound (POCUS) and high-end ultrasound equipment. Semantic segmentation of the left ventricle was performed using automated segmentation software to accurately define the interventricular septum (IVS) (green), left ventricular chamber (LVc) (gray), and posterior wall (PW) (orange) and to extract ultrasomics first-order, morphometric, and texture-based features. (B) The application of ultrasomics extraction involved using the original image and the mask layer derived from the automated segmentation algorithm. GLCM 1⁄4 gray level cooccurrence matrix; GLDM 1⁄4 gray level dependence matrix; GLRLM 1⁄4 gray level run length matrix; GLSZM 1⁄4 gray level size zone matrix; NGTDM 1⁄4 neighborhood gray tone difference matrix.
+Hathaway et al J A C C V O L . 8 0 , N O . 2 3 , 2 0 2 2
+Assessing Cardiac Remodeling by Ultrasound D E C E M B E R 6 , 2 0 2 2 : 2 1 8 7 – 2 2 0 1
+2190
+
+
+interest, totaling 261 features (Figure 1A). As a preprocessing step, data from each ultrasomics feature (Supplemental Figure 2A) were normally distributed within each cohort, implementing the cumulative distribution function. The cumulative distribution function standardizes the data across a scale of 0-1 for all features (Supplemental Figure 2B). Differences in feature distribution are dependent on acquisition settings (Supplemental Figures 2A and 2B). Additional information on the ultrasomics features implemented in the study is included in the
+Supplemental Appendix. Machine-learning was performed using BigML (BigML, Inc). A mixed supervised/unsupervised model was implemented through BigML’s AutoML platform, including 10-fold cross-validation. Data were split into training/testing (80%, n 1⁄4 754) and internal validation (20%, n 1⁄4 189) when assessing the expertannotated registry of POCUS participants. The internal validation, external validation (POCUS), and external validation (high-end) data sets were applied as holdout data sets. The prediction probabilities are
+FIGURE 2 Ultrasomics Machine-Learning Model for Predicting Features of LV Remodeling (Primary Outcome)
+AB C
+DE F
+0.0 0.2 0.4 0.6 0.8 1.0
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1 - Specificity
+Sensitivity
+0.0 0.2 0.4 0.6 0.8 1.0 1 - Specificity
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Sensitivity
+Internal Validation: LV Remodeling
+External Validation (High-End): Concentric Hypertrophy
+0.0 0.2 0.4 0.6 0.8 1.0
+AUC: 0.84 [95% CI: 0.78-0.90]
+AUC: 0.78 [95% CI: 0.68-0.88]
+AUC: 0.79
+[95% CI: 0.73-0.86]
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1 - Specificity
+Sensitivity
+0.0 0.2 0.4 0.6 0.8 1.0
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1 - Specificity
+Sensitivity
+External Validation (POCUS): LV Remodeling
+External Validation (High-End): Eccentric Hypertrophy
+0.0 0.2 0.4 0.6 0.8 1.0
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1 - Specificity
+Sensitivity
+0.0 0.2 0.4 0.6 0.8 1.0
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1 - Specificity
+Sensitivity
+External Validation (High-End): LV Remodeling
+External Validation (High-End): Ejection Fraction <40%
+AUC: 0.77 [95% CI: 0.67-0.87]
+AUC: 0.80 [95% CI: 0.72-0.88]
+AUC: 0.81 [95% CI: 0.70-0.92]
+Area under the receiver-operating characteristic curves are shown for patients in the (A) 20% internal validation, (B) external validation (POCUS), and (C) external validation (high-end) groups. To understand how the ultrasomics probability score could predict individual indices of LV remodeling, the score was applied to the external validation (high-end) cohort for (D) concentric hypertrophy, (E) eccentric hypertrophy, and (F) heart failure with reduced ejection fraction (<40%). Abbreviations as in Figure 1.
+J A C C V O L . 8 0 , N O . 2 3 , 2 0 2 2 Hathaway et al
+D E C E M B E R 6 , 2 0 2 2 : 2 1 8 7 – 2 2 0 1 Assessing Cardiac Remodeling by Ultrasound
+2191
+
+
+on a 0-1 scale. This was used as a continuous (ultrasomics probability score) or as a binary outcome (with any value $0.5 indicating a “positive” [ie, presence of remodeling] outcome and a value <0.5 indicating a “negative” outcome). Optimal cutoff values for each feature were generated in the training phase of the model and applied to the batch prediction, unchanged, to evaluate the holdout data. The outcomes were classified as primary or secondary outcomes. Pr imary outcome. A broad definition of remodeling (any change in the heart’s size, shape, and function)11 was used to conduct large-scale association mining between the cardiac ultrasomics features and echocardiographic markers of cardiac remodeling. This included: 1) structural changes (LV hypertrophy), LV dilation, or left atrial dilation); or 2) functional changes (subjectively or objectively measured left ventricular ejection fraction [LVEF] <50% and/or presence of wall motion abnormalities). Secondary outcome. In the external validation (POCUS and high-end) cohorts, we associated the ultrasomics probability score with major adverse cardiac events (MACE). The patients were prospectively followed up for standardized composite endpoints of all-cause mortality and hospitalizations (HF or cardiovascular causes).12
+MURINE MODEL OF TYPE 2 DIABETES. The biological basis of ultrasomics features were assessed in a preclinical model of type 2 diabetes. Wild-type (FVB/NJ) and type 2 diabetic (FVB/NJ Leprdbþ/þ [Db/Db]) male and female mice were evaluated in the study. Homozygous (FVB/NJ Leprdbþ/þ) diabetic mice were obtained through breeding FVB/NJ Leprdbþ/ heterozygous mice. All animal studies, including animal housing, sedation, euthanasia, and experimentation, were approved by the West Virginia University Animal Care and Use Committee. In addition, all studies conformed to the current National Institutes of Health Guidelines for the Care and Use of Laboratory Animals manual. Echocardiography was performed at 3 and 25 weeks of age in both wild-type and diabetic groups. LIFEx (version 6.52.0, LifeX Software) was used for manually tracing LV segments, including the IVS, LV chamber, and posterior wall. Refer to the Supplemental Methods for more details.
+MURINE HISTOLOGY. Histology was performed by HistoWiz Inc using a standard operating procedure and fully automated workflow. A standard longitudinal section through both ventricles was made from the base to the apex of the heart from whole heart samples and was intended to reveal the ventricles, atria, base, septum, apex, and papillary muscle, thereby achieving histopathological sections mirroring the ultrasound imaging. Refer to the Supplemental Methods for more details.
+AVAILABILITY OF DATA AND MATERIALS. Raw data, including data generated through PyRadiomics, is made available in the XLSX files accompanied by the manuscript. In addition, source code for the machine-learning algorithm is included on our GitHub repository.10
+STATISTICAL ANALYSIS. GraphPad Prism (version 9.2.0, GraphPad Software), R (version 4.0.3, R Foundation), and Python (version 3.8.7) were used for statistical analyses. A 2-sided Student’s t-test was implemented to assess 2 continuous variables for normally distributed data. Normality testing was performed using the Shapiro-Wilk test. The MannWhitney U test was applied for non-Gaussian distributed data. A 2-sided Fisher exact test was applied to assess categorical data in the form of contingency tables. A 1-way analysis of variance was used for >1 group of continuous variables, where specified. For the primary outcome analysis, the ultrasomics probability score was used as an input to the receiveroperating characteristic curve following calibration
+TABLE 1 External Validation (POCUS) Participants Classified as Having LV Remodeling or No Remodeling
+LV Remodeling (n 1⁄4 23)
+No Remodeling (n 1⁄4 252) P Value
+Age, y 65.2 (61.5-68.9) 58.7 (57.1-60.3) 0.0215 Male 5 (23.8) 83 (35.5) 0.3440 Body mass index, kg/m2 34.7 (33.1-36.3) 30.0 (29.0-30.9) 0.0011 Systolic blood pressure, mm Hg 156 (150-162) 129.7 (128–132) <0.0001 Diastolic blood pressure, mm Hg 87.1 (83.4-90.8) 77.91 (76.7-79.2) <0.0001 Oxygen saturation, % saturation 96 (96-97) 96 (96-97) 0.7881 Congestive heart failure 2 (8.70) 6 (2.38) 0.1376 Myocardial infarction 4 (17.4) 6 (2.38) 0.0056 Atrial fibrillation 1 (5.00) 16 (6.58) 1.000 Cerebral vascular accident 1 (4.35) 1 (0.41) 0.1652 Diabetes 5 (21.7) 43 (17.5) 0.5750 Hyperlipidemia 12 (54.6) 117 (48.0) 0.6577 Chronic obstructive pulmonary disease 2 (9.52) 8 (3.32) 0.1864 Valvular disease, moderate-severe 1 (4.35) 5 (1.98) 0.4109 Right ventricular hypertrophy 1 (4.35) 8 (3.28) 0.5612
+Values are mean (95% CI) or n (%). Two-sided Student’s t-test was implemented for normally distributed data. Normality testing was performed using the Shapiro-Wilk test. The Mann-Whitney U test was applied for nonGaussian distributed data. Two-sided Fisher exact test was used to assess categorical data in the form of contingency tables. All data were considered statistically significant if P # 0.05. LV 1⁄4 left ventricular; POCUS 1⁄4 point-of-care ultrasound.
+Hathaway et al J A C C V O L . 8 0 , N O . 2 3 , 2 0 2 2
+Assessing Cardiac Remodeling by Ultrasound D E C E M B E R 6 , 2 0 2 2 : 2 1 8 7 – 2 2 0 1
+2192
+
+
+(Supplemental Figure 2C). Calibration was achieved through isotonic regression calibration using the R package rfUtilities (version 2.1-5). Significance of receiver-operating characteristic area under the curves was determined with the Wilson/Brown method.13 For the secondary outcome analysis, the time-toevent assessment for the binary machine-learningpredicted groups was performed using Kaplan-Meier analysis implementing the Gehan-Breslow-Wilcoxon test to determine significance between groups and generate log-rank P values. The Mantel-Haenszel test was used to calculate the HR. The Cox proportionalhazards regression model was implemented in timeto-event univariate analysis of the ARIC HF risk score, echocardiographic variables, and ultrasomics probability score. Multivariate analysis with the generation of C-statistic values was performed through the survival (version 3.2-13) package in R. The net reclassification index and integrated discrimination index were calculated using the R package PredictABEL (version 1.2-4). For the biomarker validation analysis, R2, used as a measure of goodness of fit, was calculated in GraphPad Prism. The false discovery rate was set at 0.05 and Q values generated from the 2-stage, step method described by Benjamini et al14 for 261 features per cohort. Intraclass correlation coefficients were calculated through the degree of consistency for intra-rater and inter-rater reliability in MedCalc (version 20.114, MedCalc Software). All data were considered statistically significant if the P value, or Q value, were #0.05 (P < 0.05 or Q < 0.05), which is denoted with an asterisk, *. Data are reported as the mean with the 95% CI when not explicitly indicated. Supporting information for the statistical analyses and statistical packages employed in the study can be found in the Supplemental Methods.
+RESULTS
+PREDICTION OF THE PRIMARY OUTCOME: L V R E M O D E L I N G . The details regarding the internal validation results (Figure 2A) are presented in Supplemental Table 2. Model generalizability was confirmed using the external validation (POCUS) cohort (AUC: 0.78; 95% CI: 0.68-0.88) (Supplemental Table 3, Figure 2B) and external validation (highend) cohort (AUC: 0.79; 95% CI: 0.73-0.86) (Supplemental Table 3, Figure 2C). The demographic and clinical risk factors for participants with and
+without LV remodeling in the external validation (POCUS) (Table 1) and external validation (high-end) (Table 2) cohorts are provided. Using quantitative measurements obtained on the high-end ultrasound equipment we also ascertained the model’s ability in predicting specific patterns of LV remodeling, which included concentric hypertrophy (LV hypertrophy) (Figure 2D), eccentric hypertrophy (LV dilation)
+TABLE 2 External Validation (High-End) Participants Classified as Having LV Remodeling or No Remodeling
+LV Remodeling (n 1⁄4 45)
+Normal (n 1⁄4 439) P Value
+Demographic and clinical features Age, y 59.9 (55.8-63.9) 48.9 (47.4-50.5) <0.0001 Male 29 (64.4) 193 (44.0) 0.0114 Body mass index, kg/m2 36.4 (33.9-38.9) 31.7 (30.8-32.6) 0.0011 Systolic blood pressure, mm Hg 136 (130–142) 128 (127–130) 0.0072 Diastolic blood pressure, mm Hg 78.1 (74.7-81.6) 77.2 (76.1-78.1) 0.5628
+NYHA functional classes of heart failure I
+II 1.66 (1.41-1.91) 1.38 (1.31-1.44) 0.0053 III IV Congestive heart failure 7 (15.6) 15 (3.42) 0.0022 Coronary artery disease 24 (53.3) 98 (22.3) <0.0001 Atrial fibrillation 1 (2.22) 2 (0.46) 0.2543 Cerebral vascular accident 4 (8.89) 27 (6.16) 0.5168 Diabetes 14 (31.1) 82 (18.7) 0.0749 Hyperlipidemia 39 (86.7) 244 (55.6) <0.0001
+Chronic obstructive pulmonary disease
+9 (20.0) 43 (9.79) 0.0439
+ARIC heart failure risk score, 10-y predicteda
+8.66 (6.95-10.4) 4.21 (3.56-4.85) <0.0001
+Echocardiographic features Left ventricular mass index, g/m2 94.6 (86.6-102) 71.2 (69.0-73.4) <0.0001
+Left ventricular diameter, diastole, mm
+50.2 (47.8-52.7) 45.2 (44.7-45.7) <0.0001
+Left ventricular end-diastolic volume, mL
+126 (112-141) 95.2 (92.5-97.9) <0.0001
+Left atrial end diastolic volume index, mL/m2
+40.1 (36.7-43.5) 22.6 (21.8-23.3) <0.0001
+Left ventricular ejection fraction, %
+56.8 (53.1-60.5) 60.9 (60.2-61.7) 0.0017
+Average e0, cm/s 7.63 (6.98-8.28) 9.90 (9.59-10.2) <0.0001 Average E/e’ ratio 12.4 (10.5-14.3) 8.97 (8.58-9.35) <0.0001 Mitral valve E/A ratio 1.12 (0.99-1.47) 1.21 (1.16-1.25) 0.7874 Wall motion score index 1.14 (1.04-1.24) 1.04 (1.02-1.06) 0.0057 Pulmonary hypertension 8 (25.0) 14 (3.88) <0.0001 Valvular disease, moderate-severe 4 (8.89) 15 (3.42) 0.0896
+Values are mean (95% CI) or n (%). 2-sided Student’s t-test was implemented for normally distributed data. Normality testing was performed using the Shapiro-Wilk test. The Mann-Whitney U test was applied for non-Gaussian distributed data. Two-sided Fisher exact test was used to assess categorical data in the form of contingency tables. All data were considered statistically significant if P # 0.05. aThe ARIC heart failure risk score was calculated with 462 patients, removing the 22 patient with known congestive heart failure. ARIC 1⁄4 Atherosclerosis Risk In Communities; LV 1⁄4 left ventricular; NYHA 1⁄4 New York Heart Association.
+J A C C V O L . 8 0 , N O . 2 3 , 2 0 2 2 Hathaway et al
+D E C E M B E R 6 , 2 0 2 2 : 2 1 8 7 – 2 2 0 1 Assessing Cardiac Remodeling by Ultrasound
+2193
+
+
+FIGURE 3 Ultrasomics Machine-Learning Model for Predicting MACE (Secondary Outcome)
+A
+0 30 60 90 120 150 180
+0.0
+0.05
+0.10
+0.15
+0.20
+0.25
+Time in Days
+External Validation (POCUS): Major Adverse Cardiac Events
+MACE Probability
+121 (100)
+Number at Risk (%)
+116 (96)
+111 (92)
+106 (88)
+P ≤ 0.0001
+P = 0.0009
+103 (85)
+101 (83)
+100 (83)
+154 (100)
+MACE
+Normal 154
+(100)
+154 (100)
+154 (100)
+154 (100)
+154 (100)
+152 (99)
+Predicted No Remodeling Predicted Remodeling
+Predicted No Remodeling Predicted Remodeling
+B
+0 30 60 90 120 150 180
+0.0
+0.05
+0.10
+0.15
+0.20
+0.25
+Time in Days
+External Validation (High-End): Major Adverse Cardiac Events
+MACE Probability
+196 (100)
+Number at Risk (%)
+182 (93)
+172 (88)
+171 (87)
+167 (85)
+167 (85)
+166 (85)
+288 (100)
+MACE
+Normal 281
+(98)
+279 (97)
+276 (96)
+272 (94)
+272 (94)
+270 (94)
+Time-to-event prediction of major adverse cardiac events (MACE) for the (A) external validation (point-of-care ultrasound [POCUS]) (HR: 7.60; 95% CI: 3.27-17.90; P # 0.0001) and (B) external validation (high-end) (HR: 2.35; 95% CI: 1.23-4.47; P 1⁄4 0.0008) groups. The dotted lines represent the 95% CI.
+Hathaway et al J A C C V O L . 8 0 , N O . 2 3 , 2 0 2 2
+Assessing Cardiac Remodeling by Ultrasound D E C E M B E R 6 , 2 0 2 2 : 2 1 8 7 – 2 2 0 1
+2194
+
+
+(Figure 2E), reduced EF (Figure 2F), LV dilation (Supplemental Figure 3A), and left atrial dilation (Supplemental Figure 3B).
+PREDICTION OF THE SECONDARY OUTCOME—MACE. During a follow-up period of 6 months, 23 patients (8.4%) from the external validation (POCUS) cohort experienced MACE. This included 9 patients (39%) who presented with acute coronary syndrome, 12 (52%) with developed arrhythmias (ie, ventricular tachycardia and atrial fibrillation), and 2 (8.7%) with HF; there were no deaths (Supplemental Table 4). Patients predicted to have LV remodeling using the ultrasomics probability score showed significantly higher rates of MACE (HR: 7.6; 95% CI: 3.27-17.9; P # 0.0001) (Figure 3A). Similarly for patients imaged on the high-end ultrasound systems, during a followup over a median period of 36 months, 48 patients (9.9%) experienced MACE. This included 14 patients (29%) who had noncardiac and 3 (6.3%) who had cardiac deaths, and 6 (13%) who were hospitalized with HF, 27 (56%) for coronary revascularization, and 1 for an arrhythmia (ie, heart block) (Supplemental Table 4). The ultrasomics probability score showed significantly higher rates of MACE (HR: 2.35; 95% CI: 1.23-4.47; P 1⁄4 0.0008) (Figure 3B).
+PROGNOSTIC VALUE OF ULTRASOMICS. From the features present in Table 2, univariate analysis of echocardiographic features predicting MACE included valvular heart disease (moderate to severe), left ventricular mass index (LVMI), and LVEF
+(Table 3). In a multivariate echocardiography model (Table 3), the ultrasomics probability score was an independent predictor of MACE (HR: 14.8; 95% CI: 4.19-65.3; P < 0.0001) even after adjusting for all other univariate echocardiographic predictors. Similarly, after excluding patients with known HF (n 1⁄4 22), the ultrasomics probability score was an independent predictor of MACE (HR: 8.53; 95% CI: 4.75-32.1; P 1⁄4 0.0003) in a clinical model that included the ARIC HF risk score as a covariate (Table 3).
+The incremental prognostic value of the ultrasomics probability score was assessed in nested Cox models. For the echocardiography variables, using LVMI as the baseline, there were no significant changes seen with the addition of LVEF (P 1⁄4 0.6716) or presence of moderate-severe valve disease (P 1⁄4 0.9854) (Figure 4A). However, a significant increase in predictive power was observed with addition of the ultrasomics probability score (C-statistic: 0.77; P 1⁄4 0.0100) (Figure 4A). Similarly, for the clinical multivariate model, using the ARIC HF risk score as a baseline measure (Figure 4B), there were no significant changes seen with the addition of LVMI (P 1⁄4 0.9278) and LVEF (P 1⁄4 0.8951). However, a significant increase in predictive power was observed with addition of the ultrasomics probability score (C-statistic: 0.71; P 1⁄4 0.0374). When comparing the final 2 nested models (ie, ARIC HF þ LVMI þ LVEF vs ARIC HF þ LVMI þ LVEF þ ultrasomics), significant improvements were observed in the net
+TABLE 3 Univariate and Multivariate Analysis of Clinical, Echocardiographic, and Ultrasomics Features
+Univariate
+Multivariate (Echo)
+Multivariate (Echo þ Clinical)a
+HR (95% CI) P Value HR (95% CI) P Value HR (95% CI) P Value
+Demographic and clinical features ARIC heart failure risk score, 10-y predicteda 1.00 (1.00-1.10) 0.0520 1.02 (0.97-1.06) 0.4397 Echocardiographic features Valvular disease, moderate-severe 5.80 (2.70-12.0) <0.0001 4.08 (1.83-9.12) 0.0006 Left ventricular mass index, g/m2 1.01 (1.01-1.03) 0.0437 1.01 (1.00-1.02) 0.0724 1.01 (0.99-1.02) 0.4153 Left ventricular end-diastolic volume, mL 1.00 (1.00-1.00) 0.0960 Left atrial end-diastolic volume index, mL/m2 0.98 (0.94-1.02) 0.3009 Left ventricular ejection fraction 1.05 (1.00-1.10) 0.0322 1.05 (1.01-10.9) 0.0091 1.01 (0.97-1.06) 0.5479 Average e0, cm/s 1.09 (0.91-1.30) 0.3372 Average E/e’ ratio 1.05 (0.99-1.11) 0.1234 Mitral valve E/A ratio 0.57 (0.21-1.58) 0.2793 Wall motion score index 1.76 (0.28-10.9) 0.5441 Pulmonary hypertension 2.00 (0.73-5.60) 0.1800 Ultrasomics probability score 46.8 (5.03-434) <0.0001 14.8 (4.19-65.3) <0.0001 8.53 (4.75-32.1) 0.0003
+The Mantel-Haenszel test was used to calculate the HR. All data were considered statistically significant if P # 0.05. aThe ARIC heart failure risk score was calculated with 462 patients, removing the 22 patients with known congestive heart failure. ARIC 1⁄4 Atherosclerosis Risk In Communities; Clinical 1⁄4 demographic and clinical features; Echo 1⁄4 echocardiographic features.
+J A C C V O L . 8 0 , N O . 2 3 , 2 0 2 2 Hathaway et al
+D E C E M B E R 6 , 2 0 2 2 : 2 1 8 7 – 2 2 0 1 Assessing Cardiac Remodeling by Ultrasound
+2195
+
+
+reclassification index (0.74; 95% CI: 0.46-1.03; P < 0.0001) and integrated discrimination index (0.07; 95% CI: 0.03-0.11; P 1⁄4 0.0013) (Supplemental Table 5).
+ULTRASOMICS BIOMARKER DISCOVERY. Using the 3 diverse clinical cohorts, we developed a Venn diagram for biomarker discovery.15 We first examined
+the top 10 features of importance from the machinelearning model (Figure 5A). Next, we wanted to assess each ultrasomics feature’s contribution in predicting LV remodeling. Using the adjusted Q values for each feature, we generated a list of features of importance from each cohort (Figure 5B), revealing low gray level emphasis (LGLE) and large dependence low gray level emphasis (LDLGLE) as the
+FIGURE 4 Incremental Value of Ultrasomics Biomarkers
+A
+B
+ARIC + LVMI + LVEF + Ultrasomics
+LVMI + LVEF + Valvular + Ultrasomics
+LVMI + LVEF + Valvular
+LVMI + LVEF
+LVMI
+ARIC + LVMI + LVEF
+ARIC + LVMI
+ARIC*
+4 df
+3 df
+2 df
+1 df
+4 df
+3 df
+2 df
+1 df
+P = 0.9278
+P = 0.6716
+P = 0.9854
+P = 0.0100
+P = 0.8951
+P = 0.0374
+0.5
+0.6
+0.7
+0.8
+0.9
+1.0
+C-Statistic
+0.5
+0.6
+0.7
+0.8
+0.9
+1.0
+C-Statistic
+(A) Left ventricular mass index (LVMI) was used as a baseline measurement (C-statistic: 0.62; 95% CI: 0.54-0.70) to assess the incremental value of adding left ventricular ejection fraction (LVEF) (C-statistic: 0.65; 95% CI: 0.57-0.72), then presence of moderate-severe valve disease (C-statistic: 0.65; 95% CI: 0.57-0.72), and finally the ultrasomics probability score (C-statistic: 0.77; 95% CI: 0.71-0.83). (B) The ARIC (Atherosclerosis Risk In Communities) heart failure risk score was used as a baseline measurement (C-statistic: 0.60; 95% CI: 0.52-0.67) to assess the incremental value of adding LVMI (C-statistic: 0.60; 95% CI: 0.53-0.68), then LVEF (C-statistic: 0.61; 95% CI: 0.54-0.68), and finally the ultrasomics probability score (C-statistic: 0.71; 95% CI: 0.65-0.77). *N 1⁄4 462, 22 with known congestive heart failure were excluded in the ARIC heart failure risk score. df 1⁄4 degrees of freedom.
+Hathaway et al J A C C V O L . 8 0 , N O . 2 3 , 2 0 2 2
+Assessing Cardiac Remodeling by Ultrasound D E C E M B E R 6 , 2 0 2 2 : 2 1 8 7 – 2 2 0 1
+2196
+
+
+only features shared between all clinical cohorts and identified as potential ultrasomics biomarkers of interest.
+MURINE MODEL OF LV REMODELING. Illustrative examples of fixed histopathological sections, stained with hematoxylin and eosin, and assessed using the JavaCyte algorithm (Supplemental Methods) to trace and measure cardiomyocyte diameters is shown in Figure 6A. Db/Db mice displayed an increased cardiomyocyte diameter (25.59 mm vs 21.28 mm; P # 0.0001) (Figure 6B) and myocyte disarray, identified by a trained histopathologist, compared to control mice. Like the clinical cohorts, ultrasomics-based features were calculated in mice from the DICOM PLAX echocardiography images (Figure 6C). The clinical fusion model generated ultrasomics probability scores to identify “LV remodeling” or “no remodeling” in mice. These probability scores stratified mice with and without type 2 diabetes based on ultrasomics signatures alone (AUC: 0.94; 95% CI: 0.85-1.00) (Figure 6D). We also performed an independent mining of ultrasomics features’ association with cardiomyocyte diameter (Figure 6E). Interestingly, concordant to the observations from the clinical cohorts, the only
+2 features with an R2 value >0.5 and with a Q value <0.05 were LDLGLE and LGLE. Comparing the feature values of LDLGLE (P 1⁄4 0.0126) (Supplemental Figure 4A) and LGLE (P 1⁄4 0.0047) (Supplemental Figure 4B) at 3 weeks and 25 weeks in mice, we saw a statistically significant increase in the value of the feature in aging Db/Db mice, compared to control mice. LDLGLE (Supplemental Figure 4C) and LGLE (Supplemental Figure 4D) were also independent predictors of type 2 diabetes in mice. The larger the diameter of the cardiomyocyte, the higher the LDLGLE and LGLE values (Figure 6F).
+MEASUREMENT VARIABILITY OF LDLGLE AND LGLE
+AS ULTRASOMICS BIOMARKERS. Frame-to-frame and POCUS-to-high-resolution variability in ultrasomics values (Supplemental Table 6) revealed high intraclass correlation coefficients (>0.90 for all) for LDLGLE and LGLE in all measurements, respectively. These results agree with our previous investigation that demonstrated high consistency in cardiac ultrasound texture-based features despite variations in noise and gain settings.7 Stability was also confirmed both in intra-rater and inter-rater reliability measurements of both features for murine echocardiography (Supplemental Table 6).
+FIGURE 5 Machine-Learning Model and Cohort-Specific Feature Importance
+AB
+IVS–LGLE
+IVS–LDLGLE
+LV–Perimeter
+IVS–Imc1
+IVS–LRLGLE
+IVS–SDLGLE
+PW–Skewness
+IVS–MP
+LV–Sphericity
+IVS-SumSquares
+0
+5
+10
+15
+20
+25
+Internal Validation: Feature Importance
+Percent (%) Importance
+4
+0
+34
+11
+1
+LGLE LDLGLE
+Internal Validation External Validation (POCUS) External Validation (High-End)
+2
+(A) The top 10 features of importance were extracted from the ultrasomics machine-learning model in the training cohort. (B) Venn diagram of common features from all clinical cohorts with a Q value <0.05 when assessing presence of LV remodeling versus no remodeling. Imc1 1⁄4 informational measure of correlation 1; LDLGLE 1⁄4 large dependence low gray level emphasis; LGLE 1⁄4 low gray level emphasis; LRLGLE 1⁄4 long run low gray level emphasis; MP 1⁄4 maximum probability; SDLGLE 1⁄4 small dependence low gray level emphasis; other abbreviations as in Figure 1.
+J A C C V O L . 8 0 , N O . 2 3 , 2 0 2 2 Hathaway et al
+D E C E M B E R 6 , 2 0 2 2 : 2 1 8 7 – 2 2 0 1 Assessing Cardiac Remodeling by Ultrasound
+2197
+
+
+FIGURE 6 Preclinical Validation of Ultrasomics Biomarkers and Correlation With Cardiomyocyte Hypertrophy
+AB
+CD
+EF
+R2
+−Log10 (P Value)
+Cardiomyocyte Diameter
+Murine: Type 2 Diabetes
+Db/Db WT
+18
+20
+22
+24
+26
+28
+30
+μm
+*
+Murine: Diameter vs Feature
+0.0 0.2 0.4
+IVS - LGLE
+IVS - LDLGLE
+0.6
+0
+2
+4
+6
+0.0 0.2 0.4 0.6 0.8 1.0
+WT Db/Db
+Diameter
+LDLGLE
+LGLE
+0.087 1.00
+AUC: 0.94
+[95% CI: 0.85-1.00]
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1 - Specificity
+Sensitivity
+(N = 10)
+FVB/NJ Wild Type
+Db/Db WT
+(N = 8)
+FVB/NJ Leptr−/− Db/Db
+100 μm 100 μm
+100 μm 100 μm
+Continued on the next page
+Hathaway et al J A C C V O L . 8 0 , N O . 2 3 , 2 0 2 2
+Assessing Cardiac Remodeling by Ultrasound D E C E M B E R 6 , 2 0 2 2 : 2 1 8 7 – 2 2 0 1
+2198
+
+
+DISCUSSION
+In 3 diverse clinical cohorts, 2 employing different generations of POCUS devices for health screening and 1 using high-end ultrasound systems in patients who are hospitalized, the present investigation explored whether cardiac ultrasound texture data (ultrasomics) are associated with LV remodeling. We first used machine-learning techniques to construct broad associations between ultrasomics biomarkers and conventional imaging features of LV remodeling (eg, hypertrophy, chamber enlargement, reduction in EF). We illustrated that the algorithm could make predictions without previous expert-guided annotation or prerequisite measurements and can be deployed even on POCUS, where measurements are cumbersome. We then illustrated that the real value of the ultrasomics biomarkers is not just in associating with conventional echocardiographic markers of LV remodeling but in providing a new level of prognostic information that is independent and incremental to the conventional echocardiographic variables. Thus, this algorithm is equally effective not only for POCUS, but also provides new biomarkers of LV remodeling that can be applied on high-end ultrasound systems. The clinical diagnosis of remodeling is based on the information collected for assessing the tissue, chambers, or organ-level changes in cardiac structure and function.11,16 For example, cardiac ultrasound techniques have defined remodeling using measurements that reflect any changes in global measures of chamber geometry (ie, diameter, volumes, or shape), hypertrophy (ie, wall thickness or global mass), or function (ie, EF, global longitudinal strain). Alterations at the tissue level are challenging to characterize using cardiac ultrasound. However, in the past, cardiac ultrasound–integrated backscatter and cyclic variation techniques have been used to measure changes in cardiac tissue-level structure and function.17 These techniques were based predominantly on mean signal values and showed increased variability from random noise and susceptibility to time
+delays.18 The recent advances in texture-based feature extraction (cardiac ultrasound radiomics, or ultrasomics5) may overcome some of these limitations,7 allowing for more robust phenotyping of cardiac ultrasound images. Using a biomarker discovery pathway and a reverse translational approach, we isolated consistent ultrasomics features and their capacity to distinguish histopathological changes at the level of murine cardiomyocytes. In addition, we identified the association of ultrasomics biomarkers with changes in LV cardiomyocyte geometry and disarray—a central process in LV remodeling that occurs in response to an increase in LV wall stress and accompanies changes in chamber geometry, hypertrophy (both concentric or eccentric), and function. The close associations observed between ultrasomics-features and myocyte geometry in the experimental study and the independent value in predicting adverse events in human studies suggest a unique level of information associated with cardiac remodeling. Furthermore, each ultrasomics feature has a defined mathematical construct. For example, both LGLE and LDLGLE suggest that LV myocyte hypertrophy and disarray result in changes in LGLE, providing perceptible and targeted descriptions of the pathology with the enhanced interpretability. However, caution should be executed in extrapolating these observations to other imaging modalities (ie, computed tomography, positron emission tomography, and cardiac magnetic resonance) because ultrasomics biomarker correlations may be unique to imaging modality and settings.19 Our investigation details an ultrasomics-based solution that was developed to allow easy interpretability, stepwise implementation, and reproducible outcomes. This includes adherence to defined protocols for conducting machine-learning research in the biomedical sciences, such as the PRIME (Proposed Requirements for Cardiovascular Imaging-Related Machine-Learning Evaluation) checklist,20 assessment of diverse clinical populations (ie, India and United States), clinical settings (ie, inpatient and
+FIGURE 6 Continued
+(A) Hematoxylin and eosin–stained cardiac tissue from type 2 diabetic (FVB/NJ Leptr / Db/Db, n 1⁄4 8) and wild-type (FVB/NJ WT, n 1⁄4 10) mice at 25 weeks of age. (B) JavaCyte estimated cardiomyocyte diameter. (C) Ultrasound images in the parasternal long axis for Db/Db and WT mice for extracting ultrasomics features. (D) Ultrasomics machine-learning model probability score for predicting murine remodeling. (E) R2 regression analysis (ultrasomics features vs cardiomyocyte diameter) with a cutoff Q value <0.05 (ie, P 1⁄4 0.0013). (F) Heatmap depicting cardiomyocyte diameter (diameter), LDLGLE, and LGLE in the Db/Db and WT groups. All data were considered statistically significant if P # 0.05, denoted with asterisk. Abbreviations as in Figures 1 and 5.
+J A C C V O L . 8 0 , N O . 2 3 , 2 0 2 2 Hathaway et al
+D E C E M B E R 6 , 2 0 2 2 : 2 1 8 7 – 2 2 0 1 Assessing Cardiac Remodeling by Ultrasound
+2199
+
+
+outpatient care), and instrumentation (ie, POCUS and high-end ultrasound systems). Additionally, our GitHub repository10 provides instructions for allowing other clinicians and investigators to apply their ultrasomics-based data to our current machinelearning model. The use of ultrasomics-based approaches on ultrasound images also have shown good preservation of feature values with various noises and gain.7 Although future applications could combine aspects of convolutional neural network and deep learning models with ultrasomics feature extraction for enhanced feature detection and prediction, the strength of our current approach is that it allows for quick identification of regions of interest and gray-level changes that can motivate future therapeutic interventions.
+STUDY LIMITATIONS AND FUTURE STRATEGIES. Our histopathological assessment only examined cardiomyocyte hypertrophy and disarray. There will be added value in understanding how other histopathological and molecular features of LV remodeling, such as matrix remodeling and signaling pathways correlate with ultrasomics features. Our methodology also constitutes a single end-diastolic PLAX view of the LV, which is a relatively common acquisition window for POCUS. Additionally, the orientation of the transducer to the LV in the PLAX view (ie, 90o angle from the transducer to the LV) makes the reflection of the ultrasound beam a superior angle for evaluating microstructural changes in the LV.21 With decreasing reflections from the ultrasound beam, moving from the IVS to the posterior wall of the LV, the posterior wall is likely to be more obscured for ultrasomics analysis. Future approaches may seek to apply a variety of cardiac views to compensate for this shortcoming. The construction of an integrated machinelearning pipeline to assist in clinical decision making requires a necessary set of prerequisites before feasible implementation. For example, the algorithm must provide: 1) incremental value over conventional assessments; and 2) results in a clinically relevant time frame. For the present pipeline, using a standard 16 GB RAM operating system using its CPU, the time to process a single DICOM image, extract the frame of interest, collect the ultrasomics data, standardize the values, and make predictions would likely take 2 to 5 minutes of computational time. As highlighted in the current study, standardization was performed within each cohort to normalize the data based on image acquisition settings. As a new DICOM video was presented to the
+machine-learning algorithm, the method of standardization would be selected based on how the images were collected. Ultimately, larger cohorts would be needed to replicate the findings, including steps to implement the technique in diverse clinical settings. The impact of variations arising from patient-related factors affecting image quality, machine settings, acquisition, and archival techniques are all major considerations in full, and effective, implementation of a machine-learning algorithm. Finally, although we evaluated composite endpoints as efficacy measures advocated in the assessment of LV remodeling,9,12 isolated endpoint assessments on cardiovascular mortality or HF hospitalization could be more meaningful and needs to be explored in future investigations
+CONCLUSIONS
+We have developed a pipeline that provides automated segmentation, ultrasomics-based feature extraction, and accurate LV structural and functional change prediction. Here we specifically highlight the clinical affect this approach can add to cardiac POCUS, but the use of ultrasomics biomarkers also has the potential to enrich diagnostic strategies for predicting LV remodeling using high-end cardiac ultrasound systems. Furthermore, in both the hospital and community settings, ultrasomics biomarkers may provide a method to automatically interpret changes in the LV myocardium without requiring manual measurements, thereby increasing throughput, efficiency, and widespread portability of cardiac ultrasound technology.
+ACKNOWLEDGMENTS The authors acknowledge those instrumental in the collection of data and consent from participants in the CHOICE (ie, external validation [POCUS]) and West Virginia University Hospital (ie, external validation [high-end]) studies, including Heenaben B. Patel. The authors acknowledge the American Society of Echocardiography (ASE)-sponsored program ASE Global: Focus on India 2012 and ASE Foundation’s 2018 Global Health Outreach event in West Virginia. Additionally, the authors acknowledge the expertise of Nobuyuki Kagiyama for his work in guiding echocardiographybased radiomic techniques.
+FUNDING SUPPORT AND AUTHOR DISCLOSURES
+This work was supported by National Science Foundation grant 1920920 (to Drs Sengupta and Adjeroh), Community Foundation for the Ohio Valley Whipkey Trust (to Dr Hollander), and the American
+Hathaway et al J A C C V O L . 8 0 , N O . 2 3 , 2 0 2 2
+Assessing Cardiac Remodeling by Ultrasound D E C E M B E R 6 , 2 0 2 2 : 2 1 8 7 – 2 2 0 1
+2200
+
+
+Heart Association grant 17PRE33660333/QAH/2017 (to Dr Hathaway). Dr Hathaway has served as the Chief Science Officer for Aspirations LLC. Dr Sengupta has served as a consultant to Echo IQ and RCE Technologies. All other authors have reported that they have no relationships relevant to the contents of this paper to disclose.
+ADDRESS FOR CORRESPONDENCE: Dr Partho P. Sengupta, Rutgers Robert Wood Johnson Medical School, Division of Cardiovascular Disease and Hypertension, 125 Patterson Street, New Brunswick, New Jersey 08901, USA. E-mail: partho. sengupta@rutgers.edu. Twitter: @PPSengupta1, @QuincyHathaway, @YanamalaNaveena.
+REFERENCES
+1. Lee L, DeCara JM. Point-of-Care Ultrasound. Curr Cardiol Rep. 2020;22(11):149.
+2. Asch FM, Mor-Avi V, Rubenson D, et al. Deep learning-based automated echocardiographic quantification of left ventricular ejection fraction: a point-of-care solution. Circ Cardiovasc Imaging. 2021;14(6):e012293.
+3. van Timmeren JE, Cester D, Tanadini-Lang S, Alkadhi H, Baessler B. Radiomics in medical imaging-"how-to" guide and critical reflection. Insights Imaging. 2020;11(1):91.
+4. Spadarella G, Perillo T, Ugga L, Cuocolo R. Radiomics in cardiovascular disease imaging: from pixels to the heart of the problem. Curr Cardiovasc Imaging Rep. 2022;15:11–21.
+5. Yin R, Jiang M, Lv WZ, et al. Study processes and applications of ultrasomics in precision medicine. Front Oncol. 2020;10:1736.
+6. Van Hooren B, Teratsias P, Hodson-Tole EF. Ultrasound imaging to assess skeletal muscle architecture during movements: a systematic review of methods, reliability, and challenges. J Appl Physiol (1985). 2020;128(4):978–999.
+7. Kagiyama N, Shrestha S, Cho JS, et al. A lowcost texture-based pipeline for predicting myocardial tissue remodeling and fibrosis using cardiac ultrasound. EBioMedicine. 2020;54: 102726.
+8. Agarwal SK, Chambless LE, Ballantyne CM, et al. Prediction of incident heart failure in general practice: the Atherosclerosis Risk in Communities (ARIC) study. Circ Heart Fail. 2012;5(4):422–429.
+9. Kobayashi M, Huttin O, Magnusson M, et al, STANISLAS Study Investigators. Machine learningderived echocardiographic phenotypes predict
+heart failure incidence in asymptomatic individuals. J Am Coll Cardiol Img. 2022;15(2):193208.
+10. Hathaway QA. Ultrasonic texture features as biomarkers for assessing cardiac remodeling and dysfunction. GitHub. Accessed September 29, 2022. https://github.com/qahathaway/Cardiac_ Remodeling_Radiomics
+11. Cohn JN, Ferrari R, Sharpe N, International Forum on Cardiac Remodeling. Cardiac remodeling—concepts and clinical implications: a consensus paper from an international forum on cardiac remodeling. J Am Coll Cardiol. 2000;35(3): 569–582.
+12. Fiuzat M, Lowy N, Stockbridge N, et al. Endpoints in heart failure drug development: history and future. J Am Coll Cardiol HF. 2020;8(6):429440.
+13. Brown L, Cai T, DasGupta A. Interval estimation for a binomial proportion. Statist Sci. 2001;16(2): 101–133.
+14. Benjamini Y, Krieger AM, Yekutieli D. Adaptive linear step-up procedures that control the false discovery rate. Biometrika. 2006;93:491507.
+15. Addona TA, Shi X, Keshishian H, et al. A pipeline that integrates the discovery and verification of plasma protein biomarkers reveals candidate markers for cardiovascular disease. Nat Biotechnol. 2011;29(7):635–643.
+16. Aimo A, Gaggin HK, Barison A, Emdin M, Januzzi JL Jr. Imaging, biomarker, and clinical predictors of cardiac remodeling in heart failure with reduced ejection fraction. J Am Coll Cardiol HF. 2019;7(9):782–794.
+17. Milunski MR, Mohr GA, Perez JE, et al. Ultrasonic tissue characterization with integrated backscatter. Acute myocardial ischemia, reperfusion, and stunned myocardium in patients. Circulation. 1989;80(3):491–503.
+18. Di Bello V, Giorgi D, Talini E, et al. Incremental value of ultrasonic tissue characterization (backscatter) in the evaluation of left ventricular myocardial structure and mechanics in essential arterial hypertension. Circulation. 2003;107(1):7480.
+19. Xue C, Yuan J, Lo GG, et al. Radiomics feature reliability assessed by intraclass correlation coefficient: a systematic review. Quant Imaging Med Surg. 2021;11(10):4431–4460.
+20. Sengupta PP, Shrestha S, Berthon B, et al. Proposed Requirements for Cardiovascular Imaging-Related Machine Learning Evaluation (PRIME): a checklist: reviewed by the American College of Cardiology Healthcare Innovation Council. J Am Coll Cardiol Img. 2020;13(9):20172035.
+21. Bertrand PB, Levine RA, Isselbacher EM, Vandervoort PM. Fact or artifact in twodimensional echocardiography: avoiding misdiagnosis and missed diagnosis. J Am Soc Echocardiogr. 2016;29(5):381–391.
+KEY WORDS automated, MACE, machine-learning, mouse, radiomics, ultrasomics
+APPENDIX For supplemental methods, figures, tables, and references, please see the online version of this paper.
+PERSPECTIVES
+COMPETENCY IN PATIENT CARE AND PROCEDURAL
+SKILLS: Machine-learning could automate extraction and interpretation of images obtained by POCUS to facilitate screening for myocardial structural and functional remodeling without expert guidance.
+TRANSLATIONAL OUTLOOK: Future initiatives could employ this technology to identify subclinical pathology earlier in the course of cardiac disease.
+J A C C V O L . 8 0 , N O . 2 3 , 2 0 2 2 Hathaway et al
+D E C E M B E R 6 , 2 0 2 2 : 2 1 8 7 – 2 2 0 1 Assessing Cardiac Remodeling by Ultrasound
+2201
