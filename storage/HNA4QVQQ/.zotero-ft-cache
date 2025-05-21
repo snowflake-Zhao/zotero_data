@@ -1,0 +1,2334 @@
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+arXiv:2111.02355v3 [cs.LG] 11 Jul 2022
+
+Renzhe Xu 1 Xingxuan Zhang 1 Zheyan Shen 1 Tong Zhang 2 Peng Cui 1
+
+Abstract
+Covariate-shift generalization, a typical case in out-of-distribution (OOD) generalization, requires a good performance on the unknown test distribution, which varies from the accessible training distribution in the form of covariate shift. Recently, independence-driven importance weighting algorithms in stable learning literature have shown empirical effectiveness to deal with covariate-shift generalization on several learning models, including regression algorithms and deep neural networks, while their theoretical analyses are missing. In this paper, we theoretically prove the effectiveness of such algorithms by explaining them as feature selection processes. We ﬁrst specify a set of variables, named minimal stable variable set, that is the minimal and optimal set of variables to deal with covariate-shift generalization for common loss functions, such as the mean squared loss and binary cross-entropy loss. Afterward, we prove that under ideal conditions, independence-driven importance weighting algorithms could identify the variables in this set. Analysis of non-asymptotic properties is also provided. These theories are further validated in several synthetic experiments. The source code is available at https://github.com/ windxrz/independence-driven-IW.
+1. Introduction
+Although modern machine learning techniques have achieved great success in various areas, many researchers
+1Department of Computer Science and Technology, Tsinghua University, Beijing, China 2Computer Science & Mathematics, The Hong Kong University of Science and Technology, Hong Kong, China. Emails: xrz199721@gmail.com, xingxuanzhang@hotmail.com, shenzy17@mails.tsinghua.edu.cn, tongzhang@tongzhang-ml.org, cuip@tsinghua.edu.cn. Correspondence to: Peng Cui <cuip@tsinghua.edu.cn>.
+Proceedings of the 39 th International Conference on Machine Learning, Baltimore, Maryland, USA, PMLR 162, 2022. Copyright 2022 by the author(s).
+
+have demonstrated the vulnerability of machine learning models under distribution shifts (Shen et al., 2021). This issue arises from the violation of the i.i.d. assumption (i.e., training and test data are independent and identically distributed) and stimulates recent research on outof-distribution (OOD) generalization (Shen et al., 2021; Zhang et al., 2022a). Among different types of distribution shifts considered in OOD literature, covariate shift (Shimodaira, 2000; Sugiyama et al., 2007a; Ben-David et al., 2007), where the marginal distribution of variables shifts from the training data to the test data while the labeling function keeps unchanged, is the most common one (Shen et al., 2021). Further, covariate-shift generalization is much more challenging, given that the test distribution remains unknown in the training phase.
+With the prior knowledge of the test distribution, importance weighting (IW) is common in dealing with covariate shift (Shimodaira, 2000; Sugiyama et al., 2007a;b; 2008; Fang et al., 2020). In detail, IW methods consist of two steps, namely weight estimation and weighted regression (Fang et al., 2020). The weight estimation step estimates sample weights that characterize the density ratio between the training and test distribution. The weighted regression step trains predictors after plugging the sample weights into loss functions. However, IW methods can not adapt to covariate-shift generalization problems directly because the test distribution is unknown.
+Recently, independence-driven importance weighting methods (Shen et al., 2020; Kuang et al., 2020b; Zhang et al., 2021; 2022b) in stable learning literature (Cui & Athey, 2022) have shown empirical effectiveness to deal with covariate-shift generalization on several learning tasks involving regression algorithms and deep models. Without the knowledge of the test distribution, in the weight estimation step, they propose to learn sample weights that guarantee the statistical independence between features in the weighted distribution. Although the advantages of these algorithms have been proved empirically, the theoretical explanations for these methods are missing. In this paper, we take a step towards the theoretical analysis of independence-driven IW methods on covariate-shift generalization problems by explaining them as feature selection processes.
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+We ﬁrst show that for common loss functions, including the mean squared loss and binary cross-entropy loss, the covariate-shift generalization problem can be tackled by a minimal set of variables S that satisﬁes the condition: E[Y |S] = E[Y |X]. Such a minimal set of variables is named the minimal stable variable set. Afterward, we prove that independence-driven IW algorithms could identify the minimal stable variable set. We analyze the typical algorithms (Kuang et al., 2020b; Shen et al., 2020) where the weighted least squares (WLS) is adopted in the weighted regression step. Variables whose corresponding coefﬁcients of WLS are not zero could be considered as chosen variables. Under ideal conditions, i.e., perfectly learned sample weights and inﬁnite samples, the selected variables are proved to be the minimal stable variable set. We further provide non-asymptotic properties and error analysis when the ideal conditions are not satisﬁed. We highlight that although a linear model (WLS) is adopted, these theoretical results hold for both linear and non-linear data-generating processes. Along with the optimality and minimality of the minimal stable variable set, these theories provide a way to explain why independence-driven IW methods work for covariate-shift generalization. These theories are further validated in several synthetic experiments.
+
+1.1. Overview of Results
+We begin with a simpliﬁed presentation of our results. Consider a set of variables (X, Y ) where X represents features and Y represents the outcome that we try to predict from X. We consider covariate-shift generalization problems, which is the most common one among the different distribution shifts (Shen et al., 2021). In detail, covariate shift considers the scenario where the marginal distribution of X shifts from the training phase to the test phase while the labeling function keeps unchanged. Assumption 1.1. Suppose the test distribution P te differs from the training distribution P tr in covariate shift only, i.e.,
+
+P te(X, Y ) = P te(X)P tr(Y |X).
+
+(1)
+
+In addition, P te has the same support of P tr.
+
+Problem 1.1 (Covariate-shift generalization problem). Given the samples from the training distribution P tr,
+covariate-shift generalization problem is to design an algo-
+rithm which can guarantee the performance on the unknown test distribution P te that satisﬁes Assumption 1.1.
+
+We focus on several common loss functions, including the mean squared loss and binary cross-entropy loss, under which circumstances EP te [Y |X] is the global optimum for the test distribution P te.
+Theorem 1.1 (Informal version of Theorem 3.1). Let P te be the unknown test distribution in the covariate-shift generalization problem deﬁned in Problem 1.1. Then a subset
+
+of variables S ⊆ X that can ﬁt the target EP te [Y |X] if and only if it satisﬁes EP tr [Y |S] = EP tr [Y |X].
+We deﬁne the minimal set of variables that satisﬁes EP tr [Y |S] = EP tr [Y |X] as the minimal stable variable set (Deﬁnition 3.4). Under mild assumptions (Assumption 2.1), the existence and uniqueness of the variable set are guaranteed (Theorem 3.2). As relationships between X vary from the training phase to the test phase, i.e., P tr(X) = P te(X), it is reasonable to ﬁnd the minimal set of variables to make predictions so that it can relieve the negative impact of other features in the test distribution. We will show the optimality property of the minimal stable variable set empirically in Figure 2.
+Now we consider independence-driven IW algorithms (The framework of such algorithms can be found in Section 4 and Algorithm 1). Typical independence-driven IW algorithms (Shen et al., 2020; Kuang et al., 2018) learn sample weights ﬁrst to make features statistically independent in the weighted distribution and then adopt a weighted least squares regression step. The algorithms can be considered as processes of feature selection by examining the coefﬁcients of WLS. In detail, the variables with non-zero coefﬁcients are chosen. The variables chosen by independence-driven IW algorithms have the following properties.
+Theorem 1.2 (Informal version of Theorem 5.1 and Theorem 5.2). Under ideal conditions (perfectly learned sample weights and inﬁnite samples),
+– if a variable Xi is not in the minimal stable variable set, then independence-driven IW algorithms could ﬁlter it out with any weighting function that satisﬁes the independence condition, and
+– if a variable Xi is in the minimal stable variable set, then there exist weighting functions with which independence-driven IW algorithms could identify Xi.
+We further analyze the error of coefﬁcients if these ideal conditions are not satisﬁed (Theorem 5.3) under several mild assumptions.
+Theorem 1.1 and Theorem 1.2 provide a general picture of the effectiveness of independence-driven IW algorithms. To conclude, under ideal assumptions, they could identify the minimal stable variable set, which is the minimal and optimal set of variables to deal with covariate-shift generalization.
+1.2. Related Works
+OOD and covariate-shift generalization OOD generalization has raised great concerns. According to (Shen et al., 2021), OOD methods could be categorized into unsupervised representation learning methods (Bengio et al., 2013; Yang et al., 2021; Zhang et al., 2022c), supervised learning
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+models (Peters et al., 2016; Zhou et al., 2021; Liu et al., 2021a;b; Zhou et al., 2022b; Lin et al., 2022a;b), and optimization methods (Duchi et al., 2020; Duchi & Namkoong, 2021; Zhou et al., 2022a). More thorough discussions could refer to (Shen et al., 2021).
+There are many types of distribution shift, including covariate shift (Shimodaira, 2000), label shift (Garg et al., 2020), and concept shift (Gama et al., 2014) and covariate shift is the most common distribution shift (Shen et al., 2021). To deal with the covariate-shift generalization problem, there are several methods recently (Shen et al., 2020; Kuang et al., 2020b; Zhang et al., 2021; Duchi & Namkoong, 2021; Krueger et al., 2021; Ruan et al., 2021). In this paper, we focus on independence-driven IW algorithms (Shen et al., 2020; Kuang et al., 2020b; Zhang et al., 2021) and provide a theoretical analysis of them.
+Importance weighting (IW) and independence-driven IW algorithms Importance weighting methods are common practices to tackle distribution shifts. In traditional domain adaptation (DA) problems (Daume III & Marcu, 2006; Ben-David et al., 2007), importance weighting methods assume the prior knowledge of the test distribution and they can estimate the density ratio between the training and test distributions directly (Shimodaira, 2000; Huang et al., 2006; Storkey & Sugiyama, 2007; Sugiyama et al., 2007a;b; Bickel et al., 2007; Sugiyama et al., 2008; Kanamori et al., 2009; Fang et al., 2020). As a result, the ERM training on the weighted distribution is unbiased in the test distribution (Fang et al., 2020).
+Compared to typical DA settings, covariate-shift generalization problems consider a much more challenging setting where the test distribution is unknown (Shen et al., 2021). Without the knowledge of the test distribution, independence-driven IW algorithms (Shen et al., 2018; Kuang et al., 2020a; Shen et al., 2020; Zhang et al., 2021) in stable learning literature (Cui & Athey, 2022) propose to learn sample weights that make features statistically independent in the weighted distribution. Although the effectiveness of such algorithms on covariate-shift generalization has been proved empirically, their detailed theoretical analysis is missing.
+Feature Selection Feature selection aims to construct a diagnostic or predictive model for a given regression or classiﬁcation task via selecting a minimal-size subset of variables that show the best performance (Guyon & Elisseeff, 2003). Feature selection approaches can be broadly divided into four categories, namely ﬁlter methods, wrapper methods, embedded methods, and others. Filter methods adopt statistical criteria to rank and select features before building classiﬁers with selected features (John et al., 1994; Langley et al., 1994; Guyon & Elisseeff, 2003; Law et al., 2004).
+
+Given ﬁlter methods are usually independent of the learning of the classiﬁers, they show superiority in operating time and applicability over other methods (Kira & Rendell, 1992; Bolo´n-Canedo et al., 2013). Wrapper methods heuristically search variable subsets via learning a predictive model, thus they can identify the best performing feature subsets for the given modeling algorithm, but are typically computationally intensive (Menze et al., 2009; Bolo´n-Canedo et al., 2013; Urbanowicz et al., 2018). Embedded methods seek to minimize the size of the selected feature subset while maximizing the classiﬁcation performance simultaneously (Tibshirani, 1996; Rakotomamonjy, 2003; Zou & Hastie, 2005; Loh, 2011; Chen & Guestrin, 2016). Some methods attempt to combine the advantages of wrapper methods and ﬁlter methods (Cortizo & Giraldez, 2006; Liu et al., 2014; Benoˆıt et al., 2013). However, discussions on feature selection problems under covariate-shift generalization settings are missing. In this paper, we specify the optimal and minimal set of variables to deal with covariate-shift generalization and prove that independence-driven IW algorithms could identify them.
+
+2. Preliminaries
+
+Notations Let X = (X1, X2, . . . Xd)T ∈ Rd denote
+
+the d-dimensional features and Y ∈ R denote the out-
+
+come. The training data is from a joint training distribution
+
+P tr(X, Y ). Let X , Xj, and Y denote the support of X,
+
+Xj, and Y , respectively. Suppose we get n i.i.d. samples,
+
+x(i) =
+
+x(1i), . . . , x(di)
+
+T
+, y(i)
+
+n
+
+sampled from the dis-
+
+i=1
+
+tribution. Let P te denote the unknown test distribution.
+
+We use S ⊆ X to indicate that S is a subset of features X and to mean proper subset. We write A ⊥ B | C when two sets of variables A, B ⊆ X are statistically independent given another set of variables C ⊆ X. We also adopt A ⊥ B when conditioning set is empty to indicate that A and B are statistically independent.
+
+We use EQ(·)[·] and EQ(·)[·|·] to denote expectation and conditional expectation, respectively, under a distribution Q.
+For example, EQ(X)[X] = X xQ(X = x)dx represent the expectation of X and EQ(X,Y )[Y |X] = Y Q(Y = y|X)ydy represent the conditional expectation of Y given
+X under distribution Q. Q could be chosen as the training distribution P tr, test distribution P te, or any other proper
+distributions. If not confusing, we will use E[·] and E[·|·] to
+denote the expectation and conditional expectation under the training distribution P tr. We use Eˆ[·] to denote the empirical
+expectation w.r.t. n samples.
+
+Basic assumption We consider the following assumption.
+Assumption 2.1 (Strictly positive density assumption). ∀x1 ∈ X1, x2 ∈ X2, . . . , xd ∈ Xd, P tr(X1 = x1, X2 =
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+x2, . . . , Xd = xd) > 0.
+Remark 2.1. Assumption 2.1 is reasonable on the grounds that there always exists uncertainty in the data (Pearl, 2014; Strobl & Visweswaran, 2016). Therefore, we suppose the strictly positive density assumption in the whole paper for simplicity.
+
+3. Minimal Stable Variable Set for Covariate-shift Generalization
+In this section, we specify the set of variables that are suitable for covariate-shift generalization problems. We ﬁrst provide the deﬁnition of the minimal and optimal predictor.
+Deﬁnition 3.1 (Optimal predictor (Statnikov et al., 2013)). Given a dataset sampled from P tr(X, Y ), a learning algorithm L, and a performance metric M to assess learner’s models, a variable set S ⊆ X is an optimal predictor of Y if S maximizes the performance metric M for predicting Y using learner L in the dataset.
+Deﬁnition 3.2 (Minimal and optimal predictor (Strobl & Visweswaran, 2016)). Let S be an optimal predictor of Y . If no proper subset of S satisﬁes the deﬁnition of the optimal predictor of Y , then S is a minimal and optimal predictor of Y .
+
+The minimal and optimal predictor for covariate-shift generalization can be given as follows.
+Theorem 3.1. Under Assumption 1.1 and Assumption 2.1, if M is a performance metric that is maximized only when EP te [Y |X] is estimated accurately and L is a learning algorithm that can approximate any conditional expectation. Suppose S ⊆ X is a subset of variables, then
+1. S is an optimal predictor of Y under distribution P te if and only if EP tr [Y |X] = EP tr [Y |S], and
+2. S is a minimal and optimal predictor of Y under distribution P te if and only if EP tr [Y |X] = EP tr [Y |S] and no proper subset S S satisﬁes EP tr [Y |X] = EP tr [Y |S ].
+Remark 3.1. To deal with covariate-shift generalization, M should be measured on the unknown test distribution P te with common loss functions. In practice, researchers often adopt the mean squared loss in regression problems and the binary cross-entropy loss in binary classiﬁcation problems. It is easy to check that the global optimum for both loss functions is EP te [Y |X] if applying the loss functions on the test distribution P te.
+As a result, we provide the following deﬁnitions.
+Deﬁnition 3.3 (Stable variable set). A stable variable set of Y under distribution P is any subset S of X for which
+
+EP [Y |S] = EP [Y |X].
+
+(2)
+
+The set of all stable variable sets for Y is denoted as StableP (Y ). In addition, we use Stable(Y ) to denote the set under the training distribution P tr for simplicity, i.e., Stable(Y ) StableP tr (Y ).
+Deﬁnition 3.4 (Minimal stable variable set). A minimal stable variable set of Y is a minimal set in Stable(Y ), i.e., none of its proper subsets satisﬁes Equation (2).
+With these deﬁnitions, the conclusions of Theorem 3.1 become: (1) S is an optimal predictor of Y under P te if and only if it is a stable variable set under P tr, and (2) S is a minimal and optimal predictor of Y under P te if and only if it is a minimal stable variable set under P tr. Furthermore, the existence and uniqueness of the minimal stable variable set are given by the following theorem.
+Theorem 3.2. Under Assumption 2.1, there exists a unique minimal stable variable set of Y , which can be denoted as MinStable(Y ). Furthermore, with the unique MinStable(Y ), the set of all stable variable sets of Y under the training distribution P tr, i.e., Stable(Y ), can be expressed as
+Stable(Y ) = {S ⊆ X | MinStable(Y ) ⊆ S}. (3)
+Theorem 3.1 and Theorem 3.2 provide a way to ensure promising OOD performance for covariate-shift generalization problems. The minimal stable variable set under the training distribution P tr is a minimal and optimal predictor in the test distribution P te, with which we can learn reliable models (John et al., 1994; Guyon & Elisseeff, 2003). As relationships between X are usually unstable and P tr(X) = P te(X), it is reasonable to ﬁnd the minimal and optimal predictor, i.e., MinStable(Y ), to make predictions so that it can relieve the negative impact from X\ MinStable(Y ) under the test distribution.
+Comparing the minimal stable variable set with other variable sets MinStable(Y ) could be explained as the direct causal variables in typical data-generating processes. Consider the following mechanism (Tibshirani, 1996; Ravikumar et al., 2009; Hastie & Tibshirani, 2017; Kuang et al., 2020a),
+X = (S, V ), Y = f (S) + , ⊥ X. (4)
+Here variables X contain two kinds of variables (S and V ) while Y depends on S only. The relationship between S and V is arbitrary. In such common cases, S is the set of all the direct causal variables and is the minimal stable variable set of Y .
+In addition, the minimal stable variable set has relationships with the stable blanket proposed by Pﬁster et al. (2021). However, the stable blankets are deﬁned in causal graphs
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+over a set of interventions while the minimal stable variable set targets for the covariate-shift generalization.
+Furthermore, the minimal stable variable set is closely related to the Markov boundary (Pearl, 2014). Under the performance metric in Theorem 3.1, the minimal stable variable set shares the same prediction power of Y with the Markov boundary while the minimal stable variable set contains fewer variables and thus combats covariate-shift generalization problems better. A detailed comparison between the minimal stable variable set and the Markov boundary can be found in Appendix A.
+4. Independence-driven IW Algorithms
+4.1. General Framework
+
+Algorithm 1 Independence-driven IW Algorithm
+
+1: Input: Dataset
+
+x(i) =
+
+x(1i), . . . , x(di)
+
+T
+, y(i)
+
+n
+
+i=1
+2: Learn sample weight w ∈ W⊥ so that X are statistically independent in the weighted distribution P˜w.
+
+3: Solve weighted least squares with weighting function
+
+w(X). The solution is βˆw. 4: Output: Cofﬁcients of weighted least squares βˆw.
+
+Here Σˆ w Eˆ[w(X)XXT ] represents the empirical covariance matrix with sample weights w. Furthermore, we denote
+the solution to population level weighted least squares under distribution P tr(X, Y ) as
+
+The framework of typical independence-driven importance weighting algorithms (Shen et al., 2020; Kuang et al., 2020a) is shown in Algorithm 1. Similar to standard IW algorithms (Fang et al., 2020), independence-driven IW algorithms consist of two steps, which are independence-driven weight estimation and weighted least squares respectively.
+4.1.1. INDEPENDENCE-DRIVEN WEIGHT ESTIMATION
+Independence-driven IW algorithms consider weighting functions that depend on X only. Deﬁnition 4.1 (Weighting function and weighted distribution). Let W be the set of weighting functions that satisﬁes
+
+βw = arg min E w (X) βT X − Y 2 = Σ−w1E[w(X)XY ]. β (9)
+Here Σw E[w(X)XXT ] represents the population level covariance matrix. In addition, we use βw(Xi) and βˆw(Xi) to denote the corresponding coefﬁcient of βw and βˆw on the i-th feature Xi.
+4.2. Two Speciﬁc Implementations
+Algorithm 1 has two typical implementations, namely DWR (Kuang et al., 2020a) and SRDO (Shen et al., 2020). They differ mainly in the way to learn sample weights w.
+
+W = w : X → R+ | EP tr [w(X)] = 1 . (5)
+
+Then ∀w ∈ W, the corresponding weighted distribution P˜w can be determined by the following probability density
+function.
+
+P˜w(X, Y ) = w(X)P tr(X, Y ).
+
+(6)
+
+P˜w is well deﬁned with the same support of P tr.
+
+Furthermore, instead of the whole set W, independencedriven IW algorithms consider a subset W⊥ ⊆ W. The weighting functions in W⊥ satisﬁes that X are mutually independent of each other in the corresponding weighted distribution P˜w, i.e.,
+W⊥ w ∈ W | X are statistically independent in P˜w .
+(7)
+
+4.1.2. WEIGHTED LEAST SQUARES
+Let w ∈ W be a weighting function. With n datapoints sampled from P tr(X, Y ), the weighted least squares solves the following equation
+βˆ w = arg min Eˆ w (X) βT X − Y 2 = Σˆ −w1Eˆ[w(X)XY ]. β (8)
+
+DWR Kuang et al. (2020a) propose to decorrelate every two features, i.e.,
+
+w(X) = arg min
+
+(Cov(Xi, Xj; w0))2 ,
+
+w0(X) 1≤i,j≤d,i=j
+
+(10)
+
+where Cov(Xi, Xj; w0) represents the covariance of features Xi and Xj in the weighted distribution P˜w0 . The loss
+function in Equation (10) focuses on the linear correlation
+
+only and is used as an approximation for statistical inde-
+
+pendence. They proved that linear decorrelation sufﬁces
+
+to generate good prediction models under simple models.
+
+Recently, Zhang et al. (2021) combined DWR with random
+
+fourier features (Rahimi et al., 2007) to achieve statistical
+
+independence and showed that deep models could perform
+
+better if the representations are statistically independent
+
+instead of linearly decorrelated.
+
+SRDO Shen et al. (2020) propose to learn w(X) by esti-
+
+mating the density ratio of the training distribution P tr and a
+
+speciﬁc weighted distribution P˜. The weighted distribution
+
+P˜ is determined by performing random resampling on each
+
+feature so that P˜(X1, X2, . . . , Xd) =
+
+d i=1
+
+P tr(Xi).
+
+As
+
+a
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+result, the weighting function w(X) is given by
+
+w(X) = P˜(X) = P tr(X1)P tr(X2) · · · P tr(Xd) .
+
+P tr(X)
+
+P tr(X1, X2, . . . , Xd)
+
+(11)
+
+The density ratio in Equation (11) can be tackled by classprobability estimation problems and can be learned by several methods such as the binary cross-entropy loss, the LSIF loss (Kanamori et al., 2009), and the KLIEP loss (Sugiyama et al., 2009). A thorough review of density ratio estimation methods is presented by Menon & Ong (2016). As a result, SRDO can guarantee statistical independence between variables X if the density ratio is estimated accurately.
+
+5. Theoretical Analysis of Independence-driven IW Algorithms
+In this section, we will show that independence-driven IW algorithms as shown in Algorithm 1 can be considered as a process of feature selection according to the coefﬁcients of weighted least squares. The chosen features are the minimal stable variable set in Deﬁnition 3.4. We ﬁrst show the identiﬁability result with perfectly learned weighting functions and inﬁnite samples in Section 5.1. Afterward, we relax the assumptions and study the non-asymptotic properties in Section 5.2. These theoretical results, along with Theorem 3.1 could prove the effectiveness of independence-driven IW algorithms for the covariate-shift generalization problem (Problem 1.1).
+
+5.1. Population Level Properties
+
+Generally speaking, with inﬁnite samples, for any perfectly learned proper weighting function w ∈ W⊥ adopted by the algorithms, the coefﬁcient on variables that do not belong to the minimal stable variable set will be zero (Theorem 5.1). In addition, there exist proper weighting functions with which the coefﬁcients on the minimal stable variable set would not be zero (Theorem 5.2).
+
+Theorem 5.1. Under Assumption 2.1, suppose Xi ∈
+
+MinStable(Y ). Let w be any weighting function
+
+in W⊥.
+
+Suppose
+
+EP tr(X)
+
+w(X )
+
+X
+
+2 2
+
+< ∞ and
+
+EP tr(X,Y ) w(X)Y 2 < ∞. Then the population level
+
+solution βw of weighted least squares under w satisﬁes
+
+βw(Xi) = 0.
+
+Theorem 5.2. Under Assumption 2.1, suppose Xi ∈ MinStable(Y ). Then there exists w ∈ W⊥ and constant α = 0, such that the population level solution βw satisﬁes βw(Xi) = α.
+
+Remark 5.1. In very rare cases, independence-driven IW algorithms may fail to identify the minimal stable variable set if Xi is not independent of Y but is linearly decorrelated with Y in the weighted distribution P˜w.
+
+These two theorems, along with Theorem 3.1, prove the effectiveness of independence-driven IW algorithms for the covariate-shift generalization problem (Problem 1.1). In detail, under ideal conditions, i.e., perfectly learned sample weights and inﬁnite samples, independence-driven IW algorithms could ﬁnd the minimal stable variable set of Y , which is the minimal and optimal predictor under the test distribution P te according to Theorem 3.1.
+
+5.2. Non-asymptotic Properties
+We further analyze the non-asymptotic properties of independence-driven IW algorithms in this subsection. Given a weighting function w ∈ W, let
+
+approxw(X) E[Y |X] − βw, X ,
+
+(12)
+
+noise(X) Y − E[Y |X].
+
+Here approxw(X) denotes the model misspeciﬁcation term w.r.t. linear models and noise(X) represents the noise term of Y . For a non-trivial non-asymptotic property of the independence-driven IW algorithms, similar to Zhang (2005); Hsu et al. (2014), we ﬁrst make the assumptions about the data-generating process between X and Y .
+Assumption 5.1 (Bounded covariate). There exists a ﬁnite constant B > 0 such that, in the training distribution P tr, almost surely, X 2 ≤ B.
+Assumption 5.2 (Bounded approximation error). There exists a ﬁnite constant Cw > 0 such that, in the training distribution P tr, almost surely, |approxw(X)| ≤ Cw.
+Assumption 5.3 (Sub-gaussian noise). There exists a ﬁnite constant σ ≥ 0 such that, in the training distribution P tr, almost surely, ∀η ∈ R, E [ exp (η · noise(X))| X] ≤ exp η2σ2/2 .
+Furthermore, we assume that the chosen weighting function is non-degenerate.
+Assumption 5.4 (Non-degenerate weighting function). The minimal eigenvalue of Σw is greater than 0, i.e., λmin (Σw) Λw > 0.
+In practice, we can not obtain the true weighting function w and we need to estimate it from ﬁnite samples. The estimated weighting function is denoted as wˆ. We further provide assumptions about it.
+Assumption 5.5 (Small estimation error of the weighting function). The estimation error of the estimated weighting function wˆ is small. In detail, E (w(X) − wˆ(X))2 2 < Λ2w/E[ X 42].
+Assumption 5.6 (Bounded estimated weighting function). There exists a ﬁnite constant δwˆ > 0 such that, in the training distribution P tr, almost surely, wˆ(X) < δwˆ.
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+Remark 5.2. To ensure a small 2 in Assumption 5.5,
+we can adopt LSIF (Kanamori et al., 2009) to optimize EP tr(X)[(w(X) − wˆ(X))2] directly. If we know a weighted distribution Q and want to learn a weighting function w(X) = Q(X)/P tr(X). According to Menon & Ong (2016), the loss of LSIF is L(w) = EQ(X)[−w(X)] + EP tr(X) w(X)2/2 . It is easy to see that w∗(X) = minw L(w) = Q(X)/P tr(X) and L(w) − L(w∗) = EP tr(X) (w∗(X) − w(X))2 /2. As a result, minimizing the loss of LSIF will meet the assumption which requires that EP tr(X)[(w(X) − wˆ(X))2] = 2 be small enough.
+Remark 5.3. The difference between SRDO and DWR
+lies in Assumption 5.5 due to the way of learning sam-
+ple weights. Speciﬁcally, it is harder for DWR to satisfy
+Assumption 5.5 because DWR focuses more on the linear
+correlation. As a result, its performance may drop when Y has a complex non-linear relationship with X, which is
+further validated by our experiments as shown in the fourth
+point in Section 6.3.
+
+With the assumptions, we can provide the non-asymptotic property of independence-driven IW algorithms.
+Theorem 5.3. Let w ∈ W be a weighting function. Suppose Assumptions 2.1, 5.1-5.6 (with parameters B, Cw, σ, Λw, , δwˆ) hold. Pick any t > max{0, 2.6 − log d}, let
+
+n ≥ 6δwˆB2(log d + t) .
+
+(13)
+
+Λw −
+
+E[
+
+X
+
+4 2
+
+]
+
+Then with probability at least 1 − 3e−t,
+
+βˆ wˆ − βw 2
+
+2
+
+√ ≤ 4δwˆσ2(d + 2 td + 2t)
+
+n Λw −
+
+E[
+
+X
+
+4 2
+
+]
+
++
+
+8δwˆ B2Cw2 (1 + ) n Λw − E [
+
+√ 1 + 8t
+2
+X 42]
+
+2
+
+error caused by WLS from ﬁnite samples
+
++
+
+4 2Mw
+
+2 + o(1/n).
+
+Λw −
+
+E[
+
+X
+
+4 2
+
+]
+
+error caused by imperfectly learned weights
+
+(14)
+
+Here Mw =
+
+Σw
+
+2 2
+
+βw
+
+2 2
+
+E[ X
+Σw
+
+]4
+2
+2 2
+
++
+
+E[ XY
+
+]2
+2
+
+E[w(X)XY ]
+
+2 2
+
+is a constant when w is ﬁxed. In particular, if w ∈ W⊥,
+
+then
+
+βˆ wˆ − βw
+
+2
+=
+
+βˆ wˆ(V )
+
+2
++
+
+βˆ wˆ(S) − βw(S)
+
+2
+,
+
+2
+
+2
+
+2
+
+(15)
+
+where βˆwˆ(V ) represents the coefﬁcients of βˆwˆ on
+
+X\ MinStable(Y ) and βˆwˆ(S), βwˆ(S) represent the co-
+
+efﬁcients of βˆwˆ, βw on MinStable(Y ). As a result,
+
+βˆ wˆ(V )
+
+2
+and
+2
+
+βˆ wˆ(S) − βw(S)
+
+2
+are also bounded by
+2
+
+the RHS of Equation (14).
+
+Remark 5.4. Equation (14) applies for any weighting function w ∈ W that satisﬁes the listed assumptions. Excluding the high-order term of o(1/n), the RHS of Equation (14) consists of two parts. The ﬁrst part is caused by WLS from ﬁnite samples and it vanishes when n → ∞. The second part is caused by the error between the estimated function wˆ and the true weighting function w and it also vanishes when
+→ 0.
+
+In particular, let w ∈ W⊥ be a weighting function
+
+adopted by independence-driven IW algorithms. Ac-
+
+cording to Theorems 5.1 and 5.2, the coefﬁcients on
+
+X\ MinStable(Y ) (i.e.,
+
+βˆ wˆ(V )
+
+2 2
+
+)
+
+and
+
+the
+
+error
+
+of
+
+coef-
+
+ﬁcients on MinStable(Y ) (i.e.,
+
+βˆ wˆ(S) − βw(S)
+
+2 2
+
+)
+
+will
+
+be bounded by the RHS of Equation (14) and become zero
+
+when n → ∞ and → 0. This property guarantees that we
+
+could eliminate X\ MinStable(Y ) and ﬁnd MinStable(Y )
+
+with ﬁnite samples and imperfectly learned sample weights.
+
+6. Synthetic Experiments
+We run various experiments on synthetic data to verify the effectiveness of independence-driven IW algorithms in discovering the minimal stable variable set in covariate-shift generalization problems. We consider the following datagenerating process similar to Kuang et al. (2020a).
+6.1. Data-generating Process
+Data Let X = (S, V ) and the dimension of X is ﬁxed to d = 10. In our experiments, the dimensions of S and V are speciﬁed as ds = dv = 0.5 · d = 5. Covariate X is generated by the following process.
+Z1, Z2, . . . , Zd+1 ∼ N (0, 1), V1, V2, . . . , Vdv ∼ N (0, 1), Si = 0.8Zi + 0.2Zi+1, i = 1, 2, . . . , ds.
+(16) We further clip features X into [−2, 2] by letting X = max(min(X, 2), −2). The outcome Y is generated through Y = f (S) + , in which f (S) may contain both linear and non-linear transformations. To test the performance with different forms of non-linear terms in f (S), we generate the outcome Y from an MLP non-linear function (YMLP) and a polynomial one (Ypoly), respectively:
+YMLP = f (S) + = βT S + MLP([S1, S2, S3]; θ) + , Ypoly = f (S) + = βT S + S1S2S3/4 + .
+(17) Here β = {1/3, −2/3, 1, −1/3, 2/3}, ∼ N (0, 0.32), and MLP([S1, S2, S3]; θ) represents the transformation of MLP with two hidden layers (sizes 3 and 3, respectively) parametrized by randomly generated θ ∼ U (−1, 1).
+Generating various environments We generate various environments by constructing spurious correlations between
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+YMLP
+
+Rank Avg
+
+F1 Score
+
+8
+
+1.0
+
+0.8
+6 0.6
+
+4
+
+0.4
+
+3
+
+0.2
+
+8
+
+1.0
+
+0.8
+6 0.6
+
+RMSE Avg
+
+RMSE Std
+
+0.8 0.4
+
+0.6 0.2
+
+0.4
+
+0.3
+
+0.0
+
+0.8 0.4
+
+0.6 0.2
+
+Ypoly
+
+4
+
+0.4
+
+0.4
+
+3
+
+0.2
+
+0.3
+
+0.0
+
+1.5
+
+2.0
+
+2.5
+
+3.0
+
+Spurious correlation strength rtr
+
+1.5
+
+2.0
+
+2.5
+
+3.0
+
+Spurious correlation strength rtr
+
+1.5
+
+2.0
+
+2.5
+
+3.0
+
+Spurious correlation strength rtr
+
+1.5
+
+2.0
+
+2.5
+
+3.0
+
+Spurious correlation strength rtr
+
+MI
+
+Correlation
+
+GB
+
+XGB
+
+RF
+
+OLS
+
+LASSO
+
+STG
+
+DWR
+
+SRDO
+
+Figure 1. Experimental results on synthetic data (MLP non-linear function YMLP and polynomial function Ypoly from top to bottom). Varying the spurious correlation strength rtr, we compare independence-driven IW algorithms (DWR and SRDO shown in solid lines) with several baselines (shown in dashed lines) on both feature selection (Rank average and F1 score) and covariate-shift generalization (RMSE average and standard deviation) metrics. Independence-driven IW algorithms outperform other methods in the synthetic experiments.
+
+YMLP
+0.6
+
+Ypoly
+0.6
+
+RMSE
+
+0.4
+
+0.4
+
+0.2
+
+0.2
+
+1 2 3 4 5 6 7 8 9 10
+
+1 2 3 4 5 6 7 8 9 10
+
+# of selected features
+
+# of selected features
+
+Figure 2. The covariate-shift generalization metrics (RMSE average and standard deviation) w.r.t. the number of selected features. Fix rtr = 2.5 here and the feature ranking lists are provided by SRDO. The minimal stable variable set (5 features) achieves the
+
+optimal performance.
+
+Y and V4, V5. Speciﬁcally, we ﬁx a bias rate r ∈ R (|r| > 1) in each generated environment. For each sample x(i) =
+
+(s(i), v(i)), we select it to the corresponding environment
+
+with probability Pr select|x(i); r =
+
+5 j=4
+
+|r|−10Dj(i)
+
+,
+
+where Dj(i) =
+
+f
+
+(S
+
+)
+
+−
+
+sgn(r)
+
+∗
+
+v
+
+(i) j
+
+and sgn(r) is the in-
+
+dicator function on whether r > 0. Intuitively, r controls
+
+the strength and direction of spurious correlations. Speciﬁ-
+
+cally, r > 1 corresponds to the positive spurious correlation
+
+between Y and V and r < −1 corresponds to the nega-
+
+tive spurious correlation. In addition, the higher |r| is, the
+
+stronger correlation between Y and V becomes.
+
+Here P (Y |X) is obviously invariant across different environments and the data-generating process satisﬁes the covariate-shift condition. Moreover, the minimal stable variable set MinStable(Y ) is S in each environment.
+
+Experimental setting In the YMLP setting, we randomly generate 5 different MLPs and report the results averaged over the 5 MLPs. We train feature selection models on one training dataset with a speciﬁc bias rate rtr and n = 10, 000 samples. We then choose the top 5 features selected by each
+
+model and further train an MLP regressor on them. The regressor is then evaluated on 10 test environments with corresponding rte = −3.0, −2.5, −2.0, −1.5, −1.3, 1.3, 1.5, 2.0, 2.5, 3.0. To test the effect of spurious correlation strength on feature selection models, we vary rtr = 1.5, 1.7, 2.0, 2.3, 2.5, 2.7, 3.0.
+6.2. Baselines and Evaluation Metrics
+Baselines We compare independence-driven IW algorithms (including DWR (Kuang et al., 2020a) and SRDO (Shen et al., 2020)) with ﬁlter methods (including mutual information based (MI) and correlation based (Correlation) methods), wrapper methods (including gradient boosting (GB) (Friedman, 2001), XGBoost (XGB) (Chen & Guestrin, 2016), and random forests (RF) (D´ıaz-Uriarte & De Andres, 2006)), and embedded methods (including OLS, LASSO (Tibshirani, 1996), and STG (Yamada et al., 2020)). More details on baseline implementations can be found in Appendix B.
+Evaluation metrics On the one hand, to test the performances on feature selection, we report the rank average and F1 score of selected features. To compute the rank average, we utilize the scores that each model assigns to the features and then rank all features according to the scores. The rank average is calculated as the mean of the ranks of the minimal stable variable set MinStable(Y ) = S. The F1 score is deﬁned as the harmonic mean of the precision and recall, where precision and recall are computed by comparing the selected features to the true features, i.e., the minimal stable variable set. On the other hand, to test the performances on covariate-shift generalization, we calculate the root mean squared error (RMSE) in each test environment and report the mean and standard deviation of RMSE in various test
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+environments.
+6.3. Experimental Results and Analysis
+The results are shown in Figure 1 and Figure 2 and we have the following observations.
+1. We ﬁrst validate the optimality property of the minimal stable variable set on covariate-shift generalization proposed in Section 3. With ﬁxed rtr = 2.5 and predicted feature ranking by SRDO, we vary the number of top selected features and train an MLP on them. Afterward, we test the performances of the MLP on test distributions and show the results in Figure 2. The results demonstrate that the minimal stable variable set (5 features) achieves the optimal performance under covariate-shift generalization. The ﬁgures with different rtr and more experimental details are provided in Appendix B. 2. Independence-driven IW algorithms perform much better on the discovery of the minimal stable variable set than other feature selection methods. As shown in Figure 1, SRDO and DWR achieve the minimal rank average and maximal F1 score for both data-generating processes YMLP and Ypoly. As a result, with the accurate discovery of the minimal stable variable set, SRDO and DWR further achieve the best covariate-shift generalization metrics (RMSE average and standard deviation). This experiment result validates the theories in Section 5. 3. The discovery of the minimal stable variable set becomes progressively challenging as spurious correlation strength rtr increases. As shown in Figure 1, the rank average tends to increase while the F1 score tends to decrease for all methods as rtr increases. This phenomenon makes sense on the grounds that V1 and V2 become strongly correlated with Y and models tend to select them when rtr is large. 4. SRDO outperforms DWR in most settings, especially when Y has a complex non-linear relationship with X. As discussed in Section 4.2, DWR aims to decorrelate the linear relationships between features and can not guarantee strict statistical independence. In the YMLP setting of our experiment, DWR fails to discover the minimal stable variable set when rtr is large while SRDO performs much better in the setting. However, DWR could effectively handle the polynomial Ypoly setting, which is also suggested by Kuang et al. (2020a).
+7. Discussions
+In this paper, we theoretically prove the effectiveness of independence-driven IW algorithms. We show that under ideal conditions, i.e., perfectly learned sample weights and inﬁnite samples, the algorithms could identify the minimal stable variable set, which is the minimal set of variables that could provide good predictions under covariate shift. We further provide non-asymptotic properties and error analy-
+
+sis when these two conditions are not satisﬁed. Empirical results also demonstrate the superiority of these methods in selecting target variables.
+Relationships between the minimal stable variable set and the Markov boundary The minimal stable variable set has close relationships with the Markov boundary, which we will further demonstrate in Appendix A. Here we provide a brief discussion.
+Firstly, we can easily verify that the minimal stable variable set is a subset of the Markov boundary (Theorem A.2 and Example A.1) by deﬁnition (Deﬁnition 3.4 and Deﬁnition A.2). However, not all variables in the Markov boundary are necessary for the covariate-shift generalization problem with common loss functions while the minimal stable variable set could provide the minimal set of variables (comparing Theorem 3.1 and Theorem A.3).
+In addition, traditional Markov boundary discovery algorithms mainly adopt the conditional independence test (Fukumizu et al., 2007; Sejdinovic et al., 2013; Strobl et al., 2019), which is a particularly challenging hypothesis to test for (Shah & Peters, 2020) though. As a result, independencedriven IW algorithms would hopefully provide a proper approximation of the Markov boundary, which could be of independent interest.
+Applicable scenarios and limitations We should notice that the deﬁnition of the minimal stable variable set is applicable only when E[Y |X] is well deﬁned. This implies that the deﬁnitions could be applied to typical regression and binary classiﬁcation settings, but they may not be applicable in multi-class classiﬁcation settings. In addition, under regression settings, E[Y |X] will not be the solution in other forms of losses. For example, consider the Minkowski loss (Bishop, 2006, Section 1.5.5) given as Lq = E[|Y − f (X)|q]. It reduces to the expected squared loss when q = 2. The minimum of Lq is given by the conditional mean E[Y |X] for q = 2, which is our case. But the solution becomes the conditional median for q = 1 and the conditional mode for q → 0. Nevertheless, we highlight that the squared loss under regression settings and the crossentropy loss under binary classiﬁcation settings are general enough for most potential applications. We leave the theoretical analysis and applications of independence-driven IW algorithms on multi-class classiﬁcation settings as future work.
+Acknowledgments
+This work was supported in part by National Key R&D Program of China (No. 2018AAA0102004), National Natural Science Foundation of China (No. 62141607, U1936219), and Beijing Academy of Artiﬁcial Intelligence (BAAI).
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+References
+Aliferis, C. F., Statnikov, A., Tsamardinos, I., Mani, S., and Koutsoukos, X. D. Local causal and markov blanket induction for causal discovery and feature selection for classiﬁcation part i: algorithms and empirical evaluation. Journal of Machine Learning Research, 11(1), 2010a.
+Aliferis, C. F., Statnikov, A., Tsamardinos, I., Mani, S., and Koutsoukos, X. D. Local causal and markov blanket induction for causal discovery and feature selection for classiﬁcation part ii: analysis and extensions. Journal of Machine Learning Research, 11(1), 2010b.
+Ben-David, S., Blitzer, J., Crammer, K., Pereira, F., et al. Analysis of representations for domain adaptation. Advances in neural information processing systems, 19:137, 2007.
+Bengio, Y., Courville, A., and Vincent, P. Representation learning: A review and new perspectives. IEEE transactions on pattern analysis and machine intelligence, 35(8): 1798–1828, 2013.
+Benoˆıt, F., Van Heeswijk, M., Miche, Y., Verleysen, M., and Lendasse, A. Feature selection for nonlinear models with extreme learning machines. Neurocomputing, 102: 111–124, 2013.
+Bickel, S., Bru¨ckner, M., and Scheffer, T. Discriminative learning for differing training and test distributions. In Proceedings of the 24th international conference on Machine learning, pp. 81–88, 2007.
+Bishop, C. M. Pattern recognition. Machine learning, 128 (9), 2006.
+Bolo´n-Canedo, V., Sa´nchez-Maron˜o, N., and AlonsoBetanzos, A. A review of feature selection methods on synthetic data. Knowledge and information systems, 34 (3):483–519, 2013.
+Chandrasekaran, S. and Ipsen, I. C. On the sensitivity of solution components in linear systems of equations. SIAM Journal on Matrix Analysis and Applications, 16(1):93– 112, 1995.
+Chen, T. and Guestrin, C. Xgboost: A scalable tree boosting system. In Proceedings of the 22nd acm sigkdd international conference on knowledge discovery and data mining, pp. 785–794, 2016.
+Chickering, D. M. Optimal structure identiﬁcation with greedy search. Journal of machine learning research, 3 (Nov):507–554, 2002.
+Cortizo, J. C. and Giraldez, I. Multi criteria wrapper improvements to naive bayes learning. In International Conference on Intelligent Data Engineering and Automated Learning, pp. 419–427. Springer, 2006.
+
+Cui, P. and Athey, S. Stable learning establishes some common ground between causal inference and machine learning. Nature Machine Intelligence, 4(2):110–115, 2022.
+Daume III, H. and Marcu, D. Domain adaptation for statistical classiﬁers. Journal of artiﬁcial Intelligence research, 26:101–126, 2006.
+D´ıaz-Uriarte, R. and De Andres, S. A. Gene selection and classiﬁcation of microarray data using random forest. BMC bioinformatics, 7(1):1–13, 2006.
+Duchi, J., Hashimoto, T., and Namkoong, H. Distributionally robust losses for latent covariate mixtures. arXiv preprint arXiv:2007.13982, 2020.
+Duchi, J. C. and Namkoong, H. Learning models with uniform performance via distributionally robust optimization. The Annals of Statistics, 49(3):1378–1406, 2021.
+Fang, T., Lu, N., Niu, G., and Sugiyama, M. Rethinking importance weighting for deep learning under distribution shift. Advances in Neural Information Processing Systems, 33, 2020.
+Friedman, J. H. Greedy function approximation: a gradient boosting machine. Annals of statistics, pp. 1189–1232, 2001.
+Fukumizu, K., Gretton, A., Sun, X., and Scho¨lkopf, B. Kernel measures of conditional dependence. In NIPS, volume 20, pp. 489–496, 2007.
+Gama, J., Zˇ liobaite˙, I., Bifet, A., Pechenizkiy, M., and Bouchachia, A. A survey on concept drift adaptation. ACM computing surveys (CSUR), 46(4):1–37, 2014.
+Garg, S., Wu, Y., Balakrishnan, S., and Lipton, Z. C. A uniﬁed view of label shift estimation. Advances in Neural Information Processing Systems, 33, 2020.
+Guyon, I. and Elisseeff, A. An introduction to variable and feature selection. Journal of machine learning research, 3(Mar):1157–1182, 2003.
+Hastie, T. J. and Tibshirani, R. J. Generalized additive models. Routledge, 2017.
+He, Y., Cui, P., Shen, Z., Xu, R., Liu, F., and Jiang, Y. Daring: Differentiable causal discovery with residual independence. In Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining, pp. 596–605, 2021.
+Holland, P. W. Statistics and causal inference. Journal of the American statistical Association, 81(396):945–960, 1986.
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+Horn, R. A. and Johnson, C. R. Matrix analysis. Cambridge university press, 2012.
+Hsu, D., Kakade, S., and Zhang, T. Tail inequalities for sums of random matrices that depend on the intrinsic dimension. Electronic Communications in Probability, 17:1–13, 2012a.
+Hsu, D., Kakade, S., and Zhang, T. A tail inequality for quadratic forms of subgaussian random vectors. Electronic Communications in Probability, 17:1–6, 2012b.
+Hsu, D., Kakade, S. M., and Zhang, T. Random design analysis of ridge regression. Foundations of Computational Mathematics, 14(3):569–600, 2014.
+Huang, B., Zhang, K., Lin, Y., Scho¨lkopf, B., and Glymour, C. Generalized score functions for causal discovery. In Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining, pp. 1551–1560, 2018.
+Huang, J., Gretton, A., Borgwardt, K., Scho¨lkopf, B., and Smola, A. Correcting sample selection bias by unlabeled data. Advances in neural information processing systems, 19:601–608, 2006.
+Imbens, G. W. and Rubin, D. B. Causal inference in statistics, social, and biomedical sciences. Cambridge University Press, 2015.
+Johansson, F., Shalit, U., and Sontag, D. Learning representations for counterfactual inference. In International conference on machine learning, pp. 3020–3029. PMLR, 2016.
+John, G. H., Kohavi, R., and Pﬂeger, K. Irrelevant features and the subset selection problem. In Machine learning proceedings 1994, pp. 121–129. Elsevier, 1994.
+Kanamori, T., Hido, S., and Sugiyama, M. A least-squares approach to direct importance estimation. The Journal of Machine Learning Research, 10:1391–1445, 2009.
+Kingma, D. P. and Ba, J. Adam: A method for stochastic optimization. arXiv preprint arXiv:1412.6980, 2014.
+Kira, K. and Rendell, L. A. A practical approach to feature selection. In Machine learning proceedings 1992, pp. 249–256. Elsevier, 1992.
+Krueger, D., Caballero, E., Jacobsen, J.-H., Zhang, A., Binas, J., Zhang, D., Le Priol, R., and Courville, A. Outof-distribution generalization via risk extrapolation (rex). In International Conference on Machine Learning, pp. 5815–5826. PMLR, 2021.
+
+Kuang, K., Cui, P., Athey, S., Xiong, R., and Li, B. Stable prediction across unknown environments. In Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining, pp. 1617–1626, 2018.
+Kuang, K., Xiong, R., Cui, P., Athey, S., and Li, B. Stable prediction with model misspeciﬁcation and agnostic distribution shift. In Proceedings of the AAAI Conference on Artiﬁcial Intelligence, volume 34, pp. 4485–4492, 2020a.
+Kuang, K., Zhang, H., Wu, F., Zhuang, Y., and Zhang, A. Balance-subsampled stable prediction. arXiv preprint arXiv:2006.04381, 2020b.
+Langley, P. et al. Selection of relevant features in machine learning. In Proceedings of the AAAI Fall symposium on relevance, volume 184, pp. 245–271, 1994.
+Law, M. H., Figueiredo, M. A., and Jain, A. K. Simultaneous feature selection and clustering using mixture models. IEEE transactions on pattern analysis and machine intelligence, 26(9):1154–1166, 2004.
+Lin, Y., Dong, H., Wang, H., and Zhang, T. Bayesian invariant risk minimization. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 16021–16030, 2022a.
+Lin, Y., Zhu, S., and Cui, P. Zin: When and how to learn invariance by environment inference? arXiv preprint arXiv:2203.05818, 2022b.
+Liu, C., Jiang, D., and Yang, W. Global geometric similarity scheme for feature selection in fault diagnosis. Expert Systems with Applications, 41(8):3585–3595, 2014.
+Liu, H., Liu, L., and Zhang, H. Ensemble gene selection by grouping for microarray data classiﬁcation. Journal of biomedical informatics, 43(1):81–87, 2010a.
+Liu, H., Liu, L., and Zhang, H. Ensemble gene selection for cancer classiﬁcation. Pattern Recognition, 43(8):2763– 2772, 2010b.
+Liu, J., Hu, Z., Cui, P., Li, B., and Shen, Z. Heterogeneous risk minimization. In International Conference on Machine Learning. PMLR, 2021a.
+Liu, J., Hu, Z., Cui, P., Li, B., and Shen, Z. Kernelized heterogeneous risk minimization. arXiv preprint arXiv:2110.12425, 2021b.
+Loh, W.-Y. Classiﬁcation and regression trees. Wiley interdisciplinary reviews: data mining and knowledge discovery, 1(1):14–23, 2011.
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+Mani, S. and Cooper, G. F. Causal discovery using a bayesian local causal discovery algorithm. In MEDINFO 2004, pp. 731–735. IOS Press, 2004.
+Menon, A. and Ong, C. S. Linking losses for density ratio and class-probability estimation. In International Conference on Machine Learning, pp. 304–313. PMLR, 2016.
+Menze, B. H., Kelm, B. M., Masuch, R., Himmelreich, U., Bachert, P., Petrich, W., and Hamprecht, F. A. A comparison of random forest and its gini importance with standard chemometric methods for the feature selection and classiﬁcation of spectral data. BMC bioinformatics, 10(1):1–16, 2009.
+Pearl, J. Probabilistic reasoning in intelligent systems: networks of plausible inference. Elsevier, 2014.
+Pena, J. M., Nilsson, R., Bjo¨rkegren, J., and Tegne´r, J. Towards scalable and data efﬁcient learning of markov boundaries. International Journal of Approximate Reasoning, 45(2):211–232, 2007.
+Peters, J., Bu¨hlmann, P., and Meinshausen, N. Causal inference by using invariant prediction: identiﬁcation and conﬁdence intervals. Journal of the Royal Statistical Society. Series B (Statistical Methodology), pp. 947–1012, 2016.
+Pﬁster, N., Williams, E. G., Peters, J., Aebersold, R., and Bu¨hlmann, P. Stabilizing variable selection and regression. The Annals of Applied Statistics, 15(3):1220–1246, 2021.
+Rahimi, A., Recht, B., et al. Random features for large-scale kernel machines. In NIPS, volume 3, pp. 5. Citeseer, 2007.
+Rakotomamonjy, A. Variable selection using svm-based criteria. Journal of machine learning research, 3(Mar): 1357–1370, 2003.
+Ravikumar, P., Lafferty, J., Liu, H., and Wasserman, L. Sparse additive models. Journal of the Royal Statistical Society: Series B (Statistical Methodology), 71(5):1009– 1030, 2009.
+Rosenbaum, P. R. and Rubin, D. B. The central role of the propensity score in observational studies for causal effects. Biometrika, 70(1):41–55, 1983.
+Ruan, Y., Dubois, Y., and Maddison, C. J. Optimal representations for covariate shift. arXiv preprint arXiv:2201.00057, 2021.
+Rubin, D. B. Causal inference using potential outcomes: Design, modeling, decisions. Journal of the American Statistical Association, 100(469):322–331, 2005.
+
+Sejdinovic, D., Sriperumbudur, B., Gretton, A., and Fukumizu, K. Equivalence of distance-based and rkhs-based statistics in hypothesis testing. The Annals of Statistics, pp. 2263–2291, 2013.
+Shah, R. D. and Peters, J. The hardness of conditional independence testing and the generalised covariance measure. The Annals of Statistics, 48(3):1514–1538, 2020.
+Shen, Z., Cui, P., Kuang, K., Li, B., and Chen, P. Causally regularized learning with agnostic data selection bias. In Proceedings of the 26th ACM international conference on Multimedia, pp. 411–419, 2018.
+Shen, Z., Cui, P., Zhang, T., and Kuang, K. Stable learning via sample reweighting. In Proceedings of the AAAI Conference on Artiﬁcial Intelligence, volume 34, pp. 5692– 5699, 2020.
+Shen, Z., Liu, J., He, Y., Zhang, X., Xu, R., Yu, H., and Cui, P. Towards out-of-distribution generalization: A survey. arXiv preprint arXiv:2108.13624, 2021.
+Shimodaira, H. Improving predictive inference under covariate shift by weighting the log-likelihood function. Journal of statistical planning and inference, 90(2):227–244, 2000.
+Spirtes, P., Glymour, C. N., Scheines, R., and Heckerman, D. Causation, prediction, and search. MIT press, 2000.
+Spirtes, P. L., Meek, C., and Richardson, T. S. Causal inference in the presence of latent variables and selection bias. arXiv preprint arXiv:1302.4983, 2013.
+Statnikov, A., Lemeir, J., and Aliferis, C. F. Algorithms for discovery of multiple markov boundaries. The Journal of Machine Learning Research, 14(1):499–566, 2013.
+Storkey, A. J. and Sugiyama, M. Mixture regression for covariate shift. Advances in neural information processing systems, 19:1337, 2007.
+Strobl, E. V. and Visweswaran, S. Markov boundary discovery with ridge regularized linear models. Journal of Causal inference, 4(1):31–48, 2016.
+Strobl, E. V., Zhang, K., and Visweswaran, S. Approximate kernel-based conditional independence tests for fast nonparametric causal discovery. Journal of Causal Inference, 7(1), 2019.
+Sugiyama, M., Krauledat, M., and Mu¨ller, K.-R. Covariate shift adaptation by importance weighted cross validation. Journal of Machine Learning Research, 8(5), 2007a.
+Sugiyama, M., Nakajima, S., Kashima, H., Von Buenau, P., and Kawanabe, M. Direct importance estimation with model selection and its application to covariate shift
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+adaptation. In NIPS, volume 7, pp. 1433–1440. Citeseer, 2007b.
+Sugiyama, M., Suzuki, T., Nakajima, S., Kashima, H., von Bu¨nau, P., and Kawanabe, M. Direct importance estimation for covariate shift adaptation. Annals of the Institute of Statistical Mathematics, 60(4):699–746, 2008.
+Sugiyama, M., Kanamori, T., Suzuki, T., Hido, S., Sese, J., Takeuchi, I., and Wang, L. A density-ratio framework for statistical data processing. IPSJ Transactions on Computer Vision and Applications, 1:183–208, 2009.
+Tibshirani, R. Regression shrinkage and selection via the lasso. Journal of the Royal Statistical Society: Series B (Methodological), 58(1):267–288, 1996.
+Tsamardinos, I. and Aliferis, C. F. Towards principled feature selection: Relevancy, ﬁlters and wrappers. In International Workshop on Artiﬁcial Intelligence and Statistics, pp. 300–307. PMLR, 2003.
+Tsamardinos, I., Aliferis, C. F., and Statnikov, A. Time and sample efﬁcient discovery of markov blankets and direct causal relations. In Proceedings of the ninth ACM SIGKDD international conference on Knowledge discovery and data mining, pp. 673–678, 2003a.
+Tsamardinos, I., Aliferis, C. F., Statnikov, A. R., and Statnikov, E. Algorithms for large scale markov blanket discovery. In FLAIRS conference, volume 2, pp. 376–380, 2003b.
+Urbanowicz, R. J., Meeker, M., La Cava, W., Olson, R. S., and Moore, J. H. Relief-based feature selection: Introduction and review. Journal of biomedical informatics, 85:189–203, 2018.
+Yamada, Y., Lindenbaum, O., Negahban, S., and Kluger, Y. Feature selection using stochastic gates. In International Conference on Machine Learning, pp. 10648– 10659. PMLR, 2020.
+Yang, M., Liu, F., Chen, Z., Shen, X., Hao, J., and Wang, J. Causalvae: disentangled representation learning via neural structural causal models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 9593–9602, 2021.
+Zhang, T. Learning bounds for kernel regression using effective data dimensionality. Neural Computation, 17 (9):2077–2098, 2005.
+Zhang, X., Cui, P., Xu, R., Zhou, L., He, Y., and Shen, Z. Deep stable learning for out-of-distribution generalization. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 5372– 5382, 2021.
+
+Zhang, X., He, Y., Xu, R., Yu, H., Shen, Z., and Cui, P. Nico++: Towards better benchmarking for domain generalization. arXiv preprint arXiv:2204.08040, 2022a.
+Zhang, X., Xu, Z., Xu, R., Liu, J., Cui, P., Wan, W., Sun, C., and Li, C. Towards domain generalization in object detection. arXiv preprint arXiv:2203.14387, 2022b.
+Zhang, X., Zhou, L., Xu, R., Cui, P., Shen, Z., and Liu, H. Towards unsupervised domain generalization. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 4910–4920, 2022c.
+Zheng, X., Aragam, B., Ravikumar, P. K., and Xing, E. P. Dags with no tears: Continuous optimization for structure learning. Advances in Neural Information Processing Systems, 31, 2018.
+Zheng, X., Dan, C., Aragam, B., Ravikumar, P., and Xing, E. Learning sparse nonparametric dags. In International Conference on Artiﬁcial Intelligence and Statistics, pp. 3414–3425. PMLR, 2020.
+Zhou, K., Liu, Z., Qiao, Y., Xiang, T., and Loy, C. C. Domain generalization: A survey. arXiv preprint arXiv:2103.02503, 2021.
+Zhou, X., Lin, Y., Pi, R., Zhang, W., Xu, R., Cui, P., and Zhang, T. Model agnostic sample reweighting for outof-distribution learning. In International Conference on Machine Learning. PMLR, 2022a.
+Zhou, X., Lin, Y., Zhang, W., and Zhang, T. Sparse invariant risk minimization. In International Conference on Machine Learning. PMLR, 2022b.
+Zou, H. and Hastie, T. Regularization and variable selection via the elastic net. Journal of the royal statistical society: series B (statistical methodology), 67(2):301–320, 2005.
+Zou, H., Kuang, K., Chen, B., Chen, P., and Cui, P. Focused context balancing for robust ofﬂine policy evaluation. In Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining, pp. 696–704, 2019.
+Zou, H., Cui, P., Li, B., Shen, Z., Ma, J., Yang, H., and He, Y. Counterfactual prediction for bundle treatment. Advances in Neural Information Processing Systems, 33: 19705–19715, 2020.
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+A. Relationships between the Minimal Stable Variable Set and the Markov Boundary
+A.1. Main Results
+Generally speaking, the minimal stable variable set is closely related to the Markov boundary and independence-driven IW algorithms would hopefully provide a proper approximation of the Markov boundary. In addition, if setting covariate-shift generalization as the goal, the Markov boundary is not necessary while the minimal stable variable set is sufﬁcient and optimal. Details are provided as follows.
+
+Deﬁnition and basic property of the Markov blankets and boundary According to (Statnikov et al., 2013; Pearl, 2014), Markov blankets and Markov boundary are deﬁned as follows.
+Deﬁnition A.1 (Markov blanket). A Markov blanket of Y under distribution P is any subset S of X for which
+
+Y ⊥ (X\S) | S.
+
+(18)
+
+The set of all Markov blankets for Y is denoted as BLP (Y ). In addition, we use BL(Y ) to denote the set under the training distribution P tr for simplicity, i.e., BL(Y ) BLP tr (Y ).
+Deﬁnition A.2 (Markov boundary). A Markov Boundary of Y is a minimal Markov blanket of Y , i.e., none of its proper subsets satisfy Equation (18).
+
+The existence of Markov blankets and Markov boundaries are given by the following proposition.
+Proposition A.1. Under Assumption 2.1, there exists a unique Markov boundary of Y , which can be denoted as BD(Y ). Furthermore, with the unique Markov boundary BD(Y ), the set of all Markov blankets of Y , BL(Y ), can be expressed as
+
+BL(Y ) = {S ⊆ X | BD(Y ) ⊆ S}.
+
+(19)
+
+Comparing the minimal stable variable set and the Markov boundary Besides the similarities in mathematical forms, there exist some connections between the stable variable set and the Markov blanket, and between the minimal stable variable set and the Markov boundary.
+Theorem A.2. Under Assumption 2.1, a stable variable set is also a Markov blanket and the minimal stable variable set is a subset of the Markov boundary, i.e.,
+
+BL(Y ) ⊆ Stable(Y ), MinStable(Y ) ⊆ BD(Y ).
+
+(20)
+
+The above theorem shows the inclusion relations between those two concepts, and the following example further illustrates a proper inclusion case.
+Example A.1 (from Strobl & Visweswaran (2016)). Let X = (X1, X2) and the data-generating process is given as follows.
+
+X1, X2 ∼ N (0, 1), Y = f (X1) + N 0, g(X2)2 ,
+
+(21)
+
+where f (·) and g(·) are ﬁxed functions. Then
+
+{X1} = MinStable(Y ) BD(Y ) = {X1, X2},
+
+(22)
+
+{{X1, X2}} = BL(Y ) Stable(Y ) = {{X1}, {X1, X2}}.
+
+The following proposition provides the property of the Markov boundary on covariate-shift generalization.
+Theorem A.3. Under Assumption 1.1 and Assumption 2.1, suppose M is a performance metric that is maximized only when P te(Y |X) is estimated accurately and L is a learning algorithm that can approximate any conditional probability distribution. Suppose S ⊆ X is a subset of variables, then
+1. S is an optimal predictor of Y under the test distribution P te if and only if it is a Markov blanket of Y under the training distribution P tr, and
+2. S is a minimal and optimal predictor of Y under the test distribution P te if and only if it is a Markov boundary of Y under the training distribution P tr.
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+Remark A.1. The main difference between Theorem 3.1 and Theorem A.3 is the requirement on the performance metric M. The Markov boundary is the minimal and optimal predictor if M is chosen as maximizing P te(Y |X). However, for regression problems with the mean squared loss and binary classiﬁcation problems with the cross-entropy loss, EP te [Y |X] is optimal in the test distribution P te.
+As a result, compared with the Markov boundary, the minimal stable variable set can bring two advantages.
+1. The conditional independence test is the crux to the precise discovery of the Markov boundary. Shah & Peters (2020) have shown that conditional independence is a particularly challenging hypothesis to test for, which highlights the challenges of discovering the Markov boundary in real-world tasks. However, discovering the minimal stable variable set is relatively easier and proved possible in this paper.
+2. In several common machine learning tasks, including regression and binary classiﬁcation, not all variables in the Markov boundary are necessary. As shown in Example A.1, if a variable only affects the variance of the response variable Y , it would not be useful to predict Y when adopting mean squared loss. The minimal stable variable set is proved to be a subset of the Markov boundary and it excludes useless variables in the Markov boundary for covariate-shift generalization.
+In addition, since the precise discovery of the Markov boundary is challenging, independence-driven IW algorithms would hopefully provide a proper approximation of the Markov boundary, which could be of independent interest.
+A.2. Related Works on Causal Discovery and Markov Boundary
+Causal literature can be categorized into two frameworks, namely the potential outcome (Rosenbaum & Rubin, 1983; Holland, 1986; Rubin, 2005; Imbens & Rubin, 2015; Johansson et al., 2016; Zou et al., 2019; 2020) and the structural causal model framework (Pearl, 2014). The deﬁnition of the minimal stable variable set in this work is closely related to the Markov boundary, which falls into the structural causal model framework. Traditional causal discovery literature aims to discover the causal relationship between all variables. Typical methods include constraint-based (Spirtes et al., 2000; 2013), scored-based (Chickering, 2002; Huang et al., 2018), and learning-based (Zheng et al., 2018; 2020; He et al., 2021) methods.
+Markov blankets and Markov boundary (Pearl, 2014) are the cores of local causal discovery. Under the intersection assumption (Pearl, 2014), the Markov boundary is proved unique and the discovery algorithms include (Tsamardinos & Aliferis, 2003; Tsamardinos et al., 2003a;b; Mani & Cooper, 2004; Aliferis et al., 2010a;b; Pena et al., 2007). Moreover, Liu et al. (2010a;b); Statnikov et al. (2013) studied the setting when multiple Markov boundaries exist. In this paper, we assume that the probabilities are strictly positive, which is a stronger assumption than the intersection assumption (Pearl, 2014) but is also common in reality (Strobl & Visweswaran, 2016). With this assumption, we can guarantee the uniqueness of the Markov boundary and the minimal stable variable set proposed in this paper.
+Traditional discovery algorithms mainly use the conditional independence test (Fukumizu et al., 2007; Sejdinovic et al., 2013; Strobl et al., 2019). However, Shah & Peters (2020) proved that conditional independence is indeed a particularly difﬁcult hypothesis to test for and there is no free lunch in conditional independence testing, which limits the application of these methods in reality. (Strobl & Visweswaran, 2016) propose a regression-based method to discover Markov boundaries, which is mostly closed to us. They proved that their method could ﬁnd a subset of the Markov boundary but did not discuss the detailed properties of the subset. Here we further demonstrate that under ideal conditions, independence-driven IW algorithms could identify the exact subset of variables, i.e., the minimal stable variable set.
+B. More Experimental Details
+Implementation details We use scikit-learn1 for mutual information based (MI), correlation based (Correlation), gradient boosting (GB), random forest (RF), and LASSO, XGBoost package2 for XGBoost (XGB), and original implementation3 of STG. The hyperparameter search ranges for these baselines are shown in Table 1.
+For independence-driven IW algorithms, i.e., DWR, and SRDO, the feature scores are calculated as the absolute values of WLS coefﬁcients. To be speciﬁc, for the DWR algorithm, following Kuang et al. (2020a), we learn sample weights
+1https://scikit-learn.org 2https://xgboost.readthedocs.io/en/stable/ 3https://github.com/runopti/stg
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+w = {wi}ni=1 by
+
+2
+
+n
+
+2
+
+n
+
+w = arg min
+
+Cov(Xi, Xj; w) + λ1 ·
+
+wi − 1 + λ2 · wi2.
+
+(23)
+
+w∈Rn 1≤i,j≤d,i=j
+
+i=1
+
+i=1
+
+Here Cov(Xi, Xj; w) denotes the empirical covariance of Xi and Xj with sample weights w. Equation (23) is optimized by the Adam algorithm (Kingma & Ba, 2014) with a learning rate of 0.001. For the SRDO algorithm, we implement it according to the ofﬁcial code4. In detail, an MLP classiﬁer (two hidden layers with sizes 30 and 10, respectively) is utilized to discriminate between the training distribution P tr(X) and the weighted distribution P tr(X1)P tr(X2) . . . P tr(Xd). We adopt the binary cross-entropy loss and the Adam algorithm with a learning rate of 0.001. To further restrict the range of learned sample weights, we clip the weights to [1/γ, γ]. The search ranges of the hyperparameters are shown in Table 1.
+We run each model 5 times on various training datasets. In each run, we train feature selection models and get the top 5 features selected by the algorithms. We then train an MLP regressor on these features to predict Y . The MLP adopted here has two hidden layers with sizes 5 and 5, respectively. The optimizer is the Adam algorithm with a learning rate of 0.001. All MLPs in our paper adopt the ReLU activation function.
+
+Table 1. Hyperparameter search ranges of the methods.
+
+Method
+
+Hyperparameters
+
+Mutual information based (MI) Correlation based (Correlation)
+Gradient boosting (GB) XGBoost (XGB)
+Random forests (RF) OLS
+LASSO STG DWR SRDO
+
+n neighbors ∈ {3, 5, 10, 20} N/A
+n estimators ∈ {50, 100, 200}, max depth ∈ {6, 8, 10} n estimators ∈ {50, 100, 200}, max depth ∈ {6, 8, 10} n estimators ∈ {50, 100, 200}, max depth ∈ {6, 8, 10}
+N/A α ∈ {0.0003, 0.001, 0.01, 0.1} λ ∈ {0.001, 0.01, 0.1, 1.0, 10.0} λ1 ∈ {0.02, 0.05, 0.1}, λ2 ∈ {0.02, 0.05, 0.1}
+γ ∈ {5, 10, 20}
+
+RMSE RMSE RMSE
+
+YMLP
+0.6
+
+Ypoly
+0.6
+
+0.4
+
+0.4
+
+0.2
+
+0.2
+
+1 2 3 4 5 6 7 8 9 10
+
+1 2 3 4 5 6 7 8 9 10
+
+# of selected features
+
+# of selected features
+
+(a) rtr = 1.5
+
+YMLP
+0.6
+
+Ypoly
+0.6
+
+0.4
+
+0.4
+
+0.2
+
+0.2
+
+1 2 3 4 5 6 7 8 9 10
+
+1 2 3 4 5 6 7 8 9 10
+
+# of selected features
+
+# of selected features
+
+(b) rtr = 2.0
+
+YMLP
+0.6
+
+Ypoly
+0.6
+
+0.4
+
+0.4
+
+0.2
+
+0.2
+
+1 2 3 4 5 6 7 8 9 10
+
+1 2 3 4 5 6 7 8 9 10
+
+# of selected features
+
+# of selected features
+
+(c) rtr = 3.0
+
+Figure 3. The covariate-shift generalization metrics (RMSE average and standard deviation) w.r.t. the number of selected features. Fix rtr = 1.5, 2.0, 3.0 and the feature ranking lists are provided by SRDO. The minimal stable variable set (5 features) achieves the optimal performance.
+
+Table 2. Feature rankings in Figure 2 and Figure 3.
+
+rtrain
+
+YMLP
+
+Ypoly
+
+1.5 S3, S5, S2, S1, S4, V5, V4, V2, V1, V3 S3, S2, S5, S1, S4, V4, V3, V1, V5, V2 2.0 S3, S5, S2, S1, S4, V5, V4, V3, V2, V1 S3, S2, S5, S1, S4, V4, V3, V1, V2, V5 2.5 S3, S2, S5, S1, S4, V5, V4, V2, V3, V1 S3, S2, S5, S1, S4, V4, V5, V2, V3, V1 3.0 S3, S5, S2, S1, S4, V4, V5, V3, V1, V2 S3, S2, S5, S1, S4, V5, V4, V2, V1, V3
+
+4https://github.com/Silver-Shen/Stable_Linear_Model_Learning
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+The optimality property of the minimal stable variable set We adopt the SRDO method to generate feature rankings in both the YMLP (We only sample one MLP in this experiment.) and Ypoly settings. The feature rankings in different settings are shown in Table 2. We vary rtr to test the covariate-shift generalization metrics w.r.t. the number of selected features. The results are shown in Figure 3. We observe a similar phenomenon as that shown in Figure 2. These empirical results validate the advantage of the minimal stable variable set on covariate-shift generalization.
+C. Omitted Proofs
+C.1. Proof of Theorem 3.1 Lemma C.1. Under Assumption 2.1, suppose M is a performance metric that is maximized only when EP tr [Y |X] is estimated accurately and L is a learning algorithm that can approximate any conditional expectation. Suppose S ⊆ X is a subset of variables, then
+1. S is an optimal predictor of Y if and only if it is a stable variable set of Y under distribution P tr, and 2. S is a minimal and optimal predictor of Y if and only if it is a minimal stable variable set of Y under distribution P tr.
+Proof of Lemma C.1. We omit the subscript of EP tr [·|·] for simplicity. Consider the ﬁrst part. On the one hand, if S is a stable variable set of Y , then E[Y |X] = E[Y |S] by deﬁnition. Hence S is an optimal predictor because E[Y |X] = E[Y |S] can be approximated perfectly by L and M will be maximized. On the other hand, assume S is an optimal predictor but not a stable variable set, which implies that E[Y |S] = E[Y |X]. X is a stable variable set by deﬁnition. Hence, By ﬁrst part of the proof, X is an optimal predictor of Y , similar to S. Therefore, the following should hold: E[Y |X] = E[Y |S], which contradicts the assumption that S is not a stable variable set. As a result, S is a stable variable set of Y . Consider the second part. On the one hand, if S is a minimal stable variable set of Y , then it is also a stable variable set of Y . So S is an optimal predictor. Moreover, by the deﬁnition of the minimal stable variable set, no proper subset of S is a stable variable set of Y . Therefore, no proper subset of S satisﬁes the deﬁnition of an optimal predictor. Thus, S is a minimal and optimal predictor of Y . On the other hand, assume S is a minimal and optimal predictor of Y . Then, S is also an optimal predictor of Y, which implies that S is a stable variable set of Y . By the deﬁnition of minimality, no proper subset of S is a minimal and optimal predictor. Hence, no proper subset of S is a stable variable set of Y . As a result, S is a minimal stable variable of Y .
+Now we prove the original theorem.
+Proof of Theorem 3.1. It is obvious that EP tr [Y |X] = EP te [Y |X] from Assumption 1.1. As a result, the original theorem is proved according to Lemma C.1.
+C.2. Proof of Theorem 3.2 The proof is based on the following intersection property. Lemma C.2. Under Assumption 2.1, if S1, S2 ∈ Stable(Y ), then S1 ∩ S2 ∈ Stable(Y ).
+Proof of Lemma C.2. Let S = S1 ∩ S2, S¯ 1 = S1\S, S¯ 2 = S2\S, and X¯ = X\(S1 ∪ S2). Then X = (S, S¯ 1, S¯ 2, X¯ ). By deﬁnition, ∀s ∈ S, s¯1 ∈ S¯1, s¯2 ∈ S¯2, x¯ ∈ X¯, E[Y |S = s, S¯ 1 = s¯1] = E[Y |S = s, S¯ 2 = s¯2] = E[Y |S = s, S¯ 1 =
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+s¯1, S¯ 2 = s¯2, X¯ = x¯]. Let x = (s, s¯1, s¯2, x¯). Under Assumption 2.1,
+
+E[Y |S = s]
+
+= yP tr(Y = y|S = s)dy
+Y
+
+=
+
+yP tr(Y = y|S = s, S¯ 1 = s¯1)P tr(S¯ 1 = s¯1|S = s)ds¯1dy
+
+Y S¯1
+
+= E[Y |S = s, S¯ 1 = s¯1]P tr(S¯ 1 = s¯1|S = s)ds¯1
+S¯1
+
+=E[Y |S = s, S¯ 2 = s¯2] P tr(S¯ 1 = s¯1|S = s)ds¯1
+S¯1
+=E[Y |S = s, S¯ 2 = s¯2] = E[Y |S = s, S¯ 1 = s¯1, S¯ 2 = s¯2, X¯ = x¯] = E[Y |X = x].
+
+As a result, S ∈ Stable(Y ).
+
+Now we prove the original theorem.
+
+Proof of Theorem 3.2. We ﬁrst prove the uniqueness of the minimal stable variable set. Suppose there are two minimal stable variable sets w.r.t. Y , denoted as MinStable1(Y ) and MinStable2(Y ). By deﬁnition, MinStable1(Y ), MinStable2(Y ) ∈ Stable(Y ). Under Assumption 2.1, according to Lemma C.2, MinStable1(Y ) ∩ MinStable2(Y ) ∈ Stable(Y ). Because MinStable1(Y ) has no proper subset that is in Stable(Y ), we have MinStable1(Y ) ∩ MinStable2(Y ) = MinStable1(Y ). Similarly, MinStable1(Y ) ∩ MinStable2(Y ) = MinStable2(Y ), which means MinStable1(Y ) = MinStable2(Y ).
+Next, we prove the exact form of the stable variable sets. Let
+
+Ω = {S ⊆ X | MinStable(Y ) ⊆ S}.
+
+On the one hand, ∀S ∈ Stable(Y ), according to Lemma C.2, S ∩ MinStable(Y ) ∈ Stable(Y ). Because of the minimality of MinStable(Y ), |S ∩ MinStable(Y )| ≥ | MinStable(Y )|. As a result, MinStable(Y ) ⊆ S and S ∈ Ω. Hence Stable(Y ) ⊆ Ω.
+
+On the other hand, ∀S ∈ Ω, let D = MinStable(Y ), W = S\D, and X¯ = X\S. Then ∀d ∈ D, w ∈ W, s = (d, w), we can get
+
+E[Y |S = s] = yP tr(Y = y|D = d, W = w)dy
+Y
+
+=
+
+yP tr(Y = y|D = d, W = w, X¯ = x¯)P tr(X¯ = x¯|D = d, W = w)dx¯dy
+
+Y X¯
+
+= P tr(X¯ = x¯|D = d, W = w)E[Y |D = d, W = w, X¯ = x¯]dx¯
+X¯
+
+= P tr(X¯ = x¯|D = d, W = w)E[Y |D = d]dx¯
+X¯
+
+=E[Y |D = d] P tr(X¯ = x¯|D = d, W = w)dx¯
+X¯
+=E[Y |D = d] = E[Y |X = x].
+
+As a result, S satisﬁes the requirement of stable variable sets and S ∈ Stable(Y ). Hence Ω ⊆ Stable(Y ).
+
+To conclude, Stable(Y ) ⊆ Ω and Ω ⊆ Stable(Y ), which results in Ω = Stable(Y ).
+
+C.3. Proof of Theorem 5.1
+We need the following lemma ﬁrst. Lemma C.3. Let w ∈ W be a weighting function, and P˜w be the corresponding weighted distribution. Then P˜w(Y |X) = P tr(Y |X).
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+Proof of Lemma C.3. ∀x ∈ X , y ∈ Y,
+
+P˜w (Y
+
+= y|X
+
+= x) =
+
+P˜w(Y = y, X = x) P˜w(X = x)
+
+=
+
+P tr(Y = y, X y P˜w(X, Y
+
+= x)w(x) = y )dy
+
+P tr(Y = y, X = x)w(x) =
+w(x) y P tr(X = x, Y = y )dy
+
+=
+
+P tr(Y = y, X = x) P tr(X = x)
+
+= P tr(Y
+
+= y|X
+
+= x).
+
+Now we prove the original theorem.
+
+Proof of Theorem 5.1. Let X−i denote variables other than Xi and X−i denote the support of X−i.
+
+Given Xi ∈ MinStable(Y ), there exists a function f : X−i → Y such that EP tr(X,Y )[Y |X] = f (X−i). According
+
+to Lemma C.3, EP˜w(X,Y )[Y |X] = EP tr(X,Y )[Y |X] = f (X−i). As a result, because EP tr(X)
+
+w(X )
+
+X
+
+2 2
+
+< ∞ and
+
+EP tr(X,Y ) w(X)Y 2 < ∞, the covariance between Xi and Y under P˜w is
+
+CovP˜w [XiY ] =EP˜w(Xi,Y )[XiY ] − EP˜w(Xi)[Xi]EP˜w(Y )[Y ]
+
+=EP˜w(X) XiEP˜w(X,Y )[Y |X] − EP˜w(Xi)[Xi]EP˜w(X) EP˜w(X,Y )[Y |X]
+
+=EP˜w(X)[Xif (X−i)] − EP˜w(Xi)[Xi]EP˜w(X−i) [f (X−i)] = 0.
+
+The last equation is due to the independence between Xi and X−i in the weighted distribution P˜w. As a result, the
+
+coefﬁcient βw(Xi) is
+
+βw(Xi) = VarP˜w (Xi)−1 CovP˜w [XiY ] = 0.
+
+C.4. Proof of Theorem 5.2
+
+Proof. Let X−i denote the rest variable except Xi and P−tri denote the marginal distribution of P tr on X−i. Because Xi ∈ MinStable(Y ), EP tr(X,Y )[Y |X] depends on Xi. Hence, there exists a probability density function P˜−i with the same
+support of P−tri that satisﬁes
+
+1. X−i are mutually independent under P˜−i, and 2. g(Xi) EP˜−i(X−i)[EP tr(X,Y ) [Y |X−i, Xi]] depends on Xi.
+
+Moreover, there exist a probability density function P˜i with the same support of Pitr that satisﬁes g(Xi) is linearly correlated with Xi under P˜i.
+
+Let P˜ be the joint distribution on (X, Y ) and P˜(X−i, Xi, Y ) = P˜−i(X−i)P˜i(Xi)P tr(Y |X). Hence,
+
+EP˜(Xi,Y )[Y |Xi] = EP˜−i(X−i)[EP tr(X,Y ) [Y |X−i, Xi]] = g(Xi).
+Let w(X) = P˜(X)/P tr(X). Because EP tr(X,Y )[Y |X] depends on Xi, VarP tr (Xi) > 0. Hence, VarP˜ (Xi) > 0. As a result, the coefﬁcient on Xi is
+
+βw (Xi ) 1
+= VarP˜i (Xi) 1
+= VarP˜i (Xi) 1
+= VarP˜i (Xi) 1
+= VarP˜i (Xi)
+
+EP tr(X,Y )[w(X)XiY ] − EP tr(X)[w(X)Xi]EP tr(X,Y )[w(X)Y ] EP˜(Xi,Y )[XiY ] − EP˜(Xi)[Xi]EP˜(Y )[Y ] EP˜(Xi) XiEP˜(Xi,Y )[Y |Xi] − EP˜i(Xi)[Xi]EP˜i(Xi) EP˜(Xi,Y )[Y |Xi] EP˜i(Xi)[Xig(Xi)] − EP˜i(Xi)[Xi]EP˜i(Xi)[g(Xi)] = 0.
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+C.5. Proof of Theorem 5.3
+
+We observe that
+
+βˆ wˆ − βw
+
+2
+≤
+
+2
+
+βˆ wˆ − βwˆ
+
++
+2
+
+βwˆ − βw
+
+2
+
+2
+
+≤2
+
+βˆ wˆ − βwˆ
+
+2
++
+2
+
+βwˆ − βw
+
+2 2
+
+=2
+
+Σ−wˆ1/2Σ1wˆ/2 βˆ wˆ − βwˆ
+
+2
++
+2
+
+βwˆ − βw
+
+2 2
+
+≤2
+
+Σw−ˆ 1/2
+
+2 2
+
+Σ1wˆ/2
+
+βˆ wˆ − βwˆ
+
+2
++
+2
+
+βwˆ − βw
+
+2 2
+
+=2
+
+Σ−wˆ1 2
+
+βˆ wˆ − βwˆ
+
+2
++
+Σwˆ
+
+βwˆ − βw
+
+2 2
+
+We analyze the upper bounds of the terms in the above equation and the ﬁrst part of the claim follows from Proposition C.4, Proposition C.5, and Proposition C.6. Furthermore, the second part of the claim is then straightforward from Theorem 5.1 and Theorem 5.2.
+
+C.5.1. ERROR CAUSED BY WLS FROM FINITE SAMPLES
+
+Proposition C.4. Suppose Assumption 5.4 (with parameter Λw) and Assumption 5.5 (with parameter ) hold. Then
+
+Σ−wˆ1 2 ≤ 1/ Λw −
+
+E[
+
+X
+
+4 2
+
+]
+
+.
+
+Proof. Let ∆w(X) wˆ(X) − w(X) and ∆Σ = E ∆w(X)XXT .
+
+∆Σ 2
+
+= sup ∆Σ · c 2 = sup E ∆w(X)XXT c
+
+c 2=1
+
+c 2=1
+
+2
+
+≤ sup E ∆w(X) XXT c 2
+c 2=1
+
+(triangle inequality of norms)
+
+≤ sup
+
+E [∆w(X)2] E
+
+XXT c
+
+2 2
+
+c 2=1
+
+(Cauchy–Schwarz inequality)
+
+= sup
+
+E
+
+XXT c
+
+2 2
+
+c 2=1
+
+(E ∆w(X)2 = )
+
+≤
+
+E
+
+sup
+
+XXT c
+
+2 2
+
+c 2=1
+
+(sup E[·] ≤ E[sup ·])
+
+=
+
+E[
+
+X
+
+4 2
+
+]
+
+As a result, according to Weyl’s theorem (Horn & Johnson, 2012), Assumption 5.4, and Assumption 5.5,
+
+Therefore,
+
+λmin (Σwˆ) = λmin (Σw + ∆Σ) ≥ Λw − ∆Σ 2 ≥ Λw −
+
+E[
+
+X
+
+4 2
+
+]
+
+>
+
+0.
+
+Σ−wˆ 1
+
+1 2 = λmin (Σwˆ) ≤ Λw −
+
+1
+
+E[
+
+X
+
+4 2
+
+]
+
+Proposition C.5. Suppose Assumption 5.1 (with parameter B), Assumption 5.2 (with parameter Cw), Assumption 5.3 (with parameter σ), Assumption 5.4 (with parameter Λw), Assumption 5.5 (with parameter ), and Assumption 5.6 (with
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+parameter δwˆ) hold. Then there exist constants ρwˆ, bwˆ, σwˆ > 0 such that weighting function wˆ satisﬁes Condition D.1 (with parameter ρwˆ), Condition D.2 (with parameter bwˆ), and Condition D.3 (with parameter σwˆ) and
+
+
+
+  
+
+ρwˆ
+
+≤
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ bwˆ ≤          σwˆ ≤
+
+√
+
+δwˆ B
+
+,
+
+d Λw −
+
+E[
+
+X
+
+4 2
+
+]
+
+δwˆ Cw B
+
+,
+
+d Λw −
+
+E[
+
+X
+
+4 2
+
+]
+
+δwˆ σ.
+
+Furthermore, pick any t > max{0, 2.6 − log d}, let
+
+n ≥ 6δwˆB2(log d + t) . Λw − E [ X 42]
+
+Then with probability at least 1 − 3e−t,
+
+√
+
+βˆ wˆ − βwˆ
+
+2 ≤ 2δwˆσ2(d + 2
+
+Σwˆ
+
+n
+
+td + 2t) + 4δwˆB2E wˆ(X)approxw(X)2 n Λw − E [ X 42]
+
+√2 1 + 8t + o(1/n)
+
+√
+
+≤ 2δwˆσ2(d + 2
+
+td + 2t) +
+
+4δwˆB2Cw2 (1 + )
+
+√2 1 + 8t + o(1/n).
+
+n
+
+n Λw −
+
+E[
+
+X
+
+4 2
+
+]
+
+Proof. Based on Assumption 5.1, Assumption 5.4, Assumption 5.5, and Assumption 5.6, according to Proposition C.4,
+
+almost surely,
+
+wˆ(X) Σ−wˆ1/2X √
+
+√ δwˆ
+2≤
+
+d
+
+Σ−wˆ 1/2 √
+
+2
+
+d
+
+X2 ≤
+
+√ δwˆ B
+
+d Λw −
+
+E[
+
+X
+
+4 2
+
+]
+
+Based on Assumption 5.1, Assumption 5.2, Assumption 5.4, Assumption 5.5, and Assumption 5.6, according to Proposition C.4, almost surely,
+
+wˆ(X )
+
+Σ−wˆ 1/2 approxw (X )X √
+
+2
+
+≤
+
+δwˆ CwB Σw−ˆ1/2 √
+
+≤
+
+d
+
+d
+
+δwˆ Cw B d Λw − E [ X 42]
+
+Based on Assumption 5.3 and Assumption 5.6, almost surely, ∀η ∈ R, E exp η wˆ(X)noise(X) X ≤ exp η2wˆ(X)σ2/2 ≤ exp η2
+
+2
+δwˆσ /2 .
+
+Because
+
+E wˆ(X)approxw(X)2 ≤ Cw2 E [|wˆ(X)|] ≤ Cw2 (E[w(X)] + E[|w(X) − wˆ(X)|]) ≤ Cw2 1 + E (w(X) − wˆ(X))2 = Cw2 (1 + ).
+
+Now the claim follows from Theorem D.1. Theorem D.1 provides the non-asymptotic property of WLS and we analyze it in detail in Section D.
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+C.5.2. ERROR CAUSED BY IMPERFECTLY LEARNED WEIGHTS Proposition C.6. Suppose Assumption 5.4 (with parameter Λw) and Assumption 5.5 (with parameter ) hold. Then
+
+βwˆ − βw
+
+2≤
+
+Σw
+
+Λw −
+
+2 βw 2 E [ X 42]
+
+E [ X 42] +
+
+E[ XY
+
+2 2
+
+]
+
+Σw 2
+
+E[w(X)XY ] 2
+
+Proof. Let ∆w(X) wˆ(X) − w(X) and ∆b E [∆w(X)XY ]. We can prove that
+
+∆b 2 = E [∆w(X)XY ] 2 ≤ E [∆w(X) XY 2]
+
+(triangle inequality of norms)
+
+≤ E[∆w(X)2]E [ XY 22] (Cauchy–Schwarz inequality)
+
+= E [ XY 22]
+
+(E ∆w(X)2 = )
+
+In addition, Σwβw = E[w(X)XY ] and (Σw + ∆Σ)βwˆ = E[w(X)XY ] + ∆b. As a result, according to Lemma E.1 and
+
+Proposition C.4,
+
+βwˆ − βw βw 2
+
+2
+
+≤
+
+Σw 2 1 − Σ−w1
+
+Σ−w1 2 2 ∆Σ
+
+2
+
+∆Σ 2 +
+
+∆b 2
+
+Σw 2 E[w(X)XY ] 2
+
+≤
+
+Σw 2
+
+Λw − E [ X 42]
+
+E[
+
+X
+
+4 2
+
+]
+
++
+
+E [ XY 22]
+
+Σw 2
+
+E[w(X)XY ] 2
+
+C.6. Proof of Proposition A.1 The proof is based on the following lemma. Lemma C.7 (Intersection Property). Under Assumption 2.1, let V 1, V 2, and S be subset of X. Then,
+Y ⊥ V 1 | (S ∪ V 2) & Y ⊥ V 2 | (S ∪ V 1) =⇒ Y ⊥ (V 1 ∪ V 2) | S.
+
+The proof of Lemma C.7 can be found in (Pearl, 2014, Section 3.1.2). Now we prove the original theorem.
+
+Proof of Proposition A.1. According to Statnikov et al. (2013), if the distribution P tr satisﬁes the intersection property, then there exists a unique Markov boundary of Y .
+Next we prove the exact form of the Markov blankets. On the one hand, from Lemma C.7, we can know that under Assumption 2.1, if S1 and S2 are Markov blankets of Y , so does S1 ∩ S2. As a result, for any S ∈ BL(Y ), we have S ∩ BD(Y ) ∈ BL(Y ). Because BD(Y ) is the minimal element in BL(Y ), we have |S ∩ BD(Y )| ≥ | BD(Y )|. Hence, BD(Y ) ⊆ S.
+On the other hand, for any S that satisﬁes BD(Y ) ⊆ S ⊆ X. Let V = X\S and W = S\ BD(Y ). Then
+
+P tr(Y, V
+
+|S)
+
+P tr(Y, V =
+
+, BD(Y ), W )
+
+=
+
+P tr(Y, V
+
+, W | BD(Y
+
+))P tr(BD(Y ))
+
+P tr(S)
+
+P tr(S)
+
+P tr(Y | BD(Y ))P tr(V , W | BD(Y ))P tr(BD(Y ))
+
+=
+
+P tr(S)
+
+P tr(Y | BD(Y ))P tr(V , W , BD(Y )) =
+P tr(S)
+
+P tr(Y =
+
+| BD(Y
+
+))P tr(V
+
+, S)
+
+=
+
+P tr(Y
+
+|S)P tr(V
+
+|S).
+
+P tr(S)
+
+As a result, Y ⊥ V | S and S is a Markov blanket of Y . To conclude, BL(Y ) = {S ⊆ X | BD(Y ) ⊆ S}.
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+C.7. Proof of Theorem A.2
+Proof. ∀S ∈ BL(Y ), Y ⊥ (X\S) | S. Hence E[Y |X] = E[Y |S] and S ∈ Stable(Y ), which implies BL(Y ) ⊆ Stable(Y ). Therefore, ∀S ∈ BL(Y ), S ∈ Stable(Y ). According to Theorem 3.2, MinStable(Y ) ⊆ S. In particular, let S = BD(Y ) ∈ BL(Y ) and we have MinStable(Y ) ⊆ BD(Y ).
+
+C.8. Proof of Theorem A.3
+The proof is based on the following proposition. Proposition C.8 (Statnikov et al. (2013); Strobl & Visweswaran (2016)). Suppose M is a performance metric that is maximized only when P (Y |X) is estimated accurately and L is a learning algorithm that can approximate any conditional probability distribution. Suppose S ⊆ X is a subset of variables, then
+1. S is a Markov blanket of Y if and only if it is an optimal predictor of Y , and 2. S is a Markov boundary of Y if and only if it is a minimal and optimal predictor of Y .
+
+Now we can prove the original theorem.
+
+Proof of Theorem A.3. We use BLtest and BDtest to denote the Markov blankets and Markov boundary in the test distribution. We ﬁrst prove that BLtest(Y ) = BL(Y ) and BDtest(Y ) = BD(Y ).
+Suppose S is a Markov blanket under the training distribution P tr. Let V = X\S. Under Assumption 1.1 and Assumption 2.1, ∀v ∈ V, s ∈ S, y ∈ Y,
+P te(Y = y|V = v, S = s) = P tr(Y = y|V = v, S = s) = P tr(Y = y|S = s).
+
+Hence,
+
+P te(Y = y|S = s)
+
+= P te(Y = y|V = v , S = s)P te(V = v |S = s)dv
+V
+= P tr(Y = y|S = s)P te(V = v |S = s)dv
+V
+=P tr(Y = y|S = s) = P te(Y = y|V = v, S = s).
+As a result, S is a Markov blanket under P te, which implies BL(Y ) ⊆ BLtest(Y ). With similar calculations, we can show that BLtest(Y ) ⊆ BL(Y ), which ﬁnally shows that BLtest(Y ) = BL(Y ). Because Markov boundary is the minimal element of the set of Markov blankets, we can get that BDtest(Y ) = BD(Y ).
+
+Now the claim follows from Proposition C.8.
+
+D. Non-asymptotic Property of WLS
+
+D.1. Main Result
+Condition D.1 (Bounded statistical leverage). For a weighting function w ∈ W, there exists a ﬁnite constant ρw ≥ 1, such that, in the training distribution P tr, almost surely,
+
+w(X) Σ−w1/2X
+
+√
+
+2 ≤ ρw.
+
+d
+
+Condition D.2 (Bounded approximation error). For a weighting function w ∈ W, there exists a ﬁnite constant bw ≥ 0 such that, in the training distribution P tr, almost surely,
+
+w(X )
+
+Σ−w 1/2 approxw (X )X √
+
+2 ≤ bw.
+
+d
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+Condition D.3 (Noise). For a weighting function w ∈ W, there exists a ﬁnite constant σw ≥ 0 such that, in the training distribution P tr, almost surely,
+
+∀η ∈ R,
+
+E exp η
+
+w(X )noise(X )
+
+X ≤ exp
+
+η2σw2 2
+
+.
+
+Theorem D.1. For a weighting function w ∈ W. Pick any t > max{0, 2.6 − log d}. Suppose w satisﬁes Condition D.1 (with parameter ρw), Condition D.2 (with parameter bw), and Condition D.3 (with parameter σw) and that
+
+n ≥ 6ρ2wd(log d + t).
+
+With probability at least 1 − 3e−t,
+
+βˆ w − βw 2
+
+2σw2 ≤
+
+Σw
+
+√ d + 2 td + 2t
+n
+
++
+
+4ρ2w d
+
+·
+
+E[w(X)approxw(X)2] (1
+
++
+
+√ 8t)2
+
++
+
+o(1/n).
+
+n
+
+Remark D.1. The constant bw only appears in o(1/n) terms.
+
+D.2. Proof
+
+The main scope of the proof follows Hsu et al. (2014), which provides the non-asymptotic properties of OLS and ridge regression. We further adapt it to the WLS here. We use E[·] to denote EP tr [·] throughout the section.
+
+Let β¯ w Σˆ −w1Eˆ[w(X)XE[Y |X]].
+
+Then
+
+βˆ w − βw 2 ≤
+Σw
+
+2
+
+β¯ w − βˆ w
+
++
+Σw
+
+β¯ w − βw
+
+Σw
+
+≤2
+
+β¯ w − βˆ w
+
+2
++
+Σw
+
+β¯ w − βw
+
+2 Σw
+
+We analyze the two terms
+
+β¯ w − βˆ w
+
+2
+and
+Σw
+
+β¯ w − βw
+
+2 Σw
+
+separately
+
+and
+
+the
+
+result
+
+is
+
+a
+
+straightforward
+
+combination
+
+of
+
+Proposition D.2, Proposition D.4, and Proposition D.5. We ﬁrst deﬁne the following ∆.
+
+∆ Σ−w1/2(Σˆ w − Σw)Σ−w1/2,
+
+D.2.1. EFFECT OF ERRORS IN Σˆ w
+Proposition D.2 (Spectral norm error in Σˆ w). Suppose w satisﬁes Condition D.1 (with parameter ρw) holds. Pick t > max{0, 2.6 − log d}. With probability at least 1 − e−t,
+
+∆ 2≤
+
+4ρ2w d(log
+
+d
+
++
+
+t)
+
++
+
+2ρ2w d(log
+
+d
+
++
+
+t) .
+
+n
+
+3n
+
+Proof. First, deﬁne X˜
+
+w(X)Σ−w1/2X and let Z X˜ X˜ T − I = Σ−w1/2 w(X)XXT − Σw Σ−w1/2.
+
+So ∆ = Eˆ[Z]. Observe that E[Z] = 0, and
+
+Z
+
+2 = max{λmax(Z), λmax(−Z)} ≤ max{
+
+X˜
+
+2 2
+
+,
+
+1}
+
+≤
+
+ρ2w d.
+
+Here the second inequality is based on Condition D.1. Moreover,
+
+E Z2 = E
+
+X˜ X˜ T 2 − I = E
+
+X˜
+
+2 2
+
+X˜ X˜ T
+
+− I.
+
+As a result,
+
+λmax E Z2
+
+≤ λmax E
+
+X˜
+
+2 2
+
+X˜ X˜ T
+
+≤ ρ2wd · λmax(I) ≤ ρ2wd,
+
+tr E Z2
+
+≤ tr E
+
+X˜
+
+2 2
+
+X˜ X˜ T
+
+≤ ρ2wd · tr(I) = ρ2wd2.
+
+The proposition now follows from Lemma E.2.
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+Proposition D.3 (Relative spectral norm error in Σˆ w (Hsu et al., 2014)). If ∆ 2 < 1, then
+
+Σ1w/2Σˆ −w1Σ1w/2
+
+1 ≤ 2 1− ∆
+
+.
+2
+
+Proof. Observe that,
+
+Σ−w1/2Σˆ wΣ−w1/2 = Σ−w1/2 Σw + Σˆ w − Σw Σ−w1/2 = I + ∆,
+
+and according to the assumption ∆ 2 < 1 and Weyl’s theorem (Horn & Johnson, 2012), we have
+
+λmin (I + ∆) ≥ 1 − ∆ 2 > 0.
+
+Therefore, Σ1w/2Σˆ −w1Σ1w/2 = λmax
+2
+
+−1
+Σ−w1/2Σˆ wΣ−w1/2
+
+= λmax
+
+(I + ∆)−1
+
+1
+
+1
+
+=
+
+≤
+
+.
+
+λmin (I + ∆) 1 − ∆ 2
+
+D.2.2. EFFECT OF APPROXIMATION ERROR
+
+Proposition D.4. Suppose w satisﬁes Condition D.1 (with parameter ρw) and Condition D.2 (with parameter bw) hold. Pick any t > 0. If ∆ 2 < 1, then
+
+β¯ w − βw
+
+Σw
+
+≤
+
+1 1− ∆
+
+2
+
+Eˆ [w(X )approxw (X )X ]
+
+.
+Σ− w1
+
+Moreover, with probability at least 1 − e−t,
+
+Eˆ[w(X)approxw(X)X] Σ− w1 ≤ ≤
+
+E
+
+Σ−w 1/2 w(X )approxw (X )X
+
+2 2
+
+√
+
+(1
+
++
+
+√ 8t)
+
++
+
+4bw t
+
+d
+
+n
+
+3n
+
+√
+
+ρ2w d
+
+·
+
+E[w(X)approxw(X)2] (1
+
++
+
+√ 8t)
+
++
+
+4bw t
+
+d
+
+n
+
+3n
+
+Proof. By deﬁnition,
+
+β¯ w − βw = Σˆ −w1 Eˆ[w(X)XE[Y |X]] − Σˆ wβw = Σ−w1/2 Σ1w/2Σˆ −w1Σ1w/2 Σ−w1/2 Eˆ[w(X)X( βw, X + approxw(X))] − Σˆ wβw = Σ−w1/2 Σ1w/2Σˆ −w1Σ1w/2 Σ−w1/2Eˆ[w(X)approxw(X)X].
+
+Therefore, with the submultiplicative property of the spectral norm,
+
+β¯ w − βw Σw ≤ Σ1w/2Σ−w1/2 2 Σ1w/2Σˆ −w1Σ1w/2 2 Eˆ [w(X)approxw(X)X] Σ− w1
+
+1 ≤
+1− ∆ 2
+
+Eˆ [w(X )approxw (X )X ]
+
+.
+Σ− w1
+
+Here the last inequality is according to Proposition D.3.
+
+Now prove the second part of the claim. Observe that
+
+E[w(X)approxw(X)X] = E[w(X)X(E[Y |X] − βw, X )] = E [w(X)XE[Y |X]] − E[w(X)X βw, X ] = 0.
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+Therefore,
+
+E Σ−w1/2w(X)approxw(X)X = Σ−w1/2E[w(X)approxw(X)X] = 0.
+
+In addition, according to Condition D.2,
+
+√
+
+Σ−w 1/2 w(X )approxw (X )X
+
+≤ bw
+2
+
+d.
+
+Moreover, by Condition D.1
+
+2
+
+2
+
+E Σ−w1/2w(X)approxw(X)X = E w(X)approxw(X)2 Σ−w1/2 w(X)X ≤ ρ2wd·E[w(X)approxw(X)2].
+
+2
+
+2
+
+The claim now follows from Lemma E.3.
+
+D.2.3. EFFECT OF NOISE
+
+Proposition D.5. Suppose w satisﬁes Condition D.3 (with parameter σw) holds. Pick any t > 0. With probability at least 1 − e−t, either ∆ 2 ≥ 1, or
+
+∆ 2 < 1 and
+
+√
+
+β¯ w − βˆ w
+
+2
+
+1
+
+≤
+
+Σw 1 − ∆
+
+σw2
+2
+
+d + 2 td + 2t n
+
+.
+
+Proof. Observe that
+
+2
+
+2
+
+2
+
+2
+
+β¯ w − βˆ w ≤
+Σw
+
+Σ1w/2Σˆ −w1/2
+2
+
+β¯ w − βˆ w
+
+=
+Σˆ w
+
+Σ1w/2Σˆ −w1Σ1w/2
+2
+
+β¯ w − βˆ w
+
+.
+Σˆ w
+
+According to Proposition D.3, if ∆ 2 < 1, then Σ1w/2Σˆ −w1Σ1w/2 ≤ 1/(1 − ∆ 2).
+2
+
+Let ξ
+
+( w(x(1))noise(x(1)), w(x(2))noise(x(2)), . . . , w(x(n))noise(x(n))) be the random vector and
+
+noise(x(i)) = y(i) − E[Y |X = x(i)] . By the deﬁnition of βˆ w and β¯ w,
+
+β¯ w − βˆ w
+
+2
+=
+Σˆ w
+
+Σˆ −w1/2Eˆ [w(X)X(E[Y |X] − Y )]
+
+2 = ξT Kˆ ξ,
+2
+
+where Kˆ ∈ Rn×n is a symmetric matrix whose (i, j)-th entry is
+
+Kˆi,j 1/n2 Σˆ −w1/2 w(x(i))x(i), Σˆ −w1/2 w(x(j))x(j) .
+
+According to the proof of Lemma 6 (Hsu et al., 2014), the nonzero eigenvalues of Kˆ are the same as those of
+
+1 n
+
+Eˆ
+
+Σˆ −w1/2 w(X)X
+
+Σˆ −w1/2
+
+T
+w(X )X
+
+=
+
+1 n
+
+Σˆ −w1/2Σˆ w
+
+Σˆ −w1/2
+
+=
+
+1 n Id,
+
+where Id is the identity matrix with dimension d. By Lemma E.4, with probability at least 1 − e−t (conditioned on x(1), x(2), . . . , x(n)),
+
+√
+
+ξT Kˆ ξ ≤ σw2
+
+tr(Kˆ ) + 2
+
+tr(Kˆ 2)t + 2 Kˆ t
+2
+
+σw2 ≤
+
+d + 2 td + 2t .
+n
+
+Now the claim follows.
+
+A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization
+
+E. Important lemmas
+Lemma E.1 (Chandrasekaran & Ipsen (1995)). Suppose Ax = b and Aˆxˆ = ˆb. Suppose A−1 A − Aˆ < 1, then
+
+x − xˆ
+
+A A−1
+
+x
+
+≤ 1 − A−1
+
+A − Aˆ
+
+A − Aˆ b − ˆb
+
++
+
+.
+
+A
+
+b
+
+Lemma E.2 (Matrix Bernstein bound (Hsu et al., 2012a)). Let A be a random matrix, and r > 0, v > 0, and k > 0 be such
+
+that, almost surely,
+
+E[A] = 0, λmax(A) ≤ r, λmax E A2 ≤ v, tr E[A2] ≤ vk.
+
+If A1, A2, . . . , An are independent copies of A, then for any t > 0,
+
+1n Pr λmax n Ai >
+i=1
+
+2vt rt +
+
+≤ kt et − t − 1 −1 .
+
+n 3n
+
+If t > 2.6, then t (et − t − 1)−1 ≤ e−t/2.
+
+Lemma E.3 (Vector Bernstein bound (Hsu et al., 2012b)). Let x(1), x(2), . . . , x(n) be independent random vectors such
+
+that
+
+n
+
+2
+
+E x(i) ≤ v and x(i) ≤ r
+
+2
+
+2
+
+i=1
+
+for all i = 1, 2, . . . , n, almost surely. Let s x(1) + x(2) + · · · + x(n). For all t > 0,
+
+Pr
+
+√
+
+√
+
+s 2 > v(1 + 8t) + (4/3)rt
+
+≤ e−t.
+
+Lemma E.4 (Quadratic forms of a sub-Gaussian random vector (Hsu et al., 2012b)). Let ξ be a random vector taking values from Rn such that for some c ≥ 0,
+E [exp( u, ξ )] ≤ exp c u 22/2 , ∀u ∈ Rn.
+For all symmetric positive semideﬁnite matrices K 0, and all t > 0,
+
+Pr ξT Kξ > c tr(K) + 2 tr(K2)t + 2 K 2t ≤ e−t.
+
