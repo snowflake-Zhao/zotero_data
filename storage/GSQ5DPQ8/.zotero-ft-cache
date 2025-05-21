@@ -1,0 +1,1450 @@
+Stable Learning via Sparse Variable Independence
+Han Yu1, Peng Cui1*, Yue He1, Zheyan Shen1, Yong Lin2, Renzhe Xu1, Xingxuan Zhang1
+1Tsinghua University, 2Hong Kong University of Science and Technology yuh21@mails.tsinghua.edu.cn, cuip@tsinghua.edu.cn, heyue18@mails.tsinghua.edu.cn shenzy13@qq.com, ylindf@connect.ust.hk, xrz199721@gmail.com, xingxuanzhang@hotmail.com
+
+arXiv:2212.00992v1 [cs.LG] 2 Dec 2022
+
+Abstract
+The problem of covariate-shift generalization has attracted intensive research attention. Previous stable learning algorithms employ sample reweighting schemes to decorrelate the covariates when there is no explicit domain information about training data. However, with ﬁnite samples, it is difﬁcult to achieve the desirable weights that ensure perfect independence to get rid of the unstable variables. Besides, decorrelating within stable variables may bring about high variance of learned models because of the over-reduced effective sample size. A tremendous sample size is required for these algorithms to work. In this paper, with theoretical justiﬁcation, we propose SVI (Sparse Variable Independence) for the covariate-shift generalization problem. We introduce sparsity constraint to compensate for the imperfectness of sample reweighting under the ﬁnite-sample setting in previous methods. Furthermore, we organically combine independence-based sample reweighting and sparsitybased variable selection in an iterative way to avoid decorrelating within stable variables, increasing the effective sample size to alleviate variance inﬂation. Experiments on both synthetic and real-world datasets demonstrate the improvement of covariate-shift generalization performance brought by SVI.
+1 Introduction
+Most of the current machine learning techniques rely on the IID assumption, that the test and training data are independent and identically distributed, which is too strong to stand in wild environments (Koh et al. 2021). Test distribution often differs from training distribution especially if there is data selection bias when collecting the training data (Heckman 1979; Young et al. 2009). Covariate shift is a common type of distribution shift (Ioffe and Szegedy 2015; Tripuraneni, Adlam, and Pennington 2021), which assumes that the marginal distribution of covariates (i.e. P (X)) may shift between training and test data while the generation mechanism of the outcome variable (i.e. P (Y |X)) remains unchanged (Shen et al. 2021). To address this problem, there are some strands of works (Santurkar et al. 2018; Wilson and Cook 2020; Wang et al. 2021). When some information about the test distribution is known apriori (Peng et al.
+*Corresponding author Copyright © 2023, Association for the Advancement of Artiﬁcial Intelligence (www.aaai.org). All rights reserved.
+
+2019; Yang and Soatto 2020), domain adaptation methods are proposed based on feature space transformation or distribution matching (Ben-David et al. 2010; Weiss, Khoshgoftaar, and Wang 2016; Tzeng et al. 2017a; Ganin and Lempitsky 2015b; Saito et al. 2018). If there exists explicit heterogeneity in the training data, e.g. it is composed of multiple subpopulations corresponding to different source domains (Blanchard et al. 2021; Gideon, McInnis, and Provost 2021), domain generalization methods are proposed to learn a domain-agnostic model or invariant representation (Muandet, Balduzzi, and Scho¨lkopf 2013; Li et al. 2017; Ganin et al. 2016; Li et al. 2018b; Sun and Saenko 2016; He, Shen, and Cui 2021; Zhang et al. 2022a,b). In many real applications, however, neither the knowledge about test data nor explicit domain information in training data is available.
+Recently, stable learning algorithms (Shen et al. 2018, 2020a,b; Kuang et al. 2018, 2020; Zhang et al. 2021; Liu et al. 2021a,b) are proposed to address a more realistic and challenging setting, where the training data consists of latent heterogeneity (without explicit domain information), and the goal is to achieve a model with good generalization ability under agnostic covariate shift. They make a structural assumption of covariates by splitting them into S (i.e. stable variables) and V (i.e. unstable variables), and suppose P (Y |S) remains unchanged while P (Y |V ) may change under covariate shift. They aim to learn a group of sample weights to remove the correlations among covariates in observational data, and then optimize in the weighted distribution to capture stable variables. It is theoretically proved that, under the scenario of inﬁnite samples, these models only utilize the stable variables for prediction (i.e. the coefﬁcients on unstable variables will be perfectly zero) if the learned sample weights can strictly ensure the mutual independence among all covariates (Xu et al. 2022). However, with ﬁnite samples, it is almost impossible to learn weights that satisfy complete independence. As a result, the predictor cannot always get rid of the unstable variables (i.e. the unstable variables may have signiﬁcantly non-zero coefﬁcients). In addition, (Shen et al. 2020a) pointed out that it is unnecessary to remove the inner correlations of stable variables. The correlations inside stable variables could be very strong, thus decorrelating them could sharply decrease the effective sample size, even leading to the variance inﬂation of learned models. Taking these two factors together, the requirement
+
+of a tremendous effective sample size severely restricts the range of applications for these algorithms.
+In this paper, we propose a novel algorithm named Sparse Variable Independence (SVI) to help alleviate the rigorous requirement of sample size. We integrate the sparsity constraint for variable selection and the sample reweighting process for variable independence into a linear/nonlinear predictive model. We theoretically prove that even when the data generation is nonlinear, the stable variables can surely be selected with a sparsity constraint like 1 penalty, if the correlations between stable variables and unstable variables are weak to some extent. Thus we do not require complete independence among covariates. To further reduce the requirement on sample size, we design an iterative procedure between sparse variable selection and sample reweighting to prevent attempts to decorrelate within stable variables. The experiments on both synthetic and real-world datasets clearly demonstrate the improvement of covariate-shift generalization performance brought by SVI.
+The main contributions in this paper are listed below:
+• We introduce the sparsity constraint to attain a more pragmatic independence-based sample reweighting algorithm which improves covariate-shift generalization ability with ﬁnite training samples. We theoretically prove the beneﬁt of this.
+• We design an iterative procedure to avoid decorrelating within stable variables, mitigating the problem of overreduced effective sample size.
+• We conduct extensive experiments on various synthetic and real-world datasets to verify the advantages of our proposed method.
+2 Problem Deﬁnition
+Notations: Generally in this paper, a bold-type letter represents a matrix or a vector, while a normal letter represents a scalar. Unless otherwise stated, X ∈ Rp denotes the covariates with dimension of p, Xd denotes the dth variable in X, and Y ∈ R denotes the outcome variable. Training data is drawn from the distribution P tr(X, Y ) while test data is drawn from the unknown distribution P te(X, Y ). Let X , Xd, Y denote the support of X, Xd, Y respectively.
+S ⊆ X implies S is a subset variables of X with dimension ps. We use A ⊥ B to denote that A and B are statistically independent of each other. We use EQ(·)[·] to denote expectation and EQ(·)[·|·] to denote conditional expectation under distribution Q, which can be chosen as P tr, P te or any other proper distributions.
+In this work, we focus on the problem of covariate shift. It is a typical and most common kind of distribution shift considered in OOD literature.
+Problem 1 (Covariate-Shift Generalization). Given the samples {(Xi, Yi)}Ni=1 drawn from training distribution P tr, the goal of covariate-shift generalization is to learn a prediction model so that it performs stably on predicting Y in agnostic test distribution where P te(X, Y ) = P te(X)P tr(Y |X).
+
+To address the covariate-shift generalization problem, we deﬁne minimal stable variable set (Xu et al. 2022).
+Deﬁnition 2.1 (Minimal stable variable set). A minimal stable variable set of predicting Y under training distribution P tr is any subset S of X satisfying the following equation, and none of its proper subsets satisﬁes it.
+
+EP tr [Y |S] = EP tr [Y |X].
+
+(1)
+
+Under strictly positive density assumption, the minimal
+stable variable set S is unique. In the setting of covariate shift where P tr(X) = P te(X), relationships between S
+and X\S can arbitrarily change, resulting in the unstable
+correlations between Y and X\S. Demonstrably, according
+to (Xu et al. 2022), S is a minimal and optimal predictor of Y under test distribution P te if and only if it is a minimal stable variable set under P tr. Hence, in this paper, we intend
+to capture the minimal stable variable set S for stable pre-
+
+diction under covariate shift. Without ambiguity, we refer to S as stable variables and V = X\S as unstable variables
+
+in the rest of this paper.
+
+3 Method
+3.1 Independence-based sample reweighting
+First, we deﬁne the weighting function and the target distribution that we want the training distribution to be reweighted to.
+Deﬁnition 3.1 (Weighting function). Let W be the set of weighting functions that satisfy
+
+W=
+
+w
+
+:
+
+X
+
+→
+
++
+R
+
+|
+
+EP tr(X)[w(X)]
+
+=
+
+1
+
+.
+
+(2)
+
+Then ∀w ∈ W, the corresponding weighted distribution is P˜w(X, Y ) = w(X)P tr(X, Y ). P˜w is well deﬁned with the same support of P tr.
+
+Since we expect that variables are decorrelated in the weighted distribution, we denote W⊥ as the subset of W in which X are mutually independent in the weighted distribution P˜w.
+Under the inﬁnite-sample setting, it is proved that if conducting weighted least squares using the weighting function in W⊥, almost surely there will be non-zero coefﬁcients only on stable variables, no matter whether the data generation function is linear or nonlinear (Xu et al. 2022). However, the condition for this to hold is too strict and ideal. Under the ﬁnite-sample setting, we can hardly learn the sample weights corresponding to the weighting function in W⊥.
+We now take a look at two speciﬁc techniques of sample reweighting, which will be incorporated into our algorithms.
+
+DWR (Kuang et al. 2020) aims to remove linear correlations between each two variables, i.e.,
+
+wˆ(X) = arg min
+
+(Cov(Xi, Xj; w))2 , (3)
+
+w(X )
+
+1≤i,j≤p,i=j
+
+where Cov(Xi, Xj; w) represents the covariance of Xi and Xj after being reweighted by P˜w. DWR is well ﬁtted for the case where the data generation process is dominated by a
+linear function, since it focuses on linear decorrelation only.
+
+SRDO (Shen et al. 2020b) conducts sample reweighting
+
+by density ratio estimation. It simulates the target distri-
+
+bution P˜ by means of random resampling on each covari-
+
+ate so that P˜(X1, X2, . . . , Xp) =
+
+p i=1
+
+P
+
+tr (Xi ).
+
+Then
+
+the
+
+weighting function can be estimated by
+
+wˆ(X) = P˜(X) = P tr(X1)P tr(X2) . . . P tr(Xp) .
+
+P tr(X)
+
+P tr(X1, X2, . . . , Xp)
+
+(4)
+
+To estimate such density ratio, SRDO learns an MLP classiﬁer to differentiate whether a sample belongs to the original distribution P tr or the mutually independent target distribution P˜. Unlike DWR, this method can not only decrease linear correlations among covariates, but it can weaken nonlinear dependence among them.
+Under the ﬁnite-sample setting, for DWR, if the scale of sample size is not signiﬁcantly greater than that of covariates dimension, it is difﬁcult for Equation 3 to be optimized close to zero. For SRDO, P˜ is generated by a rough process of resampling, further resulting in the inaccurate estimation of density ratio. In addition, both methods suffer from the over-reduced effective sample size when strong correlations exist inside stable variables, since they decorrelate variables globally. Therefore, they both require an enormous sample size to work.
+
+3.2 Sample Reweighting with Sparsity Constraint
+
+Motivation and general idea By introducing sparsity constraint, we can loose the demand for the perfectness of independence achieved by sample reweighting under the ﬁnite-sample setting, reducing the requirement on sample size. Inspired by (Zhao and Yu 2006), we theoretically prove the beneﬁt of this.
+
+Theorem 3.1. Set X(n) = [S(n), V (n)], β =
+
+βs βv
+
+. For
+
+data generated by: Y (n) = X(n)β + g(n)(S) + (n) =
+
+S(n)βs +V (n)βv +g(n)(S)+ (n), where (n) is a vector of i.i.d. random variables with mean 0 and variance σ2, Y (n) is n × 1 outcome, S(n) and V (n) are n × ps and n × pv data matrix respectively, g(n)(S) is n×1 nonlinear term, which is
+
+linearly uncorrelated with the linear part. βs is regression coefﬁcients for ps stable variables whose elements are all
+non-zero, while βv = 0. Assume S and V are normalized to zero mean with ﬁ-
+
+nite second-order moment, and both the covariates and the
+
+nonlinear term are bounded, i.e. almost surely ||X||2 ≤ B, g(S) ≤ δ. If there exists a positive constant vector η
+
+such that:
+
+|Cov(n)(V , S)Cov(n)(S)−1sign(βs)| ≤ 1 − η
+
+(5)
+
+where Cov(n) represents sample covariance, sign represents
+
+element-wise sign function.
+
+Then there exists a positive constant M which can be
+
+written as h(δ, B, Cov(X)) unrelated to n for the follow-
+
+ing inequality to stand: ∀λn satisfying λn = o(n) and
+
+λn = ω
+
+n 1+c 2
+
+with 0 ≤ c ≤ 1:
+
+P (βˆ (λn) =s β) ≥ 1 − o
+
+n e −
+
+c 2
+
+−
+
+minpi=v 1 {ηi }2 8M 2
+
+nc
+
+(6)
+
+Figure 1: Diagram of SVI.
+
+where “=s” means equal after applying sign function, βˆ(λn) is the optimal solution of Lasso with regularizer coefﬁcient λn.
+The term Cov(n)(V , S) measures the dependency between stable variables and unstable variables. Thus Theorem 3.1 implies that if correlations between S and V are weakened to some extent, the probability of perfectly selecting stable variables S approaches 1 at an exponential rate. This conﬁrms that adding sparsity constraint to independencebased sample reweighting may loose the requirement for independence among covariates, even when the data generation is nonlinear.
+Motivated by Theorem 3.1, we propose the novel Sparse Variable Independence (SVI) method. The algorithm mainly consists of two modules: the frontend for sample reweighting, and the backend for sparse learning under reweighted distribution. We then combine the two modules in an iterative way as shown in Figure 1. Details are provided as follows.
+
+Frontend implementation We employ different techniques under different settings. For the case where data generation is dominated by a linear function, we employ DWR, namely Equation 3 as loss function to be optimized using gradient descent. For the case where data generation is totally governed by nonlinear function, we employ SRDO, namely Equation 4 to conduct density ratio estimation for reweighting.
+
+Backend implementation As for the backend sparse
+learning module, in order to take the nonlinear setting into
+account, we implement the sparsity constraint following
+(Yamada et al. 2020) instead of Lasso. Typical for variable
+selection, we begin with an 0 constraint which is equivalent to multiplying the covariates X with a hard mask M = [m1, m2, ..., mp]T whose elements are either one or zero. We approximate the elements in M using clipped Gaussian random variables parametrized by µ = [µ1, µ2, ..., µp]T :
+
+md = max{0, min{1, µd + d}}
+
+(7)
+
+where d is drawn from zero-mean Gaussian distribution N (0, σ2).
+The standard 0 constraint for a general function f parametrized by θ can be written as:
+
+L(θ, µ) = EP (X,Y )EM [l(f (M X; θ), Y ) + λ||M ||0]. (8)
+In Equation 8, with the help of continuous probabilistic approximation, we can derive the 0 norm of the mask as:
+
+EM ||M ||0 =
+
+p d=1
+
+P
+
+(md
+
+>
+
+0)
+
+=
+
+p d=1
+
+Φ(
+
+µd σ
+
+),
+
+where
+
+Φ is the cumulative distribution function of standard Gaus-
+
+sian. After learning sample weights corresponding to wˆ(X),
+
+and combining them with the sparsity constraint, we rewrite
+
+Equation 8 as below:
+
+L(θ, µ) = EP (X,Y )[wˆ(X)EM [l(f (M
+
+X; θ), Y )+λ p Φ( µd )]] σ
+d=1
+(9)
+
+As a result, the optimization of Equation 9 outputs model
+
+parameters θ, and soft masks µ which are continuous vari-
+
+ables in the range [0, 1]. Therefore, µd can be viewed as the
+
+probability of selecting Xd as a stable variable. We may set
+
+a threshold to conduct variable selection, and then retrain a
+
+model only using selected variables for better covariate-shift
+
+generalization.
+
+Iterative procedure As mentioned before, global decorrelation between each pair of covariates could be too aggressive to accomplish. In reality, correlations inside stable variables could be strong. Global decorrelation may give rise to the shrinkage of effective sample size, causing inﬂated variance. It is worth noting that outputs of the backend module can be interpreted as P (Xd ∈ S), namely the probability of each variable belonging to stable variables. They contain information on the covariate structure. Therefore, when using DWR as the frontend, we propose an approach to taking advantage of this information as feedback for the frontend module to mitigate the decrease in effective sample size.
+We ﬁrst denote A ∈ [0, 1]p×p as the covariance matrix mask, where Aij represents the strength of decorrelation for Xi and Xj. Obviously, since we hope to preserve correlation inside stable variables S, when the pair of variables is more likely to belong to S, they should be less likely to be decorrelated. Thus the elements in A can be calculated as: Aij = 1 − P (Xi ∈ S)P (Xj ∈ S) = 1 − µiµj. We incorporate this term into the loss function of DWR in Equation 3, revising it as:
+
+L(w) =
+
+(Aij Cov(Xi, Xj ; w))2 .
+
+(10)
+
+1≤i,j≤p,i=j
+
+Through Equation 10, we implement SVI in an iterative
+
+way by combining sample reweighting and sparse learning.
+
+The details of this algorithm are described in Algorithm 1.
+
+We also present a diagram to illustrate it in Figure 1.
+
+As we can see, when initialized, the frontend module Mreweight learns a group of sample weights corresponding to the weighting function wˆ(X). Given such sample weights, the backend module Msparse conducts sparse learning in a way of soft variable selection under the reweighted distribution, outputting the probability P (Xd ∈ S) for each variable Xd to be in the stable variable set. Such structural information can be utilized by Mreweight to learn better sample weights, since some of the correlations
+
+inside stable variables will be preserved. Therefore, sample
+
+reweighting and sparse learning modules beneﬁt each other
+
+through such a loop of iteration and feedback. The iterative
+
+procedure and its convergence are hard to be analyzed theo-
+
+retically, like in previous works (Liu et al. 2021a; Zhou et al.
+
+Algorithm 1: Sparse Variable Independence (SVI)
+Input: Dataset [X, Y ], sparse learning regularizer coefﬁcient λ, number of loops T , period of moving average for soft mask Tm, maximum number of iterations for learning weights Tw, maximum number of iterations for sparse learning Tθ, selection threshold γ. Output: Selected variable set S . Initialize A with Aij = 1, ∀1 ≤ i, j ≤ p Initialize U as empty list. for t = 1 to T do
+while not convergence or reach Tw do Update sample weights w to minimize L(w) in Equation 10.
+end while while not convergence or reach Tθ do
+Update model parameters θ and soft mask probability µ to minimize L(θ, µ) in Equation 9. end while Delete ﬁrst element of U if its length is greater than Tm. Append current µ to the end of U . Calculate the moving average µ from U . Calculate Aij = 1 − µiµj, ∀1 ≤ i, j ≤ p. end for Calculate S = {Xd | µd ≥ γ} return: S
+2022), so we illustrate them through empirical experiments in Figure 3(c) and in appendix.
+We denote Algorithm 1 as SVI which applies to the linear setting since its frontend is DWR. For nonlinear settings where DWR cannot address, we employ SRDO as the frontend module, denoted as NonlinearSVI. We do not implement it iteratively because it is hard for the resampling process of SRDO to incorporate the feedback of structural information from the backend module, which we leave for future extensions. For both settings, unlike previous methods that directly learn a prediction model by optimizing the weighted loss, we ﬁrst apply our algorithm to select the expected stable variables, then we retrain a model using these variables for prediction under covariate shift.
+4 Experiments
+4.1 Baselines
+We compare SVI with the following methods. We tune the hyperparameters by grid search and validation on data from the environment corresponding to rtrain.
+• OLS (Ordinary Least Squares): For linear settings.
+• MLP (Multi-Layer Perceptron): For nonlinear settings.
+• STG (Stochastic Gates) (Yamada et al. 2020): Directly optimizing Equation 9 without sample reweighting.
+• DWR (Kuang et al. 2020): Optimizing Equation 3 and conducting Weighted Least Squares (for linear settings).
+• SRDO (Shen et al. 2020b): Conducting density ratio estimation through Equation 4.
+
+RMSE
+506( 506(
+
+0.60
+
+OLS STG
+
+0.55
+
+DWR SRDO
+
+0.50
+
+SVId
+
+SVI
+
+0.45
+
+0.40
+
+0.35
+
+0.30 1000 1500Sa2m00p0le3s0iz0e0n4000 5000
+
+
+
+2/6
+
+
+
+67*
+
+':5
+
+
+
+65'2
+
+69,d
+
+
+
+69,
+
+
+
+
+
+
+
+r          
+RQWHVWGDWD
+
+
+
+0/3
+
+
+
+67*
+
+65'2
+
+
+
+1RQOLQHDU69,
+
+
+
+
+
+
+
+
+
+
+
+r          
+RQWHVWGDWD
+
+(a) RMSE of linear settings when ﬁxing (b) RMSE of the linear setting with bias rate (c) RMSE of the nonlinear setting with bias
+
+rtrain = 2.5 with varying n.
+
+rtrain = 2.5 and sample size n = 2000.
+
+rate rtrain = 1.8 and sample size n = 25000.
+
+Figure 2: Detailed results of experiments on synthetic data under linear and nonlinear settings.
+
+Table 1: Results of the linear setting under varying sample size n and train data bias rate r.
+
+n
+Methods
+OLS STG DWR SRDO SVId SVI
+r
+Methods
+OLS STG DWR SRDO SVId SVI
+
+n = 1000
+
+Mean Error Std Error
+
+0.435 0.498 0.586 0.601
+
+0.084 0.133 0.043 0.040
+
+0.374 0.356
+
+0.023 0.020
+
+Mean Error
+0.374 0.395 0.431 0.457
+0.356 0.345
+
+r = 2.0
+Std Error
+0.039 0.047 0.031 0.058
+0.017 0.015
+
+Scenario 1: Varying sample size n(r = 2.5)
+
+n = 1500
+
+Max Error Mean Error Std Error Max Error
+
+0.572 0.694 0.676 0.698
+
+0.411 0.435 0.565 0.611
+
+0.072 0.090 0.044 0.045
+
+0.531 0.579 0.666 0.690
+
+0.413 0.415
+
+0.388 0.369
+
+0.043 0.030
+
+0.465 0.430
+
+Scenario 2: Varying bias rate r(n = 1500)
+
+r = 2.5
+
+Max Error Mean Error Std Error Max Error
+
+0.453 0.475 0.499 0.511
+
+0.411 0.435 0.565 0.611
+
+0.072 0.090 0.044 0.045
+
+0.531 0.579 0.666 0.690
+
+0.395 0.380
+
+0.388 0.369
+
+0.043 0.030
+
+0.465 0.430
+
+n = 2000
+
+Mean Error Std Error
+
+0.428 0.471 0.421 0.433
+
+0.084 0.116 0.027 0.035
+
+0.380 0.357
+
+0.038 0.013
+
+r = 3.0
+
+Mean Error Std Error
+
+0.443 0.526 0.576 0.592
+
+0.100 0.165 0.038 0.037
+
+0.364 0.330
+
+0.015 0.014
+
+Max Error 0.554 0.635 0.475 0.499 0.445 0.380
+Max Error 0.589 0.749 0.655 0.643 0.393 0.377
+
+Table 2: Results of the nonlinear setting under varying sample size n and train data bias rate r.
+
+n Methods
+MLP STG SRDO NonlinearSVI
+r Methods
+MLP STG SRDO NonlinearSVI
+
+Mean Error 0.221 0.177 0.244 0.130
+Mean Error 0.188 0.150 0.200 0.132
+
+n=15000 Std Error
+0.080 0.049 0.123 0.002
+r = 1.8 Std Error
+0.051 0.026 0.071 0.007
+
+Scenario 1: Varying sample size n(r = 2.0)
+
+n = 20000
+
+Max Error Mean Error Std Error Max Error
+
+0.331 0.243 0.380
+
+0.262 0.176 0.288
+
+0.113 0.048 0.133
+
+0.416 0.241 0.469
+
+0.133
+
+0.125
+
+0.001
+
+0.128
+
+Scenario 2: Varying bias rate r(n = 25000)
+
+r = 2.0
+
+Max Error Mean Error Std Error Max Error
+
+0.259 0.186 0.297
+
+0.249 0.176 0.236
+
+0.104 0.048 0.089
+
+0.389 0.243 0.353
+
+0.144
+
+0.126
+
+0.002
+
+0.129
+
+n = 25000
+
+Mean Error Std Error
+
+0.249 0.176 0.231
+
+0.104 0.048 0.090
+
+0.126
+
+0.002
+
+r = 2.2
+
+Mean Error Std Error
+
+0.498 0.208 0.469
+
+0.312 0.076 0.203
+
+0.126
+
+0.002
+
+Max Error 0.389 0.243 0.373 0.129
+Max Error 0.901 0.308 0.717 0.129
+
+v error Effective sample size neff
+vHUURU
+
+0.40 0.35
+
+OLS DWR
+
+0.30
+
+SVI
+
+0.25
+
+0.20
+
+0.15
+
+0.10
+
+0.05
+
+0.00 1000 1500Sa2m00p0le3s0iz0e0n4000 5000
+
+(a) ||βv||1 with varying sample size n.
+
+2000 1750
+
+DWR SVI
+
+1500
+
+1250
+
+1000
+
+750
+
+500
+
+250
+
+0 1000 1500Sa2m00p0le3s0iz0e0n4000 5000
+
+(b) neff with varying sample size n.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         
+1XPEHURILWHUDWLRQV (c) ||βv||1 with growing #iterations.
+
+Figure 3: Additional results for illustrating effectiveness of SVI, when ﬁxing rtrain = 2.5.
+
+• SVId: A degenerated version of SVI by running only one iteration for ablation study to demonstrate the beneﬁt of iterative procedure under linear settings.
+
+4.2 Evaluation Metrics
+
+To evaluate the covariate-shift generalization performance
+
+and stability, we assess the algorithms on test data from mul-
+
+tiple different environments, thus we adopt the following
+
+metrics: M ean Error
+
+=
+
+1 |εte |
+
+e∈εte Le; Std Error =
+
+1 |εte |−1
+
+e∈εte (Le − M ean Error)2; M ax Error =
+
+maxe∈εte Le; εte denotes the testing environments, Le de-
+
+notes the empirical loss in the test environment e.
+
+4.3 Experiments on Synthetic Data
+Dataset We generate X = {S, V } from a multivariate Gaussian distribution X ∼ N (0, Σ). In this way, we can simulate different correlation structures of X through the control of covariance matrix Σ. In our experiments, we tend to make the correlations inside stable variables strong.
+For linear and nonlinear settings, we employ different data generation functions. It is worth noting that a certain degree of model misspeciﬁcation is needed, otherwise the model will be able to directly learn the true stable variables simply using OLS or MLP.
+For the linear setting, we introduce the model misspeciﬁcation error by adding an extra polynomial term to the dominated linear term, and later use a linear model to ﬁt the data. The generation function is as follows:
+
+Y = f (S) + = [S, V ] · [βs, βv]T + S·,1S·,2S·,3 + (11)
+
+For the nonlinear setting, we generate data in a totally nonlinear fashion. We employ random initialized MLP as the data generation function.
+
+Y = f (S) + = M LP (S) +
+
+(12)
+
+Later we use MLP with a smaller capacity to ﬁt the data. More details are included in appendix.
+
+Generating Various Environments To simulate the scenario of covariate shift and test not only the prediction accuracy but prediction stability, we generate a set of environments each with a distinct distribution. Speciﬁcally, following (Shen et al. 2020a), we generate different environments in our experiments through changing P (V |S), further leading to the change of P (Y |V ). Among all the unstable variables V , we simulate unstable correlation P (V b|S) on a subset V b ∈ V . We vary P (V b|S) through different strengths of selection bias with a bias rate r ∈ [−3, −1) ∪ (1, 3]. For each sample, we select it with probability P r = ΠVi∈V b |r|−5Di , where Di = |f (S) − sign(r)Vi|, sign denotes sign function. In our experiments, we set pvb = 0.1∗p.
+Experimental settings We train our models on data from one single environment generated with a bias rate rtrain and test on data from multiple environments with bias rates rtest ranging in [−3, −1) ∪ (1, 3]. Each model is trained 10 times independently with different training datasets from the same bias rate rtrain. Similarly, for each rtest, we generate 10 different test datasets. The metrics we report are the mean results of these 10 times.
+Results Results are shown in Table 1 and 2 when varying sample size n and training data bias rate rtrain. Detailed results for two speciﬁc settings are illustrated in Figure 2(b) and 2(c). In addition to prediction performance, we illustrate the effectiveness of our algorithm in weakening residual correlations and increasing effective sample size in Figure 3(a) and 3(b). Analysis of the results is as follows:
+• From Table 1 and 2, for almost every setting, SVI consistently outperforms other baselines in Mean Error, Std Error, and Max Error, indicating its superior covariate-shift generalization ability and stability. From Figure 2(b) and 2(c), when rtest < −1, i.e. the correlation between V and Y reverses in test data compared with that in training data, other baselines fail signiﬁcantly while SVI remains stable against such challenging distribution shift.
+• From Figure 2(a), we ﬁnd that there is a sharp rise of prediction error for DWR and SRDO with the decrease of
+
+RMSE
+&ODVVLILFDWLRQHUURU
+
+5.0
+
+OLS
+
+4.5
+
+STG
+
+4.0
+
+DWR SRDO
+
+3.5
+
+SVId SVI
+
+3.0
+
+2.5
+
+2.0
+
+1.5 1920~1939 1940~1959 1960~1979 1980~1999 1999~2015
+Built year
+
+(a) Prediction error for house price
+
+2/6
+
+
+
+67*
+
+':5
+
+
+
+65'2
+
+69,d
+
+
+
+69,
+
+
+
+
+
+
+123456789
+(QYLURQPHQW
+(b) Classiﬁcation error for people income prediction
+
+Figure 4: Detailed results of experiments on real-world data.
+
+sample size, conﬁrming the severity of the over-reduced
+effective sample size. Meanwhile, SVI maintains great performance and generally outperforms SVId, demon-
+strating the superiority of the iteration procedure which avoids aggressive decorrelation within S.
+
+• In Figure 3(a), we calculate ||βv||1 to measure the residual correlations between unstable variables V and the
+
+outcome Y . DWR always preserves signiﬁcant non-zero
+
+coefﬁcients on unstable variables especially when the
+
+sample size gets smaller, while SVI truncates the scale
+
+of residual correlations by one or two orders of magni-
+
+tude sometimes. This strongly illustrates that SVI indeed
+
+helps alleviate the imperfectness of variable decorrela-
+
+tion in previous independence-based sample reweighting
+
+methods.
+
+• In Figure 3(b), we calculate neff = (
+
+as ef- n
+i=1
+
+wi )2
+
+n i=1
+
+wi2
+
+fective sample size following (Kish 2011). It is evident
+
+that SVI greatly boosts the effective sample size com-
+
+pared with global decorrelation schemes like DWR, since
+
+there are strong correlations inside stable variables. The
+
+shrinkage of neff compared with the original sample size n becomes rather severe for DWR when n is rela-
+
+tively small, even reaching 1/10.
+
+• In Figure 3(c) we plot the change of ||βv||1 with the increasing number of iterations of SVI. We can observe that the residual correlations decline as the algorithm evolves. This proves the beneﬁt brought by our iterative procedure. Also, this demonstrates the numerical convergence of SVI since coefﬁcients of unstable variables V gradually approach zero with the iterative process. More experiments for analyzing the iterative process and convergence are included in appendix.
+
+4.4 Experiments on Real-World Data
+House Price Prediction It is a regression task for predicting house price, splitting data into 6 environments, 1 for training and 5 for testing, according to the time period that
+
+the house was built.1 In 4 out of 5 test environments, SVI and SVId outperform other baselines, especially in the last 3 environments. The gap signiﬁcantly increases along the time axis, which represents a longer time span between test data and training data. This implies that a severer distribution shift may embody the superiority of our algorithm. Besides, overall SVI performs slightly better than SVId, further demonstrating the beneﬁt of iterative procedure on realworld data.
+People Income Prediction It is a binary classiﬁcation task for income prediction where 10 environments are generated by the combination of race and sex. We train the models on the ﬁrst environment (W hite, F emale) and test on the other 9 environments to simulate distribution shift.
+For the ﬁrst 4 environments where people’s gender remains the same as that in training data, i.e. both are female, these methods make little difference in prediction. However, for the last 5 environments, when the sex category is male, performance drops for every method with varying degrees. We can see that SVI methods are the most stable ones, whose performance is affected much less than other baselines in the presence of distribution shift. Moreover, SVI still outperforms SVId slightly, indicating the practical use of the iteration procedure again.
+5 Conclusion
+In this paper, we combined sample reweighting and sparsity constraint to compensate for the deﬁciency of independencebased sample reweighting when there is a residual dependency between stable and unstable variables, and the variance inﬂation caused by removing strong correlations inside stable variables. Experiments on both synthetic datasets and real-world datasets demonstrated the effectiveness of our algorithm.
+1Due to the limited space, a detailed description of the two realworld datasets is presented in appendix.
+
+6 Acknowledgements
+This work was supported in part by National Key R&D Program of China (No. 2018AAA0102004), National Natural Science Foundation of China (No. U1936219, 62141607), Beijing Academy of Artiﬁcial Intelligence (BAAI). Peng Cui is the corresponding author. All opinions in this paper are those of the authors and do not necessarily reﬂect the views of the funding agencies.
+
+A Appendix
+A.1 Proofs
+To differentiate between notations of sample and population, for notations of sample level, we add a superscript of (n), while for notations of population level we do not. For example, X denotes a p × 1 multidimensional random vector, while X(n) denotes a n×p data matrix. Cov(n) denotes sample covariance matrix while Cov denotes covariance matrix of population.
+We need a lemma from (Zhao and Yu 2006) to prove Theorem 3.1. The lemma is stated below.
+Lemma A.1. Assume Equation 5 holds. then we have
+
+P (βˆ(λn) =s β) ≥ P (A ∩ B).
+
+(13)
+
+for
+
+A = {|(Cov(n)(S))−1W (sn)|
+
+<
+
+√ n(|βs|
+
+−
+
+λn 2n
+
+|(Cov(n)
+
+(S))−1sign(βs
+
+)|)}.
+
+B
+
+=
+
+{|Cov(n)(V
+
+,
+
+S)(Cov(n)(S))−1W
+
+(n) s
+
+−
+
+W
+
+(vn)|
+
+≤ λ√n η}. 2n
+
+where
+
+W (n) = (X(n))T (g(n)(S) +
+
+(n)
+
+√ )/ n.
+
+W
+
+(n) s
+
+=
+
+(S(n))T (g(n)(S)
+
++
+
+(n)
+
+√ )/ n.
+
+W
+
+(n) v
+
+=
+
+(V
+
+(n))T (g(n)(S)
+
++
+
+(n))/√n.
+
+Proof of Theorem 3.1. By Lemma A.1, we have
+
+P (βˆ(λn) =s β) ≥ P (A ∩ B).
+
+(14)
+
+where
+
+1 − P (A ∩ B)
+
+≤ P (A) + P (B)
+
+≤
+
+ps
+
+P (|ζi(n)|
+
+≥
+
+√ n(|βi|
+
+−
+
+λn 2n
+
+b(in))
+
+i=1
+
++
+
+pv
+
+P (|ξi(n)| ≥
+
+λ√n 2n
+
+ηi
+
+)
+
+i=1
+
+where ζ(n)
+
+=
+
+(Cov(n)(S
+
+))−1W
+
+(n) s
+
+,
+
+ξ(n)
+
+=
+
+Cov(n)(V
+
+,
+
+S)(Cov(n)(S))−1W
+
+(n) s
+
+− W (vn),
+
+b(n)
+
+=
+
+(Cov(n)(S))−1sign(βs).
+
+According to the weak law of large numbers, we have Cov(n)(S) →p Cov(S), where →p denotes converge in probability. Since the inverse of a matrix is a continuous
+function, according to the continuous mapping theorem, we have (Cov(n)(S))−1 →p Cov(S)−1, whose elements are constant.
+
+Since g(S) is uncorrelated with S, is independent of S, we have E(S(g(S) + )) = E(S)E(g(S) + ) = 0. Then according to central limit theorem, we have W s →d N (0, Cov(S(g(S) + ))), where →d denotes converge in distribution.
+
+For the covariance term, we have
+
+Cov(S(g(S) + )) = E((g(S) + )2SST ) = E(g2(S)SST ) + σ2Cov(S) ≤ δ2B21ps×ps + σ2Cov(S)
+
+According to the convergence property of random variables, now we have
+ζ →d Cov(S)−1N (0, Cov(S(g(S) + ))) = N (0, Cov(S)−1Cov(S(g(S) + ))Cov(S)−1)
+
+where the covariance term is bounded by δ2B2Cov(S)−11ps×ps Cov(S)−1 + σ2Cov(S)−1. Therefore, ζi converges in distribution to a Gaussian random variable with ﬁnite variance. Similarly, we can prove that ξi also shares the same property, where the variance of the ﬁrst term is bounded by δ2B2Cov(V , S)Cov(S)−11ps×ps Cov(S)−1Cov(S, V ) + σ2Cov(V , S)Cov(S)−1Cov(S, V ), and variance of the second term is bounded by σ2B21ps×ps + σ2Cov(V ).
+We denote M 2 as the common upper bound of their variance, where M = h(δ, B, Cov(X)) is some positive scalar which can be written as a function of δ, B, Cov(X) unrelated to n.
+We will make use of the tail probability of Gaussian distribution that for t > 0,
+
+1
+
+−
+
+Φ(t)
+
+<
+
+t−1e−
+
+1 2
+
+t2 .
+
+(15)
+
+Since λn = o(n), c < 1, when n → ∞
+
+ps
+
+P (|ζi(n)|
+
+≥
+
+√ n(|βi|
+
+−
+
+λn 2n
+
+b(in)
+
+)
+
+i=1
+
+≤
+
+ps
+
+P (1
+
+−
+
+√ Φ( n(|βi|
+
+−
+
+λn 2n
+
+b(in)
+
+)
+
+M
+
+i=1
+
+=
+
+ps
+
+√ P (1 − Φ( n(|βi| + o(1)) )
+
+M
+
+i=1
+
+≤
+
+ps i=1
+
+n
+
+M
+
+1 2
+
+|βi
+
+|
+
+e−
+
+|βi |2 2M 2
+
+n
+
+= o(e−nc )
+
+Since
+
+λn
+
+=
+
+1+c
+ω(n 2 ),
+
+we
+
+have
+
+√λn n
+
+=
+
+ω
+
+(n
+
+c 2
+
+).
+
+When n → ∞
+
+pv
+
+P (|ξi(n)| ≥
+
+λ√n 2n
+
+ηi
+
+)
+
+i=1
+
+≤
+
+pv
+(1 − Φ(
+
+λn√ηi
+
+))
+
+2M n
+
+i=1
+
+2sη pv
+
+i
+
+−
+
+ηi2 8M 2
+
+(
+
+√ λn n
+
+)2
+
+≤ e √λn
+
+i=1 n
+
+=
+
+pv
+
+o(n−
+
+c 2
+
+e−
+
+ηi2 8M 2
+
+nc
+
+)
+
+i=1
+
+= o(n e ) −
+
+c 2
+
+−
+
+minpi=v 1 {ηi }2 8M 2
+
+nc
+
+Since M ≥ , minip=√v1{ηi} we have:
+22
+
+o(e−nc )
+
+o(n e ) → 0 −
+
+c 2
+
+−
+
+minpi=v 1 {ηi }2 8M 2
+
+nc
+
+Thus we have:
+
+P (βˆ (λn)
+
+=s
+
+β)
+
+≥
+
+1
+
+−
+
+o(n e ). −
+
+c 2
+
+−
+
+minpi=v 1 {ηi }2 8M 2
+
+nc
+
+A.2 Training Details
+We generate X = {S, V } from a multivariate Gaussian distribution X ∼ N (0, Σ). In this way, we can simulate different correlation structures of X through the control of covariance matrix Σ. In our experiments, we tend to make the correlations inside stable variables strong. For simplicity,
+We further set Σ = Diag Σ(S), Σ(V ) , assuming block
+structure. For Σ(S) ∈ Rps×ps , its elements are: Σ(jSk) = ρs for j = k and Σ(jSk) = 1 for j = k. For Σ(V ) ∈ Rpv×pv , its elements are: Σ(jVk ) = ρv for j = k and Σ(jVk ) = 1 for j = k. Despite we can simulate more complex settings by manipulating the covariance matrix Σ, such a simpliﬁed setting is
+
+enough since it can adjust correlation inside S or inside V . In our experiments, to simulate the scenario where correlations inside stable variables are strong, we tend to set ρs a large value. We set ρs = 0.9 and ρv = 0.1 in our experiments.
+For linear and nonlinear settings, we employ different data generation functions. It is worth noting that a certain degree of model misspeciﬁcation is needed, otherwise the model will be able to directly learn the true stable variables using simply OLS or MLP.
+For the linear setting, we introduce the model misspeciﬁcation error by adding an extra polynomial term to the dominated linear term, and later use a linear model to ﬁt the data. The generation function is as follows:
+
+Y = f (S) + = [S, V ] · [βs, βv]T + S·,1S·,2S·,3 + (16)
+
+where βs
+
+=
+
+{
+
+1 3
+
+,
+
+−
+
+2 3
+
+,
+
+1,
+
+−
+
+1 3
+
+,
+
+2 3
+
+,
+
+−1,
+
+...},
+
+βv
+
+=
+
+0,
+
+∼
+
+N (0, 0.3).
+
+For the nonlinear setting, we generate data in a totally
+
+nonlinear fashion. We employ random initialized MLP as
+
+the data generation function.
+
+Y = f (S) + = M LP (S) +
+
+(17)
+
+Later we use MLP with a smaller capacity to ﬁt the data. where the MLP is 2-layer with 100 hidden units, ∼ N (0, 0.1). To introduce model misspeciﬁcation, we use a 2-layer MLP with 10 hidden units to ﬁt the data after employing SVI to do variable selection. Parameters of MLP are initialized with uniform distribution U (−1, 1).
+
+A.3 Iteration and convergence analysis
+As we have mentioned, it is rather difﬁcult to analyze the optimization process of iterative algorithms and their convergence (Liu et al. 2021a; Zhou et al. 2022) from a theoretical perspective. Therefore, we conduct additional experiments to illustrate empirically.
+• Figure 5 presents reweighted correlation heatmaps with the growing number of iterations. Among the 10 covariates, the ﬁrst 5 dimensions are stable variables S. The last 5 dimensions are unstable variables V , and the last dimension is the biased unstable variable Vb. In Figure 5(a), i.e. the original correlation heatmap without reweighting, there exist strong correlations inside S, and the biased Vb is also strongly correlated with S, which exerts negative effects on covariate-shift generalization. In Figure 5(b) and 5(c), we ﬁnd that the correlations inside S (the top-left corner) are initially weakened a lot, but gradually they are strengthened. Besides, the correlations between S and V are weakened. In Figure 5(d), at the end of the iterative process, a large proportion of the correlations inside S are preserved compared with Figure 5(b) and 5(c). Meanwhile, S and V are decorrelated thoroughly. This demonstrates that our proposed SVI succeeds in focusing on removing correlations between stable variables and unstable variables while avoiding decorrelating inside stable variables with the iterative process going on.
+• Figure 6 illustrates the iterative process and convergence of SVI with the help of three metrics: βv error, IDPs,
+
+(a) #iterations = 0
+
+(b) #iterations = 3
+
+(c) #iterations = 7
+
+(d) #iterations = 10
+
+Figure 5: Correlation heatmap with growing #iterations, when ﬁxing rtrain = 2.5, n = 3000
+
+and IDPsv. For IDPs, we calculate the mean of offdiagonal elements in the reweighted correlation matrix of S. For IDPsv, we calculate the mean of elements in the reweighted correlation matrix between S and V 2. We use these two metrics to roughly depict the independence between variables. As we can see, the increase of IDPs implies that the correlations inside S are preserved better, and the decrease of IDPsv implies that the correlations between S and V are better removed. Both IDPs and IDPsv demonstrate better frontend sample reweighting with the iteration going on. Besides, the gradual decline of βv error shows the improvement of the backend sparse learning module brought by the iterative procedure. This proves that the iterative procedure truly helps frontend sample reweighting and backend sparse learning beneﬁt each other. Meanwhile, all these three metrics
+2When drawing the lineplots, IDPsv is rescaled to match the magnitude of other two metrics for convenience
+
+show a trend of convergence, which could serve as empirical evidence of SVI’s convergence.
+A.4 Real-world Dataset Description
+House Price Prediction This task comes from a realworld dataset of houses from King County, USA. We acquire this dataset from Kaggle3. It is a regression task, where the outcome is the house price and each sample contains 20 variables as potential inputs, such as the number of bedrooms or bathrooms. We ﬁrst drop 3 useless columns like zip-code. Then we simulate different environments according to the built year, dividing the dataset into 6 periods. Each period is approximately two decades. To examine the covariate-shift generalization ability, we train on the ﬁrst environment in which houses were built between 1900 and 1919, and test on the other 5 periods.
+3https://www.kaggle.com/c/house-prices-advancedregression-techniques/data
+
+Metrics Metrics Metrics
+
+0.40
+
+0.35
+
+IDvPe_rsror
+
+0.30
+
+IDP_sv
+
+0.25
+
+0.20
+
+0.15
+
+0.10
+
+0.05
+
+0.00
+1 2 3 4 5 6 7 8 9 10 Number of iterations
+
+(a) Sample size n = 2000
+
+0.5
+
+0.4
+
+0.3
+
+IDvPe_rsror
+
+0.2
+
+IDP_sv
+
+0.1
+
+0.0 1 2 3 4 5 6 7 8 9 10 Number of iterations
+(b) Sample size n = 3000
+
+0.5
+
+IDvPe_rsror
+
+0.4
+
+IDP_sv
+
+0.3
+
+0.2
+
+0.1
+
+0.0 1 2 3 4 5 6 7 8 9 10 Number of iterations
+(c) Sample size n = 4000
+
+Figure 6: ||βv||1, IDPs, IDPsv with growing #iterations, when ﬁxing rtrain = 2.5.
+
+People Income Prediction In this experiment we employ the Adult dataset (Kohavi et al. 1996), formulating a binary classiﬁcation task. The target variable is whether an adult’s income per year exceeds 50K. We notice that the variables race and sex naturally produce sub-populations in the dataset, thus we use a combination of race and sex to generate 10 environments. We train on the ﬁrst environment (W hite, F emale) and test on the other 9 environments to simulate distribution shift.
+A.5 Optimization and Analysis
+For the optimization of DWR loss, the learning process of MLP classiﬁer in SRDO’s density ratio estimation, and the optimization of sparse learning loss, we employ gradient descent. Besides, when conducting the last step in SVI, it is free to set the threshold γ in a relatively wide range, since empirically we ﬁnd that elements in the soft mask µ are well separated after being optimized to convergence.
+With respect to the time complexity of our algorithm, for SVI of linear version, the complexity of frontend DWR is O(np2)(Kuang et al. 2020), where n is sample size and p is the dimension of input. The complexity of the backend sparse learning module is O(np). Thus the total complexity is O(T np2), where T is the number of iterations.
+For NonlinearSVI, in SRDO, the complexity of random permutation is O(n), time cost of calculating the binary classiﬁcation loss and updating it for density estimation is O(np). The complexity of backend is also O(np). Thus the total complexity is O(np).
+A.6 Related Work
+In this section, we investigate several strands of works, including domain adaptation, domain generalization, invariant learning, and stable learning.
+Domain adaptation (DA) is the earliest stream of literature seeking to solve the problem of generalization under distribution shift. Some conduct importance weighting to match training and test distribution (Huang et al. 2006; Shimodaira 2000; Chu, De la Torre, and Cohn 2016). Some employ representation learning to transform raw data into a variable space where the discrepancy between source and
+
+target distribution is smaller (Fernando et al. 2013; Long et al. 2015; Ganin and Lempitsky 2015a; Tzeng et al. 2017b) with theoretical support (Ben-David et al. 2010, 2006). Nevertheless, on one hand, the availability of unlabeled test data is not quite realistic in that we can hardly know what kind of distribution shift will exist in real test environments. On the other hand, such methods only guarantee effectiveness under a certain test distribution, thus it may still suffer from performance degradation on other possible test distributions.
+Domain generalization (DG) provides a solution for OOD generalization where we do not have access to test data apriori. It typically requires multiple subpopulations (namely domains) in training data and learns representations that are invariant across these subpopulations (Ghifary et al. 2015; Li et al. 2018b; Dou et al. 2019). Other techniques include meta learning (Li et al. 2018a; Balaji, Sankaranarayanan, and Chellappa 2018; Li et al. 2019) and augmentation of source domain data (Carlucci et al. 2019; Shankar et al. 2018; Qiao, Zhao, and Peng 2020). However, theoretical support is absent in domain generalization, and empirically it strongly relies on the abundance of training domains. More recently, there are doubts that simple ERM performs comparably with popular DG methods if carefully tuned (Gulrajani and Lopez-Paz 2020).
+Invariant learning is another brunch of works, which develop theories to support the proposed algorithms. Similar to domain generalization, it tries to capture the invariant part across different training environments to increase models’ generalization ability on unknown test distribution, thus it still requires either explicit environment labels (Arjovsky et al. 2019; Koyama and Yamaguchi 2020; Krueger et al. 2021) or assumes enough heterogeneity in training data (Liu et al. 2021a,b).
+Stable learning focuses on covariate shift with a structural assumption on covariates. It usually does not require explicit environmental information (Cui and Athey 2022). (Shen et al. 2018; Kuang et al. 2018) apply global balancing of moments under the setting where input variables and the outcome variable are binary. (Shen et al. 2020b; Kuang et al. 2020) focus on the linear regression task with model misspeciﬁcation by global decorrelation after sample reweight-
+
+ing. Recently, (Zhang et al. 2021) extends it to deep learning empirically. In (Xu et al. 2022), they conduct a theoretical analysis of stable learning from the perspective of variable selection, proving that perfect reweighting and variable decorrelation help select stable variables regardless of whether the data generation mechanism is linear or nonlinear. However, under the ﬁnite-sample setting, this can hardly be achieved.
+References
+Arjovsky, M.; Bottou, L.; Gulrajani, I.; and Lopez-Paz, D. 2019. Invariant risk minimization. arXiv preprint arXiv:1907.02893.
+Balaji, Y.; Sankaranarayanan, S.; and Chellappa, R. 2018. Metareg: Towards domain generalization using metaregularization. Advances in neural information processing systems, 31.
+Ben-David, S.; Blitzer, J.; Crammer, K.; Kulesza, A.; Pereira, F.; and Vaughan, J. W. 2010. A theory of learning from different domains. Machine learning, 79(1): 151–175.
+Ben-David, S.; Blitzer, J.; Crammer, K.; and Pereira, F. 2006. Analysis of representations for domain adaptation. Advances in neural information processing systems, 19. Blanchard, G.; Deshmukh, A. A.; Dogan, U¨ .; Lee, G.; and Scott, C. D. 2021. Domain Generalization by Marginal Transfer Learning. J. Mach. Learn. Res., 22: 2:1–2:55.
+Carlucci, F. M.; D’Innocente, A.; Bucci, S.; Caputo, B.; and Tommasi, T. 2019. Domain generalization by solving jigsaw puzzles. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2229–2238.
+Chu, W.-S.; De la Torre, F.; and Cohn, J. F. 2016. Selective transfer machine for personalized facial expression analysis. IEEE transactions on pattern analysis and machine intelligence, 39(3): 529–545.
+Cui, P.; and Athey, S. 2022. Stable learning establishes some common ground between causal inference and machine learning. Nature Machine Intelligence, 4(2): 110–115.
+Dou, Q.; Coelho de Castro, D.; Kamnitsas, K.; and Glocker, B. 2019. Domain generalization via model-agnostic learning of semantic features. Advances in Neural Information Processing Systems, 32.
+Fernando, B.; Habrard, A.; Sebban, M.; and Tuytelaars, T. 2013. Unsupervised visual domain adaptation using subspace alignment. In Proceedings of the IEEE international conference on computer vision, 2960–2967.
+Ganin, Y.; and Lempitsky, V. 2015a. Unsupervised domain adaptation by backpropagation. In International conference on machine learning, 1180–1189. PMLR.
+Ganin, Y.; and Lempitsky, V. S. 2015b. Unsupervised Domain Adaptation by Backpropagation. ArXiv, abs/1409.7495.
+Ganin, Y.; Ustinova, E.; Ajakan, H.; Germain, P.; Larochelle, H.; Laviolette, F.; Marchand, M.; and Lempitsky, V. 2016. Domain-adversarial training of neural networks. The journal of machine learning research, 17(1): 2096–2030.
+
+Ghifary, M.; Kleijn, W. B.; Zhang, M.; and Balduzzi, D. 2015. Domain generalization for object recognition with multi-task autoencoders. In Proceedings of the IEEE international conference on computer vision, 2551–2559.
+Gideon, J.; McInnis, M. G.; and Provost, E. M. 2021. Improving Cross-Corpus Speech Emotion Recognition with Adversarial Discriminative Domain Generalization (ADDoG). IEEE Transactions on Affective Computing, 12: 1055–1068.
+Gulrajani, I.; and Lopez-Paz, D. 2020. In search of lost domain generalization. arXiv preprint arXiv:2007.01434.
+He, Y.; Shen, Z.; and Cui, P. 2021. Towards non-iid image classiﬁcation: A dataset and baselines. Pattern Recognition, 110: 107383.
+Heckman, J. J. 1979. Sample selection bias as a speciﬁcation error. Applied Econometrics, 31: 129–137.
+Huang, J.; Gretton, A.; Borgwardt, K.; Scho¨lkopf, B.; and Smola, A. 2006. Correcting sample selection bias by unlabeled data. Advances in neural information processing systems, 19.
+Ioffe, S.; and Szegedy, C. 2015. Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift. ArXiv, abs/1502.03167.
+Kish, L. 2011. Survey sampling. In Survey sampling, 643– 643.
+Koh, P. W.; Sagawa, S.; Marklund, H.; Xie, S. M.; Zhang, M.; Balsubramani, A.; Hu, W.; Yasunaga, M.; Phillips, R. L.; Gao, I.; et al. 2021. Wilds: A benchmark of in-the-wild distribution shifts. In International Conference on Machine Learning, 5637–5664. PMLR.
+Kohavi, R.; et al. 1996. Scaling up the accuracy of naivebayes classiﬁers: A decision-tree hybrid. In Kdd, volume 96, 202–207.
+Koyama, M.; and Yamaguchi, S. 2020. Out-of-distribution generalization with maximal invariant predictor.
+Krueger, D.; Caballero, E.; Jacobsen, J.-H.; Zhang, A.; Binas, J.; Zhang, D.; Le Priol, R.; and Courville, A. 2021. Outof-distribution generalization via risk extrapolation (rex). In International Conference on Machine Learning, 5815– 5826. PMLR.
+Kuang, K.; Cui, P.; Athey, S.; Xiong, R.; and Li, B. 2018. Stable prediction across unknown environments. In Proceedings of the 24th ACM SIGKDD international conference on knowledge discovery & data mining, 1617–1626.
+Kuang, K.; Xiong, R.; Cui, P.; Athey, S.; and Li, B. 2020. Stable prediction with model misspeciﬁcation and agnostic distribution shift. In Proceedings of the AAAI Conference on Artiﬁcial Intelligence, volume 34, 4485–4492.
+Li, D.; Yang, Y.; Song, Y.-Z.; and Hospedales, T. M. 2017. Deeper, broader and artier domain generalization. In Proceedings of the IEEE international conference on computer vision, 5542–5550.
+Li, D.; Yang, Y.; Song, Y.-Z.; and Hospedales, T. M. 2018a. Learning to generalize: Meta-learning for domain generalization. In Thirty-Second AAAI Conference on Artiﬁcial Intelligence.
+
+Li, D.; Zhang, J.; Yang, Y.; Liu, C.; Song, Y.-Z.; and Hospedales, T. M. 2019. Episodic training for domain generalization. In Proceedings of the IEEE/CVF International Conference on Computer Vision, 1446–1455.
+Li, H.; Pan, S. J.; Wang, S.; and Kot, A. C. 2018b. Domain generalization with adversarial feature learning. In Proceedings of the IEEE conference on computer vision and pattern recognition, 5400–5409.
+Liu, J.; Hu, Z.; Cui, P.; Li, B.; and Shen, Z. 2021a. Heterogeneous Risk Minimization. arXiv preprint arXiv:2105.03818.
+Liu, J.; Hu, Z.; Cui, P.; Li, B.; and Shen, Z. 2021b. Kernelized heterogeneous risk minimization. arXiv preprint arXiv:2110.12425.
+Long, M.; Cao, Y.; Wang, J.; and Jordan, M. 2015. Learning transferable features with deep adaptation networks. In International conference on machine learning, 97–105. PMLR.
+Muandet, K.; Balduzzi, D.; and Scho¨lkopf, B. 2013. Domain generalization via invariant feature representation. In International Conference on Machine Learning, 10–18. PMLR.
+Peng, X.; Bai, Q.; Xia, X.; Huang, Z.; Saenko, K.; and Wang, B. 2019. Moment Matching for Multi-Source Domain Adaptation. 2019 IEEE/CVF International Conference on Computer Vision (ICCV), 1406–1415.
+Qiao, F.; Zhao, L.; and Peng, X. 2020. Learning to learn single domain generalization. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 12556–12565.
+Saito, K.; Watanabe, K.; Ushiku, Y.; and Harada, T. 2018. Maximum Classiﬁer Discrepancy for Unsupervised Domain Adaptation. 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition, 3723–3732.
+Santurkar, S.; Tsipras, D.; Ilyas, A.; and Madry, A. 2018. How Does Batch Normalization Help Optimization? (No, It Is Not About Internal Covariate Shift). ArXiv, abs/1805.11604.
+Shankar, S.; Piratla, V.; Chakrabarti, S.; Chaudhuri, S.; Jyothi, P.; and Sarawagi, S. 2018. Generalizing across domains via cross-gradient training. arXiv preprint arXiv:1804.10745.
+Shen, Z.; Cui, P.; Kuang, K.; Li, B.; and Chen, P. 2018. Causally regularized learning with agnostic data selection bias. In Proceedings of the 26th ACM international conference on Multimedia, 411–419.
+Shen, Z.; Cui, P.; Liu, J.; Zhang, T.; Li, B.; and Chen, Z. 2020a. Stable learning via differentiated variable decorrelation. In Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining, 2185–2193.
+Shen, Z.; Cui, P.; Zhang, T.; and Kunag, K. 2020b. Stable learning via sample reweighting. In Proceedings of the AAAI Conference on Artiﬁcial Intelligence, volume 34, 5692–5699.
+Shen, Z.; Liu, J.; He, Y.; Zhang, X.; Xu, R.; Yu, H.; and Cui, P. 2021. Towards out-of-distribution generalization: A survey. arXiv preprint arXiv:2108.13624.
+
+Shimodaira, H. 2000. Improving predictive inference under covariate shift by weighting the log-likelihood function. Journal of statistical planning and inference, 90(2): 227– 244.
+Sun, B.; and Saenko, K. 2016. Deep coral: Correlation alignment for deep domain adaptation. In European conference on computer vision, 443–450. Springer.
+Tripuraneni, N.; Adlam, B.; and Pennington, J. 2021. Overparameterization Improves Robustness to Covariate Shift in High Dimensions. In NeurIPS.
+Tzeng, E.; Hoffman, J.; Saenko, K.; and Darrell, T. 2017a. Adversarial Discriminative Domain Adaptation. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2962–2971.
+Tzeng, E.; Hoffman, J.; Saenko, K.; and Darrell, T. 2017b. Adversarial discriminative domain adaptation. In Proceedings of the IEEE conference on computer vision and pattern recognition, 7167–7176.
+Wang, J.; Lan, C.; Liu, C.; Ouyang, Y.; and Qin, T. 2021. Generalizing to Unseen Domains: A Survey on Domain Generalization. ArXiv, abs/2103.03097.
+Weiss, K.; Khoshgoftaar, T. M.; and Wang, D. 2016. A survey of transfer learning. Journal of Big data, 3(1): 1–40.
+Wilson, G.; and Cook, D. J. 2020. A Survey of Unsupervised Deep Domain Adaptation. ACM Transactions on Intelligent Systems and Technology (TIST), 11: 1 – 46.
+Xu, R.; Zhang, X.; Shen, Z.; Zhang, T.; and Cui, P. 2022. A Theoretical Analysis on Independence-driven Importance Weighting for Covariate-shift Generalization. In International Conference on Machine Learning, 24803–24829. PMLR.
+Yamada, Y.; Lindenbaum, O.; Negahban, S.; and Kluger, Y. 2020. Feature selection using stochastic gates. In International Conference on Machine Learning, 10648–10659. PMLR.
+Yang, Y.; and Soatto, S. 2020. FDA: Fourier Domain Adaptation for Semantic Segmentation. 2020 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 4084–4094.
+Young, M. D.; Wakeﬁeld, M. J.; Smyth, G. K.; and Oshlack, A. 2009. Gene ontology analysis for RNA-seq: accounting for selection bias. Genome Biology, 11: R14 – R14.
+Zhang, X.; Cui, P.; Xu, R.; Zhou, L.; He, Y.; and Shen, Z. 2021. Deep stable learning for out-of-distribution generalization. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 5372–5382.
+Zhang, X.; Zhou, L.; Xu, R.; Cui, P.; Shen, Z.; and Liu, H. 2022a. NICO++: Towards Better Benchmarking for Domain Generalization. ArXiv, abs/2204.08040.
+Zhang, X.; Zhou, L.; Xu, R.; Cui, P.; Shen, Z.; and Liu, H. 2022b. Towards Unsupervised Domain Generalization. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 4910–4920.
+Zhao, P.; and Yu, B. 2006. On model selection consistency of Lasso. The Journal of Machine Learning Research, 7: 2541–2563.
+
+Zhou, X.; Lin, Y.; Pi, R.; Zhang, W.; Xu, R.; Cui, P.; and Zhang, T. 2022. Model Agnostic Sample Reweighting for Out-of-Distribution Learning. In International Conference on Machine Learning, 27203–27221. PMLR.
+
