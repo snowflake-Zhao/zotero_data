@@ -1,0 +1,432 @@
+ORIGINAL RESEARCH published: 03 June 2022 doi: 10.3389/fonc.2022.893966
+
+Predicting Lapatinib Dose Regimen Using Machine Learning and Deep Learning Techniques Based on a Real-World Study
+
+Ze Yu 1†, Xuan Ye 2,3†, Hongyue Liu 2,3, Huan Li 2,3, Xin Hao 4, Jinyuan Zhang 5, Fang Kou 1, Zeyuan Wang 6, Hai Wei 1*, Fei Gao 5* and Qing Zhai 2,3*
+1 Institute of Interdisciplinary Integrative Medicine Research, Shanghai University of Traditional Chinese Medicine, Shanghai, China, 2 Department of Pharmacy, Fudan University Shanghai Cancer Center, Shanghai, China, 3 Department of Oncology, Shanghai Medical College of Fudan University, Shanghai, China, 4 Dalian Medicinovo Technology Co., Ltd., Dalian, China, 5 Beijing Medicinovo Technology Co., Ltd., Beijing, China, 6 Faculty of Engineering, School of Computer Science, The University of Sydney, Sydney, NSW, Australia
+
+Edited by: Miao Yan, Central South University, China
+Reviewed by: Haewon Byeon, Inje University, South Korea
+Yang Zhang, Harbin Institute of Technology, China
+*Correspondence: Hai Wei
+wei_hai@hotmail.com Fei Gao
+gaofei9000@163.com Qing Zhai
+zhaiqing63@126.com
+†These authors share ﬁrst authorship
+Specialty section: This article was submitted to Pharmacology of Anti-Cancer Drugs,
+a section of the journal Frontiers in Oncology
+Received: 11 March 2022 Accepted: 05 May 2022 Published: 03 June 2022
+Citation: Yu Z, Ye X, Liu H, Li H, Hao X, Zhang J,
+Kou F, Wang Z, Wei H, Gao F and Zhai Q (2022) Predicting Lapatinib Dose Regimen Using Machine Learning
+and Deep Learning Techniques Based on a Real-World Study.
+Front. Oncol. 12:893966. doi: 10.3389/fonc.2022.893966
+
+Lapatinib is used for the treatment of metastatic HER2(+) breast cancer. We aim to establish a prediction model for lapatinib dose using machine learning and deep learning techniques based on a real-world study. There were 149 breast cancer patients enrolled from July 2016 to June 2017 at Fudan University Shanghai Cancer Center. The sequential forward selection algorithm based on random forest was applied for variable selection. Twelve machine learning and deep learning algorithms were compared in terms of their predictive abilities (logistic regression, SVM, random forest, Adaboost, XGBoost, GBDT, LightGBM, CatBoost, TabNet, ANN, Super TML, and Wide&Deep). As a result, TabNet was chosen to construct the prediction model with the best performance (accuracy = 0.82 and AUC = 0.83). Afterward, four variables that strongly correlated with lapatinib dose were ranked via importance score as follows: treatment protocols, weight, number of chemotherapy treatments, and number of metastases. Finally, the confusion matrix was used to validate the model for a dose regimen of 1,250 mg lapatinib (precision = 81% and recall = 95%), and for a dose regimen of 1,000 mg lapatinib (precision = 87% and recall = 64%). To conclude, we established a deep learning model to predict lapatinib dose based on important inﬂuencing variables selected from real-world evidence, to achieve an optimal individualized dose regimen with good predictive performance.
+Keywords: lapatinib, machine learning, deep learning, TabNet, breast cancer, real-world study, individualized medication model
+HIGHLIGHTS
+1. What is the current knowledge on the topic? Lapatinib was approved in China to treat patients with HER2(+) metastatic breast cancer in
+combination with capecitabine based on a single-arm, open-label study (EGF10949). Two dose regimens are commonly recommended for lapatinib, 1,250 mg of lapatinib in combination with
+
+Frontiers in Oncology | www.frontiersin.org
+
+1
+
+June 2022 | Volume 12 | Article 893966
+
+Yu et al.
+
+Predicting Lapatinib Dose Regimen
+
+capecitabine and 1,000 mg of lapatinib in combination with trastuzumab. Under the recommended dose regimen, lapatinib can be well tolerated with minimal avoidance of drug toxicities.
+2. What question did this study address? In this study, we established a deep learning model to predict the lapatinib dose based on important inﬂuencing variables from real-world evidence, resulting in getting the optimal individualized dose regimen. 3. What does this study add to our knowledge? This study provides a new perspective and guidance for lapatinib dose administration where few studies focused on individualized lapatinib dose treatment in breast cancer patients previously. 4. How might this change clinical pharmacology or translational science? Models based on machine learning and deep learning methods could help clinicians treat breast cancer patients with individualized lapatinib dose regimens to get the optimal effect and reduce adverse events.
+INTRODUCTION
+Lapatinib is a selective inhibitor of the tyrosine kinase receptor and human epidermal growth factor receptor-2 (HER2) and has activity in HER2-overexpressing breast cancer (1–3). By binding to the ATP-binding site of the receptor’s intracellular domain, lapatinib blocks HER2 tyrosine kinase activity leading to inhibition of tumor cell growth (4). After the progress with anthracycline, taxane, and trastuzumab in China, lapatinib has been introduced for the treatment of advanced/metastatic HER2(+) breast cancer (1, 4–6). Two dose regimens are commonly recommended for lapatinib, which can be optimally tolerated (7). For patients with advanced HER2(+) breast cancer progressing with therapy with anthracyclines, taxanes, and trastuzumab, it is recommended to administer 1,250 mg of lapatinib in combination with capecitabine (4). For patients with metastatic HER2(+), hormone receptor(-) breast cancer upon progressing with therapy with trastuzumab and chemotherapy, it is recommended to administer 1,000 mg of lapatinib in combination with trastuzumab (4). Under the recommended dose regimen, lapatinib can be well tolerated with minimal avoidance of drug toxicities, which are skin rash and diarrhea predominantly (6, 8–10). Therefore, a promising model to predict an appropriate individualized dose regimen is important to get a balance of lapatinib efﬁcacy and toxicities to improve the treatment outcome.
+With the rapid development of information technology, realworld study has become an important data source for clinical research (11). Most real-world studies use information from electronic medical records, examination data, and follow-up records during diagnosis and treatment. Real-world study is a process of data mining, model building, and clinical feature data extraction. The main advantages of real-world studies include rich evidence resources, good external validity, individualized program application, and being closer to clinical practice (12, 13).
+
+Compared with conventional modeling methods, machine learning and deep learning techniques have indubitable advantages in dealing with real-world evidence, such as the following: (1) machine learning and deep learning can deal with more complex, high-dimensional, and interactive variables, which is lacking in traditional models, and (2) machine learning and deep learning models have stronger generalization and better accuracy than traditional models (14–16). Recently, some algorithms with more sophisticated principles have been developed, such as eXtreme Gradient Boosting (XGBoost), light gradient boosting machine (LightGBM), Categorical Boosting (CatBoost), Gradient Boosting Decision Tree (GBDT), and TabNet, which have been highly recognized in algorithm competitions (17–21). Recently, the application of machine learning and deep learning techniques based on real-world study has been a trend, such as a novel prognostic scoring system of intrahepatic cholangiocarcinoma with ensemble machine learning algorithms (XGBoost, random forest, and GBDT), a prediction model of tacrolimus blood concentration in patients with autoimmune diseases using XGBoost, a novel vancomycin dose prediction model through XGBoost, and warfarin maintenance dose prediction through LightGBM (22–25). Many studies have demonstrated the advantages of machine learning algorithms over traditional statistical methods. With the increasing number of input subject data, machine learning and deep learning models can continually optimize parameters to achieve better performance and practicality.
+In order to achieve a balance of drug efﬁcacy and toxicities, an appropriate dose regimen is important for patients’ treatment outcome. In this study, we aim to establish a model based on machine learning and deep learning techniques to predict the lapatinib dose based on important inﬂuencing variables from real-world evidence, resulting in getting the optimal individualized dose regimen.
+METHODS
+Study Population
+This is a retrospective, real-world study. Patients who were diagnosed with breast cancer and treated with lapatinib were included from July 2016 and June 2017 at Fudan University Shanghai Cancer Center (FUSCC). One hundred ﬁfty-four patients were enrolled, including 55 at the initial dose of 1,000 mg, 94 at the initial dose of 1,250 mg, and 5 at the initial dose of 500 mg. This study mainly considered patients with commonly recommended dose regimens, namely, 1,000 mg and 1,250 mg. Therefore, after excluding patients with an initial dose of 500 mg, 149 patients remained. This study was approved by the ethics committee (No. 2016-106-1159-K1), and informed consents were included.
+Data Collection and Processing
+All data were collected from electronic medical records. Demographic information included continuous variables, such as age, height, and weight, and binary variables, such as age ≥52 years or not. Combination medication information included the
+
+Frontiers in Oncology | www.frontiersin.org
+
+2
+
+June 2022 | Volume 12 | Article 893966
+
+Yu et al.
+
+Predicting Lapatinib Dose Regimen
+
+prior use of anthracycline, taxane, platinum, ﬂuorouracil, and trastuzumab. Physiopathological conditions indicated that patients had hypertension, diabetes, heart disease, other underlying diseases (including small samples of epilepsy, hepatitis, hyperthyroidism, chronic enteritis, Hashimoto’s thyroiditis, hepatitis B), and postmenopausal or not. Treatment protocol information included number of previous chemotherapy regiments, Ki-67, prior endocrine therapy, estrogen receptors (ER), progesterone receptors (PR), disease stage, operation, Eastern Cooperative Oncology Group (ECOG), number of metastases, lung metastases, liver metastases, bone metastases, brain metastases, protocol_1 (combination regimen of lapatinib + capecitabine), protocol_2 (combination regimen of paclitaxel + carboplatin + herceptin + lapatinib), protocol_3 (combination regimen of vinorelbine + lapatinib), and protocol_4 (other combination regimens).
+There were two initial dose regimens of lapatinib, 1,000 and 1,250 mg, which were converted to binary variables, where 1,250 mg corresponds to “1” and 1,000 mg corresponds to “0.” According to the National Cancer Institute Common Terminology Criteria for Adverse Events (NCI-CTCAE, version 5.0), patients with adverse drug reactions of grade ≤ 2 were considered to have drug safety. In addition, according to a previous study on lapatinib in breast cancer patients at FUSCC, the median progression-free survival (PFS) was 8.1 months; therefore, patients with PFS >8.1 months were considered to have drug effectiveness herein (1). The safety and effectiveness of the drug regimen were also converted to binary variables, where patients showing both safety and effectiveness correspond to “1,” and other situations (either showing safety or effectiveness; not showing safety or effectiveness) correspond to “0.” The target variable was the initial dose regimen of lapatinib (1,000 or 1,250 mg). The variables with extremely imbalanced positive and
+
+negative sample sizes in the dataset were eliminated. In terms of data with missing values, the variables were interpolated by the random forest algorithm through learning information about similar patients.
+Variable Selection and Model Establishment
+The modeling process is illustrated in Figure 1. After collecting and processing data of all eligible samples, the sequential forward selection (SFS) algorithm based on RF was applied for selecting the minimum size and optimum performance of the feature subset (26). The SFS algorithm added one feature to the feature subset each time, iteratively generated a new model, and calculated the model performance (f1_score). F1_score is a comprehensive evaluation index of precision and recall, and higher f1_score indicates better model robustness. The iteration stopped when f1_score of the feature subset reached the optimal value. The feature subset with the minimum size and optimum f1_score was therefore selected.
+The training cohort and test cohort were divided according to 8:2. The dose prediction model was established and compared by 12 algorithms, which were algorithms with good predictive ability in various common algorithm types, including logistic regression, support vector machine (SVM), random forest (RF), Adaboost, XGBoost, gradient-boosted decision tree, LightGBM, CatBoost, TabNet, Artiﬁcial Neural Network (ANN), Super TML, and Wide&Deep, respectively. As a novel deep learning architecture, we implemented the TabNet model exactly as described in Arik and Pﬁster, used a sparsemax attention, and included the sparsiﬁcation term in the loss function (21). The model-speciﬁc hyperparameters were n_d = 8, n_a = 8, n_steps = 3, gamma = 1.3, cat_emb_dim = 1, n_independent = 2, n_shared = 2, epsilon = 1e-15, momentum = 0.02, lambda_sparse = 0.001, seed = 0, clip_value = 1, verbose = 1,
+
+FIGURE 1 | Workﬂow of data process and model establishment.
+
+Frontiers in Oncology | www.frontiersin.org
+
+3
+
+June 2022 | Volume 12 | Article 893966
+
+Yu et al.
+
+Predicting Lapatinib Dose Regimen
+
+max_epochs = 200, virtual_batch_size = 16, batch_size = 64. TabNet architecture and implementation details are illustrated in Supplementary Figures S1–S4.
+Statistical Analysis
+Subsequently, based on the selected important variables, the evaluation metrics for model performance were calculated, including precision, recall, f1_score, accuracy, and area under the curve (AUC). The model with the best predictive performance in the test cohort was selected to predict the lapatinib dose regimen. The speciﬁc formula of evaluation metrics are as follows:
+Accuracy = (TP + TN)/(TP+FN+FP+TN) Precision = TP/(TP + FP) Recall = TP/(TP + FN) f1_score = 2 × TP/(2 × TP + FP + FN) TP: true positive, indicating that the positive class is predicted as the number of positive classes; TN: true negative, indicating that the negative class is predicted as the number of negative classes; FP: false positive, indicating that the negative class is predicted as the number of positive classes; FN: false negative, indicating that the positive class is predicted as the number of negative classes. f1_score is used to measure the merits and defects of the model; higher f1_score indicates better model performance. The importance of variables refers to the degree to which each variable in the model contributes to improving the predictive power of the whole model. Herein, we used the algorithm with the best model performance to calculate and rank the variable importance scores. In terms of importance score calculation and
+
+ranking by TabNet, the Feature Transformer layer realizes the calculation and processing of features selected by the current step. Analogous to a decision tree, for a given set of features, a decision tree constructs a combination of size relations of individual features, namely, a decision manifold. A simple neural network is used to simulate the decision manifold of the decision tree through a fully connected (FC) layer, but the FC layer constructs a set of simple linear relations and does not consider more complicated cases. TabNet performs feature calculation through a more complex Feature Transformer layer. Its decision manifold may not be similar to that of the decision tree, and it may do better than the decision tree in some Feature combinations (21). Univariate analysis was performed through the Mann–Whitney U test on continuous variables and the chi-square test on classiﬁed variables.
+Eventually, the confusion matrix was used to visualize the performance of the algorithm and further analyze the model performance. The confusion matrix was realized by the Matplotlib package. All experiments of machine learning and deep learning algorithms were run on Windows 10 with Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz 12CPUs and 512GB memory. Data analysis was conducted using python 3.8.8 and IBM SPSS Statistics 22.
+We carried out six-fold cross-validation for each model with calculating the mean, standard deviation, and P-value of each indicator. As shown in Table 1, the better performance of the TabNet model on stability and robustness was observed compared with other models. As shown in Table 2, the importance of “Treatment protocols” has always ranked ahead of other variables.
+
+TABLE 1 | Prediction performance of different algorithms with six-fold cross-validation.
+
+Metrics Algorithms
+
+Dose regimena
+
+Precision (mean ± std, P)
+
+Recall (mean ± std, P)
+
+f1_score (mean ± std, P)
+
+LR SVM RF AdaBoost XGBoost GBDT LightGBM CatBoost TabNet ANN Super TML Wide&Deep
+
+0
+
+0.47 ± 0.34 (0.317) 0.15 ± 0.11 (0.785) 0.23 ± 0.16 (0.668)
+
+1
+
+0.65 ± 0.03 (0.482) 0.91 ± 0.05 (0.317) 0.78 ± 0.04 (0.409)
+
+0
+
+0.92 ± 0.09 (0.317) 0.31 ± 0.10 (0.585) 0.42 ± 0.14 (0.48)
+
+1
+
+0.71 ± 0.06 (0.429) 0.99 ± 0.02 (0.317) 0.81 ± 0.04 (0.377)
+
+0
+
+0.81 ± 0.15 (0.317) 0.42 ± 0.18 (0.525) 0.56 ± 0.17 (0.484)
+
+1
+
+0.73 ± 0.05 (0.418) 0.94 ± 0.04 (0.317) 0.83 ± 0.03 (0.388)
+
+0
+
+0.81 ± 0.07 (0.431) 0.42 ± 0.10 (0.435) 0.58 ± 0.07 (0.305)
+
+1
+
+0.74 ± 0.06 (0.394) 0.92 ± 0.09 (0.373) 0.82 ± 0.09 (0.381)
+
+0
+
+0.80 ± 0.14 (0.317) 0.44 ± 0.07 (0.585) 0.58 ± 0.09 (0.48)
+
+1
+
+0.74 ± 0.03 (0.429) 0.93 ± 0.04 (0.317) 0.83 ± 0.04 (0.377)
+
+0
+
+0.77 ± 0.17 (0.317) 0.59 ± 0.14 (0.467) 0.67 ± 0.14 (0.4)
+
+1
+
+0.79 ± 0.06 (0.388) 0.88 ± 0.06 (0.317) 0.84 ± 0.06 (0.354)
+
+0
+
+0.69 ± 0.16 (0.391) 0.44 ± 0.07 (0.585) 0.54 ± 0.11 (0.505)
+
+1
+
+0.74 ± 0.09 (0.434) 0.87 ± 0.12 (0.343) 0.80 ± 0.07 (0.391)
+
+0
+
+0.84 ± 0.11 (0.317) 0.53 ± 0.11 (0.467) 0.65 ± 0.09 (0.4)
+
+1
+
+0.77 ± 0.04 (0.388) 0.93 ± 0.05 (0.317) 0.85 ± 0.04 (0.354)
+
+0
+
+0.87 ± 0.03 (0.317) 0.64 ± 0.01 (0.525) 0.73 ± 0.01 (0.461)
+
+1
+
+0.81 ± 0.02 (0.413) 0.95 ± 0.03 (0.317) 0.87 ± 0.02 (0.38)
+
+0
+
+0.42 ± 0.11 (0.549) 0.45 ± 0.15 (0.585) 0.44 ± 0.13 (0.568)
+
+1
+
+0.67 ± 0.05 (0.453) 0.54 ± 0.06 (0.43) 0.62 ± 0.04 (0.442)
+
+0
+
+0.78 ± 0.11 (0.427) 0.34 ± 0.11 (0.415) 0.48 ± 0.09 (0.361)
+
+1
+
+0.70 ± 0.04 (0.323) 0.93 ± 0.05 (0.367) 0.80 ± 0.04 (0.381)
+
+0
+
+0.69 ± 0.09 (0.549) 0.43 ± 0.12 (0.585) 0.54 ± 0.11 (0.568)
+
+1
+
+0.72 ± 0.03 (0.355) 0.87 ± 0.04 (0.243) 0.79 ± 0.04 (0.355)
+
+aRegimen of 1,000 mg lapatinib corresponds to “0,” and regimen of 1,250 mg lapatinib corresponds to “1.”
+
+Support
+11 19 11 19 11 19 11 19 11 19 11 19 11 19 11 19 11 19 11 19 11 19 11 19
+
+Accuracy (mean ± std, P) 0.68 ± 0.06 (0.463) 0.71 ± 0.07 (0.405) 0.75 ± 0.05 (0.424) 0.76 ± 0.04 (0.418) 0.76 ± 0.05 (0.405) 0.79 ± 0.08 (0.368) 0.72 ± 0.08 (0.424) 0.79 ± 0.09 (0.368) 0.82 ± 0.05 (0.405) 0.55 ± 0.06 (0.484) 0.71 ± 0.05 (0.385) 0.72 ± 0.07 (0.328)
+
+AUC (mean ± std, P) 0.59 ± 0.11 (0.489) 0.30 ± 0.13 (0.408) 0.79 ± 0.03 (0.397) 0.77 ± 0.06 (0.363) 0.76 ± 0.04 (0.406) 0.81 ± 0.11 (0.357) 0.76 ± 0.06 (0.413) 0.78 ± 0.04 (0.362) 0.83 ± 0.01 (0.397) 0.58 ± 0.07 (0.482) 0.56 ± 0.07 (0.354) 0.74 ± 0.12 (0.389)
+
+Frontiers in Oncology | www.frontiersin.org
+
+4
+
+June 2022 | Volume 12 | Article 893966
+
+Yu et al.
+
+Predicting Lapatinib Dose Regimen
+
+TABLE 2 | Feature importance from TabNet with six-fold cross-validation.
+
+Feature
+
+Importance (mean ± std)
+
+P value
+
+Treatment protocols Weight Number of chemotherapy treatments Number of metastases
+
+0.47 ± 0.05 0.23 ± 0.07 0.16 ± 0.05 0.05 ± 0.09
+
+0.612 0.345 0.472 0.247
+
+Treatment protocols including protocol_1 (combination regimen of lapatinib + capecitabine), protocol_2 (combination regimen of paclitaxel + carboplatin + herceptin + lapatinib), protocol_3 (combination regimen of vinorelbine + lapatinib), and protocol_4 (other combination regimens).
+
+RESULTS
+Patients and Treatments
+A total of 149 breast cancer patients were enrolled from FUSCC in this study; the population characteristics are illustrated in Table 3. There were 55 (36.90%) patients administered an initial lapatinib regimen of 1,000 mg, and 94 (63.10%) patients administered an initial lapatinib regimen of 1,250 mg. The median age of the patients was 51 years (interquartile range [IQR] 42~58 years), and 51.78% of patients were aged over 51 years. Patients using anthracycline, taxane, platinum, ﬂuorouracil, and trastuzumab occupied 67.79%, 89.93%, 42.28%, 50.34%, and 91.28%, respectively. Comorbidities including hypertension, diabetes, and heart disease occupied 12.08%, 4.03%, and 3.36%, respectively. A percentage of 59.73% of patients were postmenopausal; 51.68% of patients had ≥3 previous chemotherapy regiments. Patients having ER and PR occupied 55.03% and 68.46%, respectively. A percentage of 75.84% of patients were in stage IV, 19.46% in stage III, and 4.70% in stage II. The most common metastatic site was in the lung (42.28%), bone (31.54%), liver (26.85%), and brain (18.12%). Patients using protocol_1, protocol_2, protocol_3, and protocol_4 were 67.11%, 16.11%, 6.71%, and 10.07%, respectively. There were 46 (30.87%) patients showing both safety and effectiveness of lapatinib treatment.
+Variable Selection
+After deleting variables with extremely imbalanced positive and negative sample sizes (such as diabetes, heart disease, operation, and ECOG), features were selected based on 26 variables through the SFS method. RF models were established using the selected 1 to 26 variables, and the f1_score of each model was obtained (Figure 2). With increasing number of included variables, f1_score rises ﬁrst and then reaches its maximum value at four variables (f1_score = 0.68). As we pursued a concise and accurate model with minimal variables but high predictive performance, the ﬁrst four important variables were selected to establish the prediction model, including weight, number of chemotherapy treatments, number of metastases, and treatment protocols.
+Model Establishment
+In Table 1, we presented the predictive performance of 12 models. TabNet had precision = 0.87, recall = 0.64, and f1_score = 0.73 for the 1,000-mg regimen prediction, and precision = 0.81, recall = 0.95, and f1_score = 0.87 for 1,250mg regimen prediction, which indicate a comprehensive good predictive ability. In addition, accuracy = 0.82 and AUC = 0.83
+
+for the whole TabNet model, which were higher than those for other algorithms. This shows that TabNet has competitiveness to predict the initial dose regimen of lapatinib accurately and establish a robust prediction model. On this basis, the importance scores of four selected variables were calculated and ranked by TabNet (Table 2). It can be seen that the most important variables were treatment protocols, weight, number of chemotherapy treatments, and number of metastases, with the importance scores of 0.47, 0.23, 0.16, and 0.05, in descending order. The P-values of treatment protocols, weight, and number of chemotherapy treatments were 0.612, 0.345, 0.472, and 0.247, respectively.
+The test cohort consisted of 30 patients, among which 19 patients took lapatinib 1,250 mg and 11 patients took lapatinib 1,000 mg. The dose of lapatinib was recommended for patients by establishing a confusion matrix based on the TabNet prediction model (Figure 3). The model recommended a dose regimen of 1,250 mg lapatinib accurately for 18 patients, and four patients were recommended the wrong dose, with a precision of 82% and a recall rate of 95%; the model recommended a dose regimen of 1,000 mg lapatinib accurately for seven patients, and one patient was recommended the wrong dose, with a precision of 88% and a recall rate of 64%.
+DISCUSSION
+Lapatinib was approved in China to treat patients with HER2(+) metastatic breast cancer in combination with capecitabine based on a single-arm, open-label study (EGF10949), which evaluates the drug efﬁcacy and safety (1, 27). Our study focused on the establishment of a prediction model for lapatinib dose, mainly evaluating two dose regimens (1,000 and 1,250 mg). We used TabNet, a leading-edge deep learning technique, to construct the prediction model with good performance (accuracy = 0.82 and AUC = 0.83). Afterward, important variables that strongly correlated with lapatinib dose were ranked via an importance score, including treatment protocols, weight, number of chemotherapy treatments, and number of metastases. Lastly, the confusion matrix was used to validate the model; it can be seen that the dose regimen of 1,000 mg lapatinib had a precision of 88% and a recall rate of 64%, and the dose regimen of 1,250 mg lapatinib had a precision of 82% and a recall rate of 95%.
+As a novel deep learning technique, TabNet uses a sequential attention mechanism to choose a subset of meaningful features to process at each decision step, enabling interpretability and
+
+Frontiers in Oncology | www.frontiersin.org
+
+5
+
+June 2022 | Volume 12 | Article 893966
+
+Yu et al.
+
+Predicting Lapatinib Dose Regimen
+
+TABLE 3 | Description of demographic and clinical characteristics.
+
+Categories
+
+Variables
+
+Cases (N = 149)
+
+Missing rate
+
+Lapatinib information Demographic information Drug combination Physiopathological condition Treatment information
+Safety and effectiveness
+
+Initial dose regimen, n (%)a 0 1 Age, year, median (IQR) Height, cm, median (IQR) Weight, kg, median (IQR) Age ≥ 52 years, n (%) Prior use of anthracycline, n (%) Prior use of taxane, n (%) Prior use of platinum, n (%) Prior use of ﬂuorouracil, n (%) Prior use of trastuzumab, n (%) Hypertension, n (%) Diabetes, n (%) Heart disease, n (%) Other underlying diseases, n (%) Postmenopausal, n (%) Number of chemotherapy treatments, n (%) <3 ≥3 Ki-67, median (IQR) Prior endocrine therapy, n (%) ER, n (%) 0 1 PR, n (%) 0 1 Stage, n (%) 2 3 4 Operation, n (%) 0 1 2 ECOG, n (%) 1 2 Number of metastases, n (%) 0 1 2 3 4 Metastases, n (%) <2 ≥2 Lung metastases, n (%) Liver metastases, n (%) Bone metastases, n (%) Brain metastases, n (%) Other metastases, n (%) Treatment protocols, n (%)b Protocol_1 Protocol_2 Protocol_3 Protocol_4 Safety and effectiveness, n (%)c 1 0
+
+55 (36.90%) 94 (63.10%) 51 (42.0–58.0) 160.2 (158.0–162.0) 58.3 (53.0–64.0) 77 (51.78%) 101 (67.79%) 134 (89.93%) 63 (42.28%) 75 (50.34%) 136 (91.28%) 18 (12.08%)
+6 (4.03%) 5 (3.36%) 14 (9.4%) 89 (59.73%)
+72 (48.32%) 77 (51.68%) 38.1 (20.0–50.0) 54 (36.24%)
+67 (44.97%) 82 (55.03%)
+47 (31.54%) 102 (68.46%)
+7 (4.70%) 29 (19.46%) 113 (75.84%)
+13 (8.72%) 131 (87.92%)
+2 (1.34%)
+145 (97.32%) 4 (2.68%)
+36 (24.16%) 60 (40.27%) 33 (22.15%) 14 (9.04%)
+6 (4.03%)
+96 (64.43%) 53 (35.57%) 63 (42.28%) 40 (26.85%) 47 (31.54%) 27 (18.12%) 35 (23.49%)
+100 (67.11%) 24 (16.11%) 10 (6.71%) 15 (10.07%)
+46 (30.87%) 103 (69.13%)
+
+0
+0 0 0 0 0 0 0 0 0 0 0 0 0 2.7% 0
+8.7% 0 0
+0
+0
+0
+2.0%
+0
+0
+0 0 0 0 0 0
+0
+
+aRegimen of 1250 mg lapatinib corresponds to “1,” and regimen of 1,000 mg lapatinib corresponds to “0.” bProtocol_1 indicates combination regimen of lapatinib + capecitabine, protocol_2 indicates combination regimen of paclitaxel + carboplatin + herceptin + lapatinib, protocol_3 indicates
+combination regimen of vinorelbine + lapatinib, and protocol_4 indicates other combination regimens. cPatient showing both safety and effectiveness corresponds to “1,” and other situations (either showing safety or effectiveness; not showing safety nor effectiveness) corresponds to “0.” IQR, interquartile range; ER, estrogen receptors; PR, progesterone receptors; ECOG, Eastern Cooperative Oncology Group.
+
+Frontiers in Oncology | www.frontiersin.org
+
+6
+
+June 2022 | Volume 12 | Article 893966
+
+Yu et al.
+
+Predicting Lapatinib Dose Regimen
+
+FIGURE 2 | F1_score of RF model corresponding to the number of ranked variables. RF, random forest.
+
+more efﬁcient learning as the learning capacity used for the most salient features (21). Additionally, based on retaining the end-toend and representation learning characteristics of deep neural networks, TabNet also has the advantages of tree model interpretability and sparse feature selection (28). Other studies based on real-world evidence show that TabNet outperforms ensemble tree-based algorithms, since it can process a highly nonlinear relationship with its depth, without overﬁtting due to instance-wise feature selection (21). In this study, we applied TabNet, super TML, Wide&Deep, and ANN, which are algorithms with good predictive ability in various network algorithm types. After comparing the different network models, the TabNet model shows the best prediction performance (Table S1). Later, we will increase multicenter data. With larger data volume, we will build different network models and explore the optimum one to predict the dose of lapatinib to assist clinical medication.
+
+As one of the most important variables inﬂuencing lapatinib dose, protocols of combination therapy accounted for a different proportion in this study as follows: protocol_1, protocol_2, protocol_3, and protocol_4 accounted for 67.11%, 16.11%, 6.71%, and 10.07%, respectively. The combination of lapatinib + cape citabine (protocol_1) was one of the common recommended regimens for patients with HER2(+) breast cancer with prior treatment of taxanes, anthracyclines, and/or trastuzumab (29, 30). Clinicians generally used lapatinib at a dose of 1,250 mg daily continuously plus capecitabine at a dose of 2,000 mg daily, and the combination can achieve superior treatment efﬁcacy than capecitabine monotherapy (29, 31). In addition, a study on Japanese breast cancer patients found a drug–drug interaction and pharmacokinetics interaction between lapatinib and paclitaxel, as the AUC and Cmax of these patients given the combination therapy were affected (32). In Rezai et al.’s study, a pharmacokinetic interaction was found between lapatinib and
+
+FIGURE 3 | Confusion matrix in TabNet model.
+
+Frontiers in Oncology | www.frontiersin.org
+
+7
+
+June 2022 | Volume 12 | Article 893966
+
+Yu et al.
+
+Predicting Lapatinib Dose Regimen
+
+vinorelbine, and the use of lapatinib can remarkably decrease the vinorelbine clearance (33). It has been proven that therapy of lapatinib combined with other drugs can commonly improve the time to progression and/or achieve longer survival time in these patients (29, 34, 35). Normally, previous studies focused on the efﬁcacy and safety of combination therapy; few investigated the effect on dose regimen. Further research is needed to conﬁrm the relationships between combination therapy and drug doses.
+For the physiological features, previous studies found that patients with lower weight were more likely to have higher lapatinib plasma levels (P = 0.055) (36). The researchers believed that patients without fasting and lapatinib dose were not adjusted to low body weight during drug intake, which would lead to increased lapatinib body levels (36). The number of chemotherapy treatments was identiﬁed as an important inﬂuencing variable for lapatinib dose, and a previous study showed that three or more prior treatments strongly correlated with worse survival (1). Additionally, some studies found that organ metastases (such as liver and brain metastases) show a strong relationship with morbidity, mortality, and survival rate in breast cancer patients, which may affect the lapatinib dose regimen (37–39). In this study, the number of metastases has a remarkable effect on lapatinib dose whose correlation was previously investigated by few studies, which warranted further research.
+According to the confusion matrix results, the classiﬁer correctly identiﬁed 82% of patients using the 1,250-mg lapatinib regimen and 88% of patients using the 1,000-mg lapatinib regimen, indicating a remarkable prediction performance. Nevertheless, the sample size in the training and test cohorts was small. Large samples are required to verify this result.
+
+experience from the real world. One limitation in this study was the limited sample size that affected the model to further optimize the performance. In future, more real-world evidence should be added in the model to optimize its performance, and larger prospective clinical studies will be needed to investigate the further interactions between different variables and lapatinib dose.
+DATA AVAILABILITY STATEMENT
+The raw data supporting the conclusions of this article will be made available by the authors, without undue reservation.
+ETHICS STATEMENT
+The studies involving human participants were reviewed and approved by the Ethics Committee at Fudan University Shanghai Cancer Center (FUSCC) (No. 2016-106-1159-K1). The patients/ participants provided their written informed consent to participate in this study.
+AUTHOR CONTRIBUTIONS
+ZY and XY led the research and provided medical support. FK analyzed and interpreted the data. HYL, JZ, and ZW analyzed the data and provided technical support. HL and XH wrote the manuscript. HW and FG provided methodological guidance. QZ provided technical and medical guidance. All authors contributed to the article and approved the submitted version.
+
+CONCLUSION
+Our study endeavored to build a dose prediction model via machine learning and deep learning methods, which could mine deep data based on real-world evidence. Through a comparison of different algorithms, TabNet was selected to establish the model based on the strength of its predictive ability. To our knowledge, few studies focused on lapatinib dose prediction previously, and this study provides a new perspective and guidance for lapatinib dose administration with a more concise and accurate model. Compared with conventional models, machine learning and deep learning models mine and use unexploited variables to cover the shortage of clinical
+
+FUNDING
+FG was supported by the National Key Research and Development Program (2020YFC2005502, 2020YFC2005503). QZ was supported by the Clinical Research Plan of SHDC [SHDC2020CR3085B].
+SUPPLEMENTARY MATERIAL
+The Supplementary Material for this article can be found online at: https://www.frontiersin.org/articles/10.3389/fonc.2022.893966/ full#supplementary-material
+
+REFERENCES
+1. Ye X, Luo X, Du Q, Li H, Liu HY, Yu B, et al. Efﬁcacy and Safety of Lapatinib in Chinese Breast Cancer Patients: A Real-World Study. Ann Transl Med (2020) 8(5):240. doi: 10.21037/atm.2020.03.21
+2. Bonde GV, Yadav SK, Chauhan S, Mittal P, Ajmal G, Thokala S, et al. Lapatinib Nano-Delivery Systems: A Promising Future for Breast Cancer Treatment. Expert Opin Drug Deliv (2018) 15(5):495–507. doi: 10.1080/ 17425247.2018.1449832
+
+3. Opdam FL, Guchelaar HJ, Beijnen JH, Schellens JH. Lapatinib for Advanced or Metastatic Breast Cancer. Oncologist (2012) 17(4):536–42. doi: 10.1634/ theoncologist.2011-0461
+4. Voigtlaender M, Schneider-Merck T, Trepel M. Lapatinib. Recent Results Cancer Res (2018) 211:19–44. doi: 10.1007/978-3-319-91442-8_2
+5. Giampaglia M, Chiuri VE, Tinelli A, De Laurentiis M, Silvestris N, Lorusso V. Lapatinib in Breast Cancer: Clinical Experiences and Future Perspectives. Cancer Treat Rev (2010) 36 Suppl 3:S72–9. doi: 10.1016/S0305-7372(10) 70024-4
+
+Frontiers in Oncology | www.frontiersin.org
+
+8
+
+June 2022 | Volume 12 | Article 893966
+
+Yu et al.
+
+Predicting Lapatinib Dose Regimen
+
+6. Estévez LG, Suarez-Gauthier A, Garcıá E, Miró C, Calvo I, Fernández-Abad M, et al. Molecular Effects of Lapatinib in Patients With HER2 Positive Ductal Carcinoma In Situ. Breast Cancer Res (2014) 16(4):R76. doi: 10.1186/bcr3695
+7. Crown J, Kennedy MJ, Tresca P, Marty M, Espie M, Burris HA, et al. Optimally Tolerated Dose of Lapatinib in Combination With Docetaxel Plus Trastuzumab in First-Line Treatment of HER2-Positive Metastatic Breast Cancer. Ann Oncol (2013) 24(8):2005–11. doi: 10.1093/annonc/ mdt222
+8. Frankel C, Palmieri FM. Lapatinib Side-Effect Management. Clin J Oncol Nurs (2010) 14(2):223–33. doi: 10.1188/10.CJON.223-233
+9. Fontanella C, Lederer B, Nekljudova V, Untch M, von Minckwitz G, Loibl S. Does Toxicity Predict Efﬁcacy? Insight Into the Mechanism of Action of Lapatinib. J Clin Oncol (2014) 32(30):3458–9. doi: 10.1200/ JCO.2014.57.0499
+10. Tao G, Chityala PK. Epidermal Growth Factor Receptor Inhibitor-Induced Diarrhea: Clinical Incidence, Toxicological Mechanism, and Management. Toxicol Res (Camb) (2021) 10(3):476–86. doi: 10.1093/toxres/tfab026
+11. Blonde L, Khunti K, Harris SB, Meizinger C, Skolnik NS. Interpretation and Impact of Real-World Clinical Data for the Practicing Clinician. Adv Ther (2018) 35(11):1763–74. doi: 10.1007/s12325-018-0805-y
+12. Palacios M. The Quality of Research With Real-World Evidence. Colomb Med (Cali) (2019) 50(3):140–1. doi: 10.25100/cm.v50i3.4259
+13. Robson C. Real World Research. 3rd Edn. United Kingdom: John Wiley & Sons Ltd (2011).
+14. Mo X, Chen X, Li H, Li J, Zeng F, Chen Y, et al. Early and Accurate Prediction of Clinical Response to Methotrexate Treatment in Juvenile Idiopathic Arthritis Using Machine Learning. Front Pharmacol (2019) 10:1155. doi: 10.3389/fphar.2019.01155
+15. Lee HC, Yoon SB, Yang SM, Kim WH, Ryu HG, Jung CW, et al. Prediction of Acute Kidney Injury After Liver Transplantation: Machine Learning Approaches vs. Logistic Regression Model. J Clin Med (2018) 7(11):428. doi: 10.3390/jcm7110428
+16. Kruppa J, Ziegler A, König IR. Risk Estimation and Risk Prediction Using Machine-Learning Methods. Hum Genet (2012) 131(10):1639–54. doi: 10.1007/s00439-012-1194-y
+17. Chen T, Guestrin C. XGBoost: A Scalable Tree Boosting System. In: Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining. San Francisco, CA: ACM (2016). p. 785–94.
+18. Ke G, Meng Q, Finley T, Wang T, Chen W, Ma W, et al. A Highly Efﬁcient Gradient Boosting Decision Tree. In: Proceedings of the Advances in Neural Information Processing Systems. Long Beach, CA, USA: Curran Associates, Inc (2017). p. 3146–54.
+19. Prokhorenkova L, Gusev G, Vorobev A, Dorogush AV, Gulin A. Catboost: Unbiased Boosting With Categorical Features. (2017).
+20. Zhang J, Mucs D, Norinder U, Svensson F. LightGBM: An Effective and Scalable Algorithm for Prediction of Chemical Toxicity-Application to the Tox21 and Mutagenicity Data Sets. J Chem Inf Model (2019) 59(10):4150–8. doi: 10.1021/acs.jcim.9b00633
+21. Arik SO, Pﬁster T. TabNet: Attentive Interpretable Tabular Learning. (2019). p. 07442.
+22. Huang X, Yu Z, Wei X, Shi J, Wang Y, Wang Z, et al. Prediction of Vancomycin Dose on High-Dimensional Data Using Machine Learning Techniques. Expert Rev Clin Pharmacol (2021) 14(6):761–71. doi: 10.1080/ 17512433.2021.1911642
+23. Liu Y, Chen J, You Y, Xu A, Li P, Wang Y, et al. An Ensemble Learning Based Framework to Estimate Warfarin Maintenance Dose With Cross-Over Variables Exploration on Incomplete Data Set. Comput Biol Med (2021) 131:104242. doi: 10.1016/j.compbiomed.2021.104242
+24. Li Z, Yuan L, Zhang C, Sun J, Wang Z, Wang Y, et al. A Novel Prognostic Scoring System of Intrahepatic Cholangiocarcinoma With Machine Learning Basing on Real-World Data. Front Oncol (2021) 10:576901. doi: 10.3389/ fonc.2020.576901
+25. Zheng P, Yu Z, Li L, Liu S, Lou Y, Hao X, et al. Predicting Blood Concentration of Tacrolimus in Patients With Autoimmune Diseases Using Machine Learning Techniques Based on Real-World Evidence. Front Pharmacol (2021) 12:727245. doi: 10.3389/fphar.2021.727245
+
+26. Hatamikia S, Maghooli K, Nasrabadi AM. The Emotion Recognition System Based on Autoregressive Model and Sequential Forward Feature Selection of Electroencephalogram Signals. J Med Signals Sens (2014) 4(3):194–201. doi: 10.4103/2228-7477.137777
+27. Xu BH, Jiang ZF, Chua D, Shao ZM, Luo RC, Wang XJ, et al. Lapatinib Plus Capecitabine in Treating HER2-Positive Advanced Breast Cancer: Efﬁcacy, Safety, and Biomarker Results From Chinese Patients. Chin J Cancer (2011) 30 (5):327–35. doi: 10.5732/cjc.010.10507
+28. Yan J, Xu T, Yu Y, Xu HX. Rainfall Forecast Model Based on the TabNet Model. Water (2021) 13(9):1272. doi: 10.3390/w13091272
+29. Cameron D, Casey M, Press M, Lindquist D, Pienkowski T, Romieu CG, et al. A Phase III Randomized Comparison of Lapatinib Plus Capecitabine Versus Capecitabine Alone in Women With Advanced Breast Cancer That has Progressed on Trastuzumab: Updated Efﬁcacy and Biomarker Analyses. Breast Cancer Res Treat (2008) 112(3):533–43. doi: 10.1007/s10549-0079885-0
+30. Ma F, Ouyang Q, Li W, Jiang Z, Tong Z, Liu Y, et al. Pyrotinib or Lapatinib Combined With Capecitabine in HER2-Positive Metastatic Breast Cancer With Prior Taxanes, Anthracyclines, and/or Trastuzumab: A Randomized, Phase II Study. J Clin Oncol (2019) 37(29):2610–9. doi: 10.1200/JCO.19.00108
+31. Geyer CE, Forster J, Lindquist D, Chan S, Romieu CG, Pienkowski T, et al. Lapatinib Plus Capecitabine for HER2-Positive Advanced Breast Cancer. N Engl J Med (2006) 355(26):2733–43. doi: 10.1056/NEJMoa064320
+32. Inoue K, Kuroi K, Shimizu S, Rai Y, Aogi K, Masuda N, et al. Safety, Pharmacokinetics and Efﬁcacy Findings in an Open-Label, Single-Arm Study of Weekly Paclitaxel Plus Lapatinib as First-Line Therapy for Japanese Women With HER2-Positive Metastatic Breast Cancer. Int J Clin Oncol (2015) 20(6):1102–9. doi: 10.1007/s10147-015-0832-5
+33. Rezai K, Urien S, Isambert N, Roche H, Dieras V, Berille J, et al. Pharmacokinetic Evaluation of the Vinorelbine-Lapatinib Combination in the Treatment of Breast Cancer Patients. Cancer Chemother Pharmacol (2011) 68(6):1529–36. doi: 10.1007/s00280-011-1650-8
+34. Patel TA, Ensor JE, Creamer SL, Boone T, Rodriguez AA, Niravath PA, et al. A Randomized, Controlled Phase II Trial of Neoadjuvant Ado-Trastuzumab Emtansine, Lapatinib, and Nab-Paclitaxel Versus Trastuzumab, Pertuzumab, and Paclitaxel in HER2-Positive Breast Cancer (TEAL Study). Breast Cancer Res (2019) 21(1):100. doi: 10.1186/s13058-019-1186-0
+35. Cameron D, Casey M, Oliva C, Newstat B, Imwalle B, Geyer CE. Lapatinib Plus Capecitabine in Women With HER-2-Positive Advanced Breast Cancer: Final Survival Analysis of a Phase III Randomized Trial. Oncologist (2010) 15 (9):924–34. doi: 10.1634/theoncologist.2009-0181
+36. Cizkova M, Bouchalova K, Friedecky D, Polynkova A, Janostakova A, Radova L, et al. High Lapatinib Plasma Levels in Breast Cancer Patients: Risk or Beneﬁt? Tumori (2012) 98(1):162–5. doi: 10.1177/030089161209800123
+37. Cameron D, Casey M, Oliva C, Newstat B, Imwalle B, Geyer CE. Lapatinib Plus Capecitabine in Women With HER-2-Positive Advanced Breast Cancer: Final Survival Analysis of a Phase III Randomized Trial. Oncologist (2010) 15 (9):924–34. doi: 10.1634/theoncologist.2009-0181
+38. Göksu SS, Bozcuk H, Koral L, Ç akar B, Gündüz S, Tatlı AM, et al. Factors Predicting Lapatinib Efﬁcacy in HER-2+ Metastatic Breast Carcinoma: Does it Work Better in Different Histologic Subtypes? Indian J Cancer (2015) 52 (4):517–9. doi: 10.4103/0019-509X.178382
+39. Tomasello G, Bedard PL, de Azambuja E, Lossignol D, Devriendt D, PiccartGebhart MJ. Brain Metastases in HER2-Positive Breast Cancer: The Evolving Role of Lapatinib. Crit Rev Oncol Hematol (2010) 75(2):110–21. doi: 10.1016/ j.critrevonc.2009.11.003
+Conﬂict of Interest: Author JZ and FG are employed by Beijing Medicinovo Technology Co. Ltd., China. Author XH is employed by Dalian Medicinovo Technology Co., Ltd., China.
+The remaining authors declare that the research was conducted in the absence of any commercial or ﬁnancial relationships that could be construed as a potential conﬂict of interest.
+Publisher’s Note: All claims expressed in this article are solely those of the authors and do not necessarily represent those of their afﬁliated organizations, or those of the publisher, the editors and the reviewers. Any product that may be evaluated in
+
+Frontiers in Oncology | www.frontiersin.org
+
+9
+
+June 2022 | Volume 12 | Article 893966
+
+Yu et al.
+
+Predicting Lapatinib Dose Regimen
+
+this article, or claim that may be made by its manufacturer, is not guaranteed or endorsed by the publisher.
+Copyright © 2022 Yu, Ye, Liu, Li, Hao, Zhang, Kou, Wang, Wei, Gao and Zhai. This is an open-access article distributed under the terms of the Creative Commons
+
+Attribution License (CC BY). The use, distribution or reproduction in other forums is permitted, provided the original author(s) and the copyright owner(s) are credited and that the original publication in this journal is cited, in accordance with accepted academic practice. No use, distribution or reproduction is permitted which does not comply with these terms.
+
+Frontiers in Oncology | www.frontiersin.org
+
+10
+
+June 2022 | Volume 12 | Article 893966
+
