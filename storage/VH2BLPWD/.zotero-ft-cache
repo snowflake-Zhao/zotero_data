@@ -1,0 +1,558 @@
+European Journal of Cancer 185 (2023) 69e82
+Available online at www.sciencedirect.com
+ScienceDirect
+journal homepage: www.ejcancer.com
+Original Research
+Clinical outcomes of adjuvant taxane plus anthracycline versus taxane-based chemotherapy regimens in older adults with node-positive, triple-negative breast cancer: A SEEReMedicare study
+Savannah Roy a,*, Stephanie Lakritz a, Anna R. Schreiber b, Elizabeth Molina c, Peter Kabos b, Marie Wood b, Anthony Elias b, Lavanya Kondapalli d, Cathy J. Bradley e, Jennifer R. Diamond b
+a Department of Medicine, University of Colorado Anschutz Medical Campus, Aurora, CO, USA b Division of Medical Oncology, University of Colorado Anschutz Medical Campus, Aurora, CO, USA c Population Health Shared Resource, University of Colorado Cancer Center, Aurora, CO, USA d Division of Cardiology, University of Colorado Anschutz Medical Campus, Aurora, CO, USA e Department of Health Systems, Management, and Policy, University of Colorado Anschutz Medical Campus, Aurora, CO, USA
+Received 5 October 2022; received in revised form 10 February 2023; accepted 14 February 2023 Available online 28 February 2023
+
+KEYWORDS
+Breast cancer; Older adults; Chemotherapy; Triple-negative breast cancer; Anthracyclines
+
+Abstract Background: Triple-negative breast cancer (TNBC) is a subtype of breast cancer associated with an aggressive clinical course. Adjuvant chemotherapy reduces the risk of recurrence and improves survival in patients with node-positive TNBC. The beneﬁt of anthracycline plus taxane (ATAX) regimens compared with non-anthracycline-containing, taxanebased regimens (TAX) in older women with node-positive TNBC is not well characterised. Methods: Using the Surveillance, Epidemiology, and End ResultseMedicare database, we identiﬁed 1106 women with node-positive TNBC diagnosed at age 66 years and older between 2010 and 2015. We compared patient clinical characteristics according to adjuvant chemotherapy regimen (chemotherapy versus no chemotherapy and ATAX versus TAX). Logistic regression was performed to estimate the odds ratios (OR) and 95% conﬁdence intervals (CIs). KaplaneMeier survival curves were generated to estimate 3-year overall survival (OS) and cancer-speciﬁc survival (CSS). Cox proportional hazard models were used to analyse OS and CSS while controlling for patient and tumour characteristics. Results: Of the 1106 patients in our cohort, 767 (69.3%) received adjuvant chemotherapy with ATAX (364/767, 47.5%), TAX (297/767, 39%) or other regimens (106/767, 13.8%).
+
+* Corresponding author: University of Colorado Anschutz Medical Campus, 12801 East 17th Ave, Mailstop 8117, Aurora, CO 80045, USA. E-mail address: savannah.roy@cuanschutz.edu (S. Roy).
+https://doi.org/10.1016/j.ejca.2023.02.014 0959-8049/Published by Elsevier Ltd.
+
+70
+
+S. Roy et al. / European Journal of Cancer 185 (2023) 69e82
+
+Independent predictors of which patients were more likely to receive ATAX versus TAX included more extensive nodal involvement (4), age, marital/partner status and noncardiac comorbidities. There was a statistically signiﬁcant improvement in 3-year CSS (81.8% versus 71.4%) and OS (70.7% versus 51.3%) with the use of any chemotherapy in our cohort (P < 0.01). Three-year CSS and OS for patients who received ATAX versus TAX were similar at 82.8% versus 83.7% (P Z 0.80) and 74.2% versus 72.7% (P Z 0.79), respectively. There was a trend towards improved CSS and OS in patients with four or more positive lymph nodes who received ATAX versus TAX (hazard ratio 0.66, 95% CI: 0.36e1.23, P Z 0.19 and hazard ratio 0.68, 95% CI: 0.41e1.14, P Z 0.14, respectively). Conclusion: Among older women with node-positive TNBC, a majority of patients received adjuvant chemotherapy, which was associated with an improvement in CSS and OS. When compared with TAX chemotherapy, there was a trend towards better outcomes with ATAX for patients with 4 nodes. Published by Elsevier Ltd.
+
+1. Introduction
+Breast cancer is the most diagnosed cancer worldwide in women, and triple-negative breast cancer (TNBC), deﬁned as negative for estrogen receptor (ER), progesterone receptor (PR) and human epidermal growth factor 2 (HER2), accounts for approximately 15% of cases [1]. TNBC is associated with a more aggressive clinical course, including advanced stage at initial diagnosis, early metastatic spread and decreased overall survival (OS) [2,3].
+Approximately 35% of patients diagnosed with TNBC are aged >65 years; however, data show decreased use of chemotherapy in this population and few aged >65 years enrolled in clinical trials [2,4e11]. The Bridging the Age Gap Study, a prospective cohort study, recently demonstrated that there are a signiﬁcant number of older but ﬁt patients with highrisk early breast cancer who are not receiving chemotherapy and that some of these patients, particularly those with ER-negative disease, may derive beneﬁt from therapy [12]. The European Society of Breast Cancer Specialists and the International Society of Geriatric Oncology have recently updated and expanded the previous 2012 evidence-based recommendations for the management of breast cancer in older individuals, which should be used to select such patients for treatment [13].
+Anthracycline and taxane-based chemotherapy (ATAX) has historically been the standard of care adjuvant therapy for patients with node-positive, HER2-negative, early-stage breast cancer. In this patient population, ATAX signiﬁcantly reduces the risk of breast cancer recurrence, breast cancer mortality, and overall mortality compared with omission of adjuvant chemotherapy [14]. In the Early Breast Cancer Trialists’ Collaborative Group meta-analysis, the addition of four cycles of taxanes to anthracyclines improved the 8-year breast cancer mortality rate from 21.1% to 23.9% (RR 0.86, 95% CI]: 0.79e0.93) and 8-year overall mortality
+
+rate from 23.5% to 26.7% (RR 0.86, 95% CI: 0.79e0.93) compared with the anthracyclines control group [14]. When compared head-to-head, TC (docetaxel, cyclophosphamide) was superior to AC (doxorubicin, cyclophosphamide) with a beneﬁt in disease-free survival and OS [15].
+Given the beneﬁt of taxanes and the risk of cardiac toxicity and secondary leukaemias with anthracyclines, a series of phase III randomised trials were conducted to evaluate the impact of anthracyclines in taxanecontaining regimens. The ABC trials demonstrate improved invasive disease-free survival for ATAX compared with TAX chemotherapy, with more beneﬁt in patients with TNBC and those with node-positive disease [16]. However, a beneﬁt was not demonstrated for ATAX compared with TAX in a combined analysis of PlanB and SUCCESS C trials [17]. Importantly, most patients enrolled in these trials were aged <66 years, and the beneﬁt of ATAX compared with TAX in older patients remains underexamined. Two prospective clinical trials assessing the effect of chemotherapy versus no therapy in older patients with breast cancer, the CASA and ACTION studies, were closed prematurely because of poor accrual and demonstrate the challenges of conducting prospective randomised clinical trials in this patient population [19,20].
+We recently completed a retrospective analysis of adjuvant chemotherapy in older women with nodenegative TNBC and found that ATAX was associated with inferior 3-year OS and cancer-speciﬁc survival (CSS) compared with TAX [18]. The purpose of this study was to evaluate the beneﬁt of adjuvant chemotherapy with ATAX compared with TAX in older women with node-positive TNBC.
+2. Methods
+Using the Surveillance, Epidemiology, and End Results (SEER)eMedicare database, we identiﬁed 178,228
+
+S. Roy et al. / European Journal of Cancer 185 (2023) 69e82
+
+71
+
+patients diagnosed with primary breast cancer from 2010 to 2015. We then identiﬁed 1106 women with nodepositive TNBC diagnosed at age 66 years meeting eligibility criteria for inclusion in this study/analysis (see
+
+Fig. 1). Individuals with missing data of interest were excluded from the analysis; this occurred in less than 1% of the data. Data regarding year of diagnosis, age, race, marital/partnered status, reporting registry region,
+
+Fig. 1. Sample selection. Newly diagnosed node-negative triple-negative breast cancer in women aged 66 years between 2010 and 2015 in Surveillance, Epidemiology, and End ResultseMedicare. FFS, fee-for-service; HMO, health maintenance organization.
+
+72
+
+S. Roy et al. / European Journal of Cancer 185 (2023) 69e82
+
+urban/rural residency, tumour stage, number of positive nodes, census poverty level, facilities visited in the ﬁrst 6 months, Charlson Comorbidity Index (CCI), treatment, presence of heart failure before diagnosis, presence of heart failure after diagnosis and presence of non-cardiac conditions were extracted. Heart failure after diagnosis could be before or after chemotherapy was received. The CCI was calculated based on claims 1 year before diagnosis. As all patients were aged 66 years, the CCI was not further age adjusted. Patients with a T1a and T1b disease and T3 and T4 disease were analysed together in T1a/b and T3/4 groups because of few patients in these groups. Patients were categorised into 1e3 (N1) and 4 positive lymph nodes (N2).
+The administration of neoadjuvant or adjuvant chemotherapy was determined using current procedural terminology (CPT) and healthcare common procedure coding system (HCPCS) procedure codes for commonly used chemotherapy drugs. Comorbid conditions were deﬁned by International Classiﬁcation of Diseases, Ninth Revision, and International Classiﬁcation of Diseases, Tenth Revision, codes (Appendix). Patients were identiﬁed as receiving ATAX if they received doxorubicin or epirubicin plus paclitaxel, docetaxel or nab-paclitaxel and as receiving TAX if they received docetaxel, paclitaxel or nab-paclitaxel without doxorubicin or epirubicin. Receipt of other drugs in combination with these agents was not included in this analysis.
+Descriptive statistics were used to summarise demographic features across the treatment groups. Chisquare analysis was used to determine statistical significance of differences in descriptive characteristics across treatment groups. OS was deﬁned as death due to any cause determined by the time from the month of diagnosis to death. CSS was deﬁned as death from cancer determined by the time from the month of diagnosis to death. KaplaneMeier 3-year all-cause and CSS curves were generated for treatment groups and for patients by age groups. OS and CSS between chemotherapy regimens were estimated using adjusted Cox proportional hazards models. Forest plots were generated using multivariate analysis and adjusted Cox proportional hazards models. Logistic regression was used to estimate odds ratios (ORs) and 95% CIs for the association between covariates and treatment groups. The CSS and OS analyses were adjusted for CCI to account for the impact of comorbidities as competing factors of mortality.
+3. Results
+3.1. Patient characteristics
+Baseline patient characteristics are summarised in Table 1. Patients were well distributed between our age groups, with 54.1% aged 66e75 years and 45.9% aged 76 years. Most patients were non-Hispanic White (76.4%),
+
+followed by Black (13.5%), or other (10.3%). Most patients had T2 tumours (49.1%), and there were more patients with N1 versus N2 disease (64.6% versus 35.4%). Most patients were free of comorbidities with a CCI score of 0 (53.1%), followed by a CCI score of 2 or more (25.0%) and CCI score of 1 (22.0%). Patients more commonly visited teaching hospitals (53.6%) than National Cancer Institute (NCI) centres (12.8%) or other facilities (33.6%). Most patients did not have prior heart failure or heart failure after diagnosis (91.1% and 75.4%, respectively).
+3.2. Patterns of chemotherapy administration
+Of the 1106 patients in our cohort, 767 (69.3%) received any type of adjuvant chemotherapy (Table 1). Patients aged 66e75 years (N Z 598) received chemotherapy at a much higher frequency (530/598, 88.6%) compared with patients aged 76 years (N Z 508, 237/508, 46.7%, P < 0.001). Of those patients receiving adjuvant chemotherapy (N Z 767), 364 (47.5%) received ATAX, 297 (38.7%) received TAX and 106 (13.8%) received another regimen. The most common other agents included cyclophosphamide, carboplatin, capecitabine, 5-Fluorouracil (5FU) and methotrexate. Our data did not delineate if these other agents were used as single agents or in combination with one another. Of the patients aged 66e75 years who received a taxane-containing regimen (N Z 485), the majority (309/485, 63.7%) received ATAX compared with a minority of patients aged 76 years (N Z 176, 55/176, 31.3%).
+3.3. Factors associated with the use of adjuvant chemotherapy
+3.3.1. Patient characteristics Logistic regression analysis revealed that patients aged 76 years were less likely to receive adjuvant chemotherapy when compared with those aged 66e70 years (OR 0.12, 95% CI: 0.08e0.16, P < 0.01). Older patients aged 76 years were also less likely to receive ATAX versus TAX compared with patients aged 66e75 years (OR 0.24, 95% CI: 0.16e0.35, P < 0.01). Compared with the patients who were married or partnered, patients who were not married were less likely to receive adjuvant chemotherapy (OR 0.42, 95% CI: 0.30e0.58, P < 0.01). Patients who were non-married were also less likely to receive ATAX than TAX (OR 0.69, 95% CI: 0.44e0.88, P < 0.01). Patients in the Northeast were more likely to receive treatment with ATAX than TAX compared with those in the West (OR 2.20, 95% CI: 1.30e3.72, P < 0.01). Patients who sought care at an NCI-designated centre were more likely to receive adjuvant chemotherapy (OR 1.91, 95% CI: 1.10e3.33, P Z 0.02) compared with other facilities. Table 2 provides additional analysis.
+
+S. Roy et al. / European Journal of Cancer 185 (2023) 69e82
+
+73
+
+Table 1 Descriptive characteristics and statistics, women diagnosed with TNBC by chemotherapy administration, SEEReMedicare 2010e2015.
+
+Variable
+
+All patients
+
+Patients who received ATAX and TAX
+
+Overall, N No chemotherapy, n (%) Any
+
+P value Overall, Taxane, Taxane þ
+
+P value
+
+chemotherapy,
+
+n
+
+n (%) anthracycline, n (%)
+
+n (%)
+
+All patients
+
+1106
+
+339 (30.6)
+
+Year of diagnosis
+
+2010
+
+196 (17.7) 67 (19.8)
+
+2011
+
+217 (19.6) 70 (20.7)
+
+2012
+
+192 (17.4) 66 (19.5)
+
+2013
+
+158 (14.3) 45 (13.3)
+
+2014
+
+175 (15.8) 56 (16.5)
+
+2015
+
+168 (15.2) 35 (10.3)
+
+Age category
+
+66e75
+
+598 (54.0) 68 (20.1)
+
+76
+
+508 (45.9) 271 (80.0)
+
+Race/ethnicity category
+
+White NH
+
+832 (75.2) 259 (76.4)
+
+Black NH
+
+149 (13.5) 45 (13.3)
+
+Other
+
+125 (11.3) 35 (10.3)
+
+Marital status category
+
+Non-married
+
+625 (56.5) 250 (73.8)
+
+Married or partnered
+
+481 (43.5) 89 (26.3)
+
+Registry region at diagnosis
+
+Northeast
+
+200 (18.1) 50 (14.8)
+
+Midwest
+
+141 (12.8) 44 (13.0)
+
+South
+
+319 (28.8) 98 (28.9)
+
+West
+
+446 (40.3) 147 (43.4)
+
+Patient urban/rural recode
+
+category
+
+Urban commuting area 965 (87.3) 299 (88.2)
+
+Non-urban commuting area 141 (12.8) 40 (11.8)
+
+DAJCC 7th Ed T category
+
+T1a/T1b
+
+64 (5.8) 23 (6.8)
+
+T2
+
+543 (49.1) 149 (44.0)
+
+T3/T4
+
+277 (25.1) 101 (29.8)
+
+Number of positive nodes
+
+1e3 nodes positive
+
+714 (64.6) 220 (64.9)
+
+4 nodes positive
+
+392 (35.4) 119 (35.1)
+
+Charlson Comorbidity
+
+Index category
+
+0
+
+587 (53.1) 142 (41.9)
+
+1
+
+243 (22.0) 75 (22.1)
+
+2
+
+276 (25.0) 122 (36.0)
+
+Census poverty level
+
+0% to <20% poverty
+
+841 (76.0) 256 (75.5)
+
+20% poverty
+
+265 (24.0) 83 (24.5)
+
+Facilities visited in ﬁrst 6
+
+months
+
+NCI centre
+
+141 (12.8) 27 (8.0)
+
+Teaching hospital
+
+593 (53.6) 182 (53.7)
+
+Other
+
+372 (33.6) 130 (38.4)
+
+Treatment
+
+Surgery alone
+
+210 (19.0) 210 (62.0)
+
+Surgery and RT
+
+129 (11.7) 129 (38.1)
+
+Surgery and chemotherapy 180 (16.3) 0 (0.0)
+
+Surgery, RT and chemo 587 (53.1) 0 (0.0)
+
+Prior heart failure
+
+No
+
+1007 (91.1) 286 (84.4)
+
+Yes
+
+99 (9.0) 53 (15.6)
+
+Heart failure after Dx
+
+No
+
+834 (75.4) 223 (65.8)
+
+Yes
+
+272 (24.6) 116 (34.2)
+
+767 (69.3)
+129 (16.8) 147 (19.2) 126 (16.4) 113 (14.7) 119 (15.5) 133 (17.3)
+530 (69.1) 237 (30.9)
+573 (74.7) 104 (13.6) 90 (11.7)
+375 (48.9) 392 (51.1)
+150 (19.6) 97 (12.7) 221 (28.8) 299 (39.0)
+
+661
+
+297
+
+364
+
+0.0558
+
+114 (17.3) 49 (16.5) 132 (20.0) 58 (19.5) 110 (16.6) 52 (17.5) 91 (13.8) 45 (15.2) 102 (15.4) 44 (14.8) 112 (16.9) 49 (16.5)
+
+65 (17.9) 74 (20.3) 58 (15.9) 46 (12.6) 58 (15.9) 63 (17.3)
+
+<0.0001 485 (73.4) 176 (59.3) 309 (85.9) 176 (26.6) 121 (40.7) 55 (15.1)
+
+0.7721
+
+493 (74.6) 217 (73.1) 276 (75.8) 88 (13.3) 40 (13.5) 48 (13.2) 80 (12.1) 40 (13.5) 40 (11.0)
+
+<0.0001 317 (48.0) 164 (55.2) 153 (42.0) 344 (52.0) 133 (44.8) 211 (58.0)
+
+0.2463
+
+125 (18.9) 42 (14.1) 83 (22.8) 83 (12.6) 33 (11.1) 50 (13.7) 198 (30.0) 90 (30.3) 108 (29.7) 255 (38.6) 132 (44.4) 123 (33.8)
+
+666 (86.8) 101 (13.2)
+41 (5.4) 394 (51.4) 176 (23.0)
+494 (64.4) 273 (35.6)
+
+0.5292 567 (85.8) 254 (85.5) 313 (86.00) 94 (14.2) 43 (14.5) 51 (14.0)
+
+0.0468
+
+35 (5.3) 18 (6.1) 17 (4.7) 337 (51.0) 156 (52.5) 181 (49.7) 153 (23.2) 61 (20.5) 92 (25.3)
+
+0.8752 419 (63.4) 201 (67.7) 218 (59.9) 242 (36.6) 96 (32.3) 146 (40.1)
+
+445 (58.0) 168 (21.9) 154 (20.1)
+585 (76.3) 182 (23.7)
+
+<0.0001 392 (59.3) 156 (52.5) 236 (64.8) 140 (21.2) 61 (20.5) 79 (21.7) 129 (19.5) 80 (26.9) 49 (13.5)
+0.7862 501 (75.8) 217 (73.1) 284 (78.0) 160 (24.2) 80 (26.9) 80 (22.0)
+
+114 (14.9) 411 (53.6) 242 (31.6)
+0 (0.0) 0 (0.0) 180 (23.5) 587 (76.5)
+721 (94.0) 46 (6.0)
+611 (79.7) 156 (20.3)
+
+0.0025
+
+97 (14.7) 44 (14.8) 53 (14.6) 359 (54.3) 154 (51.9) 205 (56.3) 205 (31.0) 99 (33.3) 106 (29.1)
+
+<0.0001
+
+137 (20.7) 74 (24.9) 63 (17.3) 524 (79.3) 223 (75.1) 301 (82.7)
+
+<0.0001 624 (94.4) 272 (91.6) 352 (96.7) 37 (5.6) 25 (8.4) 12 (3.3)
+
+<0.0001 529 (80.0) 221 (74.4) 308 (84.6) 132 (20.0) 76 (25.6) 56 (15.4)
+
+0.9223
+<0.0001 0.6043 0.0007 0.0067
+0.8642 0.4831 0.0387 <0.0001 0.1388 0.4621
+0.0164 0.0044 0.0011
+
+ATAX, anthracycline plus taxane; NCI, National Cancer Institute; NH, non-Hispanic; SEER, Surveillance, Epidemiology, and End Results; TAX, taxane-based regimens; TNBC, triple-negative breast cancer; DAJCC, derived american joint committee on cancer; RT, radiation therapy. Bolded values are statistically signiﬁcant ﬁndings.
+
+74
+
+S. Roy et al. / European Journal of Cancer 185 (2023) 69e82
+
+3.3.2. Tumour size and nodal status Patients with four or more positive lymph nodes were not statistically more likely to receive adjuvant chemotherapy compared with those with 1e3 positive nodes (OR 1.29, 95% CI: 0.93e1.80, P Z 0.13). However, among patients who received a taxane-based chemotherapy regimen, patients with four or more positive lymph nodes were more likely than patients with 1e3 positive lymph nodes to receive ATAX versus TAX (OR 1.63, 95% CI: 1.13e2.37, P < 0.01).
+3.3.3. Medical comorbidities Patients with previously diagnosed heart failure were less likely to receive adjuvant chemotherapy compared with those without heart failure (OR 0.54, 95% CI: 0.31e0.94, P Z 0.03). However, among patients with prior heart failure who received adjuvant chemotherapy, there was no signiﬁcant difference between the proportion who received ATAX versus TAX (OR 0.93, 95% CI: 0.39e2.24, P Z 0.88). There was no statistically signiﬁcant difference in heart failure onset after cancer diagnosis in those who received adjuvant chemotherapy versus those who did not receive adjuvant chemotherapy (OR 0.87, 95% CI: 0.59e1.28, P Z 0.45). Those with heart failure after diagnosis were statistically signiﬁcantly less likely to receive ATAX versus TAX (OR 0.61, 95% CI: 0.38e0.98, P Z 0.04). Those with a prior non-cardiac comorbid condition were statistically signiﬁcantly less likely to receive chemotherapy in general and ATAX over TAX (OR 0.49, 95% CI: 0.31e0.79, P < 0.01 and OR 0.45, 95% CI: 0.25e0.79, P < 0.01, respectively).
+3.3.4. Analysis of chemotherapy type and survival Chemotherapy signiﬁcantly improved both CSS and OS (seeFig. 2A and B). However, for patients who received a taxane-containing regimen, there was no difference in CSS or OS for patients receiving ATAX compared with TAX (Fig. 2C and D). In patients with four or more lymph nodes, there was a trend towards improved CSS and OS with ATAX compared with TAX (Fig. 2EeH), which was not seen in patients with 1e3 positive lymph nodes.
+3.3.4.1. Analysis of CSS and OS controlling for covariates. We evaluated factors that might inﬂuence the previously mentioned ﬁndings (Fig. 3). Although treatment with any chemotherapy was associated with improved CSS (HR: 0.71, 95% CI: 0.51e0.98, P Z 0.04), we saw a trend towards beneﬁt for older (>76) versus younger patients and 1e3 versus  4 lymph nodes positive. When stratiﬁed by age, a trend towards beneﬁt for CSS was seen in those aged 76 years (HR: 0.68, 95% CI: 0.46e1.00, P Z 0.05) but was not statistically signiﬁcant in those aged 66e75 years (HR: 0.68, 95% CI: 0.35e1.29, P Z 0.24). Those with 1e3 positive lymph nodes had a trend towards
+
+beneﬁt for CSS in those who received any adjuvant chemotherapy (HR: 0.63, 95% CI: 0.38e1.00, P Z 0.05) but was not signiﬁcant for those with four or more involved lymph nodes (HR: 0.78, 95% CI: 0.48e1.26; P Z 0.31).
+When compared with TAX, ATAX did not improve CSS (HR: 0.94, 95% CI: 0.61e1.45, P Z 0.79) However, when stratiﬁed by age and number of positive lymph nodes, a trend emerged speciﬁcally in CSS. Improved CSS was seen in older patients ages 76 years and older with four or more positive lymph nodes who were treated with ATAX versus TAX (HR: 0.09, 95% CI: 0.01e0.73, P Z 0.02). Conversely, a trend towards worse CSS was seen in older patients with less lymph node involvement, 1e3 positive lymph nodes when treated with ATAX versus TAX (HR: 12.33, 95% CI: 0.99e154.24, P Z 0.05; Fig. 3).
+Trends were similar for OS, with signiﬁcant beneﬁt observed for chemotherapy (HR: 0.71, 95% CI: 0.55e0.91, P Z 0.01; Fig. 4). This trend of improved 3year OS was seen when stratiﬁed by age in those aged 76 years (HR: 0.71, 95% CI: 0.53e0.96, P Z 0.03) and those aged 66e75 years (HR: 0.61, 95% CI: 0.38e0.97, P Z 0.04). The OS was also signiﬁcant when stratiﬁed by 1e3 positive lymph nodes (HR: 0.71, 95% CI: 0.55e0.91, P < 0.01) and four or more positive lymph nodes (HR: 0.66, 95% CI: 0.45e0.97, P Z 0.03). There was no 3-year OS beneﬁt with ATAX compared with TAX (HR: 0.98, 95% CI: 0.70e1.37, P Z 0.90). There was no statistically signiﬁcant difference in 3-year OS between ATAX versus TAX in those with 1e3 positive lymph nodes (HR: 1.33, 95% CI: 0.82e2.14, P Z 0.25). Similarly, there was no statistically signiﬁcant difference in 3-year OS between ATAX versus TAX in those with four or more positive lymph nodes (HR: 0.68, 95% CI: 0.41e1.14, P Z 0.14).
+4. Discussion
+Using the SEEReMedicare database, we retrospectively evaluated practice patterns and survival for older women treated for node-positive TNBC with ATAX or TAX chemotherapy. We conducted this study as older patients are commonly under-represented in randomised controlled trials yet make up an important patient population clinically. Because of lack of randomised control trials in this patient population, retrospective secondary analysis can be useful to guide treatment decisions in this older population and support future clinical trials.
+Consistent with prior reports, our study conﬁrmed the beneﬁt of adjuvant chemotherapy in older women with node-positive TNBC with improved CSS and OS [21,22]. Patients aged 76 years were less likely to receive adjuvant chemotherapy, but when they did, they derived beneﬁt in terms of both CSS and OS. This may
+
+S. Roy et al. / European Journal of Cancer 185 (2023) 69e82
+
+75
+
+Table 2 Logistic regression analysis estimating OR of chemotherapy versus no chemotherapy and taxane þ anthracycline-containing regimen versus taxane-containing regimen across variables, SEEReMedicare 2010e2015.
+
+Variable
+
+Chemotherapy versus no chemotherapy
+
+Taxane þ anthracycline versus taxane
+
+OR (95% CI)
+
+P value
+
+OR (95% CI)
+
+P value
+
+Year of diagnosis 2011 versus 2010 2012 versus 2010 2013 versus 2010 2014 versus 2010 2015 versus 2010 Age at diagnosis 66e75 (ref) 76 versus 66e75 Race/ethnicity White NH (ref) Black NH versus White NH Other versus White NH Marital status Married or partnered (ref) Non-married versus married or
+partnered Charlson comorbidity index 0 (ref) 1 versus 0 2 or more versus 0 Census-level poverty 0e20% poverty (ref) 20% or higher poverty versus
+0% to <20% poverty Region West (ref) Midwest versus West Northeast versus West South versus West Urban/rural category Urban commuting area (ref) Non-urban commuting area
+versus urban commuting area DAJCC7 T category T1a/T1b (ref) T1c versus T1a/T1b T2 versus T1a/T1b T3/T4 versus T1a/T1b Number of positive nodes 1e3 nodes positive (ref) 4 nodes positive versus 1e3 nodes positive Facility type Other (ref) NCI centre versus other Teaching hospital versus other Prior heart failure No (ref) Yes versus No Heart failure after diagnosis No (ref) Yes versus No Prior non-cardiac comorbid condition No (ref) Yes versus No
+
+1.00 (0.61, 1.65) 1.09 (0.66, 1.79) 1.34 (0.78, 2.29) 1.00 (0.59, 1.67) 1.82 (1.04, 3.19)
+0.12 (0.08, 0.16)
+1.17 (0.72, 1.89) 1.06 (0.63, 1.80)
+0.42 (0.30, 0.58)
+1.15 (0.74, 1.78) 0.96 (0.56, 1.63)
+0.98 (0.67, 1.43)
+0.81 (0.48, 1.36) 1.55 (0.97, 2.47) 0.95 (0.64, 1.42)
+1.09 (0.67, 1.78)
+1.40 (0.69, 2.85) 1.90 (0.98, 3.68) 1.22 (0.61, 2.44)
+1.29 (0.93, 1.80)
+1.91 (1.10, 3.33) 1.14 (0.81, 1.62)
+0.54 (0.31, 0.94)
+0.87 (0.59, 1.28)
+0.49 (0.31, 0.79)
+
+0.9911 0.7454 0.2947 0.9874 0.0353
+<0.0001
+0.5279 0.8225
+<0.0001
+0.5306 0.8698
+0.9199
+0.4231 0.0665 0.8166
+0.7263
+0.3526 0.0557 0.5717
+0.1292
+0.0227 0.4500
+0.0296
+0.4741
+0.0029
+
+0.93 (0.53, 1.63) 0.94 (0.52, 1.70) 0.76 (0.41, 1.41) 0.96 (0.52, 1.75) 0.92 (0.51, 1.66)
+0.24 (0.16, 0.35)
+1.13 (0.65, 1.96) 0.79 (0.45, 1.36)
+0.69 (0.44, 0.88)
+1.37 (0.84, 2.25) 0.76 (0.41, 1.43)
+0.91 (0.59, 1.41)
+1.30 (0.71, 2.38) 2.20 (1.30, 3.72) 1.12 (0.71, 1.77)
+0.99 (0.59, 1.65)
+1.29 (0.57, 2.93) 1.65 (0.77, 3.57) 2.11 (0.92, 4.81)
+1.63 (1.13, 2.37)
+0.92 (0.52, 1.60) 1.04 (0.69, 1.57)
+0.93 (0.39, 2.24)
+0.61 (0.38, 0.98)
+0.45 (0.25, 0.79)
+
+0.7986 0.8275 0.3870 0.8892 0.7847
+<0.0001
+0.6649 0.4118
+0.0078
+0.2090 0.3953
+0.6797
+0.3878 0.0032 0.6309
+0.9709
+0.5439 0.2014 0.0770
+0.0099
+0.7550 0.8487
+0.8792
+0.0411
+0.0053
+
+CI, conﬁdence interval; NH, non-Hispanic; OR, odds ratio; SEER, Surveillance, Epidemiology, and End Results. Bolded values are statistically signiﬁcant ﬁndings.
+
+76
+
+S. Roy et al. / European Journal of Cancer 185 (2023) 69e82
+
+Fig. 2. KaplaneMeier survival curves demonstrating survival probability over 3 years. Total number at risk is reﬂected at 0 months and 36 months for all curves. (A) Cancer-speciﬁc survival (CSS) for patients who received chemotherapy versus those who did not. (B) Overall
+
+S. Roy et al. / European Journal of Cancer 185 (2023) 69e82
+
+77
+
+Fig. 3. Forest plots for multivariate analysis of cancer-speciﬁc survival (CSS). Hazard ratios shown overall and by stage after reﬂecting for all covariates.
+
+reﬂect careful patient selection on the part of treating physicians, given the potential for severe chemotherapy toxicity in older patients who may have medical comorbidities or impaired functional status. Although chemotherapy does have an impact on quality of life, these effects are temporary and have been shown to largely resolve within 2 years [23]. Geriatric assessment tools are available that can be used for the physician to take an objective approach based on multidimensional assessment and not on age alone [24]. These assessment tools, such as the Comprehensive Geriatric Assessment by SIOG or the ESTIMATE can reﬁne prognostication and enable better patient-centric decision-making [13,25].
+
+We found that independent variables predicting the use of ATAX versus TAX included younger age, higher lymph node burden, having a marital partner and the absence of non-cardiac comorbid conditions. Although acute toxicity is more frequent in older patients receiving anthracycline-based chemotherapy that may result in treatment delay or interruption, overall treatment has been shown to be reasonably well-tolerated with 88.1% of older patients completing the planned anthracycline regimen in one study [26]. That said, it should be noted that anthracyclines carry a small but important risk of cardiotoxicity [27]. Cardiotoxicity is speciﬁcally a concern in the older population, as age >60 years is considered an independent risk factor as is having pre-
+
+survival (OS) for patients who received chemotherapy versus those who did not. (C) CSS for patients who received anthracycline þ taxane (ATAX) containing chemotherapy versus taxane-containing (TAX). (D) OS for patients who received ATAX versus TAX. (E) CSS for patients with 1e3 positive lymph nodes who received ATAX versus TAX. (F) OS for patients with 1e3 positive lymph nodes who received ATAX versus TAX. (G) CSS for patients with 4 positive lymph nodes who received ATAX versus TAX. (H) OS for patients with 4 positive lymph nodes who received ATAX versus TAX.
+
+78
+
+S. Roy et al. / European Journal of Cancer 185 (2023) 69e82
+
+Fig. 4. Forest plots for multivariate analysis of overall survival (OS). Hazard ratios shown overall and by stage after reﬂecting for all covariates.
+
+existing CV conditions such as hypertension, diabetes and prior myocardial infarction, which are more common as people age [28,29]. This may partly explain why older patients are less likely to receive an anthracycline-based regimen. It has been shown that there is signiﬁcant overlap between cardiovascular disease and potentially curable cancer diagnoses, including breast cancer [30]. For patients who may be at elevated risk of cardiotoxicity, partnering with a cardiologist or cardio-oncologist can be helpful and allow these patients to receive cardiotoxic chemotherapy. Although specialised cardio-oncology services have been developed to meet this growing clinical demand, they are largely conﬁned to large institutions, which are often academic referral centres [31]. More work needs to be done to increase awareness and expand access to cardiooncology services to a larger proportion of the cancer population [32].
+
+Those patients with four or more positive lymph nodes were more likely to receive ATAX over TAX, which highlights the important balance between tumour- and patient-related concerns that clinicians consider when choosing a chemotherapy regimen.
+Interestingly, patients in our study with prior diagnosis of heart failure who received adjuvant chemotherapy were just as likely to receive ATAX as TAX. Those with heart failure after diagnosis were, however, statistically signiﬁcantly less likely to receive ATAX over TAX. This was a surprising result; however, it highlights a limitation of our study. Given that guidelines emphasise a baseline echocardiogram for patients receiving anthracyclines [33,34], what our study deﬁned as ‘heart failure after diagnosis’ could be before or after chemotherapy, and it is likely that patients with abnormal cardiac function on echocardiogram before treatment did not receive an anthracycline.
+
+S. Roy et al. / European Journal of Cancer 185 (2023) 69e82
+
+79
+
+Previous studies have identiﬁed that married patients are more likely to receive deﬁnitive treatment [35], and for patients with breast cancer, marital status is an independent prognostic factor for survival [35,36]. Our study conﬁrms the association between marital status and undertreatment, as non-married patients were less likely to receive adjuvant chemotherapy. They were also less likely to receive ATAX than TAX [14,16]. Indeed, it has been shown that the survival beneﬁt of marriage is more signiﬁcant in older people than younger people [37]. Therefore, it is particularly crucial that physicians probe about social support and provide appropriate social and psychological resources to non-married older breast cancer patients.
+Our study sheds an important light on the issue of cancer disparities among older adults with cancer. Further investigation is needed, such as the analysis of chemotherapy use rates adjusted for different variables such as CCI, heart failure diagnosis, ethnicity, NCIdesignated versus community centre, geographical location and marital status across different institutions. This should be further investigated.
+Our study is consistent with the PlanB and SUCCESS C trials in ﬁnding no overall difference in CSS or OS for patients receiving ATAX versus TAX [17,38]. This contrasts with the ABC trials, which do show improved invasive disease-free survival with ATAX compared with TAX. However, similar to the ABC trials, our study reﬂected a trend to improved survival with ATAX compared with TAX when stratiﬁed by number of positive lymph nodes. In the pooled analysis of both PlanB and SUCCESS C, the median age of chemotherapy-treated patients was 55 years. Similarly, older patients are under-represented in the ABC trials, with only 29% of patients aged >60 years [16].
+Our group recently reported that the use of ATAX compared with TAX is associated with inferior 3-year OS and CSS in older women with node-negative TNBC [18]. In the present study, we similarly found that among patients with 1e3 positive lymph nodes who received ATAX versus TAX, there was a trend towards worse OS and CSS. This trend became even more apparent when stratiﬁed by age, showing that in patients older than age 76 with 1e3 positive lymph nodes, CSS was inferior in those treated with ATAX versus TAX. This suggests that in this older patient population with limited nodal involvement, there appears to be no beneﬁt to the addition of an anthracycline to a taxanecontaining regimen [39].
+Conversely, among patients with four or more positive lymph nodes in our study, there was a trend towards improved OS and CSS among patients who received ATAX versus TAX. When stratiﬁed by age, patients aged >76 years with four or more positive lymph nodes indeed had a statistically signiﬁcant beneﬁt in CSS with ATAX versus TAX. Other studies have recommended an adjuvant anthracycline in those with signiﬁcant nodal
+
+involvement or higher risk triple-negative disease [39]. Our study, however, is the ﬁrst to demonstrate a survival beneﬁt among a subgroup of older patients.
+The treatment of patients with node-positive TNBC has evolved over the last few years due largely to the results of the phase III KEYNOTE-522 trial, demonstrating an improvement in pathologic complete response (pCR) rate and event-free survival with the addition of pembrolizumab to an anthracycline, taxane and platinum-based neoadjuvant chemotherapy regimen in patients with T2þ or node-positive TNBC [40]. In KEYNOTE-522, however, >88% of patients were aged <65 years. It is important to speciﬁcally evaluate the beneﬁt of cancer therapies in older patients, as the ageing population is heterogenous. Age alone should not be considered a barrier to the recommendation of chemotherapy, however, with the escalation of chemotherapy to include anthracyclines that have the potential for cardiac toxicity in older patients and now platinum agents that can cause more myelosuppression, there is the potential for these chemotherapy choices to impact clinical outcomes in older patients differently.
+Non-anthracycline-containing platinum and taxanebased regimens, including docetaxel carboplatin, have been evaluated with similar pCR rates when compared with ATAX. For example, the NeoCART trial showed that compared with ATAX, docetaxel carboplatin resulted in a higher pCR rate in patients with T2þ or node-positive TNBC [41]. However, it is important to note that previous geriatric clinical trials, such as the ADVANCE trial, show that for TNBC, the platinum and taxane-based regimen paclitaxel carboplatin did not achieve targeted threshold for feasibility, or in other words, more than 80% of patients did not receive more than 80% of intended weeks/doses of therapy [42]. The NEOPACT trial demonstrated no better safety proﬁle with platinum and taxane-based regimens in combination with immunotherapy than AC-like regimens. Therefore, currently, there is no data to recommend platinum compounds instead of anthracycline-containing or TC-like regimens for older patients, including to administer pembrolizumab in the early setting [43]. Further investigation with clinical trials is needed to determine the safest regimen for this population.
+Our study has limitations, which should be acknowledged. The use of a retrospective data set may increase bias in our results. Our study did not consider speciﬁc chemotherapy toxicities or changes in quality of life. We evaluate age ranges, but it should be noted that no age threshold can determine the opportunity to treat or to not to treat with chemotherapy. In other words, these age ranges are not necessarily an appropriate proxy for functional status or tolerance of therapy. Finally, unobservable differences in health status may have driven some treatment decisions such that women in more compromised health were not given ATAX, which may impact differences in survival.
+
+80
+
+S. Roy et al. / European Journal of Cancer 185 (2023) 69e82
+
+5. Conclusion
+
+Conﬂict of interest statement
+
+To our knowledge, this is the largest cohort study to evaluate the administration of ATAX versus TAX and examine clinical outcomes in older patients treated for TNBC with lymph node involvement. Older patients with TNBC are less likely to receive adjuvant chemotherapy, although there is a clear survival beneﬁt for this group. Although we did not ﬁnd a survival beneﬁt with the use of ATAX compared with TAX overall, there was a beneﬁt from an anthracycline and taxane-containing regimen for older patients with four or more positive lymph nodes. Clinical trials evaluating non-anthracycline-containing regimens, such as docetaxel carboplatin in combination with pembrolizumab, should be designed to include older patients.
+Funding
+This study was funded by the Women’s Cancer Developmental Therapeutics (WCDT) Program at the University of Colorado Cancer Center. C.B. and E.M. are supported by the Cancer Center Support Grant P30CA046934.
+Availability of data and materials
+The data sets used to conduct this study are available on approval of a research protocol from the National Cancer Institute. Instructions for obtaining these data are available at https://healthcaredelivery.cancer.gov/ seermedicare/obtain/.
+Code availability
+Not applicable.
+Authors’ contributions
+S.R., S.L., A.S., C.B. and J.D. contributed to study design and concept. S.R., S.L., A.S., E.M., C.B. and J.D. contributed to analysis and interpretation of data. S.R. and J.D. wrote and edited the original draft. All authors contributed to the critical revision of the article. All authors read and approved the ﬁnal article.
+Ethics approval and consent to participate
+This study was conducted following local institutional review board approval, and a limited data set was obtained via the National Cancer Institute’s Surveillance, Epidemiology and End Results programme’s policies.
+Consent for publication
+Not applicable.
+
+The authors declare that they have no known competing ﬁnancial interests or personal relationships that could have appeared to inﬂuence the work reported in this paper.
+Acknowledgements
+This study used the linked SEEReMedicare database. The interpretation and reporting of these data are the sole responsibility of the authors. The authors acknowledge the efforts of the National Cancer Institute; Information Management Services (IMS), Inc.; and the Surveillance, Epidemiology, and End Results (SEER) Program tumour registries in the creation of the SEEReMedicare database.
+The collection of cancer incidence data used in this study was supported by the California Department of Public Health pursuant to California Health and Safety Code Section 103885; Centers for Disease Control and Prevention’s (CDC) National Program of Cancer Registries, under cooperative agreement 1NU58DP007156; the National Cancer Institute’s Surveillance, Epidemiology and End Results Program under contract HHSN261201800032I awarded to the University of California, San Francisco, contract HHSN2612018000 15I awarded to the University of Southern California, and contract HHSN261201800009I awarded to the Public Health Institue. The ideas and opinions expressed herein are those of the author(s) and do not necessarily reﬂect the opinions of the State of California, Department of Public Health, the National Cancer Institute and the Centers for Disease Control and Prevention or their Contractors and Subcontractors.
+Appendix A. Supplementary data
+Supplementary data to this article can be found online at https://doi.org/10.1016/j.ejca.2023.02.014.
+References
+[1] DeSantis CE, Ma J, Gaudet MM, et al. Breast cancer statistics, 2019. CA Cancer J Clin 2019;69(6):438e51. https: //doi.org/10.3322/caac.21583.
+[2] Dent R, Trudeau M, Pritchard KI, et al. Triple-negative breast cancer: clinical features and patterns of recurrence. Clin Cancer Res 2007;13(15 Pt 1):4429e34. https://doi.org/10.1158/10780432.CCR-06-3045.
+[3] Boyle P. Triple-negative breast cancer: epidemiological considerations and recommendations. Ann Oncol 2012;23(Suppl. 6): vi7e12. https://doi.org/10.1093/annonc/mds187.
+[4] Bauer KR, Brown M, Cress RD, Parise CA, Caggiano V. Descriptive analysis of estrogen receptor (ER)-negative, progesterone receptor (PR)-negative, and HER2-negative invasive breast cancer, the so-called triple-negative phenotype: a population-
+
+S. Roy et al. / European Journal of Cancer 185 (2023) 69e82
+
+81
+
+based study from the California cancer registry. Cancer 2007; 109(9):1721e8. https://doi.org/10.1002/cncr.22618. [5] Haffty BG, Yang Q, Reiss M, et al. Locoregional relapse and distant metastasis in conservatively managed triple negative earlystage breast cancer. J Clin Oncol 2006;24(36):5652e7. https: //doi.org/10.1200/JCO.2006.06.5664. [6] Tischkowitz M, Brunet JS, Be´gin LR, et al. Use of immunohistochemical markers can reﬁne prognosis in triple negative breast cancer. BMC Cancer 2007;7:134. https://doi.org/10.1186/14712407-7-134. [7] Harris LN, Broadwater G, Lin NU, et al. Molecular subtypes of breast cancer in relation to paclitaxel response and outcomes in women with metastatic disease: results from CALGB 9342. Breast Cancer Res 2006;8(6):R66. https://doi.org/10.1186/bcr1622. [8] Morris GJ, Naidu S, Topham AK, et al. Differences in breast carcinoma characteristics in newly diagnosed African-American and Caucasian patients: a single-institution compilation compared with the National Cancer Institute’s Surveillance, Epidemiology, and End Results database. Cancer 2007;110(4): 876e84. https://doi.org/10.1002/cncr.22836. [9] Scott LC, Mobley LR, Kuo TM, Il’yasova D. Update on triplenegative breast cancer disparities for the United States: a population-based study from the United States Cancer Statistics database, 2010 through 2014. Cancer 2019;125(19):3412e7. https: //doi.org/10.1002/cncr.32207. [10] Hutchins LF, Unger JM, Crowley JJ, Coltman CA, Albain KS. Underrepresentation of patients 65 years of age or older in cancertreatment trials. N Engl J Med 1999;341(27):2061e7. https: //doi.org/10.1056/NEJM199912303412706. [11] Barthe´le´my P, Heitz D, Mathelin C, et al. Adjuvant chemotherapy in elderly patients with early breast cancer. Impact of age and comprehensive geriatric assessment on tumor board proposals. Crit Rev Oncol Hematol 2011;79(2):196e204. https: //doi.org/10.1016/j.critrevonc.2010.06.005. [12] Ring A, Battisti NML, Reed MWR, et al. Bridging the age gap: observational cohort study of effects of chemotherapy and trastuzumab on recurrence, survival and quality of life in older women with early breast cancer. Br J Cancer 2021;125(2):209e19. https://doi.org/10.1038/s41416-021-01388-9. [13] Biganzoli L, Battisti NML, Wildiers H, et al. Updated recommendations regarding the management of older patients with breast cancer: a joint paper from the European Society of Breast Cancer Specialists (EUSOMA) and the International Society of Geriatric Oncology (SIOG). Lancet Oncol 2021;22(7):e327e40. https://doi.org/10.1016/S1470-2045(20)30741-5. [14] Peto R, Davies C, Godwin J, et al. Comparisons between different polychemotherapy regimens for early breast cancer: metaanalyses of long-term outcome among 100,000 women in 123 randomised trials. Lancet 2012;379(9814):432e44. https: //doi.org/10.1016/S0140-6736(11)61625-5. [15] Jones SE, Savin MA, Holmes FA, et al. Phase III trial comparing doxorubicin plus cyclophosphamide with docetaxel plus cyclophosphamide as adjuvant therapy for operable breast cancer. J Clin Oncol 2006;24(34):5381e7. https://doi.org/10.1200/JCO. 2006.06.5391. [16] Blum JL, Flynn PJ, Yothers G, et al. Anthracyclines in early breast cancer: the ABC trials-USOR 06-090, NSABP B-46-I/USOR 07132, and NSABP B-49 (NRG oncology). J Clin Oncol 2017; 35(23):2647e55. https://doi.org/10.1200/JCO.2016.71.4147. [17] de Gregorio A, Janni W, Friedl TWP, et al. The impact of anthracyclines in intermediate and high-risk HER2-negative early breast cancer-a pooled analysis of the randomised clinical trials PlanB and SUCCESS C. Br J Cancer 2022;126(12):1715e24. https://doi.org/10.1038/s41416-021-01690-6. [18] Schreiber AR, Kagihara J, Eguchi M, et al. Evaluating anthracycline þ taxane versus taxane-based chemotherapy in older women with node-negative triple-negative breast cancer: a SEER-
+
+Medicare study. Breast Cancer Res Treat 2022;191(2):389e99. https://doi.org/10.1007/s10549-021-06424-z. [19] Crivellari D, Gray KP, Dellapasqua S, et al. Adjuvant pegylated liposomal doxorubicin for older women with endocrine nonresponsive breast cancer who are NOT suitable for a ‘standard chemotherapy regimen’: the CASA randomized trial. Breast 2013; 22(2):130e7. https://doi.org/10.1016/j.breast.2013.01.015. [20] Leonard R, Ballinger R, Cameron D, et al. Adjuvant chemotherapy in older women (ACTION) study e what did we learn from the pilot phase? Br J Cancer 2011;105(9):1260e6. https: //doi.org/10.1038/bjc.2011.377. [21] Klepin HD, Pitcher BN, Ballman KV, et al. Comorbidity, chemotherapy toxicity, and outcomes among older women receiving adjuvant chemotherapy for breast cancer on a clinical trial: CALGB 49907 and CALGB 361004 (alliance). J Oncol Pract 2014;10(5):e285e92. https://doi.org/10.1200/JOP.2014.001388. [22] Crozier JA, Pezzi TA, Hodge C, et al. Addition of chemotherapy to local therapy in women aged 70 years or older with triplenegative breast cancer: a propensity-matched analysis. Lancet Oncol 2020;21(12):1611e9. https://doi.org/10.1016/S14702045(20)30538-6. [23] Battisti NML, Reed MWR, Herbert E, et al. Bridging the age gap in breast cancer: impact of chemotherapy on quality of life in older women with early breast cancer. Eur J Cancer 2021;144: 269e80. https://doi.org/10.1016/j.ejca.2020.11.022. [24] Luque M, Arranz F, Cueva JF, et al. Breast cancer management in the elderly. Clin Transl Oncol 2014;16(4):351e61. https: //doi.org/10.1007/s12094-013-1113-2. [25] Leone JP, Graham N, Tolaney SM, et al. Estimating long-term mortality in women with hormone receptor-positive breast cancer: the ‘ESTIMATE’ tool. Eur J Cancer 2022;173:20e9. https: //doi.org/10.1016/j.ejca.2022.06.029. [26] Monteiro AR, Garcia AR, Po´ voa S, et al. Acute toxicity and tolerability of anthracycline-based chemotherapy regimens in older versus younger patients with breast cancer: real-world data. Support Care Cancer 2021;29(5):2347e53. https: //doi.org/10.1007/s00520-020-05766-6. [27] Singal PK, Iliskovic N. Doxorubicin-induced cardiomyopathy. N Engl J Med 1998;339(13):900e5. https://doi.org/10. 1056/NEJM199809243391307. [28] Bash LD, Weitzman D, Blaustein RO, Sharon O, Shalev V, Chodick G. Comprehensive healthcare resource use among newly diagnosed congestive heart failure. Isr J Health Policy Res 2017;6: 26. https://doi.org/10.1186/s13584-017-0149-0. [29] McMurray JJ, Adamopoulos S, Anker SD, et al. ESC guidelines for the diagnosis and treatment of acute and chronic heart failure 2012: the task force for the diagnosis and treatment of acute and chronic heart failure 2012 of the European Society of Cardiology. Developed in collaboration with the Heart Failure Association (HFA) of the ESC. Eur J Heart Fail 2012;14(8):803e69. https: //doi.org/10.1093/eurjhf/hfs105. [30] Battisti NML, Welch CA, Sweeting M, et al. Prevalence of cardiovascular disease in patients with potentially curable malignancies: a national registry dataset analysis. JACC CardioOncol 2022;4(2):238e53. https://doi.org/10.1016/j.jaccao.2022.03.004. [31] Fradley MG, Brown AC, Shields B, et al. Developing a comprehensive cardio-oncology program at a cancer institute: the Mofﬁtt cancer center experience. Oncol Rev 2017;11(2):340. https: //doi.org/10.4081/oncol.2017.340. [32] Sadler D, Arnold A, Herrmann J, et al. Reaching across the Aisle: cardio-oncology advocacy and program building. Curr Oncol Rep 2021;23(6):64. https://doi.org/10.1007/s11912-021-01059-1. [33] Armenian SH, Lacchetti C, Barac A, et al. Prevention and monitoring of cardiac dysfunction in survivors of adult cancers: American Society of Clinical Oncology Clinical Practice guideline. J Clin Oncol 2017;35(8):893e911. https://doi.org/10. 1200/JCO.2016.70.5400.
+
+82
+
+S. Roy et al. / European Journal of Cancer 185 (2023) 69e82
+
+[34] Runowicz CD, Leach CR, Henry NL, et al. American Cancer Society/American Society of Clinical Oncology Breast Cancer Survivorship care guideline. J Clin Oncol 2016;34(6):611e35. https://doi.org/10.1200/JCO.2015.64.3809.
+[35] Aizer AA, Chen MH, McCarthy EP, et al. Marital status and survival in patients with cancer. J Clin Oncol 2013;31(31): 3869e76. https://doi.org/10.1200/JCO.2013.49.6489.
+[36] Osborne C, Ostir GV, Du X, Peek MK, Goodwin JS. The inﬂuence of marital status on the stage at diagnosis, treatment, and survival of older women with breast cancer. Breast Cancer Res Treat 2005; 93(1):41e7. https://doi.org/10.1007/s10549-005-3702-4.
+[37] Ding W, Ruan G, Lin Y, Zhu J, Tu C, Li Z. Dynamic changes in marital status and survival in women with breast cancer: a population-based study. Sci Rep 2021;11(1):5421. https: //doi.org/10.1038/s41598-021-84996-y.
+[38] Nitz U, Gluz O, Clemens M, et al. West German study PlanB trial: adjuvant four cycles of epirubicin and cyclophosphamide plus docetaxel versus six cycles of docetaxel and cyclophosphamide in HER2-negative early breast cancer. J Clin Oncol 2019;37(10):799e808. https://doi.org/10.1200/JCO. 18.00028.
+
+[39] Shah AN, Gradishar WJ. Adjuvant anthracyclines in breast cancer: what is their role? Oncologist 2018;23(10):1153e61. https: //doi.org/10.1634/theoncologist.2017-0672.
+[40] Schmid P, Cortes J, Dent R. Pembrolizumab in early triplenegative breast cancer. N Engl J Med 2022;386(18):1771e2. https://doi.org/10.1056/NEJMc2203316.
+[41] Zhang L, Wu ZY, Li J, et al. Neoadjuvant docetaxel plus carboplatin vs epirubicin plus cyclophosphamide followed by docetaxel in triple-negative, early-stage breast cancer (NeoCART): results from a multicenter, randomized controlled, open-label phase II trial. Int J Cancer 2022;150(4):654e62. https: //doi.org/10.1002/ijc.33830.
+[42] Freedman RA, Li T, Sedrak MS, et al. ‘ADVANCE’ (a pilot trial) ADjuVANt chemotherapy in the elderly: developing and evaluating lower-toxicity chemotherapy options for older patients with breast cancer. J Geriatr Oncol 2022. https://doi.org/10.1016/j.jgo.2022.09.006.
+[43] Sharma P, Stecklein SR, Yoder R, et al. Clinical and biomarker results of neoadjuvant phase II study of pembrolizumab and carboplatin plus docetaxel in triple-negative breast cancer (TNBC) (NeoPACT). J Clin Oncol 2022;40(Suppl. 16): 513e513. https://doi.org/10.1200/JCO.2022.40.16_suppl.513.
+
