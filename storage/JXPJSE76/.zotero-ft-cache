@@ -1,0 +1,2790 @@
+Mathematical Methods for Computer Vision, Robotics, and Graphics
+Course notes for CS 205A, Fall 2013
+Justin Solomon Department of Computer Science Stanford University
+
+
+2
+
+
+Contents
+I Preliminaries 9
+0 Mathematics Review 11 0.1 Preliminaries: Numbers and Sets . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11 0.2 Vector Spaces . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12 0.2.1 Defining Vector Spaces . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12 0.2.2 Span, Linear Independence, and Bases . . . . . . . . . . . . . . . . . . . . . . . 13 0.2.3 Our Focus: Rn . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14 0.3 Linearity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16 0.3.1 Matrices . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17 0.3.2 Scalars, Vectors, and Matrices . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19 0.3.3 Model Problem: A~x = ~b . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21 0.4 Non-Linearity: Differential Calculus . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22 0.4.1 Differentiation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22 0.4.2 Optimization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25 0.5 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 27
+1 Numerics and Error Analysis 29 1.1 Storing Numbers with Fractional Parts . . . . . . . . . . . . . . . . . . . . . . . . . . . 29 1.1.1 Fixed Point Representations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30 1.1.2 Floating Point Representations . . . . . . . . . . . . . . . . . . . . . . . . . . . 31 1.1.3 More Exotic Options . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32 1.2 Understanding Error . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33 1.2.1 Classifying Error . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34 1.2.2 Conditioning, Stability, and Accuracy . . . . . . . . . . . . . . . . . . . . . . . 35 1.3 Practical Aspects . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36 1.3.1 Larger-Scale Example: Summation . . . . . . . . . . . . . . . . . . . . . . . . . 37 1.4 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+II Linear Algebra 41
+2 Linear Systems and the LU Decomposition 43 2.1 Solvability of Linear Systems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 43 2.2 Ad-Hoc Solution Strategies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 45 2.3 Encoding Row Operations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 46
+3
+
+
+2.3.1 Permutation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 46 2.3.2 Row Scaling . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47 2.3.3 Elimination . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47 2.4 Gaussian Elimination . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49 2.4.1 Forward Substitution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49 2.4.2 Back Substitution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50 2.4.3 Analysis of Gaussian Elimination . . . . . . . . . . . . . . . . . . . . . . . . . 50 2.5 LU Factorization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 52 2.5.1 Constructing the Factorization . . . . . . . . . . . . . . . . . . . . . . . . . . . 53 2.5.2 Implementing LU . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54 2.6 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 55
+3 Designing and Analyzing Linear Systems 57 3.1 Solution of Square Systems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 57 3.1.1 Regression . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 57 3.1.2 Least Squares . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 59 3.1.3 Additional Examples . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 60 3.2 Special Properties of Linear Systems . . . . . . . . . . . . . . . . . . . . . . . . . . . . 61 3.2.1 Positive Definite Matrices and the Cholesky Factorization . . . . . . . . . . . 61 3.2.2 Sparsity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 64 3.3 Sensitivity Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 66 3.3.1 Matrix and Vector Norms . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 66 3.3.2 Condition Numbers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 68 3.4 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 70
+4 Column Spaces and QR 73 4.1 The Structure of the Normal Equations . . . . . . . . . . . . . . . . . . . . . . . . . . . 73 4.2 Orthogonality . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 74 4.2.1 Strategy for Non-Orthogonal Matrices . . . . . . . . . . . . . . . . . . . . . . . 75 4.3 Gram-Schmidt Orthogonalization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 76 4.3.1 Projections . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 76 4.3.2 Gram-Schmidt Orthogonalization . . . . . . . . . . . . . . . . . . . . . . . . . 77 4.4 Householder Transformations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 78 4.5 Reduced QR Factorization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 80 4.6 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 81
+5 Eigenvectors 83 5.1 Motivation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 83 5.1.1 Statistics . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 83 5.1.2 Differential Equations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 84 5.2 Spectral Embedding . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 85 5.3 Properties of Eigenvectors . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 86 5.3.1 Symmetric and Positive Definite Matrices . . . . . . . . . . . . . . . . . . . . . 87 5.3.2 Specialized Properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 89 5.4 Computing Eigenvalues . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 90 5.4.1 Power Iteration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 90
+4
+
+
+5.4.2 Inverse Iteration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 92 5.4.3 Shifting . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 92 5.4.4 Finding Multiple Eigenvalues . . . . . . . . . . . . . . . . . . . . . . . . . . . . 93 5.5 Sensitivity and Conditioning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 97 5.6 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 98
+6 Singular Value Decomposition 99 6.1 Deriving the SVD . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 99 6.1.1 Computing the SVD . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 101 6.2 Applications of the SVD . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 101 6.2.1 Solving Linear Systems and the Pseudoinverse . . . . . . . . . . . . . . . . . . 101 6.2.2 Decomposition into Outer Products and Low-Rank Approximations . . . . . 102 6.2.3 Matrix Norms . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 104 6.2.4 The Procrustes Problem and Alignment . . . . . . . . . . . . . . . . . . . . . . 105 6.2.5 Principal Components Analysis (PCA) . . . . . . . . . . . . . . . . . . . . . . 106 6.3 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 107
+III Nonlinear Techniques 109
+7 Nonlinear Systems 111 7.1 Single-Variable Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 111 7.1.1 Characterizing Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 111 7.1.2 Continuity and Bisection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 112 7.1.3 Analysis of Root-Finding . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 112 7.1.4 Fixed Point Iteration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 113 7.1.5 Newton’s Method . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 114 7.1.6 Secant Method . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 115 7.1.7 Hybrid Techniques . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 116 7.1.8 Single-Variable Case: Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . 116 7.2 Multivariable Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 117 7.2.1 Newton’s Method . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 117 7.2.2 Making Newton Faster: Quasi-Newton and Broyen . . . . . . . . . . . . . . . 117 7.3 Conditioning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 119 7.4 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 119
+8 Unconstrained Optimization 121 8.1 Unconstrained Optimization: Motivation . . . . . . . . . . . . . . . . . . . . . . . . . 121 8.2 Optimality . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 122 8.2.1 Differential Optimality . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 123 8.2.2 Optimality via Function Properties . . . . . . . . . . . . . . . . . . . . . . . . . 125 8.3 One-Dimensional Strategies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 126 8.3.1 Newton’s Method . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 126 8.3.2 Golden Section Search . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 127 8.4 Multivariable Strategies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 129 8.4.1 Gradient Descent . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 129
+5
+
+
+8.4.2 Newton’s Method . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 129 8.4.3 Optimization without Derivatives: BFGS . . . . . . . . . . . . . . . . . . . . . 130 8.5 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 132
+9 Constrained Optimization 135 9.1 Motivation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 135 9.2 Theory of Constrained Optimization . . . . . . . . . . . . . . . . . . . . . . . . . . . . 137 9.3 Optimization Algorithms . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 140 9.3.1 Sequential Quadratic Programming (SQP) . . . . . . . . . . . . . . . . . . . . 140 9.3.2 Barrier Methods . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 141 9.4 Convex Programming . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 141 9.5 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 143
+10 Iterative Linear Solvers 145 10.1 Gradient Descent . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 146 10.1.1 Deriving the Iterative Scheme . . . . . . . . . . . . . . . . . . . . . . . . . . . . 146 10.1.2 Convergence . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 147 10.2 Conjugate Gradients . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 149 10.2.1 Motivation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 149 10.2.2 Suboptimality of Gradient Descent . . . . . . . . . . . . . . . . . . . . . . . . . 151 10.2.3 Generating A-Conjugate Directions . . . . . . . . . . . . . . . . . . . . . . . . 152 10.2.4 Formulating the Conjugate Gradients Algorithm . . . . . . . . . . . . . . . . . 154 10.2.5 Convergence and Stopping Conditions . . . . . . . . . . . . . . . . . . . . . . 155 10.3 Preconditioning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 156 10.3.1 CG with Preconditioning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 157 10.3.2 Common Preconditioners . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 158 10.4 Other Iterative Schemes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 159 10.5 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 160
+IV Functions, Derivatives, and Integrals 161
+11 Interpolation 163 11.1 Interpolation in a Single Variable . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 163 11.1.1 Polynomial Interpolation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 164 11.1.2 Alternative Bases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 165 11.1.3 Piecewise Interpolation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 167 11.1.4 Gaussian Processes and Kriging . . . . . . . . . . . . . . . . . . . . . . . . . . 168 11.2 Multivariable Interpolation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 168 11.3 Theory of Interpolation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 171 11.3.1 Linear Algebra of Functions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 171 11.3.2 Approximation via Piecewise Polynomials . . . . . . . . . . . . . . . . . . . . 173 11.4 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 174
+6
+
+
+12 Numerical Integration and Differentiation 175 12.1 Motivation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 176 12.2 Quadrature . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 177 12.2.1 Interpolatory Quadrature . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 177 12.2.2 Quadrature Rules . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 178 12.2.3 Newton-Cotes Quadrature . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 179 12.2.4 Gaussian Quadrature . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 182 12.2.5 Adaptive Quadrature . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 183 12.2.6 Multiple Variables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 183 12.2.7 Conditioning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 184 12.3 Differentiation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 185 12.3.1 Differentiating Basis Functions . . . . . . . . . . . . . . . . . . . . . . . . . . . 185 12.3.2 Finite Differences . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 185 12.3.3 Choosing the Step Size . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 187 12.3.4 Integrated Quantities . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 187 12.4 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 188
+13 Ordinary Differential Equations 189 13.1 Motivation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 190 13.2 Theory of ODEs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 190 13.2.1 Basic Notions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 191 13.2.2 Existence and Uniqueness . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 192 13.2.3 Model Equations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 193 13.3 Time-Stepping Schemes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 194 13.3.1 Forward Euler . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 194 13.3.2 Backward Euler . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 195 13.3.3 Trapezoidal Method . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 196 13.3.4 Runge-Kutta Methods . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 197 13.3.5 Exponential Integrators . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 198 13.4 Multivalue Methods . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 199 13.4.1 Newmark Schemes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 199 13.4.2 Staggered Grid . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 202 13.5 To Do . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 203 13.6 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 203
+14 Partial Differential Equations 205 14.1 Motivation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 205 14.2 Basic definitions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 209 14.3 Model Equations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 209 14.3.1 Elliptic PDEs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 210 14.3.2 Parabolic PDEs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 211 14.3.3 Hyperbolic PDEs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 211 14.4 Derivatives as Operators . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 212 14.5 Solving PDEs Numerically . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 214 14.5.1 Solving Elliptic Equations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 214 14.5.2 Solving Parabolic and Hyperbolic Equations . . . . . . . . . . . . . . . . . . . 215
+7
+
+
+14.6 Method of Finite Elements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 217 14.7 Examples in Practice . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 217 14.7.1 Gradient Domain Image Processing . . . . . . . . . . . . . . . . . . . . . . . . 217 14.7.2 Edge-Preserving Filtering . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 217 14.7.3 Grid-Based Fluids . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 217 14.8 To Do . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 217 14.9 Problems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 218
+8
+
+
+Part I
+Preliminaries
+9
+
+
+
+
+Chapter 0
+Mathematics Review
+In this chapter we will review relevant notions from linear algebra and multivariable calculus that will figure into our discussion of computational techniques. It is intended as a review of background material with a bias toward ideas and interpretations commonly encountered in practice; the chapter safely can be skipped or used as reference by students with stronger background in mathematics.
+0.1 Preliminaries: Numbers and Sets
+Rather than considering algebraic (and at times philosophical) discussions like “What is a number?,” we will rely on intuition and mathematical common sense to define a few sets:
+• The natural numbers N = {1, 2, 3, . . .}
+• The integers Z = {. . . , −2, −1, 0, 1, 2, . . .}
+• The rational numbers Q = {a/b : a, b ∈ Z}1
+• The real numbers R encompassing Q as well as irrational numbers like π and √2
+• The complex numbers C = {a + bi : a, b ∈ R}, where we think of i as satisfying i = √−1.
+It is worth acknowledging that our definition of R is far from rigorous. The construction of the real numbers can be an important topic for practitioners of cryptography techniques that make use of alternative number systems, but these intricacies are irrelevant for the discussion at hand. As with any other sets, N, Z, Q, R, and C can be manipulated using generic operations to generate new sets of numbers. In particular, recall that we can define the “Euclidean product” of two sets A and B as
+A × B = {(a, b) : a ∈ A and b ∈ B}.
+We can take powers of sets by writing
+An = A × A × · · · × A
+} {{ }
+n times
+.
+1This is the first of many times that we will use the notation {A : B}; the braces should denote a set and the colon can be read as “such that.” For instance, the definition of Q can be read as “the set of fractions a/b such that a and b are integers.” As a second example, we could write N = {n ∈ Z : n > 0}.
+11
+
+
+This construction yields what will become our favorite set of numbers in chapters to come:
+Rn = {(a1, a2, . . . , an) : ai ∈ R for all i}
+0.2 Vector Spaces
+Introductory linear algebra courses easily could be titled “Introduction to Finite-Dimensional Vector Spaces.” Although the definition of a vector space might appear abstract, we will find many concrete applications that all satisfy the formal aspects and thus can benefit from the machinery we will develop.
+0.2.1 Defining Vector Spaces
+We begin by defining a vector space and providing a number of examples:
+Definition 0.1 (Vector space). A vector space is a set V that is closed under scalar multiplication and addition.
+For our purposes, a scalar is a number in R, and the addition and multiplication operations satisfy the usual axioms (commutativity, associativity, and so on). It is usually straightforward to spot vector spaces in the wild, including the following examples:
+Example 0.1 (Rn as a vector space). The most common example of a vector space is Rn. Here, addition and scalar multiplication happen component-by-component:
+(1, 2) + (−3, 4) = (1 − 3, 2 + 4) = (−2, 6)
+10 · (−1, 1) = (10 · −1, 10 · 1) = (−10, 10)
+Example 0.2 (Polynomials). A second important example of a vector space is the “ring” of polynomials with real number inputs, denoted R[x]. A polynomial p ∈ R[x] is a function p : R → R taking the form2
+p(x) = ∑
+k
+ak xk .
+Addition and scalar multiplication are carried out in the usual way, e.g. if p(x) = x2 + 2x − 1 and q(x) = x3, then 3p(x) + 5q(x) = 5x3 + 3x2 + 6x − 3, which is another polynomial. As an aside, for future examples note that functions like p(x) = (x − 1)(x + 1) + x2(x3 − 5) are still polynomials even though they are not explicitly written in the form above.
+Elements ~v ∈ V of a vector space V are called vectors, and a weighted sum of the form ∑i ai~vi, where ai ∈ R and ~vi ∈ V, is known as a linear combination of the ~vi’s. In our second example, the “vectors” are functions, although we do not normally use this language to discuss R[x]. One way to link these two viewpoints would be to identify the polynomial ∑k akxk with the sequence (a0, a1, a2, · · · ); remember that polynomials have finite numbers of terms, so the sequence eventually will end in a string of zeros.
+2The notation f : A → B means f is a function that takes as input an element of set A and outputs an element of set B. For instance, f : R → Z takes as input a real number in R and outputs an integer Z, as might be the case for f (x) = bxc, the “round down” function.
+12
+
+
+0.2.2 Span, Linear Independence, and Bases
+Suppose we start with vectors ~v1, . . . ,~vk ∈ V for vector space V. By Definition 0.1, we have two ways to start with these vectors and construct new elements of V: addition and scalar multiplication. The idea of span is that it describes all of the vectors you can reach via these two operations:
+Definition 0.2 (Span). The span of a set S ⊆ V of vectors is the set
+span S ≡ {a1~v1 + · · · + ak~vk : k ≥ 0, vi ∈ V for all i, and ai ∈ R for all i}.
+Notice that span S is a subspace of V, that is, a subset of V that is in itself a vector space. We can provide a few examples:
+Example 0.3 (Mixology). The typical “well” at a cocktail bar contains at least four ingredients at the bartender’s disposal: vodka, tequila, orange juice, and grenadine. Assuming we have this simple well, we can represent drinks as points in R4, with one slot for each ingredient. For instance, a typical “tequila sunrise” can be represented using the point (0, 1.5, 6, 0.75), representing amounts of vodka, tequila, orange juice, and grenadine (in ounces), resp. The set of drinks that can be made with the typical well is contained in
+span {(1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1)},
+that is, all combinations of the four basic ingredients. A bartender looking to save time, however, might notice that many drinks have the same orange juice to grenadine ratio and mix the bottles. The new simplified well may be easier for pouring but can make fundamentally fewer drinks:
+span {(1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 6, 0.75)}
+Example 0.4 (Polynomials). Define the pk(x) ≡ xk. Then, it is easy to see that
+R[x] = span {pk : k ≥ 0}.
+Make sure you understand notation well enough to see why this is the case.
+Adding another item to a set of vectors does not always increase the size of its span. For instance, in R2 it is clearly the case that
+span {(1, 0), (0, 1)} = span {(1, 0), (0, 1), (1, 1)}.
+In this case, we say that the set {(1, 0), (0, 1), (1, 1)} is linearly dependent:
+Definition 0.3 (Linear dependence). We provide three equivalent definitions. A set S ⊆ V of vectors is linearly dependent if:
+1. One of the elements of S can be written as a linear combination of the other elements, or S contains zero.
+2. There exists a non-empty linear combination of elements ~vk ∈ S yielding ∑m
+k=1 ck~vk = 0 where ck 6= 0 for all k.
+3. There exists ~v ∈ S such that span S = span S\{~v}. That is, we can remove a vector from S without affecting its span.
+13
+
+
+If S is not linearly dependent, then we say it is linearly independent.
+Providing proof or informal evidence that each definition is equivalent to its counterparts (in an “if and only if” fashion) is a worthwhile exercise for students less comfortable with notation and abstract mathematics. The concept of linear dependence leads to an idea of “redundancy” in a set of vectors. In this sense, it is natural to ask how large a set we can choose before adding another vector cannot possibly increase the span. In particular, suppose we have a linearly independent set S ⊆ V, and now we choose an additional vector ~v ∈ V. Adding ~v to S leads to one of two possible outcomes:
+1. The span of S ∪ {~v} is larger than the span of S.
+2. Adding ~v to S has no effect on the span.
+The dimension of V is nothing more than the maximal number of times we can get outcome 1, add ~v to S, and repeat.
+Definition 0.4 (Dimension and basis). The dimension of V is the maximal size |S| of a linearlyindependent set S ⊂ V such that span S = V. Any set S satisfying this property is called a basis for V.
+Example 0.5 (Rn). The standard basis for Rn is the set of vectors of the form
+~ek ≡ (0, . . . , 0
+} {{ }
+k−1 slots
+, 1, 0, . . . , 0
+} {{ }
+n−k slots
+).
+That is, ~ek has all zeros except for a single one in the k-th slot. It is clear that these vectors are linearly independent and form a basis; for example in R3 any vector (a, b, c) can be written as a~e1 + b~e2 + c~e3. Thus, the dimension of Rn is n, as we would expect.
+Example 0.6 (Polynomials). It is clear that the set {1, x, x2, x3, . . .} is a linearly independent set of polynomials spanning R[x]. Notice that this set is infinitely large, and thus the dimension of R[x] is ∞.
+0.2.3 Our Focus: Rn
+Of particular importance for our purposes is the vector space Rn, the so-called n-dimensional Euclidean space. This is nothing more than the set of coordinate axes encountered in high school math classes:
+• R1 ≡ R is the number line
+• R2 is the two-dimensional plane with coordinates (x, y)
+• R3 represents three-dimensional space with coordinates (x, y, z)
+Nearly all methods in this course will deal with transformations and functions on Rn. For convenience, we usually write vectors in Rn in “column form,” as follows
+(a1, . . . , an) ≡
+
+   
+a1
+a...2
+an
+
+   
+14
+
+
+This notation will include vectors as special cases of matrices discussed below. Unlike some vector spaces, Rn has not only a vector space structure, but also one additional construction that makes all the difference: the dot product.
+Definition 0.5 (Dot product). The dot product of two vectors ~a = (a1, . . . , an) and ~b = (b1, . . . , bn) in Rn is given by
+~a ·~b =
+n
+∑
+k=1
+ak bk .
+Example 0.7 (R2). The dot product of (1, 2) and (−2, 6) is 1 · −2 + 2 · 6 = −2 + 12 = 10.
+The dot product is an example of a metric, and its existence gives a notion of geometry to Rn. For instance, we can use the Pythagorean theorem to define the norm or length of a vector ~a as the square root
+‖~a‖2 ≡
+√
+a21 + · · · + a2n =
+√
+~a ·~a.
+Then, the distance between two points ~a,~b ∈ Rn is simply ‖~b −~a‖2. Dot products yield not only notions of lengths and distances but also of angles. Recall the following identity from trigonometry for ~a,~b ∈ R3:
+~a ·~b = ‖~a‖‖~b‖ cos θ
+where θ is the angle between ~a and~b. For n ≥ 4, however, the notion of “angle” is much harder to visualize for Rn. We might define the angle θ between ~a and~b to be the value θ given by
+θ ≡ arccos ~a ·~b
+‖~a‖‖~b‖ .
+We must do our homework before making such a definition! In particular, recall that cosine outputs values in the interval [−1, 1], so we must check that the input to arc cosine (also notated cos−1) is in this interval; thankfully, the well-known Cauchy-Schwarz inequality ~a ·~b ≤ ‖~a‖‖~b‖ guarantees exactly this property. When~a = c~b for some c ∈ R, we have θ = arccos 1 = 0, as we would expect: the angle between parallel vectors is zero. What does it mean for vectors to be perpendicular? Let’s substitute θ = 90◦. Then, we have
+0 = cos 90◦
+= ~a ·~b
+‖~a‖‖~b‖
+Multiplying both sides by ‖~a‖‖~b‖ motivates the definition:
+Definition 0.6 (Orthogonality). Two vectors are perpendicular, or orthogonal, when ~a ·~b = 0.
+This definition is somewhat surprising from a geometric standpoint. In particular, we have managed to define what it means to be perpendicular without any explicit use of angles. This construction will make it easier to solve certain problems for which the nonlinearity of sine and cosine might have created headache in simpler settings.
+15
+
+
+Aside 0.1. There are many theoretical questions to ponder here, some of which we will address in future chapters when they are more motivated:
+• Do all vector spaces admit dot products or similar structures?
+• Do all finite-dimensional vector spaces admit dot products?
+• What might be a reasonable dot product between elements of R[x]?
+Intrigued students can consult texts on real and functional analysis.
+0.3 Linearity
+A function between vector spaces that preserves structure is known as a linear function:
+Definition 0.7 (Linearity). Suppose V and V ′ are vector spaces. Then, L : V → V ′ is linear if it satisfies the following two criteria for all ~v,~v1,~v2 ∈ V and c ∈ R:
+• L preserves sums: L[~v1 + ~v2] = L[~v1] + L[~v2]
+• L preserves scalar products: L[c~v] = cL[~v]
+It is easy to generate linear maps between vector spaces, as we can see in the following examples:
+Example 0.8 (Linearity in Rn). The following map f : R2 → R3 is linear:
+f (x, y) = (3x, 2x + y, −y)
+We can check linearity as follows:
+• Sum preservation:
+f (x1 + x2, y1 + y2) = (3(x1 + x2), 2(x1 + x2) + (y1 + y2), −(y1 + y2))
+= (3x1, 2x1 + y1, −y1) + (3x2, 2x2 + y2, −y2)
+= f (x1, y1) + f (x2, y2)
+• Scalar product preservation:
+f (cx, cy) = (3cx, 2cx + cy, −cy)
+= c(3x, 2x + y, −y)
+= c f (x, y)
+Contrastingly, g(x, y) ≡ xy2 is not linear. For instance, g(1, 1) = 1 but g(2, 2) = 8 6= 2 · g(1, 1), so this form does not preserve scalar products.
+Example 0.9 (Integration). The following “functional” L from R[x] to R is linear:
+L[p(x)] ≡
+∫1
+0
+p(x) dx.
+16
+
+
+This somewhat more abstract example maps polynomials p(x) to real numbers L[p(x)]. For example, we can write
+L[3x2 + x − 1] =
+∫1
+0
+(3x2 + x − 1) dx = 1
+2.
+Linearity comes from the following well-known facts from calculus:
+∫1
+0
+c · f (x) dx = c
+∫1
+0
+f (x) dx
+∫1
+0
+[ f (x) + g(x)] dx =
+∫1
+0
+f (x) dx +
+∫1
+0
+g(x) dx
+We can write a particularly nice form for linear maps on Rn. Recall that the vector ~a = (a1, . . . , an) is equal to the sum ∑k ak~ek, where ~ek is the k-th standard basis vector. Then, if L is linear we know:
+L[~a] = L
+[
+∑
+k
+ak~ek
+]
+for the standard basis ~ek
+=∑
+k
+L [ak~ek] by sum preservation
+=∑
+k
+akL [~ek] by scalar product preservation
+This derivation shows the following important fact:
+L is completely determined by its action on the standard basis vectors ~ek.
+That is, for any vector ~a ∈ Rn, we can use the sum above to determine L[~a] by linearly combining L[~e1], . . . , L[~en].
+Example 0.10 (Expanding a linear map). Recall the map in Example 0.8 given by f (x, y) = (3x, 2x + y, −y). We have f (~e1) = f (1, 0) = (3, 2, 0) and f (~e2) = f (0, 1) = (0, 1, −1). Thus, the formula above shows:
+f (x, y) = x f (~e1) + y f (~e2) = x
+
+
+3 2 0
+
++y
+
+
+0 1 −1
+
+
+0.3.1 Matrices
+The expansion of linear maps above suggests one of many contexts in which it is useful to store multiple vectors in the same structure. More generally, say we have n vectors ~v1, . . . ,~vn ∈ Rm. We can write each as a column vector:
+~v1 =
+
+   
+v11
+v...21
+vm1
+
+   
+,~v2 =
+
+   
+v12
+v...22
+vm2
+
+   
+, · · · ,~vn =
+
+   
+v1n
+v2n
+...
+vmn
+
+   
+17
+
+
+Carrying these around separately can be cumbersome notationally, so to simplify matters we simply combine them into a single m × n matrix:
+
+
+|| | ~v1 ~v2 · · · ~vn || |
+
+=
+
+   
+v11 v12 · · · v1n v21 v22 · · · v2n
+... ... ... ...
+vm1 vm2 · · · vmn
+
+   
+We will call the space of such matrices Rm×n.
+Example 0.11 (Identity matrix). We can store the standard basis for Rn in the n × n “identity matrix” In×n given by:
+In×n ≡
+
+
+|| | ~e1 ~e2 · · · ~en || |
+
+=
+
+     
+1 0 ··· 0 0 0 1 ··· 0 0 ... ... ... ... ...
+0 0 ··· 1 0 0 0 ··· 0 1
+
+     
+Since we constructed matrices as convenient ways to store sets of vectors, we can use multiplication to express how they can be combined linearly. In particular, a matrix in Rm×n can be multiplied by a column vector in Rn as follows:
+
+
+|| | ~v1 ~v2 · · · ~vn || |
+
+
+
+   
+c1
+c...2
+cn
+
+   
+≡ c1~v1 + c2~v2 + · · · + cn~vn
+Expanding this sum yields the following explicit formula for matrix-vector products:
+
+   
+v11 v12 · · · v1n v21 v22 · · · v2n
+... ... ... ...
+vm1 vm2 · · · vmn
+
+   
+
+   
+c1
+c...2
+cn
+
+   
+=
+
+   
+c1v11 + c2v12 + · · · + cnv1n c1v21 + c2v22 + · · · + cnv2n
+...
+c1vm1 + c2vm2 + · · · + cnvmn
+
+   
+Example 0.12 (Identity matrix multiplication). It is clearly true that for any ~x ∈ Rn, we can write ~x = In×n~x, where In×n is the identity matrix from Example 0.11.
+Example 0.13 (Linear map). We return once again to the expression from Example 0.8 to show one more alternative form:
+f (x, y) =
+
+
+30 21 0 −1
+
+
+(x
+y
+)
+We similarly define a product between a matrix in M ∈ Rm×n and another matrix in Rn×p by concatenating individual matrix-vector products:
+M
+
+
+|| | ~c1 ~c2 · · · ~cn || |
+
+≡
+
+
+|| | M~c1 M~c2 · · · M~cn || |
+
+
+18
+
+
+Example 0.14 (Mixology). Continuing Example 0.3, suppose we make a tequila sunrise and second concoction with equal parts of the two liquors in our simplified well. To find out how much of the basic ingredients are contained in each order, we could combine the recipes for each column-wise and use matrix multiplication:
+Well 1 Well 2 Well 3
+
+ 
+
+ 
+Vodka 1 0 0 Tequila 0 1 0 OJ 0 0 6 Grenadine 0 0 0.75
+·
+Drink 1 Drink 2
+()
+0 0.75 1.5 0.75 12
+=
+Drink 1 Drink 2
+
+ 
+
+ 
+0 0.75 Vodka 1.5 0.75 Tequila 6 12 OJ
+0.75 1.5 Grenadine
+In general, we will use capital letters to represent matrices, like A ∈ Rm×n. We will use the notation Aij ∈ R to denote the element of A at row i and column j.
+0.3.2 Scalars, Vectors, and Matrices
+It comes as no surprise that we can write a scalar as a 1 × 1 vector c ∈ R1×1. Similar, as we already suggested in §0.2.3, if we write vectors in Rn in column form, they can be considered n × 1 matrices ~v ∈ Rn×1. Notice that matrix-vector products can be interpreted easily in this context; for example, if A ∈ Rm×n, ~x ∈ Rn, and~b ∈ Rm, then we can write expressions like
+A
+}{{}
+m×n
+~x
+}{{}
+n×1
+= ~b
+}{{}
+m×1
+We will introduce one additional operator on matrices that is useful in this context:
+Definition 0.8 (Transpose). The transpose of a matrix A ∈ Rm×n is a matrix A> ∈ Rn×m with elements (A>)ij = Aji.
+Example 0.15 (Transposition). The transpose of the matrix
+A=
+
+
+12 34 56
+
+
+is given by
+A> =
+(1 3 5 246
+)
+.
+Geometrically, we can think of transposition as flipping a matrix on its diagonal.
+This unified treatment of scalars, vectors, and matrices combined with operations like transposition and multiplication can lead to slick derivations of well-known identities. For instance,
+19
+
+
+we can compute the dot products of vectors ~a,~b ∈ Rn by making the following series of steps:
+~a ·~b =
+n
+∑
+k=1
+ak bk
+=
+( a1 a2 · · · an
+)
+
+   
+b1
+b...2
+bn
+
+   
+= ~a>~b
+Many important identities from linear algebra can be derived by chaining together these operations with a few rules:
+(A>)> = A
+(A + B)> = A> + B>
+(AB)> = B> A>
+Example 0.16 (Residual norm). Suppose we have a matrix A and two vectors ~x and ~b. If we wish to know how well A~x approximates ~b, we might define a residual ~r ≡ ~b − A~x; this residual is zero exactly when A~x = ~b. Otherwise, we might use the norm ‖~r‖2 as a proxy for the relationship between A~x and ~b. We can use the identities above to simplify:
+‖~r‖22 = ‖~b − A~x‖22
+= (~b − A~x) · (~b − A~x) as explained in §0.2.3
+= (~b − A~x)>(~b − A~x) by our expression for the dot product above
+= (~b> − ~x> A>)(~b − A~x) by properties of transposition
+= ~b>~b −~b> A~x − ~x> A>~b + ~x> A> A~x after multiplication
+All four terms on the right hand side are scalars, or equivalently 1 × 1 matrices. Scalars thought of as matrices trivially enjoy one additional nice property c> = c, since there is nothing to transpose! Thus, we can write
+~x> A>~b = (~x> A>~b)> = ~b> A~x
+This allows us to simplify our expression even more:
+‖~r‖22 = ~b>~b − 2~b> A~x + ~x> A> A~x
+= ‖A~x‖22 − 2~b> A~x + ‖~b‖22
+We could have derived this expression using dot product identities, but intermediate steps above will prove useful in our later discussion.
+20
+
+
+0.3.3 Model Problem: A~x = ~b
+In introductory algebra class, students spend considerable time solving linear systems such as the following for triplets (x, y, z):
+3x + 2y + 5z = 0
+−4x + 9y − 3z = −7
+2x − 3y − 3z = 1
+Our constructions in §0.3.1 allow us to encode such systems in a cleaner fashion:
+
+
+325 −4 9 −3 2 −3 −3
+
+
+
+
+x y z
+
+=
+
+
+0 −7 1
+
+
+More generally, we can write linear systems of equations in the form A~x = ~b by following the same pattern above; here, the vector ~x is unknown while A and ~b are known. Such a system of equations is not always guaranteed to have a solution. For instance, if A contains only zeros, then clearly no ~x will satisfy A~x = ~b whenever~b 6= ~0. We will defer a general consideration of when a solution exists to our discussion of linear solvers in future chapters. A key interpretation of the system A~x = ~b is that it addresses task:
+Write~b as a linear combination of the columns of A.
+Why? Recall from §0.3.1 that the product A~x is encoding a linear combination of the columns of A with weights contained in elements of ~x. So, the equation A~x = ~b asks that the linear combination A~x equal the given vector ~b. Given this interpretation, we define the column space of A to be the space of right hand sides~b for which the system has a solution:
+Definition 0.9 (Column space). The column space of a matrix A ∈ Rm×n is the span of the columns of A. We can write as col A ≡ {A~x : ~x ∈ Rn}.
+One important case is somewhat easier to consider. Suppose A is square, so we can write A ∈ Rn×n. Furthermore, suppose that the system A~x = ~b has a solution for all choices of ~b. The only condition on~b is that it is a member of Rn, so by our interpretation above of A~x = ~b we can conclude that the columns of A span Rn. In this case, since the linear system is always solvable suppose we plug in the standard basis ~e1, . . . ,~en to yield vectors ~x1, . . . , ~xn satisfying A~xk = ~ek for each k. Then, we can “stack” these expressions to show:
+A
+
+
+|| | ~x1 ~x2 · · · ~xn || |
+
+=
+
+
+|| | A~x1 A~x2 · · · A~xn || |
+
+=
+
+
+|| | ~e1 ~e2 · · · ~en || |
+
+ = In×n,
+where In×n is the identity matrix from Example 0.11. We will call the matrix with columns ~xk the
+inverse A−1, which satisfies
+AA−1 = A−1 A = In×n.
+21
+
+
+−4 −2 0 2 4
+−50
+0
+50
+100
+x
+f (x)
+−2 −1 0 1 2
+0
+5
+10
+15
+x
+−1 −0.5 0 0.5 1
+0
+5
+10
+x
+Figure 1: The closer we zoom into f (x) = x3 + x2 − 8x + 4, the more it looks like a line.
+It is also easy to check that (A−1)−1 = A. When such an inverse exists, it is easy to solve the system A~x = ~b. In particular, we find:
+~x = In×n~x = (A−1 A)~x = A−1(A~x) = A−1~b
+0.4 Non-Linearity: Differential Calculus
+While the beauty and applicability of linear algebra makes it a key target of study, nonlinearities abound in nature and we often must design computational systems that can deal with this fact of life. After all, at the most basic level the square in the famous relationship E = mc2 makes it less than amenable to linear analysis.
+0.4.1 Differentiation
+While many functions are globally nonlinear, locally they exhibit linear behavior. This idea of “local linearity” is one of the main motivators behind differential calculus. For instance, Figure 1 shows that if you zoom in close enough to a smooth function eventually it looks like a line. The derivative f ′(x) of a function f (x) : R → R is nothing more than the slope of the approximating line, computed by finding the slope of lines through closer and closer points to x:
+f ′(x) = yli→mx
+f (y) − f (x)
+y−x
+We can express local linearity by writing f (x + ∆x) = f (x) + ∆x · f ′(x) + O(∆x2). If the function f takes multiple inputs, then it can be written f (~x) : Rn → R for ~x ∈ Rn; in other words, to each point ~x = (x1, . . . , xn) in n-dimensional space f assigns a single number f (x1, . . . , xn). Our idea of local linearity breaks down somewhat here, because lines are onedimensional objects. However, fixing all but one variable reduces back to the case of singlevariable calculus. For instance, we could write g(t) = f (t, x2, . . . , xn), where we simply fix constants x2, . . . , xn. Then, g(t) is a differentiable function of a single variable. Of course, we could have put t in any of the input slots for f , so in general we make the following definition of the partial derivative of f :
+22
+
+
+Definition 0.10 (Partial derivative). The k-th partial derivative of f , notated ∂ f
+∂xk , is given by differen
+tiating f in its k-th input variable:
+∂f
+∂xk
+(x1, . . . , xn) ≡ d
+dt f (x1, . . . , xk−1, t, xk+1, . . . , xn)|t=xk
+The notation “|t=xk ” should be read as “evaluated at t = xk.”
+Example 0.17 (Relativity). The relationship E = mc2 can be thought of as a function from m and c to E. Thus, we could write E(m, c) = mc2, yielding the derivatives
+∂E
+∂m = c2
+∂E
+∂c = 2mc
+Using single-variable calculus, we can write:
+f (~x + ∆~x) = f (x1 + ∆x1, x2 + ∆x2, . . . , xn + ∆xn)
+= f (x1, x2 + ∆x2, . . . , xn + ∆xn) + ∂ f
+∂x1
+∆x1 + O(∆x12) by single-variable calculus
+= f (x1, . . . , xn) +
+n
+∑
+k=1
+[
+∂f
+∂xk
+∆xk + O(∆xk2)
+]
+by repeating this n times
+= f (~x) + ∇ f (~x) · ∆~x + O(‖~x‖2)
+where we define the gradient of f as
+∇f ≡
+(
+∂f
+∂x1
+, ∂f
+∂x2
+,··· , ∂f
+∂xn
+)
+∈ Rn
+From this relationship, it is easy to see that f can be differentiated in any direction ~v; we can evaluate this derivative D~v f as follows:
+D~v f (~x) ≡ d
+dt f (~x + t~v)|t=0
+= ∇ f (~x) · ~v
+Example 0.18 (R2). Take f (x, y) = x2y3. Then,
+∂f
+∂x = 2xy3
+∂f
+∂y = 3x2y2
+Thus, we can write ∇ f (x, y) = (2xy3, 3x2y2). The derivative of f at (1, 2) in the direction (−1, 4) is given by (−1, 4) · ∇ f (1, 2) = (−1, 4) · (16, 12) = 32.
+Example 0.19 (Linear functions). It is obvious but worth noting that the gradient of f (~x) ≡ ~a · ~x +~c = (a1x1 + c1, . . . , anxn + cn) is ~a.
+23
+
+
+Example 0.20 (Quadratic forms). Take any matrix A ∈ Rn×n, and define f (~x) ≡ ~x> A~x. Expanding this function element-by-element shows
+f (~x) = ∑
+ij
+Aij xi xj ;
+expanding out f and checking this relationship explicitly is worthwhile. Take some k ∈ {1, . . . , n}. Then, we can can separate out all terms containing xk:
+f (~x) = Akkxk2 + xk
+(
+∑
+i6=k
+Aikxi + ∑
+j6=k
+Akj xj
+)
++∑
+i,j6=k
+Aij xi xj
+With this factorization, it is easy to see
+∂f
+∂xk
+= 2Akkxk +
+(
+∑
+i6=k
+Aikxi + ∑
+j6=k
+Akj xj
+)
+=
+n
+∑
+i=1
+(Aik + Aki)xi
+This sum is nothing more than the definition of matrix-vector multiplication! Thus, we can write
+∇ f (~x) = A~x + A>~x.
+We have generalized from f : R → R to f : Rn → R. To reach full generality, we would like to consider f : Rn → Rm. In other words, f takes in n numbers and outputs m numbers. Thankfully, this extension is straightforward, because we can think of f as a collection of singlevalued functions f1, . . . , fm : Rn → R smashed together into a single vector. That is, we write:
+f (~x) =
+
+   
+f1(~x) f2(~x)
+...
+fm(~x)
+
+   
+Each fk can be differentiated as before, so in the end we get a matrix of partial derivatives called the Jacobian of f :
+Definition 0.11 (Jacobian). The Jacobian of f : Rn → Rm is the matrix D f ∈ Rm×n with entries
+(D f )ij ≡ ∂ fi
+∂xj
+.
+Example 0.21 (Simple function). Suppose f (x, y) = (3x, −xy2, x + y). Then,
+D f (x, y) =
+
+
+30
+−y2 −2xy 11
+
+.
+Make sure you can derive this computation by hand.
+24
+
+
+Example 0.22 (Matrix multiplication). Unsurprisingly, the Jacobian of f (~x) = A~x for matrix A is given by D f (~x) = A.
+Here we encounter a common point of confusion. Suppose a function has vector input and scalar output, that is, f : Rn → R. We defined the gradient of f as a column vector, so to align this definition with that of the Jacobian we must write
+D f = ∇ f >.
+0.4.2 Optimization
+Recall from single variable calculus minima and maxima of f : R → R must occur at points x satisfying f ′(x) = 0. Of course, this condition is necessary rather than sufficient: there may exist points x with f ′(x) = 0 that are not maxima or minima. That said, finding such critical points of f can be a step of a function minimization algorithm, so long as the next step ensures that the resulting x actually a minimum/maximum. If f : Rn → R is minimized or maximized at ~x, we have to ensure that there does not exist a single direction ∆x from ~x in which f decreases or increases, resp. By the discussion in §0.4.1, this means we must find points for which ∇ f = 0.
+Example 0.23 (Simple function). Suppose f (x, y) = x2 + 2xy + 4y2. Then, ∂ f
+∂x = 2x + 2y and ∂ f
+∂y =
+2x + 8y. Thus, critical points of f satisfy:
+2x + 2y = 0
+2x + 8y = 0
+Clearly this system is solved at (x, y) = (0, 0). Indeed, this is the minimum of f , as can be seen more clearly by writing f (x, y) = (x + y)2 + 3y2.
+Example 0.24 (Quadratic functions). Suppose f (~x) = ~x> A~x +~b>~x + c. Then, from the examples in the previous section we can write ∇ f (~x) = (A> + A)~x +~b. Thus, critical points ~x of f satisfy (A> + A)~x +~b = 0.
+Unlike single-variable calculus, when we do calculus on Rn we can add constraints to our optimization. The most general form of such a problem looks like:
+minimize f (~x)
+such that g(~x) = ~0
+Example 0.25 (Rectangle areas). Suppose a rectangle has width w and height h. A classic geometry problem is to maximize area with a fixed perimeter 1:
+maximize wh
+such that 2w + 2h − 1 = 0
+When we add this constraint, we can no longer expect that critical points satisfy ∇ f (~x) = 0, since these points might not satisfy g(~x) = 0.
+25
+
+
+For now, suppose g : Rn → R. Consider the set of points S0 ≡ {~x : g(~x) = 0}. Obviously, any two ~x,~y ∈ S0 satisfy the relationship g(~y) − g(~x) = 0 − 0 = 0. Suppose ~y = ~x + ∆~x for small ∆~x. Then, g(~y) − g(~x) = ∇g(~x) · ∆~x + O(‖∆~x‖2). In other words, if we start at ~x satisfying g(~x) = 0, then if we displace in the ∆~x direction ∇g(~x) · ∆~x ≈ 0 to continue to satisfy this relationship. Now, recall that the derivative of f in the direction ~v at ~x is given by ∇ f · ~v. If ~x is a minimum of the constrained optimization problem above, then any small displacement ~x to ~x + ~v should cause an increase from f (~x) to f (~x + ~v). Since we only care about displacements ~v preserving the g(~x + ~v) = c constraint, from our argument above we want ∇ f · ~v = 0 for all ~v satisfying ∇g(~x) ·~v = 0. In other words, ∇ f and ∇g must be parallel, a condition we can write as ∇ f = λ∇g for some λ ∈ R. Define
+Λ(~x, λ) = f (~x) − λg(~x).
+Then, critical points of Λ without constraints satisfy:
+0 = ∂Λ
+∂λ
+= −g(~x)
+0 = ∇~xΛ = ∇ f (~x) − λ∇g(~x)
+In other words, critical points of Λ satisfy g(~x) = 0 and ∇ f (~x) = λ∇g(~x), exactly the optimality conditions we derived! Extending to multivariate constraints yields the following:
+Theorem 0.1 (Method of Lagrange multipliers). Critical points of the constrained optimization problem above are unconstrained critical points of the Lagrange multiplier function
+Λ(~x,~λ) ≡ f (~x) −~λ · g(~x),
+with respect to both ~x and ~λ.
+Example 0.26 (Maximizing area). Continuing Example 0.25, we define the Lagrange multiplier function Λ(w, h, λ) = wh − λ(2w + 2h − 1). Differentiating, we find:
+0 = ∂Λ
+∂w = h − 2λ
+0 = ∂Λ
+∂h = w − 2λ
+0 = ∂Λ
+∂λ
+= 1 − 2w − 2h
+So, critical points of the system satisfy
+
+
+0 1 −2 1 0 −2 22 0
+
+
+
+
+w h
+λ
+
+=
+
+
+0 0 1
+
+
+Solving the system shows w = h = 1/4 and λ = 1/8. In other words, for a fixed amount of perimeter, the rectangle with maximal area is a square.
+26
+
+
+Example 0.27 (Eigenproblems). Suppose that A is a symmetric positive definite matrix, meaning A> = A (symmetry) and ~x> A~x > 0 for all ~x ∈ Rn\{~0} (positive definite). Often we wish to minimize ~x> A~x subject to ‖x‖22 = 1 for a given matrix A ∈ Rn×n; notice that without the constraint the minimum trivially
+takes place at ~x = ~0. We define the Lagrange multiplier function
+Λ(~x, λ) = ~x> A~x − λ(‖~x‖22 − 1)
+= ~x> A~x − λ(~x>~x − 1).
+Differentiating with respect to ~x, we find
+0 = ∇~xΛ = 2A~x − 2λ~x
+In other words, ~x is an eigenvector of the matrix A:
+A~x = λ~x.
+0.5 Problems
+Problem 0.1. Take C1(R) to be the set of functions f : R → R that admit a first derivative f ′(x). Why is C1(R) a vector space? Prove that C1(R) has dimension ∞.
+Problem 0.2. Suppose the rows of A ∈ Rm×n are given by the transposes of ~r1, . . . ,~rm ∈ Rn and the
+columns of A ∈ Rm×n are given by ~c1, . . . ,~cn ∈ Rm. That is,
+A=
+
+   
+− ~r>
+1−
+− ~r>
+2−
+...
+− ~rm> −
+
+   
+=
+
+
+|| | ~c1 ~c2 · · · ~cn || |
+
+.
+Give expressions for the elements of A> A and AA> in terms of these vectors.
+Problem 0.3. Give a linear system of equations satisfied by minima of the energy f (~x) = ‖A~x −~b‖22
+with respect to ~x, for ~x ∈ Rn, A ∈ Rm×n, and ~b ∈ Rm. This system is called the “normal equations” and will appear elsewhere in these notes; even so, it is worth working through and fully understanding the derivation.
+Problem 0.4. Suppose A, B ∈ Rn×n. Formulate a condition for vectors ~x ∈ Rn to be critical points of ‖A~x‖22 subject to ‖Bx‖22 = 1. Also, give an alternative form for the optimal values of ‖A~x‖22.
+Problem 0.5. Fix some vector ~a ∈ Rn\{~0} and define f (~x) = ~a · ~x. Give an expression for the maximum of f (~x) subject to ‖~x‖ = 1.
+27
+
+
+28
+
+
+Chapter 1
+Numerics and Error Analysis
+In studying numerical analysis, we move from dealing with ints and longs to floats and doubles. This seemingly innocent transition comprises a huge shift in how we must think about algorithmic design and implementation. Unlike the basics of discrete algorithms, we no longer can expect our algorithms to yield exact solutions in all cases. “Big O” and operation counting do not always reign supreme; instead, even in understanding the most basic techniques we are forced to study the trade off between timing, approximation error, and so on.
+1.1 Storing Numbers with Fractional Parts
+Recall that computers generally store data in binary format. In particular, each digit of a positive integer corresponds to a different power of two. For instance, we might convert 463 to binary using the following table: 111001111 28 27 26 25 24 23 22 21 20
+In other words, this notation encodes the fact that 463 can be decomposed into powers of two uniquely as:
+463 = 28 + 27 + 26 + 23 + 22 + 21 + 20
+= 256 + 128 + 64 + 8 + 4 + 2 + 1
+Issues of overflow aside, all positive integers can be written in this form using a finite number of digits. Negative numbers also can be represented this way, either by introducing a leading sign bit or by using the “two’s complement” trick. Such a decomposition inspires a simple extension to numbers that include fractions: simply include negative powers of two. For instance, decomposing 463.25 is as simple as adding two
+slots: 1 1 1 0 0 1 1 1 1. 0 1
+28 27 26 25 24 23 22 21 20 2−1 2−2
+Just as in the decimal system, however, representing fractional parts of numbers this way is not nearly as well-behaved as representing integers. For instance, writing the fraction 1/3 in binary yields the expression:
+1
+3 = 0.0101010101 . . .
+29
+
+
+Such examples show that there exist numbers at all scales that cannot be represented using a finite binary string. In fact, numbers like π = 11.00100100001 . . .2 have infinitely-long expansions regardless of which (integer) base you use! For this reason, when designing computational systems that do math on R instead of Z, we are forced to make approximations for nearly any reasonably efficient numerical representation. This can lead to many points of confusion while coding. For instance, consider the following C++ snippet:
+double x = 1.0; double y = x / 3.0; if (x == y*3.0) cout << "They are equal!"; else cout << "They are NOT equal.";
+Contrary to intuition, this program prints "They are NOT equal." Why? The definition of y makes an approximation to 1/3 since it cannot be written as a terminating binary string, rounding to a nearby number it can represent. Thus, y*3.0 no longer is multiplying 3 by 1/3. One way to fix this issue is below:
+double x = 1.0; double y = x / 3.0; if (fabs(x-y*3.0) < numeric_limits <double >:: epsilon) cout << "They are equal!"; else cout << "They are NOT equal.";
+Here, we check that x and y*3.0 are within some tolerance of one another rather than checking exact equality. This is an example of a very important point:
+Rarely if ever should the operator == and its equivalents be used on fractional values. Instead, some tolerance should be used to check if numbers are equal.
+Of course, there is a tradeoff here: the size of the tolerance defines a line between equality and “close-but-not-the-same,” which must be chosen carefully for a given application. We consider a few options for representing numbers on a computer below.
+1.1.1 Fixed Point Representations
+The most straightforward option for storing fractions is to add a fixed decimal point. That is, as in the example above we represent values by storing 0/1 coefficients in front of powers of two that range from 2−k to 2` for some k, ` ∈ Z. For instance, representing all nonnegative values between 0 and 127.75 in increments of 1/4 is as easy as taking k = 2 and ` = 7; in this situation, we represent these values using 9 binary digits, of which two occur after the decimal point. The primary advantage of this representation is that nearly all arithmetic operations can be carried out using the same algorithms as with integers. For example, it is easy to see that
+a + b = (a · 2k + b · 2k) · 2−k.
+Multiplying our fixed representation by 2k guarantees the result is integral, so this observation essentially shows that addition can be carried out using integer addition essentially by “ignoring” the decimal point. Thus, rather than using specialized hardware, the pre-existing integer arithmetic logic unit (ALU) carries out fixed-point mathematics quickly. Fixed-point arithmetic may be fast, but it can suffer from serious precision issues. In particular, it is often the case that the output of a binary operation like multiplication or division can require more bits than the operands. For instance, suppose we include one decimal point of precision and
+30
+
+
+wish to carry out the product 1/2 · 1/2 = 1/4. We write 0.12 × 0.12 = 0.012, which gets truncated to 0. In this system, it is fairly straightforward to combine fixed point numbers in a reasonable way and get an unreasonable result. Due to these drawbacks, most major programming languages do not by default include a fixed-point decimal data type. The speed and regularity of fixed-pont arithmetic, however, can be a considerable advantage for systems that favor timing over accuracy. In fact, some lower-end graphics processing units (GPU) implement only these operations since a few decimal points of precision is sufficient for many graphical applications.
+1.1.2 Floating Point Representations
+One of many numerical challenges in writing scientific applications is the variety of scales that can appear. Chemists alone deal with values anywhere between 9.11 × 10−31 and 6.022 × 1023. An operation as innocent as a change of units can cause a sudden transition between these regimes: the same observation written in kilograms per lightyear will look considerably different in megatons per second. As numerical analysts, our job is to write software that can transition between these scales gracefully without imposing on the client unnatural restrictions on their techniques. A few notions and obsevations from the art of scientific measurement are relevant to such a discussion. First, obviously one of the following representations is more compact than the other:
+6.022 × 1023 = 602, 200, 000, 000, 000, 000, 000, 000
+Furthermore, in the absence of exceptional scientific equipment, the difference between 6.022 × 1023 and 6.022 × 1023 + 9.11 × 10−31 is negligible. One way to come to this conclusion is to say that 6.022 × 1023 has only three digits of precision and probably represents some range of possible measurements [6.022 × 1023 − ε, 6.011 × 1023 + ε] for some ε ∼ 0.001 × 1023. Our first observation was able to compactify our representation of 6.022 × 1023 by writing it in scientific notation. This number system separates the “interesting” digits of a number from its order of magnitude by writing it in the form a × 10b for some a ∼ 1 and b ∈ Z. We call this format the floating-point form of a number, because unlike the fixed-point setup in §1.1.1, here the decimal point “floats” to the top. We can describe floating point systems using a few parameters (CITE):
+• The base β ∈ N; for scientific notation explained above, the base is 10
+• The precision p ∈ N representing the number of digits in the decimal expansion
+• The range of exponents [L, U] representing the possible values of b
+Such an expansion looks like:
+±
+}{{}
+sign
+(d0 + d1 · β−1 + d2 · β−2 + · · · + dp−1 · β1−p)
+} {{ }
+mantissa
+× βb
+}{{}
+exponent
+where each digit dk is in the range [0, β − 1] and b ∈ [L, U]. Floating point representations have a curious property that can affect software in unexpected ways: Their spacing is uneven. For example, the number of values representable between β and β2 is the same as that between β2 and β3 even though usually β3 − β2 > β2 − β. To understand the precision possible with a given number system, we will define the machine precision εm as the
+31
+
+
+smallest εm > 0 such that 1 + εm is representable. Then, numbers like β + εm are not expressible in the number system because εm is too small! By far the most common standard for storing floating point numbers is provided by the IEEE 754 standard. This standard specifies several classes of floating point numbers. For instance, a double-precision floating point number is written in base β = 2 (as are most numbers on the computer), with a single ± sign bit, 52 digits for d, and a range of exponents between −1022 and 1023. The standard also specifies how to store ±∞ and values like NaN, or “not-a-number,” reserved for the results of computations like 10/0. An extra bit of precision can be gained by writing normalizing floating point values and assuming the most significant digit d0 is 1 and not writing it. The IEEE standard also includes agreed-upon options for dealing with the finite number of values that can be represented given a finite number of bits. For instance, a common unbiased strategy for rounding computations is round to nearest, ties to even, which breaks equidistant ties by rounding to the nearest floating point value with an even least-significant (rightmost) bit. Note that there are many equally legitimate strategies for rounding; choosing a single one guarantees that scientific software will work identically on all client machines implementing the same standard.
+1.1.3 More Exotic Options
+Moving forward, we will assume that decimal values are stored in floating-point format unless otherwise noted. This, however, is not to say that other numerical systems do not exist, and for specific applications an alternative choice might be necessary. We acknowledge some of those situations here. The headache of adding tolerances to account for rounding errors might be unacceptable for some applications. This situation appears in computational geometry applications, e.g. when the difference between nearly- and completely-parallel lines may be a difficult distinction to make. One resolution might be to use arbitrary-precision arithmetic, that is, to implement arithmetic without rounding or error of any sort. Arbitrary-precision arithmetic requires a specialized implementation and careful consideration for what types of values you need to represent. For instance, it might be the case that rational numbers Q are sufficient for a given application, which can be written as ratios a/b for a, b ∈ Z. Basic arithmetic operations can be carried out in Q without any loss in precision. For instance, it is easy to see
+a
+b×c
+d = ac
+bd
+a
+b÷c
+d = ad
+bc .
+Arithmetic in the rationals precludes the existence of a square root operator, since values like √2 are irrational. Also, this representation is nonunique, since e.g. a/b = 5a/5b. Other times it may be useful to bracket error by representing values alongside error estimates as a pair a, ε ∈ R; we think of the pair (a, ε) as the range a ± ε. Then, arithmetic operations also update not only the value but also the error estimate, as in
+(x ± ε1) + (y ± ε2) = (x + y) ± (ε1 + ε2 + error(x + y)),
+where the final term represents an estimate of the error induced by adding x and y.
+32
+
+
+1.2 Understanding Error
+With the exception of the arbitrary-precision systems describe in §1.1.3, nearly every computerized representation of real numbers with fractional parts is forced to employ rounding and other approximation schemes. This scheme represents one of many sources of approximations typically encountered in numerical systems:
+• Truncation error comes from the fact that we can only represent a finite subset of all the possible set of values in R; for example, we must truncate long or infinite sequences past the decimal point to the number of bits we are willing to store.
+• Discretization error comes from our computerized adaptations of calculus, physics, and other aspects of continuous mathematics. For instance, we make an approximation
+dy
+dx ≈ y(x + ε) − y(x)
+ε.
+We will learn that this approximation is a legitimate and useful one, but depending on the choice of ε it may not be completely correct.
+• Modeling error comes from incomplete or inaccurate descriptions of the problems we wish to solve. For instance, a simulation for predicting weather in Germany may choose to neglect the collective flapping of butterfly wings in Malaysia, although the displacement of air by these butterflies may be enough to perturb the weather patterns elsewhere somewhat.
+• Empirical constant error comes from poor representations of physical or mathematical constants. For instance, we may compute π using a Taylor sequence that we terminate early, and even scientists may not even know the speed of light to more than some number of digits.
+• Input error can come from user-generated approximations of parameters of a given system (and from typos!). Simulation and numerical techniques can be used to answer “what if” type questions, in which exploratory choices of input setups are chosen just to get some idea of how a system behaves.
+Example 1.1 (Computational physics). Suppose we are designing a system for simulating planets as they revolve around the earth. The system essentially solves Newton’s equation F = ma by integrating forces forward in time. Examples of error sources in this system might include:
+• Truncation error: Using IEEE floating point to represent parameters and output of the system and truncating when computing the product ma
+• Discretization error: Replacing the acceleration a with a divided difference
+• Modeling error: Neglecting to simulate the moon’s effects on the earth’s motion within the planetary system
+• Empirical error: Only entering the mass of Jupiter to four digits
+• Input error: The user may wish to evaluate the cost of sending garbage into space rather than risking a Wall-E style accumulation on Earth but can only estimate the amount of garbage the government is willing to jettison in this fashion
+33
+
+
+1.2.1 Classifying Error
+Given our previous discussion, the following two numbers might be regarded as having the same amount of potential error:
+1 ± 0.01
+105 ± 0.01
+Although it has the size as the range [1 − 0.01, 1 + 0.01], the range [105 − 0.01, 105 + 0.01] appears to encode a more confident measurement because the error 0.01 is much smaller relative to 105 than to 1. The distinction between these two classes of error is described by differentiating between absolute error and relative error:
+Definition 1.1 (Absolute error). The absolute error of a measurement is given by the difference between the approximate value and its underlying true value.
+Definition 1.2 (Relative error). The relative error of a measurement is given by the absolute error divided by the true value.
+One way to distinguish between these two species of error is the use of units versus percentages.
+Example 1.2 (Absolute and relative error). Here are two equivalent statements in contrasting forms:
+Absolute: 2 in ± 0.02 in
+Relative: 2 in ± 1%
+In most applications the true value is unknown; after all, if this were not the case the use of an approximation in lieu of the true value may be a dubious proposition. There are two popular ways to resolve this issue. The first simply is to be conservative when carrying out computations: at each step take the largest possible error estimate and propagate these estimates forward as necessary. Such conservative estimates are powerful in that when they are small we can be very confident that our solution is useful. An alternative resolution has to do with what you can measure. For instance, suppose we wish to solve the equation f (x) = 0 for x given a function f : R → R. We know that somewhere there exists a root x0 satisfying f (x0) = 0 exactly, but if we knew this root our algorithm would not be necessary in the first place. In practice, our computational system may yield some xest satisfying f (xest) = ε for some ε with |ε| 1. We may not be able to evaluate the difference x0 − xest since x0 is unknown. On the other hand, simply by evaluating f we can compute f (xest) − f (x0) ≡ f (xest) since we know f (x0) = 0 by definition. This value gives some notion of error for our calculation. This example illustrates the distinction between forward and backward error. The forward error made by an approximation most likely defines our intuition for error analysis as the difference between the approximated and actual solution, but as we have discussed it is not always possible to compute. The backward error, however, has the distinguishably of being calculable but not our exact objective when solving a given problem. We can adjust our definition and interpretation of backward error as we approach different problems, but one suitable if vague definition is as follows:
+34
+
+
+Definition 1.3 (Backward error). Backward error is given by the amount a problem statement would have to change to realize a given approximation of its solution.
+This definition is somewhat obtuse, so we illustrate its use in a few examples.
+Example 1.3 (Linear systems). Suppose we wish to solve the n × n linear system A~x = ~b. Call the true solution ~x0 ≡ A−1~b. In reality, due to truncation error and other issues, our system yields a nearsolution ~xest. The forward error of this approximation obviously is measured using the difference ~xest − ~x0; in practice this value is impossible to compute since we do not know ~x0. In reality, ~xest is the exact solution to a modified system A~x = ~best for ~best ≡ A~xest; thus, we might measure backward error in terms of the difference ~b −~best. Unlike the forward error, this error is easily computable without inverting A, and it is easy to see that ~xest is a solution to the problem exactly when backward (or forward) error is zero.
+Example 1.4 (Solving equations, CITE). Suppose we write a function for finding square roots of positive
+numbers that outputs √2 ≈ 1.4. The forward error is |1.4 − 1.41421 · · · | ≈ 0.0142. Notice that 1.42 = 1.96, so the backward error is |1.96 − 2| = 0.04.
+The two examples above demonstrate a larger pattern that backward error can be much easier to compute than forward error. For example, evaluating forward error in Example 1.3 required inverting a matrix A while evaluating backward error required only multiplication by A. Similarly, in Example 1.4 transitioning from forward error to backward error replaced square root computation with multiplication.
+1.2.2 Conditioning, Stability, and Accuracy
+In nearly any numerical problem, zero backward error implies zero forward error and vice versa. Thus, a piece of software designed to solve such a problem surely can terminate if it finds that a candidate solution has zero backward error. But what if backward error is nonzero but small? Does this necessarily imply small forward error? Such questions motivate the analysis of most numerical techniques whose objective is to minimize forward error but in practice only can measure backward error. We desire to analyze changes in backward error relative to forward error so that our algorithms can say with confidence using only backward error that they have produced acceptable solutions. This relationship can be different for each problem we wish to solve, so in the end we make the following rough classification:
+• A problem is insensitive or well-conditioned when small amounts of backward error imply small amounts of forward error. In other words, a small perturbation to the statement of a well-conditioned problem yields only a small perturbation of the true solution.
+• A problem is sensitive or poorly-conditioned when this is not the case.
+Example 1.5 (ax = b). Suppose as a toy example that we want to find the solution x0 ≡ b/a to the linear equation ax = b for a, x, b ∈ R. Forward error of a potential solution x is given by x − x0 while backward error is given by b − ax = a(x − x0). So, when |a| 1, the problem is well-conditioned since small values of backward error a(x − x0) imply even smaller values of x − x0; contrastingly, when |a| 1 the problem is ill-conditioned, since even if a(x − x0) is small the forward error x − x0 ≡ 1/a · a(x − x0) may be large given the 1/a factor.
+35
+
+
+We define the condition number to be a measure of a problem’s sensitivity:
+Definition 1.4 (Condition number). The condition number of a problem is the ratio of how much its solution changes to the amount its statement changes under small perturbations. Alternatively, it is the ratio of forward to backward error for small changes in the problem statement.
+Example 1.6 (ax = b, part two). Continuing Example 1.5, we can compute the condition number exactly:
+c = forward error
+backward error = x − x0
+a(x − x0) ≡ 1
+a
+In general, computing condition numbers is nearly as hard as computing forward error, and thus their exact computation is likely impossible. Even so, many times it is possible to find bounds or approximations for condition numbers to help evaluate how much a solution can be trusted.
+Example 1.7 (Root-finding). Suppose that we are given a smooth function f : R → R and want to find values x with f (x) = 0. Notice that f (x + ∆) ≈ f (x) + ∆ f ′(x). Thus, an approximation of the condition number for finding x might be
+change in forward error
+change in backward error = (x + ∆) − x
+f (x + ∆) − f (x)
+≈∆
+∆ f ′(x)
+=1
+f ′(x)
+Notice that this approximation aligns with the one in Example 1.6. Of course, if we do not know x we cannot evaluate f ′(x), but if we can look at the form of f and bound | f ′| near x, we have an idea of the worst-case situation.
+Forward and backward error are measures of the accuracy of a solution. For the sake of scientific repeatability, we also wish to derive stable algorithms that produce self-consistent solutions to a class of problems. For instance, an algorithm that generates very accurate solutions only one fifth of the time might not be worth implementing, even if we can go back using the techniques above to check whether the candidate solution is a good one.
+1.3 Practical Aspects
+The infinitude and density of the real numbers R can cause pernicious bugs while implementing numerical algorithms. While the theory of error analysis introduced in §1.2 eventually will help us put guarantees on the quality of numerical techniques introduced in future chapters, it is worth noting before we proceed a number of common mistakes and “gotchas” that pervade implementations of numerical methods. We purposefully introduced the largest offender early in §1.1, which we repeat in a larger font
+for well-deserved emphasis:
+Rarely if ever should the operator == and its equivalents be used on fractional values.
+36
+
+
+Finding a suitable replacement for == and corresponding conditions for terminating a numerical method depends on the technique under consideration. Example 1.3 shows that a method for solving A~x = ~b can terminate when the residual ~b − A~x is zero; since we do not want to check if A*x==b explicitly, in practice implementations will check norm(A*x-b)<epsilon. Notice that this example demonstrates two techniques:
+• The use of backward error~b − A~x rather than forward error to determine when to terminate, and
+• Checking whether backward error is less than epsilon to avoid the forbidden ==0 predicate.
+The parameter epsilon depends on how accurate the desired solution must be as well as the resolution of the numerical system at use. A programmer making use of these data types and operations must be vigilant when it comes to detecting and preventing poor numerical operations. For example, consider the following code snippet for computing the norm ‖~x‖2 for a vector ~x ∈ Rn represented as a 1D array x[]:
+double normSquared = 0; for (int i = 0; i < n; i++) normSquared += x[i]*x[i]; return sqrt(normSquared);
+It is easy to see that in theory mini |xi| ≤ ‖~x‖2/√n ≤ maxi |xi|, that is, the norm of ~x is on the order of the values of elements contained in ~x. Hidden in the computation of ‖~x‖2, however, is the expression x[i]*x[i]. If there exists i such that x[i] is on the order of DOUBLE MAX, the product x[i]*x[i] will overflow even though ‖~x‖2 is still within the range of the doubles. Such overflow is easily preventable by dividing ~x by its maximum value, computing the norm, and multiplying back:
+double maxElement = epsilon; // don’t want to divide by zero! for (int i = 0; i < n; i++) maxElement = max(maxElement , fabs(x[i])); for (int i = 0; i < n; i++) { double scaled = x[i] / maxElement; normSquared += scaled*scaled; }
+return sqrt(normSquared) * maxElement;
+The scaling factor removes the overflow problem by making sure that elements being summed are no larger than 1. This small example shows one of many circumstances in which a single character of code can lead to a non-obvious numerical issue. While our intuition from continuous mathematics is sufficient to generate many numerical methods, we must always double-check that the operations we employ are valid from a discrete standpoint.
+1.3.1 Larger-Scale Example: Summation
+We now provide an example of a numerical issue caused by finite-precision arithmetic that can be resolved using a less than obvious algorithmic trick. Suppose that we wish to sum a list of floating-point values, easily a task required by systems in accounting, machine learning, graphics, and nearly any other field. A snippet of code to accomplish this task that no-doubt appears in countless applications looks as follows:
+37
+
+
+double sum = 0; for (int i = 0; i < n; i++) sum += x[i];
+Before we proceed, it is worth noting that for the vast majority of applications, this is a perfectly stable and certainly mathematically valid technique. But, what can go wrong? Consider the case where n is large and most of the values x[i] are small and positive. In this case, when i is large enough, the variable sum will be large relative to x[i]. Eventually, sum could be so large that x[i] affects only the lowest-order bits of sum, and in the extreme case sum could be large enough that adding x[i] has no effect whatsoever. While a single such mistake might not be a big deal, the accumulated effect of making this mistake repeatedly could overwhelm the amount that we can trust sum at all. To understand this effect mathematically, suppose that computing a sum a + b can be off by as much as ε > 0. Then, the method above clearly can induce error on the order of nε, which grows linearly with n. In fact, if most elements x[i] are on the order of ε, then the sum cannot be trusted whatsoever! This is a disappointing result: The error can be as large as the sum itself. Fortunately, there are many ways to do better. For example, adding the smallest values first might help account for their accumulated effect. Pairwise methods recursively adding pairs of values from x[] and building up a sum also are more stable, but they can be difficult to implement as efficiently as the for loop above. Thankfully, an algorithm by Kahan (CITE) provides an easilyimplemented “compensated summation” method that is nearly as fast. The useful observation here is that we actually can keep track of an approximation of the error in sum during a given iteration. In particular, consider the expression
+((a + b) − a) − b.
+Obviously this expression algebraically is zero. Numerically, however, this may not be the case. In particular, the sum (a + b) may round the result to keep it within the realm of floating-point values. Subtracting a and b one-at-a-time then yields an approximation of the error induced by this operation; notice that the subtraction operations likely are better conditioned since moving from large numbers to small ones adds digits of precision due to cancellation. Thus, the Kahan technique proceeds as follows:
+double sum = 0;
+double compensation = 0; // an approximation of the error
+for (int i = 0; i < n; i++) {
+// try to add back to both x[i] and the missing part double nextTerm = x[i] + compensation;
+// compute the summation result of this iteration double nextSum = sum + nextTerm;
+// compute the compensation as the difference between the term you wished // to add and the actual result
+compensation = nextTerm - (nextSum - sum);
+sum = nextSum; }
+Instead of simply maintaining sum, now we keep track of sum as well as an approximation compensation of the difference between sum and the desired value. During each iteration, we attempt to add back
+38
+
+
+this compensation in addition to the current element of x[], and then we recompute compensation to account for the latest error. Analyzing the Kahan algorithm requires more careful bookkeeping than analyzing the simpler incremental technique. You will walk through one derivation of an error expression at the end of this chapter; the final mathematical result will be that error improves from nε to O(ε + nε2), a considerable improvement when 0 < ε 1. Implementing Kahan summation is straightforward but more than doubles the operation count of the resulting program. In this way, there is an implicit trade-off between speed and accuracy that software engineers must make when deciding which technique is most appropriate. More broadly, Kahan’s algorithm is one of several methods that bypass the accumulation of numerical error during the course of a computation consisting of more than one operation. Other examples include Bresenham’s algorithm for rasterizing lines (CITE), which uses only integer arithmetic to draw lines even when they intersect rows and columns of pixels at non-integral locations, and the Fast Fourier Transform (CITE), which effectively uses the binary partition summation trick described above.
+1.4 Problems
+Problem 1.1. Here’s a problem.
+39
+
+
+40
+
+
+Part II
+Linear Algebra
+41
+
+
+
+
+Chapter 2
+Linear Systems and the LU
+Decomposition
+In Chapter 0, we discussed a variety of situations in which linear systems of equations A~x = ~b appear in mathematical theory and in practice. In this chapter, we tackle the basic problem headon and explore numerical methods for solving such systems.
+2.1 Solvability of Linear Systems
+As introduced in §0.3.3, systems of linear equations like
+3x + 2y = 6
+−4x + y = 7
+can be written in matrix form as in
+(3 2 −4 1
+)( x
+y
+)
+=
+(6
+7
+)
+.
+More generally, we can write systems of the form A~x = ~b for A ∈ Rm×n, ~x ∈ Rn, and~b ∈ Rm. The solvability of the system must fall into one of three cases:
+1. The system may not admit any solutions, as in:
+(1 0 10
+)( x
+y
+)
+=
+( −1 1
+)
+.
+This system asks that x = −1 and x = 1 simultaneously, obviously two incompatible conditions.
+2. The system may admit a single solution; for instance, the system at the beginning of this section is solved by (x, y) = (−8/11, 45/11).
+43
+
+
+3. The system may admit infinitely many solutions, e.g. 0~x = ~0. Notice that if a system A~x = ~b admits two solutions ~x0 and ~x1, then it automatically has infinitely many solutions of the form c~x0 + (1 − c)~x1 for c ∈ R, since
+A(c~x0 + (1 − c)~x1) = cA~x0 + (1 − c)A~x1 = c~b + (1 − c)~b = ~b.
+This linear system would be labeled underdetermined.
+In general, the solvability of a system depends both on A and on~b. For instance, if we modify the unsolvable system above to be
+(1 0 10
+)( x
+y
+)
+=
+(1
+1
+)
+,
+then the system moves from having no solutions to infinitely many of the form (1, y). In fact, every matrix A admits a right hand side ~b such that A~x = ~b is solvable, since A~x = ~0 always can be solved by ~x ≡ ~0 regardless of A. Recall from §0.3.1 that matrix-vector multiplication can be viewed as linearly combining the columns of A with weights from ~x. Thus, as mentioned in §0.3.3, we can expect A~x = ~b to be solvable exactly when~b is in the column space of A. In a broad way, the “shape” of the matrix A ∈ Rm×n has considerable bearing on the solvability of A~x = ~b. Recall that the columns of A are m-dimensional vectors. First, consider the case when A is “wide,” that is, when it has more columns than rows (n > m). Each column is a vector in Rm, so at most the column space can have dimension m. Since n > m, the n columns of A must then be linearly dependent; this implies that there exists an ~x0 6= ~0 such that A~x0 = ~0. Then, if we can solve A~x = ~b for ~x, then A(~x + α~x0) = A~x + αA~x0 = ~b +~0 = ~b, showing that there are actually infinitely many solutions ~x to A~x = ~b. In other words, we have shown that no wide matrix system admits a unique solution.
+When A is “tall,” that is, when it has more rows than columns (m > n), then the n columns cannot span Rm. Thus, there exists some vector~b0 ∈ Rm\col A. By definition, this~b0 cannot satisfy A~x = ~b0 for any ~x. In other words, every tall matrix A admits systems A~x = ~b0 that are not solvable.
+Both of the situations above are far from favorable for designing numerical algorithms. For example, if a linear system admits many solutions we must first define which solution is desired from the user: after all, the solution ~x + 1031~x0 might not be as meaningful as ~x − 0.1~x0. On the flip side, in the tall case even if A~x = ~b is solvable for a particular ~b, any small perturbation A~x = ~b + ε~b0 is no longer solvable; this situation can appear simply because rounding procedures discussed in the last chapter can only approximate A and~b in the first place. Given these complications, in this chapter we will make some simplifying assumptions:
+• We will consider only square A ∈ Rn×n.
+• We will assume that A is nonsingular, that is, that A~x = ~b is solvable for any~b.
+Recall from §0.3.3 that the nonsingularity condition is equivalent to asking that the columns of A span Rn and implies the existence of a matrix A−1 satisfying A−1 A = AA−1 = In×n. A misleading observation is to think that solving A~x = ~b is equivalent to computing the matrix A−1 explicitly and then multiplying to find ~x ≡ A−1~b. While this solution strategy certainly is valid, it can represent a considerable amount of overkill: after all, we’re only interested in the n values in ~x rather than the n2 values in A−1. Furthermore, even when A is well-behaved it can be the case that writing A−1 yields numerical difficulties that can be bypassed.
+44
+
+
+2.2 Ad-Hoc Solution Strategies
+In introductory algebra, we often approach the problem of solving a linear system of equations as an art form. The strategy is to “isolate” variables, iteratively writing alternative forms of the linear system until each line is of the form x = const. In formulating systematic algorithms for solving linear systems, it is instructive to carry out an example of this solution process. Consider the following system:
+y − z = −1
+3x − y + z = 4
+x + y − 2z = −3
+In parallel, we can maintain a matrix version of this system. Rather than writing out A~x = ~b explicitly, we can save a bit of space by writing the “augmented” matrix below:
+
+
+0 1 −1 −1 3 −1 1 4 1 1 −2 −3
+
+
+We can always write linear systems this way so long as we agree that the variables remain on the left hand side of the equations and the constants on the right. Perhaps we wish to deal with the variable x first. For convenience, we may permute the rows of the system so that the third equation appears first:
+x + y − 2z = −3 y − z = −1 3x − y + z = 4
+
+
+1 1 −2 −3 0 1 −1 −1 3 −1 1 4
+
+
+We can then substitute the first equation into the third to eliminate the 3x term. This is the same as scaling the relationship x + y − 2z = −3 by −3 and adding the result to the third equation:
+x + y − 2z = −3 y − z = −1 −4y + 7z = 13
+
+
+1 1 −2 −3 0 1 −1 −1 0 −4 7 13
+
+
+Similarly, to eliminate y from the third equation we can multiply the second equation by 4 and add the result to the third:
+x + y − 2z = −3 y − z = −1 3z = 9
+
+
+1 1 −2 −3 0 1 −1 −1 00 3 9
+
+
+We have now isolated z! Thus, we can scale the third row by 1/3 to yield an expression for z:
+x + y − 2z = −3 y − z = −1 z =3
+
+
+1 1 −2 −3 0 1 −1 −1 00 1 3
+
+
+45
+
+
+Now, we can substitute z = 3 into the other two equations to remove z from all but the final row:
+x+y =3 y =2 z =3
+
+
+1103 0102 0013
+
+
+Finally we make a similar substitution for y to complete the solve:
+x =1 y =2 z =3
+
+
+1001 0102 0013
+
+
+This example might be somewhat pedantic, but looking back on our strategy yields a few important observations about how we can go about solving linear systems:
+• We wrote successive systems Ai~x = ~bi that can be viewed as simplifications of the original A~x = ~b.
+• We solved the system without ever writing down A−1.
+• We repeatedly used a few simple operations: scaling, adding, and permuting rows of the system.
+• The same operations were applied to A and~b. If we scaled the k-th row of A, we also scaled the k-th row of~b. If we added rows k and ` of A, we added rows k and ` of~b.
+• Less obviously, the steps of the solve did not depend on ~b. That is, all of our decisions for how to solve were motivated by eliminating nonzero values in A rather than examining values in~b;~b just came along for the ride.
+• We terminated when we reduced the system to In×n~x = ~b.
+We will use all of these general observations about solving linear systems to our advantage.
+2.3 Encoding Row Operations
+Looking back at the example in §2.2, we see that solving the linear system really only involved applying three operations: permutation, row scaling, and adding the scale of one row to another. In fact, we can solve any linear system this way, so it is worth exploring these operations in more detail.
+2.3.1 Permutation
+Our first step in §2.2 was to swap two of the rows in the system of equations. More generally, we might index the rows of a matrices using the numbers 1, . . . , m. Then, a permutation of those rows can be written as a function σ such that the list σ(1), . . . , σ(m) covers the same set of indices.
+46
+
+
+If ~ek is the k-th standard basis function, then it is easy to see that the product ~e>
+k A yields the k-th row of the matrix A. Thus, we can “stack” or concatenate these row vectors vertically to yield a matrix permuting the rows according to σ:
+Pσ ≡
+
+   
+− ~e>
+σ(1) −
+− ~e>
+σ(2) −
+··· − ~e>
+σ(m) −
+
+   
+That is, the product Pσ A is exactly the matrix A with rows permuted according to σ.
+Example 2.1 (Permutation matrices). Suppose we wish to permute rows of a matrix in R3×3 with σ(1) = 2, σ(2) = 3, and σ(3) = 1. According to our formula we would have
+Pσ =
+
+
+010 001 100
+
+
+From Example 2.1, we can see that Pσ has ones in positions of the form (k, σ(k)) and zeros elsewhere. The pair (k, σ(k)) represents the statement, “We would like row k of the output matrix to be row σ(k) from the input matrix.” Based on this description of a permutation matrix, it is easy to see that the inverse of Pσ is the transpose P>
+σ , since this simply swaps the roles of the rows and columns – now we take row σ(k) of the input and put it in row k of the output. In other words, P>
+σ Pσ = Im×m.
+2.3.2 Row Scaling
+Suppose we write down a list of constants a1, . . . , am and seek to scale the k-th row of some matrix A by ak. This is obviously accomplished by applying the scaling matrix Sa given by:
+Sa ≡
+
+   
+a1 0 0 · · · 0 a2 0 · · ·
+... ... . . . ...
+0 0 · · · am
+
+   
+Assuming that all ak satisfy ak 6= 0, it is easy to invert Sa by “scaling back:”
+Sa−1 = S1/a ≡
+
+   
+1/a1 0 0 · · · 0 1/a2 0 · · ·
+... ... . . . ...
+0 0 · · · 1/am
+
+   
+2.3.3 Elimination
+Finally, suppose we wish to scale row k by a constant c and add the result to row `. This operation may seem less natural than the previous two but actually is quite practical: It is the only one we
+47
+
+
+need to combine equations from different rows of the linear system! We will realize this operation using an “elimination matrix” M such that the product MA applies this operation to matrix A. Recall that the product ~e>
+k A picks out the k-th row of A. Then, premultiplying by ~e` yields a
+matrix ~e`~e>
+k A, which is zero except the `-th row is equal to the k-th of A.
+Example 2.2 (Elimination matrix construction). Take
+A=
+
+
+123 456 789
+
+
+Suppose we wish to isolate the third row of A ∈ R3×3 and move it to row two. As discussed above, this operation is accomplished by writing:
+~e2~e>
+3A=
+
+
+0 1 0
+
+
+(0 0 1)
+
+
+123 456 789
+
+
+=
+
+
+0 1 0
+
+
+(7 8 9)
+=
+
+
+000 789 000
+
+
+Of course, we multiplied right-to-left above but just as easily could have grouped the product as (~e2~e>
+3 )A. The structure of this product is easy to see:
+~e2~e>
+3=
+
+
+0 1 0
+
+
+( 0 0 1 )=
+
+
+000 001 000
+
+
+We have succeeded in isolating row k and moving it to row `. Our original elimination operation wanted to add c times row k to row `, which we can now accomplish as the sum A + c~e`~e>
+kA=
+(In×n + c~e`~e>
+k )A.
+Example 2.3 (Solving a system). We can now encode each of our operations from Section 2.2 using the matrices we have constructed above:
+1. Permute the rows to move the third equation to the first row:
+P=
+
+
+001 100 010
+
+
+2. Scale row one by -3 and add the result to row three: E1 = I3×3 − 3~e3~e>
+1
+3. Scale row two by 4 and add the result to row three: E2 = I3×3 + 4~e3~e>
+2
+4. Scale row three by 1/3: S = diag(1, 1, 1/3)
+48
+
+
+5. Scale row three by 2 and add it to row one: E3 = I3×3 + 2~e1~e>
+3
+6. Add row three to row two: E4 = I3×3 +~e2~e>
+3
+7. Scale row three by -1 and add the result to row one: E5 = I3×3 −~e1~e>
+3
+Thus, the inverse of A in Section 2.2 satisfies
+A−1 = E5E4E3SE2E1P.
+Make sure you understand why these matrices appear in reverse order!
+2.4 Gaussian Elimination
+The sequence of steps chosen in Section 2.2 was by no means unique: There are many different paths that can lead to the solution of A~x = ~b. Our steps, however, followed the strategy of Gaussian elimination, a famous algorithm for solving linear systems of equations. More generally, let’s say our system has the following “shape:”
+(
+A ~b
+)
+=
+
+  
+××××× ××××× ××××× ×××××
+
+  
+The algorithm proceeds in phases described below.
+2.4.1 Forward Substitution
+Consider the upper-left element of our matrix:
+(
+A ~b
+)
+=
+
+   
+× ××××
+× ×××× × ×××× × ××××
+
+   
+We will call this element our first pivot and will assume it is nonzero; if it is zero we can permute rows so that this is not the case. We first apply a scaling matrix so that the pivot equals one:
+
+  
+1 ×××× × ×××× × ×××× × ××××
+
+  
+Now, we use the row containing the pivot to eliminate all other values underneath in the same column: 
+  
+1 ×××× 0 ×××× 0 ×××× 0 ××××
+
+  
+49
+
+
+We now move our pivot to the next row and repeat a similar series of operations:
+
+  
+1 × ×××
+0 1 ××× 0 0 ××× 0 0 ×××
+
+  
+Notice that a nice thing happens here. After the first pivot has been eliminated from all other rows, the first column is zero beneath row 1. This means we can safely add multiples of row two to rows underneath without affecting the zeros in column one. We repeat this process until the matrix becomes upper-triangular:
+
+  
+1×× × × 01× × × 00 1 × ×
+00 0 1 ×
+
+  
+2.4.2 Back Substitution
+Eliminating the remaining ×’s from the system is now a straight forward process. Now, we proceed in reverse order of rows and eliminate backward. For instance, after the first series of back substitution steps, we are left with the following shape:
+
+  
+1×× 0 × 01× 0 × 00 1 0 ×
+00 0 1 ×
+
+  
+Similarly, the second iteration yields:
+
+  
+1× 0 0× 0 1 0 0×
+0 0 1 0× 0 0 0 1×
+
+  
+After our final elimination step, we are left with our desired form:
+
+  
+1 000× 0 100× 0 010× 0 001×
+
+  
+The right hand side now is the solution to the linear system A~x = ~b.
+2.4.3 Analysis of Gaussian Elimination
+Each row operation in Gaussian elimination – scaling, elimination, and swapping two rows obviously takes O(n) time to complete, since you have to iterate over all n elements of a row (or
+50
+
+
+two) of A. Once we choose a pivot, we have to do n forward- or back- substitutions into the rows below or above that pivot, resp.; this means the work for a single pivot in total is O(n2). In total, we choose one pivot per row, adding a final factor of n. Thus, it is easy enough to see that Gaussian elimination runs in O(n3) time. One decision that takes place during Gaussian elimination that we have not discussed is the choice of pivots. Recall that we can permute rows of the linear system as we see fit before performing back- or forward- substitution. This operation is necessary to be able to deal with all possible matrices A. For example, consider what would happen if we did not use pivoting on the following matrix:
+A=
+(0 1 10
+)
+Notice that the circled element is exactly zero, so we cannot expect to divide row one by any number to replace that 0 with a 1. This does not mean the system is not solvable, it just means we must do pivoting, accomplished by swapping the first and second rows, to put a nonzero in that slot. More generally, suppose our matrix looks like:
+A=
+(
+ε1 10
+)
+,
+where 0 < ε 1. If we do not pivot, then the first iteration of Gaussian elimination yields:
+A ̃ =
+(
+1 1/ε 0 −1/ε
+)
+,
+We have transformed a matrix A that looks nearly like a permutation matrix (in fact, A−1 ≈ A>, a very easy way to solve the system!) into a system with potentially huge values 1/ε. This example shows that there are cases when we may wish to pivot even when doing so strictly speaking is not necessary. Since we are scaling by the reciprocal of the pivot value, clearly the most numerically stable options is to have a large pivot: Small pivots have large reciprocals, scaling numbers to large values in regimes that are likely to lose precision. There are two wellknown pivoting strategies:
+1. Partial pivoting looks through the current column and permutes rows of the matrix so that the largest absolute value appears on the diagonal.
+2. Full pivoting iterates over the entire matrix and permutes both rows and columns to get the largest possible value on the diagonal. Notice that permuting columns of a matrix is a valid operation: it corresponds to changing the labeling of the variables in the system, or post-multiplying A by a permutation.
+Example 2.4 (Pivoting). Suppose after the first iteration of Gaussian elimination we are left with the following matrix:
+
+ 
+1 10 −10
+0 0.1 9
+0 4 6.2
+
+ 
+51
+
+
+If we implement partial pivoting, then we will look only in the second column and will swap the second and third rows; notice that we leave the 10 in the first row since that one already has been visited by the algorithm:
+
+
+1 10 −10
+0 4 6.2 0 0.1 9
+
+
+If we implement full pivoting, then we will move the 9:
+
+
+1 −10 10 0 9 0.1 0 6.2 4
+
+
+Obviously full pivoting yields the best possible numerics, but the cost is a more expensive search for large elements in the matrix.
+2.5 LU Factorization
+There are many times when we wish to solve a sequence of problems A~x1 = ~b1, A~x2 = ~b2, . . . . As we already have discussed, the steps of Gaussian elimination for solving A~x = ~bk depend mainly on the structure of A rather than the values in a particular ~bk. Since A is kept constant here, we may wish to “remember” the steps we took to solve the system so that each time we are presented with a new~b we do not have to start from scratch. Solidifying this suspicion that we can move some of the O(n3) for Gaussian elimination into precomputation time, recall the upper triangular system resulting after the forward substitution stage:
+
+  
+1×× × × 01× × × 00 1 × ×
+00 0 1 ×
+
+  
+In fact, solving this system by back-substitution only takes O(n2) time! Why? Back substitution in this case is far easier thanks to the structure of the zeros in the system. For example, in the first series of back substitutions we obtain the following matrix:
+
+  
+1 × × 0× 0 1 × 0× 0 0 1 0× 0 0 0 1×
+
+  
+Since we know that the (circled) values to the left of the pivot are zero by construction, we don’t need to copy them explicitly. Thus, this step only took O(n) time rather than O(n2) taken by forward substitution. Now, our next pivot does a similar substitution:
+
+  
+1 ×0 0 × 0 100× 0 010× 0 001×
+
+  
+52
+
+
+Once again the zeros on both sides of the 1 do not need to be copied explicitly. Thus, we have found:
+Observation. While Gaussian elimination takes O(n3) time, solving triangular systems takes O(n2) time.
+2.5.1 Constructing the Factorization
+Recall from §2.3 that all the operations in Gaussian elimination can be thought of as pre-multiplying A~x = ~b by different matrices M to obtain an easier system (MA)~x = M~b. As we demonstrated in Example 2.3, from this standpoint each step of Gaussian elimination represents a system (Mk · · · M2 M1 A)~x = Mk · · · M2 M1~b . Of course, explicitly storing these matrices Mk as n × n objects is overkill, but keeping this interpretation in mind from a theoretical perspective simplifies many of our calculations. After the forward substitution phase of Gaussian elimination, we are left with an upper triangular matrix, which we can call U ∈ Rn×n. From the matrix multiplication perspective, we can write:
+Mk · · · M1 A = U,
+or, equivalently,
+A = (Mk · · · M1)−1U
+= (M−1
+1 M−1
+2 · · · M−1
+k )U
+≡ LU, if we make the definition L ≡ M−1
+1 M−1
+2 · · · M−1
+k.
+We don’t know anything about the structure of L yet, but we do know that systems of the form U~y = d~ are easier to solve since U is upper triangular. If L is equally nice, we could solve A~x = ~b in two steps, by writing (LU)~x = ~b, or ~x = U−1L−1~b:
+1. Solve L~y = ~b for ~y, yielding ~y = L−1~b.
+2. Now that we have ~y, solve U~x = ~y, yielding ~x = U−1~y = U−1(L−1~b) = (LU)−1~b = A−1~b. We already know that this step only takes O(n2) time.
+Our remaining task is to make sure that L has nice structure that will make solving L~y = ~b easier than solving A~x = ~b. Thankfully–and unsurprisingly–we will find that L is lower triangular and thus can be solved using O(n2) forward substitution. To see this, suppose for now that we do not implement pivoting. Then, each of our matrices Mk is either a scaling matrix or has the structure
+Mk = In×n + c~e`~e>
+k,
+where ` > k since we only have carried out forward substitution. Remember that this matrix serves a specific purpose: Scale row k by c and add the result to row `. This operation obviously is easy to undo: Scale row k by c and subtract the result from row `. We can check this formally:
+(In×n + c~e`~e>
+k )(In×n − c~e`~e>
+k ) = In×n + (−c~e`~e>
+k + c~e`~e>
+k ) − c2~e`~e>
+k ~e`~e>
+k
+= In×n − c2~e`(~e>
+k ~e`)~e>
+k
+= In×n since ~e>
+k ~e` = ~ek ·~e`, and k 6= `
+53
+
+
+So, the L matrix is the product of scaling matrices and matrices of the form M−1 = In×n + c~e`~e>
+k are lower triangular when ` > k. Scaling matrices are diagonal, and the matrix M is lower triangular. You will show in Exercise 2.1 that the product of lower triangular matrices is lower triangular, showing in turn that L is lower triangular as needed. We have shown that if it is possible to carry out Gaussian elimination of A without using pivoting, you can factor A = LU into the product of lower- and upper-triangular matrices. Forward and back substitution each take O(n2) time, so if this factorization can be computed ahead of time the linear solve can be carried out faster than full O(n3) Gaussian elimination. You will show in Exercise 2.2 what happens when we carry out LU with pivoting; no major changes are necessary.
+2.5.2 Implementing LU
+A simple implementation of Gaussian elimination to solve A~x = ~b is straightforward enough to formulate. In particular, as we have discussed earlier, we can form the augmented matrix (A | ~b) and apply row operations one at a time to this n × (n + 1) block until it looks like (In×n A−1 | ~b). This process, however, is destructive, that is, in the end we care only about the last column of the augmented matrix and have kept no evidence of our solution path. Such behavior clearly is not acceptable for LU factorization. Let’s examine what happens when we multiply two elimination matrices:
+(In×n − c`~e`~e>
+k )(In×n − cp~ep~e>
+k ) = In×n − c`~e`~e>
+k − cp~ep~e>
+k
+As in our construction of the inverse of an elimination matrix, the product of the two ~ei terms vanishes since the standard basis is orthogonal. This formula shows that after the pivot is scaled to 1, the product of the elimination matrices used to forward substitute for that pivot has the form:
+M=
+
+  
+1 0 00
+0 1 00 0 × 10 0 × 01
+
+  
+,
+where the values × are the values used to eliminate the rest of the column. Multiplying matrices of this form together shows that the elements beneath the diagonal of L just come from coefficients used to accomplish substitution. We can make one final decision to keep the elements along the diagonal of L in the LU factorization equal to 1. This decision is a legitimate one, since we can always post-multiply a L by a scaling matrix S taking these elements to 1 and write LU = (LS)(S−1U) without affecting the triangular pattern of L or U. With this decision in place, we can compress our storage of both L and U into a single n × n matrix whose upper triangle is U and which is equal to L beneath the diagonal; the missing diagonal elements of L are all 1. We are now ready to write pseudocode for the simplest LU factorization strategy in which we do not permute rows or columns to obtain pivots:
+// Takes as input an n-by -n matrix A[i,j] // Edits A in place to obtain the compact LU factorization described above
+for pivot from 1 to n {
+pivotValue = A[pivot ,pivot]; // Bad assumption that this is nonzero!
+54
+
+
+for eliminationRow from (pivot+1) to n { // Eliminate values beneath the pivot // How much to scale the pivot row to eliminate the value in the current // row; notice we’re not scaling the pivot row to 1, so we divide by the // pivot value
+scale = A[eliminationRow ,pivot]/pivotValue;
+// Since we /subtract/ scale times the pivot row from the current row // during Gaussian elimination , we /add/ it in the inverse operation // stored in L
+A[eliminationRow ,pivot] = scale;
+// Now , as in Gaussian elimination , perform the row operation on the rest // of the row: this will become U
+for eliminationCol from (pivot+1) to n A[eliminationRow ,eliminationCol] -= A[pivot ,eliminationCol ]* scale; } }
+2.6 Problems
+Problem 2.1. Product of lower triangular things is lower triangular; product of pivot matrices looks right
+Problem 2.2. Implement LU with pivoting
+Problem 2.3. Non-square LU
+55
+
+
+56
+
+
+Chapter 3
+Designing and Analyzing Linear
+Systems
+Now that we have some methods for solving linear systems of equations, we can use them to solve a variety of problems. In this chapter, we will explore a few such applications and accompanying analytical techniques to characterize the types of solutions we can expect.
+3.1 Solution of Square Systems
+At the beginning of the previous chapter we made several assumptions on the types of linear systems we were going to solve. While this restriction was a nontrivial one, in fact many if not most applications of linear solvers can be posed in terms of square, invertible linear systems. We explore a few contrasting applications below.
+3.1.1 Regression
+We will start with a simple application appearing in data analysis known as regression. Suppose that we carry out a scientific experiment and wish to understand the structure of our experimental results. One way to model such an relationship might be to write the independent variables of the experiment in some vector ~x ∈ Rn and to consider the dependent variable as a function f (~x) : Rn → R. Our goal is to predict the output of f without carrying out the full experiment.
+Example 3.1 (Biological experiment). Suppose we wish to measure the effect of fertilizer, sunlight, and water on plant growth. We might do a number of experiments applying different amounts of fertilizer (in cm3), sunlight (in watts), and water (in ml) and measuring the height of the plant after a few days. We might model our observations as a function f : R3 → R taking in the three parameters we wish to test and outputting the height of the plant.
+In parametric regression, we make a simplifying assumption on the structure of f . For example, suppose that f is linear:
+f (~x) = a1x1 + a2x2 + · · · + anxn.
+Then, our goal becomes more concrete: to estimate the coefficients ak.
+57
+
+
+Suppose we do a series of experiments that show ~x(k) 7→ y(k) ≡ f (~x(k)). By plugging into our form for f , we obtain a series of statements:
+y(1) = f (~x(1)) = a1x(1)
+1 + a2x(1)
+2 + · · · + anx(1)
+n
+y(2) = f (~x(2)) = a1x(2)
+1 + a2x(2)
+2 + · · · + anx(2)
+n
+...
+Notice that contrary to our notation A~x = ~b, the unknowns here are the ak’s, not the ~x variables. If we make n observations, we can write:
+
+   
+− ~x(1)> −
+− ~x(2)> −
+...
+− ~x(n)> −
+
+   
+
+   
+a1
+a...2
+an
+
+   
+=
+
+   
+y(1)
+y(2)
+...
+y(n)
+
+   
+In other words, if we carry out n trials of our experiment and write them in the columns of a matrix X ∈ Rn×n and write the dependent variables in a vector ~y ∈ Rn, the coefficients ~a can be recovered by solving X>~a = ~y. In fact, we can generalize our approach to other more interesting nonlinear forms for the function f . What matters here is that f is a linear combination of functions. In particular, suppose f (~x) takes the following form:
+f (~x) = a1 f1(~x) + a2 f2(~x) + · · · + am fm(~x),
+where fk : Rn → R and we wish to estimate the parameters ak. Then, by a parallel derivation
+given m observations of the form ~x(k) 7→ y(k) we can find the parameters by solving:
+
+   
+f1(~x(1)) f2(~x(1)) · · · fm(~x(1)) f1(~x(2)) f2(~x(2)) · · · fm(~x(2))
+... ... · · · ...
+f1(~x(m)) f2(~x(m)) · · · fm(~x(m))
+
+   
+
+   
+a1
+a...2
+am
+
+   
+=
+
+   
+y(1)
+y(2)
+...
+y(m)
+
+   
+That is, even if the f ’s are nonlinear, we can learn weights ak using purely linear techniques.
+Example 3.2 (Linear regression). The system X>~a = ~y can be recovered from the general formulation by taking fk(~x) ≡ xk.
+Example 3.3 (Polynomial regression). Suppose that we observe a function of a single variable f (x) and wish to write it as an n-th degree polynomial
+f (x) ≡ a0 + a1x + a2x2 + · · · + anxn.
+Given n pairs x(k) 7→ y(k), we can solve for the parameters ~a via the system
+
+   
+1 x(1) (x(1))2 · · · (x(1))n
+1 x(2) (x(2))2 · · · (x(2))n
+... ... ... · · · ...
+1 x(n) (x(n))2 · · · (x(n))n
+
+   
+
+   
+a0
+a...2
+an
+
+   
+=
+
+   
+y(1)
+y(2)
+...
+y(n)
+
+   
+.
+58
+
+
+In other words, we take fk(x) = xk in our general form above. Incidentally, the matrix on the left hand side of this relationship is known as a Vandermonde matrix, which has many special properties specific to its structure.
+Example 3.4 (Oscillation). Suppose we wish to find a and φ for a function f (x) = a cos(x + φ). Recall from trigonometry that we can write cos(x + φ) = cos x cos φ − sin x sin φ. Thus, given two sample points we can use the technique above to find f (x) = a1 cos x + a2 sin x, and applying this identity we can write
+a=
+√
+a21 + a22
+φ = − arctan a2
+a1
+This construction can be extended to finding f (x) = ∑k ak cos(x + φk), giving one way to motivate the discrete Fourier transform of f .
+3.1.2 Least Squares
+The techniques in §3.1.1 provide valuable methods for finding a continuous f matching a set of data pairs ~xk 7→ yk exactly. There are two related drawbacks to this approach:
+• There might be some error in measuring the values ~xk and yk. In this case, an approximate relationship f (~xk) ≈ yk may be acceptable or even preferable to an exact f (~xk) = yk.
+• Notice that if there were m functions fk total, then we needed exactly m observations ~xk 7→ yk. Additional observations would have to be thrown out, or we would have to change the form of f .
+Both of these issues related to the larger problem of over-fitting: Fitting a function with n degrees of freedom to n data points leaves no room for measurement error. More generally, suppose we wish to solve the linear system A~x = ~b for ~x. If we denote row k of A as~r>
+k , then our system looks like
+
+   
+b1
+b...2
+bn
+
+   
+=
+
+   
+− ~r>
+1−
+− ~r>
+2−
+... · · · ... − ~rn> −
+
+   
+
+   
+x1
+x...2
+xn
+
+   
+=
+
+   
+~r1 · ~x ~r2 · ~x
+...
+~rn · ~x
+
+   
+by definition of matrix multiplication.
+Thus, each row of the system corresponds to an observation of the form ~rk · ~x = bk. That is, yet another way to interpret the linear system A~x = ~b is as n statements of the form, “The dot product of ~x with~rk is bk.”
+From this viewpoint, a tall system A~x = ~b with A ∈ Rm×n and m > n simply encodes more than n of these dot product observations. When we make more than n observations, however, they may be incompatible; as explained §2.1, tall systems likely will not admit a solution. In our “experimental” setup explained above, this situation might correspond to errors in the measurement of the pairs ~xk 7→ yk. When we cannot solve A~x = ~b exactly, we might relax the problem a bit to approximate A~x ≈ ~b. In particular, we can ask that the residual ~b − A~x be as small as possible by minimizing the
+59
+
+
+norm ‖~b − A~x‖. Notice that if there is an exact solution to the linear system, then this norm is minimized at zero, since in this case we have ‖~b − A~x‖ = ‖~b −~b‖ = 0. Minimizing ‖~b − A~x‖ is the same as minimizing ‖~b − A~x‖2, which we expanded in Example 0.16 to:
+‖~b − A~x‖2 = ~x> A> A~x − 2~b> A~x + ‖~b‖2.1
+The gradient of this expression with respect to ~x must be zero at its minimum, yielding the following system:
+~0 = 2A> A~x − 2A>~b
+Or equivalently: A> A~x = A>~b.
+This famous relationship is worthy of a theorem:
+Theorem 3.1 (Normal equations). Minima of the residual ‖~b − A~x‖ for A ∈ Rm×n (with no restriction on m or n) satisfy A> A~x = A>~b.
+If at least n rows of A are linearly independent, then the matrix A> A ∈ Rn×n is invertible. In this case, the minimum residual occurs (uniquely) at (A> A)−1 A>~b, or equivalently, solving the least squares problem is as easy as solving the square linear system A> A~x = A>~b from Theorem 3.1. Thus, we have expanded our set of solution strategies to A ∈ Rm×n with m ≥ n by applying only techniques for square matrices. The underdetermined case m < n is considerably more difficult to deal with. In particular, we lose the possibility of a unique solution to A~x = ~b. In this case we must make an additional assumption on ~x to obtain a unique solution, e.g. that it has a small norm or that it contains many zeros. Each such regularizing assumption leads to a different solution strategy; we will explore a few in the exercises accompanying this chapter.
+3.1.3 Additional Examples
+An important skill is to be able to identify linear systems “in the wild.” Here we quickly enumerate a few more examples.
+Alignment
+Suppose we take two photographs of the same scene from different positions. One common task in computer vision and graphics is to stitch them together. To do so, the user (or an automatic system) may mark a number of points ~xk,~yk ∈ R2 such that ~xk in image one corresponds to ~yk in image two. Of course, likely mistakes were made while matching these points, so we wish to find a stable transformation between the two images by oversampling the number of necessary pairs (~x, ~y).
+Assuming our camera has a standard lens, camera projections are linear, so a reasonable assumption is that there exists some A ∈ R2×2 and a translation vector~b ∈ R2 such that
+~yk ≈ A~xk +~b.
+1It may be valuable to return to the preliminaries in Chapter 0 at this point for review.
+60
+
+
+Our unknown variables here are A and~b rather than ~xk and ~yk. In this case, we can find the transformation by solving:
+min
+A,~b
+p
+∑
+k=1
+‖(A~xk +~b) − ~yk‖2.
+This expression is once again a sum of squared linear expressions in our unknowns A and~b, and by a similar derivation to our discussion of the least-squares problem it can be solved linearly.
+Deconvolution
+Often times we accidentally take photographs that are somewhat out of focus. While a photo that is completely blurred may be a lost cause, if there is localized or small-scale blurring, we may be able to recover a sharper image using computational techniques. One simple strategy is deconvolution, explained below. We can think of a photograph as a point in Rp, where p is the number of pixels; of course, if the photo is in color we may need three values (RGB) per pixel, yielding a similar technique in R3p. Regardless, many simple image blurs are linear, e.g. Gaussian convolution or operations averaging pixels with their neighbors on the image. In image processing, these linear operations often have other special properties like shift-invariance, but for our purposes we can think of blurring as some linear operator ~x 7→ G ∗ ~x. Suppose we take a blurry photo ~x0 ∈ Rp. Then, we could try to recover the sharp image ~x ∈ Rp by solving the least-squares problem
+min
+~x∈Rp ‖~x0 − G ∗ ~x‖2.
+That is, we ask that when you blur ~x with G, you get the observed photo ~x0. Of course, many sharp images might yield the same blurred result under G, so we often add additional terms to the minimization above asking that ~x0 not vary wildly.
+3.2 Special Properties of Linear Systems
+Our discussion of Gaussian elimination and the LU factorization led to a completely generic method for solving linear systems of equations. While this strategy always works, sometimes we can gain speed or numerical advantages by examining the particular system we are solving. Here we discuss a few common examples where knowing more about the linear system can simplify solution strategies.
+3.2.1 Positive Definite Matrices and the Cholesky Factorization
+As shown in Theorem 3.1, solving a least-squares problem A~x ≈ ~b yields a solution ~x satisfying the square linear system (A> A)~x = A>~b. Regardless of A, the matrix A> A has a few special properties that make this system special. First, it is easy to see that A> A is symmetric, since
+(A> A)> = A>(A>)> = A> A.
+61
+
+
+Here, we simply used the identities (AB)> = B> A> and (A>)> = A. We can express this symmetry index-wise by writing (A> A)ij = (A> A)ji for all indices i, j. This property implies that it is sufficient to store only the values of A> A on or above the diagonal, since the rest of the elements can be obtained by symmetry. Furthermore, A> A is a positive semidefinite matrix, as defined below:
+Definition 3.1 (Positive (Semi-)Definite). A matrix B ∈ Rn×n is positive semidefinite if for all ~x ∈ Rn, ~x>B~x ≥ 0. B is positive definite if ~x>B~x > 0 whenever ~x 6= ~0.
+It is easy to show that A> A is positive semidefinite, since:
+~x> A> A~x = (A~x)>(A~x) = (A~x) · (A~x) = ‖A~x‖22 ≥ 0.
+In fact, if the columns of A are linearly independent, then A> A is positive definite. More generally, suppose we wish to solve a symmetric positive definite system C~x = d~. As we have already explored, we could LU-factorize the matrix C, but in fact we can do somewhat better. We write C ∈ Rn×n as a block matrix:
+C=
+( c11 ~v>
+~v C ̃
+)
+where ~v ∈ Rn−1 and C ̃ ∈ R(n−1)×(n−1). Thanks to the special structure of C, we can make the following observation:
+~e>
+1 C~e1 = ( 1 0 · · · 0 )
+( c11 ~v>
+~v C ̃
+)
+
+   
+1 0 ...
+0
+
+   
+=
+( 1 0 ··· 0 )
+( c11 ~v
+)
+= c11
+> 0 since C is positive definite and ~e1 6= ~0.
+This shows that–ignoring numerical issues– we do not have to use pivoting to ensure that c11 6= 0 for the first step Gaussian elimination. Continuing with Gaussian elimination, we can apply a forward substitution matrix E, which generically has the form
+E=
+( 1/√c11 ~0>
+~r I(n−1)×(n−1)
+)
+.
+Here, the vector~r ∈ Rn−1 contains the multiples of row 1 to cancel the rest of the first column of
+C. We also scale row 1 by 1/√c11 for reasons that will become apparent shortly! By design, after forward substitution we know the product
+EC =
+( √c11 ~v>/√c11 ~0 D
+)
+for some D ∈ R(n−1)×(n−1).
+62
+
+
+Here’s where we diverge from Gaussian elimination: rather than moving on to the second row, we can post-multiply by E> to obtain a product ECE>:
+ECE> = (EC)E>
+=
+( √c11 ~v>/√c11 ~0 D
+) ( 1/√c11 ~r>
+~0 I(n−1)×(n−1)
+)
+=
+( 1 ~0>
+~0 D ̃
+)
+That is, we have eliminated the first row and the first column of C! Furthermore, it is easy to check that the matrix D ̃ is also positive definite. We can repeat this process to eliminate all the rows and columns of C symmetrically. Notice that we used both symmetry and positive definiteness to derive the factorization, since
+• symmetry allowed us to apply the same E to both sides, and
+• positive definiteness guaranteed that c11 > 0, thus implying that √c11 exists.
+In the end, similar to LU factorization we now obtain a factorization C = LL> for a lower triangular matrix L. This is known as the Cholesky factorization of C. If taking the square roots along the diagonal causes numerical issues, a related LDL> factorization, where D is a diagonal matrix, avoids this issue and is straightforward to derive from the discussion above. The Cholesky factorization is important for a number of reasons. Most prominently, it takes half the memory to store L than the LU factorization of C or even C itself, since the elements above the diagonal are zero, and as in LU solving C~x = d~ is as easy as forward and back substitution. You will explore other properties of the factorization in the exercises. In the end, code for Cholesky factorization can be very succinct. To derive a particularly compact form, suppose we choose an arbitrary row k and write L in block form isolating that row:
+L=
+
+ 
+L11 ~0 0 ~`>
+k `kk ~0>
+L31 ~`′
+k L33
+
+ 
+Here, L11 and L33 are both lower triangular square matrices. Then, carrying out a product yields:
+LL> =
+
+ 
+L11 ~0 0 ~`>
+k `kk ~0>
+L31 ~`′
+k L33
+
+ 
+
+ 
+L>
+11 ~`k L>
+31
+~0> `kk (~`′
+k)>
+0 ~0 L>
+33
+
+ 
+=
+
+
+× ×× ~`>
+k L>
+11 ~`>
+k ~`k + `k2k × × ××
+
+
+We leave out values of the product that are not necessary for our derivation. In the end, we know we can write C = LL>. The middle element of the product shows:
+`kk =
+√
+ckk − ‖`k‖22
+63
+
+
+where~`k ∈ Rk−1 contains the elements of the k-th row of L to the left of the diagonal. Furthermore, the middle left element of the product shows
+L11~`k = ~ck
+where ~ck contains the elements of C in the same position as ~`k. Since L11 is lower triangular, this system can be solved by forward substitution! Notice that our discussion above yields an algorithm for computing the Cholesky factorization from top to bottom, since L11 will already be computed by the time we reach row k. We provide pseudocode below, adapted from CITE:
+// Takes as input an n-by -n matrix A[i,j] // Edits A in place to obtain the Cholesky factorization in its lower triangle
+for k from 1 to n {
+// Back -substitute to find l_k
+for i from 1 to k-1 { // element i of l_k sum = 0; for j from 1 to i-1 sum += A[i,j]*A[k,j]; A[k,i] = (A[k,i]-sum)/A[i,i]; }
+// Apply the formula for l_kk normSquared = 0 for j from 1 to i-1 normSquared += A[k,j]^2; A[k,k] = sqrt(A[k,k] - normSquared); }
+As with LU factorization, this algorithm clearly runs in O(n3) time.
+3.2.2 Sparsity
+Many linear systems of equations naturally enjoy sparsity properties, meaning that most of the entries of A in the system A~x = ~b are exactly zero. Sparsity can reflect particular structure in a given problem, including the following use cases:
+• In image processing, many systems for photo editing and understanding express relationships between the values of pixels and those of their neighbors on the image grid. An image may be a point in Rp for p pixels, but when solving A~x = ~b for a new size-p image, A ∈ Rp×p may have only O(p) rather than O(p2) nonzeros since each row only involves a single pixel and its up/down/left/right neighbors.
+• In machine learning, a graphical model uses a graph structure G ≡ (V, E) to express probability distributions over several variables. Each variable is represented using a node v ∈ V of the graph, and edge e ∈ E represents a probabilistic dependence. Linear systems arising in this context often have one row per vertex v ∈ V with nonzeros only in columns involving v and its neighbors.
+• In computational geometry, shapes are often expressed using collections of triangles linked together into a mesh. Equations for surface smoothing and other tasks once again link positions and other values at a given vertex with those at their neighbors in the mesh.
+64
+
+
+Example 3.5 (Harmonic parameterization). Suppose we wish to use an image to texture a triangle mesh. A mesh can be represented as a collection of vertices V ⊂ R3 linked together by edges E ⊆ V × V to form triangles. Since the vertices of the geometry are in R3, we must find a way to map them to the image plane to store the texture as an image. Thus, we must assign texture coordinates t(v) ∈ R2 on the image plane to each v ∈ V. See Figure NUMBER for an illustration. One strategy for making this map involves a single linear solve. Suppose the mesh has disk topology, that is, it can be mapped to the interior of a circle in the plane. For each vertex vb on the boundary of the mesh, we can specify the position of vb by placing it on a circle. In the interior, we can ask that the texture map position be the average of its neighboring positions:
+t(v) = 1
+|n(v)| ∑
+w∈n(v)
+t(w)
+Here, n(v) ⊆ V is the set of neighbors of v ∈ V on the mesh. Thus, each v ∈ V is associated with a linear equation, either fixing it on the boundary or asking that its position equal the average of its neighboring positions. This |V| × |V| system of equations leads to a stable parameterization strategy known as harmonic parameterization; the matrix of the system only has O(|V|) nonzeros in slots corresponding to vertices and their neighbors.
+Of course, if A ∈ Rn×n is sparse to the point that it contains O(n) rather than O(n2) nonzero values, there is no reason to store A as an n × n matrix. Instead, sparse matrix storage techniques only store the O(n) nonzeros in a more reasonable data structure, e.g. a list of row/column/value triplets. The choice of a matrix data structure involves considering the likely operations that will occur on the matrix, possibly including multiplication, iteration over nonzeros, or iterating over individual rows or columns. Unfortunately, it is easy to see that the LU factorization of a sparse A may not result in sparse L and U matrices; this loss of structure severely limits the applicability of using these methods to solve A~x = ~b when A is large but sparse. Thankfully, there are many direct sparse solvers adapting LU to sparse matrices that can produce an LU-like factorization without inducing much fill, or additional nonzeros; discussion of these techniques is outside the scope of this text. Alternatively, iterative techniques have been used to obtain approximate solutions to linear systems; we will defer discussion of these methods to future chapters. Certain matrices are not only sparse but also structured. For instance, a tridiagonal system of linear equations has the following pattern of nonzero values:
+
+    
+×× ××× ××× ××× ××
+
+    
+In the exercises following this chapter, you will derive a special version of Gaussian elimination for dealing with this this simple banded structure. In other cases, matrices may not be sparse but might admit a sparse representation. For example, consider the cyclic matrix:
+
+  
+abcd dabc cdab bcda
+
+  
+65
+
+
+Obviously, this matrix can be stored using only the values a, b, c, d. Specialized techniques for this and other classes of matrices are well-studied and often more efficient than generic Gaussian elimination.
+3.3 Sensitivity Analysis
+As we have seen, it is important to examine the matrix of a linear system to find out if it has special properties that can simplify the solution process. Sparsity, positive definiteness, symmetry, and so on all call can provide clues to the proper solver to use for a particular problem. Even if a given solution strategy might work in theory, however, it is equally important to understand how well we can trust the answer to a linear system given by a particular solver. For instance, due to rounding and other discrete effects, it might be the case that an implementation of Gaussian elimination for solving A~x = ~b yields a solution ~x0 such that 0 < ‖A~x0 −~b‖ 1; in other words, ~x0 only solves the system approximately. One way to understand the likelihood of these approximation effects is through sensitivity analysis. In this approach, we ask what might happen to ~x if instead of solving A~x = ~b in reality we solve a perturbed system of equations (A + δA)~x = ~b + δ~b. There are two ways of viewing conclusions made by this type of analysis:
+1. Likely we make mistakes representing A and ~b thanks to rounding and other effects. This analysis then shows the best possible accuracy we can expect for ~x given the mistakes made representing the problem.
+2. If our solver generates an approximation ~x0 to the solution of A~x = ~b, it is an exact solution to the system A~x0 = ~b0 if we define ~b0 ≡ A~x0 (be sure you understand why this sentence is not a tautology!). Understanding how changes in ~x0 affect changes in~b0 show how sensitive the system is to slightly incorrect answers.
+Notice that our discussion here is similar to and indeed motivated by our definitions of forward and backward error in previous chapters.
+3.3.1 Matrix and Vector Norms
+Before we can discuss the sensitivity of a linear system, we have to be somewhat careful to define what it means for a change δ~x to be “small.” Generally, we wish to measure the length, or norm, of a vector ~x. We have already encountered the two-norm of a vector:
+‖~x‖2 ≡
+√
+x12 + x22 + · · · + x2n
+for ~x ∈ Rn. This norm is popular thanks to its connection to Euclidean geometry, but it is by no means the only norm on Rn. Most generally, we define a norm as follows:
+Definition 3.2 (Vector norm). A vector norm is a function ‖ · ‖ : Rn → [0, ∞) satisfying the following conditions:
+• ‖~x‖ = 0 if and only if ~x = ~0.
+66
+
+
+• ‖c~x‖ = |c|‖~x‖ for all scalars c ∈ R and vectors ~x ∈ Rn.
+• ‖~x + ~y‖ ≤ ‖~x‖ + ‖~y‖ for all ~x,~y ∈ Rn.
+While we use the two subscript ‖ · ‖2 to denote the two-norm of a vector, unless we note otherwise we will use the notation ‖~x‖ to denote the two-norm of ~x. Other than this norm, there are many other examples:
+• The p-norm ‖~x‖p, for p ≥ 1, given by:
+‖~x‖p ≡ (|x1|p + |x2|p + · · · + |xn|p)1/p
+Of particular importance is the 1-norm or “taxicab” norm, given by
+‖~x‖1 ≡
+n
+∑
+k=1
+|xk|.
+This norm receives its nickname because it represents the distance a taxicab drives between two points in a city where the roads only run north/south and east/west.
+• The ∞-norm ‖~x‖∞ given by:
+‖~x‖∞ ≡ max(|x1|, |x2|, · · · , |xn|).
+In some sense, many norms on Rn are the same. In particular, suppose we say two norms are equivalent when they satisfy the following property:
+Definition 3.3 (Equivalent norms). Two norms ‖ · ‖ and ‖ · ‖′ are equivalent if there exist constants clow and chigh such that
+clow‖~x‖ ≤ ‖~x‖′ ≤ chigh‖~x‖
+for all ~x ∈ Rn.
+This condition guarantees that up to some constant factors, all norms agree on which vectors are “small” and “large.” In fact, we will state without proof a famous theorem from analysis:
+Theorem 3.2 (Equivalence of norms on Rn). All norms on Rn are equivalent.
+This somewhat surprising result implies that all vector norms have the same rough behavior, but the choice of a norm for analyzing or stating a particular problem can make a huge difference. For instance, on R3 the ∞-norm considers the vector (1000, 1000, 1000) to have the same norm as (1000, 0, 0) whereas the 2-norm certainly is affected by the additional nonzero values. Since we perturb not only vectors but also matrices, we must also be able to take the norm of a matrix. Of course, the basic definition of a norm does not change on Rn×m. For this reason, we can “unroll” any matrix in Rm×n to a vector in Rnm to adopt any vector norm to matrices. One such norm is the Frobenius norm, given by
+‖A‖Fro ≡
+√
+∑
+i,j
+ai2j.
+Such adaptations of vector norms, however, are not always very meaningful. In particular, the priority for understanding the structure of a matrix A often is its action on vectors, that is, the likely results when A is multiplied by an arbitrary ~x. With this motivation, we can define the norm induced by a vector norm as follows:
+67
+
+
+Definition 3.4 (Induced norm). The norm on Rm×n induced by a norm ‖ · ‖ on Rn is given by
+‖A‖ ≡ max{‖A~x‖ : ‖~x‖ = 1}.
+That is, the induced norm is the maximum length of the image of a unit vector multiplied by A.
+Since vector norms satisfy ‖c~x‖ = |c|‖~x‖, it is easy to see that this definition is equivalent to requiring
+‖A‖ ≡ max
+~x∈Rn \{0}
+‖ A~x‖
+‖~x‖ .
+From this standpoint, the norm of A induced by ‖ · ‖ is the largest achievable ratio of the norm of A~x relative to that of the input ~x. This general definition makes it somewhat hard to compute the norm ‖A‖ given a matrix A and a choice of ‖ · ‖. Fortunately, the matrix norms induced by many popular vector norms can be simplified. We state some such expressions without proof:
+• The induced one-norm of A is the maximum sum of any one column of A:
+‖A‖1 = max
+1≤j≤n
+m
+∑
+i=1
+|aij|
+• The induced ∞-norm of A is the maximum sum of any one row of A:
+‖A‖∞ = max
+1≤i≤m
+n
+∑
+j=1
+|aij|
+• The induced two-norm, or spectral norm, of A ∈ Rn×n is the square root of the largest eigenvalue of A> A. That is,
+‖A‖22 = max{λ : there exists ~x ∈ Rn with A> A~x = λ~x}
+At least the first two norms are relatively easy to compute; the third we will return to while discussing eigenvalue problems.
+3.3.2 Condition Numbers
+Now that we have tools for measuring the action of a matrix, we can define the condition number of a linear system by adapting our generic definition of condition numbers from Chapter 1. We follow the development presented in CITE. Suppose we perturbation δA of a matrix A and a corresponding perturbation δ~b. For each ε ≥ 0, ignoring invertibility technicalities we can write a vector ~x(ε) as the solution to
+(A + ε · δA)~x(ε) = ~b + ε · δ~b.
+If we differentiate both sides with respect to ε and apply the product rule, we obtain the following result:
+δA · ~x + (A + ε · δA) d~x
+dε
+= δ~b
+68
+
+
+In particular, when ε = 0 we find
+δA · ~x(0) + A d~x
+dε
+∣ ∣
+∣
+ε=0
+= δ~b
+or, equivalently,
+d~x
+dε
+∣ ∣
+∣
+ε=0
+= A−1(δ~b − δA · ~x(0)).
+Using the Taylor expansion, we can write
+~x(ε) = ~x + ε~x′(0) + O(ε2),
+where we define ~x′(0) = d~x
+dε
+∣ ∣
+ε=0. Thus, we can expand the relative error made by solving the
+perturbed system:
+‖~x(ε) − ~x(0)‖
+‖~x(0)‖ = ‖ε~x′(0) + O(ε2)‖
+‖~x(0)‖ by the Taylor expansion
+= ‖εA−1(δ~b − δA · ~x(0)) + O(ε2)‖
+‖~x(0)‖ by the derivative we computed
+≤ |ε|
+‖~x(0)‖ (‖A−1δ~b‖ + ‖A−1δA · ~x(0))‖) + O(ε2)
+by the triangle inequality ‖A + B‖ ≤ ‖A‖ + ‖B‖
+≤ |ε|‖A−1‖
+(
+‖δ~b‖
+‖~x(0)‖ + ‖δA‖
+)
++ O(ε2) by the identity ‖AB‖ ≤ ‖A‖‖B‖
+= |ε|‖A−1‖‖A‖
+(
+‖δ~b‖
+‖A‖‖~x(0)‖ + ‖δA‖
+‖A‖
+)
++ O(ε2)
+≤ |ε|‖A−1‖‖A‖
+(
+‖δ~b‖
+‖A~x(0)‖ + ‖δA‖
+‖A‖
+)
++ O(ε2) since ‖A~x(0)‖ ≤ ‖A‖‖~x(0)‖
+= |ε|‖A−1‖‖A‖
+(
+‖δ~b‖
+‖~b‖ + ‖δA‖
+‖A‖
+)
++ O(ε2) since ‖A~x(0)‖ ≤ ‖A‖‖~x(0)‖
+since by definition, A~x(0) = ~b
+Here we have applied some properties of the matrix norm which follow from corresponding properties for vectors. Notice that the sum D ≡ ‖δ~b‖/‖~b‖ + ‖δA‖/‖A‖ encodes the relative perturbations of A and ~b. From this standpoint, to first order we have bounded the relative error of perturbing the system by ε using a factor κ ≡ ‖A‖‖A−1‖:
+‖~x(ε) − ~x(0)‖
+‖~x(0)‖ ≤ ε · D · κ + O(ε2)
+In this way, the quantity κ bounds the conditioning of linear systems involving A. For this reason, we make the following definition:
+69
+
+
+Definition 3.5 (Matrix condition number). The condition number of A ∈ Rn×n for a given matrix norm ‖ · ‖ is
+cond A ≡ ‖A‖‖A−1‖.
+If A is not invertible, we take cond A ≡ ∞.
+It is easy to see that cond A ≥ 1 for all A, that scaling A has no effect on its condition number, and that the condition number of the identity matrix is 1. These properties contrast with the determinant, which can scale up and down as you scale A. If ‖ · ‖ is induced by a vector norm and A is invertible, then we have
+‖A−1‖ = max
+~x6=~0
+‖ A−1~x‖
+‖~x‖ by definition
+= max
+~y6=~0
+‖~y‖
+‖A~y‖ by substituting ~y = A−1~x
+=
+(
+min
+~y6=~0
+‖ A~y‖ ‖~y‖
+)−1
+by taking the reciprocal
+In this case, the condition number of A is given by:
+cond A =
+(
+max
+~x6=~0
+‖ A~x‖ ‖~x‖
+)(
+min
+~y6=~0
+‖ A~y‖ ‖~y‖
+)−1
+In other words, cond A measures the maximum to minimum possible stretch of a vector ~x under A.
+More generally, a desirable stability property of a system A~x = ~b is that if A or~b is perturbed, the solution ~x does not change considerably. Our motivation for cond A shows that when the condition number is small, the change in ~x is small relative to the change in A or ~b, as illustrated in Figure NUMBER. Otherwise, a small change in the parameters of the linear system can cause large deviations in ~x; this instability can cause linear solvers to make large mistakes in ~x due to rounding and other approximations during the solution process. The norm ‖A−1‖ can be as difficult as computing the full inverse A−1. One way to lowerbound the condition number is to apply the identity ‖A−1~x‖ ≤ ‖A−1‖‖~x‖. Thus, for any ~x 6= ~0 we can write ‖A−1‖ ≥ ‖A−1~x‖/‖~x‖. Thus,
+cond A = ‖A‖‖A−1‖ ≥ ‖A‖‖A−1~x‖
+‖~x‖ .
+So, we can bound the condition number by solving A−1~x for some vectors ~x; of course, the necessity of a linear solver to find A−1~x creates a circular dependence on the condition number to evaluate the quality of the estimate! When ‖ · ‖ is induced by the two-norm, in future chapters we will provide more reliable estimates.
+3.4 Problems
+Something like:
+70
+
+
+• Kernel regression as an example of §3.1.1
+• Least-norm solution to A~x = ~b, least squares matrix is invertible otherwise
+• Variational versions of Tikhonov regularization/“ridge” regression (not the usual approach to this, but whatever); completing the underdetermined story this way
+• L1 approaches to regularization for contrast – draw a picture of why to expect sparsity, draw unit circles, show that p norm isn’t a norm for p < 1, take limit as p → 0
+• Mini-Riesz – derive matrix for inner product, use to show how to rotate space
+• tridiagonal solve
+• properties of condition number
+71
+
+
+72
+
+
+Chapter 4
+Column Spaces and QR
+One way to interpret the linear problem A~x = ~b for ~x is that we wish to write ~b as a linear combination of the columns of A with weights given in ~x. This perspective does not change when we allow A ∈ Rm×n to be non-square, but the solution may not exist or be unique depending on the structure of the column space. For these reasons, some techniques for factoring matrices and analyzing linear systems seek simpler representations of the column space to disambiguate solvability and span more explicitly than row-based factorizations like LU.
+4.1 The Structure of the Normal Equations
+As we have shown, a necessary and sufficient condition for ~x to be a solution of the least-squares problem A~x ≈ ~b is that ~x satisfy the normal equations (A> A)~x = A>~b. This theorem suggests that solving least-squares is a simple enough extension of linear techniques. Methods such as Cholesky factorization also show that the special structure of least-squares problems can be used to the solver’s advantage. There is one large problem limiting the use of this approach, however. For now, suppose A is square; then we can write:
+cond A> A = ‖A> A‖‖(A> A)−1‖
+≈ ‖A>‖‖A‖‖A−1‖‖(A>)−1‖ depending on the choice of ‖ · ‖
+= ‖A‖2‖A−1‖2
+= (cond A)2
+That is, the condition number of A> A is approximately the square of the condition number of A! Thus, while generic linear strategies might work on A> A when the least-squares problem is “easy,” when the columns of A are nearly linearly dependent these strategies are likely to generate considerable error since they do not deal with A directly. Intuitively, a primary reason that cond A can be large is that columns of A might look “similar.” Think of each column of A as a vector in Rm. If two columns ~ai and ~aj satisfy ~ai ≈ ~aj, then the
+least-squares residual length ‖~b − A~x‖ probably would not suffer much if we replace multiples of ~ai with multiples of ~aj or vice versa. This wide range of nearly–but not completely–equivalent solutions yields poor conditioning. While the resulting vector ~x is unstable, however, the product
+73
+
+
+A~x remains nearly unchanged, by design of our substitution. Therefore, if we wish to solve A~x ≈ ~b simply to write~b in the column space of A, either solution would suffice. To solve such poorly-conditioned problems, we will employ an alternative strategy with closer attention to the column space of A rather than employing row operations as in Gaussian elimination. This way, we can identify such near-dependencies explicitly and deal with them in a numerically stable way.
+4.2 Orthogonality
+We have determined when the least-squares problem is difficult, but we might also ask when it is most straightforward. If we can reduce a system to the straightforward case without inducing conditioning problems along the way, we will have found a more stable way around the issues explained in §4.1. Obviously the easiest linear system to solve is In×n~x = ~b: The solution simply is ~x ≡ ~b! We are unlikely to enter this particular linear system into our solver explicitly, but we may do so accidentally while solving least-squares. In particular, even when A 6= In×n—in fact, A need not be a square matrix—we may in particularly lucky circumstances find that the normal matrix A> A satisfies A> A = In×n. To avoid confusion with the general case, we will use the letter Q to represent such a matrix. Simply praying that Q>Q = In×n unlikely will yield a desirable solution strategy, but we can examine this case to see how it becomes so favorable. Write the columns of Q as vectors ~q1, · · · ,~qn ∈ Rm. Then, it is easy to verify that the product Q>Q has the following structure:
+Q>Q =
+
+   
+− ~q>
+1−
+− ~q>
+2−
+...
+− ~qn>
+
+   
+
+
+|| | ~q1 ~q2 · · · ~qn || |
+
+=
+
+   
+~q1 · ~q1 ~q1 · ~q2 · · · ~q1 · ~qn ~q2 · ~q1 ~q2 · ~q2 · · · ~q2 · ~qn
+... ... · · · ...
+~qn · ~q1 ~qn · ~q2 · · · ~qn · ~qn
+
+   
+Setting the expression on the right equal to In×n yields the following relationship:
+~qi · ~qj =
+{ 1 when i = j 0 when i 6= j
+In other words, the columns of Q are unit-length and orthogonal to one another. We say that they form an orthonormal basis for the column space of Q:
+Definition 4.1 (Orthonormal; orthogonal matrix). A set of vectors {~v1, · · · ,~vk} is orthonormal if ‖~vi‖ = 1 for all i and ~vi · ~vj = 0 for all i 6= j. A square matrix whose columns are orthonormal is called an orthogonal matrix.
+We motivated our discussion by asking when we can expect Q>Q = In×n. Now it is easy to see that this occurs when the columns of Q are orthonormal. Furthermore, if Q is square and invertible with Q>Q = In×n, then simply by multiplying both sides of this expression by Q−1 we find Q−1 = Q>. Thus, solving Q~x = ~b in this case is as easy as multiplying both sides by the transpose Q>. Orthonormality also has a strong geometric interpretation. Recall from Chapter 0 that we can regard two orthogonal vectors ~a and ~b as being perpendicular. So, an orthonormal set of vectors
+74
+
+
+simply is a set of unit-length perpendicular vectors in Rn. If Q is orthogonal, then its action does not affect the length of vectors:
+‖Q~x‖2 = ~x>Q>Q~x = ~x> In×n~x = ~x · ~x = ‖~x‖2
+Similarly, Q cannot affect the angle between two vectors, since:
+(Q~x) · (Q~y) = ~x>Q>Q~y = ~x> In×n~y = ~x · ~y
+From this standpoint, if Q is orthogonal, then Q represents an isometry of Rn, that is, it preserves lengths and angles. In other words, it can rotate or reflect vectors but cannot scale or shear them. From a high level, the linear algebra of orthogonal matrices is easier because their action does not affect the geometry of the underlying space in any nontrivial way.
+4.2.1 Strategy for Non-Orthogonal Matrices
+Except in special circumstances, most of our matrices A when solving A~x = ~b or the corresponding least-squares problem will not be orthogonal, so the machinery of §4.2 does not apply directly. For this reason, we must do some additional computations to connect the general case to the orthogonal one. Take a matrix A ∈ Rm×n, and denote its column space as col A; recall that col A represents the span of the columns of A. Now, suppose a matrix B ∈ Rn×n is invertible. We can make a simple observation about the column space of AB relative to that of A:
+Lemma 4.1 (Column space invariance). For any A ∈ Rm×n and invertible B ∈ Rn×n,
+col A = col AB.
+Proof. Suppose ~b ∈ col A. Then, by definition of multiplication by A there exists ~x with A~x = ~b. Then, (AB) · (B−1~x) = A~x = ~b, so~b ∈ col AB. Conversely, take ~c ∈ col AB, so there exists ~y with (AB)~y = ~c. Then, A · (B~y) = ~c, showing that ~c is in col A.
+Recall the “elimination matrix” description of Gaussian elimination: We started with a matrix A and applied row operation matrices Ei such that the sequence A, E1 A, E2E1 A, . . . represented sequentially easier linear systems. The lemma above suggests an alternative strategy for situations in which we care about the column space: Apply column operations to A by post-multiplication until the columns are orthonormal. That is, we obtain a product Q = AE1E2 · · · Ek such that Q is orthonormal. As long as the Ei’s are invertible, the lemma shows that col Q = col A. Inverting
+these operations yields a factorization A = QR for R = E−1
+k E−1
+k−1 · · · E−1
+1. As in the LU factorization, if we design R carefully, the solution of least-squares problems A~x ≈ ~b may simplify. In particular, when A = QR, we can write the solution to A> A~x = A>~b as follows:
+~x = (A> A)−1 A>~b
+= (R>Q>QR)−1R>Q>~b since A = QR
+= (R>R)−1R>Q>~b since Q is orthogonal
+= R−1(R>)−1R>Q>~b since (AB)−1 = B−1 A−1
+= R−1Q>~b
+Or equivalently, R~x = Q>~b
+75
+
+
+Thus, if we design R to be a triangular matrix, then solving the linear system R~x = Q>~b is as simple as back-substitution. Our task for the remainder of the chapter is to design strategies for such a factorization.
+4.3 Gram-Schmidt Orthogonalization
+Our first approach for finding QR factorizations is the simplest to describe and implement but may suffer from numerical issues. We use it here as an initial strategy and then will improve upon it with better operations.
+4.3.1 Projections
+Suppose we have two vectors ~a and ~b. Then, we could easily ask “Which multiple of ~a is closest to ~b?” Mathematically, this task is equivalent to minimizing ‖c~a −~b‖2 over all possible c ∈ R. If we think of ~a and ~b as n × 1 matrices and c as a 1 × 1 matrix, then this is nothing more than an unconventional least-squares problem ~a · c ≈ ~b. In this case, the normal equations show ~a>~a · c = ~a>~b, or
+c = ~a ·~b
+~a ·~a = ~a ·~b
+‖~a‖2 .
+We denote this projection of~b onto ~a as:
+proj~a~b = c~a = ~a ·~b
+~a ·~a~a = ~a ·~b
+‖~a‖2~a
+Obviously proj~a~b is parallel to ~a. What about the remainder ~b − proj~a~b? We can do a simple computation to find out:
+~a · (~b − proj~a~b) = ~a ·~b −~a ·
+(
+~a ·~b
+‖~a‖2~a
+)
+= ~a ·~b − ~a ·~b
+‖~a‖2 (~a ·~a)
+= ~a ·~b −~a ·~b
+=0
+Thus, we have decomposed ~b into a component parallel to ~a and another component orthogonal to ~a. Now, suppose that aˆ1, aˆ2, · · · , aˆk are orthonormal; we will put hats over vectors with unit length. Then, for any single i we can see:
+projaˆi
+~b = (aˆi ·~b)aˆi
+76
+
+
+The norm term does not appear because ‖aˆi‖ = 1 by definition. We could project~b onto span {aˆ1, · · · , aˆk} by minimizing the following energy over c1, . . . , ck ∈ R:
+‖c1aˆ1 + c2aˆ2 + · · · + ckaˆk −~b‖2 =
+(k
+∑
+i=1
+k
+∑
+j=1
+cicj(aˆi · aˆj)
+)
+− 2~b ·
+(k
+∑
+i=1
+ci aˆ i
+)
++~b ·~b
+by applying ‖~v‖2 = ~v · ~v
+=
+k
+∑
+i=1
+(
+ci2 − 2ci~b · aˆi
+)
++ ‖~b‖2 since the aˆi’s are orthonormal
+Notice that the second step here is only valid because of orthonormality. At a minimum, the derivative with respect to ci is zero for every ci, yielding:
+ci = aˆi ·~b
+Thus, we have shown that when aˆ1, · · · , aˆk are orthonormal, the following relationship holds:
+projspan {aˆ1,··· ,aˆk}~b = (aˆ1 ·~b)aˆ1 + · · · + (aˆk ·~b)aˆk
+This is simply an extension of our projection formula, and by a similar proof it is easy to see that
+aˆi · (~b − projspan {aˆ1,··· ,aˆk}~b) = 0.
+That is, we have separated~b into a component parallel to the span of the aˆi’s and a perpendicular residual.
+4.3.2 Gram-Schmidt Orthogonalization
+Our observations above lead to a simple algorithm for orthogonalization, or finding an orthogonal basis {aˆ1, · · · , aˆk} whose span is the same as that of a set of linearly independent input vectors {~v1, · · · ,~vk}:
+1. Set
+aˆ1 ≡ ~v1
+‖~v1‖ .
+That is, we take aˆ1 to be a unit vector parallel to ~v1.
+2. For i from 2 to k,
+(a) Compute the projection
+~pi ≡ projspan {aˆ1,··· ,aˆi−1} ~vi.
+By definition aˆ1, · · · , aˆi−1 are orthonormal, so our formula above applies.
+(b) Define
+aˆi ≡ ~vi − ~pi
+‖~vi − ~pi‖ .
+77
+
+
+This technique, known as “Gram-Schmidt Orthogonalization,” is a straightforward application of our discussion above. The key to the proof of this technique is to notice that span {~v1, · · · ,~vi} = span {aˆ1, · · · , aˆi} for each i ∈ {1, · · · , k}. Step 1 clearly makes this the case for i = 1, and for i > 1 the definition of aˆi in step 2b simply removes the projection onto the vectors we already have seen. If we start with a matrix A whose columns are ~v1, · · · ,~vk, then we can implement GramSchmidt as a series of column operations on A. Dividing column i of A by its norm is equivalent to post-multiplying A by a k × k diagonal matrix. Similarly, subtracting off the projection of a column onto the orthonormal columns to its left as in step 2 is equivalent to post-multiplying by an upper-triangular matrix: Be sure to understand why this is the case! Thus, our discussion in §4.2.1 applies, and we can use Gram-Schmidt to obtain a factorization A = QR. Unfortunately, the Gram-Schmidt algorithm can introduce serious numerical instabilities due to the subtraction step. For instance, suppose we provide the vectors ~v1 = (1, 1) and ~v2 = (1 + ε, 1) as input to Gram-Schmidt for some 0 < ε 1. Notice that an obvious basis for span {~v1,~v2} is {(1, 0), (0, 1)}. But, if we apply Gram-Schmidt, we obtain:
+aˆ1 = ~v1
+‖~v1‖ = √12
+(1
+1
+)
+~p2 = 2 + ε
+2
+(1
+1
+)
+~v2 − ~p2 =
+( 1+ε 1
+)
+− 2+ε
+2
+(1
+1
+)
+=1
+2
+(
+ε −ε
+)
+Notice that ‖~v2 − ~p2‖ = (√2/2) · ε, so computing aˆ2 will require division by a scalar on the order of ε. Division by small numbers is an unstable numerical operation that we should avoid.
+4.4 Householder Transformations
+In §4.2.1, we motivated the construction of QR factorization by post-multiplication and column operations. This construction is reasonable in the context of analyzing column spaces, but as we saw in our derivation of the Gram-Schmidt algorithm, the resulting numerical techniques can be unstable. Rather than starting with A and post-multiplying by column operations to obtain Q = AE1 · · · Ek, however, we can preserve our high-level strategy from Gaussian elimination. That is, we can start with A and pre-multiply by orthogonal matrices Qi to obtain Qk · · · Q1 A = R; these Q’s will act like row operations, eliminating elements of A until the resulting product R is upper-triangular. Then, thanks to orthogonality of the Q’s we can write A = Q>
+1 · · · Q>
+k R, obtaining the QR factorization since the product of orthogonal matrices is orthogonal. The row operation matrices we used in Gaussian elimination and LU will not suffice for QR factorization since they are not orthogonal. A number of alternatives have been suggested; we will introduce one common strategy introduced in 1958 by Alston Scott Householder. The space of orthogonal n × n matrices is very large, so we must find a smaller space of Qi’s that is easier to work with. From our geometric discussions in §4.2, we know that orthogonal matrices must preserve angles and lengths, so intuitively they only can rotate and reflect vectors.
+78
+
+
+Thankfully, the reflections can be easy to write in terms of projections, as illustrated in Figure NUMBER. Suppose we have a vector ~b that we wish to reflect over a vector ~v. We have shown that the residual ~r ≡ ~b − proj~v~b is perpendicular to ~v. As in Figure NUMBER, the difference
+2proj~v~b −~b reflects~b over ~v. We can expand our reflection formula as follows:
+2proj~v~b −~b = 2~v ·~b
+~v · ~v~v −~b by definition of projection
+= 2~v · ~v>~b
+~v>~v −~b using matrix notation
+=
+( 2~v~v>
+~v>v − In×n
+)
+~b
+≡ −H~v~b where the negative is introduced to align with other treatments
+Thus, we can think of reflecting ~b over ~v as applying a linear operator −H~v to ~b! Of course, H~v without the negative is still orthogonal, so we will use it from now on. Suppose we are doing the first step of forward substitution during Gaussian elimination. Then, we wish to pre-multiply A by a matrix that takes the first column of A, which we will denote ~a, to some multiple of the first identity vector ~e1. In other words, we want for some c ∈ R:
+c~e1 = H~v~a
+=
+(
+In×n − 2~v~v>
+~v> v
+)
+~a
+= ~a − 2~v~v>~a
+~v> v
+Moving terms around shows
+~v = (~a − c~e1) · ~v>~v
+2~v>~a
+In other words, ~v must be parallel to the difference ~a − c~e1. In fact, scaling ~v does not affect the formula for H~v, so we can choose ~v = ~a − c~e1. Then, for our relationship to hold we must have
+1 = ~v>~v
+2~v>~a
+= ‖~a‖2 − 2c~e1 · a + c2
+2(~a ·~a − c~e1 ·~a)
+Or, 0 = ‖~a‖2 − c2 =⇒ c = ±‖~a‖
+With this choice of c, we have shown:
+H~v A =
+
+   
+c××× 0×××
+... ... ... ...
+0×××
+
+   
+79
+
+
+We have just accomplished a step akin to forward elimination using only orthogonal matrices! Proceeding, in the notation of CITE during the k-th step of triangularization we have a vector ~a that we can split into two components:
+~a =
+( ~a1 ~a2
+)
+Here, ~a1 ∈ Rk and ~a2 ∈ Rm−k. We wish to find ~v such that
+H~v~a =
+
+   
+~a1 0 ...
+0
+
+   
+Following a parallel derivation to the one above, it is easy to show that
+~v =
+( ~0
+~a2
+)
+− c~ek
+accomplishes exactly this transformation when c = ±‖~a2‖; we usually choose the sign of c to avoid cancellation by making it have sign opposite to that of the k-th value in ~a. The algorithm for Householder QR is thus fairly straightforward. For each column of A, we compute ~v annihilating the bottom elements of the column and apply H~v to A. The end result is an upper triangular matrix R = H~vn · · · H~v1 A. The orthogonal matrix Q is given by the product
+H>
+~v1 · · · H>
+~vn, which can be stored implicitly as a list of vectors ~v, which fits in the lower triangle as
+shown above.
+4.5 Reduced QR Factorization
+We conclude our discussion by returning to the most general case A~x ≈ ~b when A ∈ Rm×n is not square. Notice that both algorithms we have discussed in this chapter can factor non-square matrices A into products QR, but the output is somewhat different:
+• When applying Gram-Schmidt, we do column operations on A to obtain Q by orthogonalization. For this reason, the dimension of A is that of Q, yielding Q ∈ Rm×n and R ∈ Rn×n.
+• When using Householder reflections, we obtain Q as the product of a number of m × m reflection matrices, leaving R ∈ Rm×n.
+Suppose we are in the typical case for least-squares, for which m n. We still prefer to use the Householder method due to its numerical stability, but now the m × m matrix Q might be too large to store! Thankfully, we know that R is upper triangular. For instance, consider the structure of a 5 × 3 matrix R:
+R=
+
+    
+××× 0 ×× 0 0× 000 000
+
+    
+80
+
+
+It is easy to see that anything below the upper n × n square of R must be zero, yielding a simplification:
+A = QR = ( Q1 Q2
+)
+( R1 0
+)
+= Q1R1
+Here, Q1 ∈ Rm×n and R1 ∈ Rn×n still contains the upper triangle of R. This is called the “reduced” QR factorization of A, since the columns of Q1 contain a basis for the column space of A rather than for all of Rm; it takes up far less space. Notice that the discussion in §4.2.1 still applies, so the reduced QR factorization can be used for least-squares in a similar fashion.
+4.6 Problems
+• tridiagonalization with Householder
+• Givens
+• Underdetermined QR
+81
+
+
+82
+
+
+Chapter 5
+Eigenvectors
+We turn our attention now to a nonlinear problem about matrices: Finding their eigenvalues and eigenvectors. Eigenvectors ~x and their corresponding eigenvalues λ of a square matrix A are determined by the equation A~x = λ~x. There are many ways to see that this problem is nonlinear. For instance, there is a product of unknowns λ and ~x, and to avoid the trivial solution ~x = ~0 we constrain ‖~x‖ = 1; this constraint is circular rather than linear. Thanks to this structure, our methods for finding eigenspaces will be considerably different from techniques for solving and analyzing linear systems of equations.
+5.1 Motivation
+Despite the arbitrary-looking form of the equation A~x = λ~x, the problem of finding eigenvectors and eigenvalues arises naturally in many circumstances. We motivate our discussion with a few examples below.
+5.1.1 Statistics
+Suppose we have machinery for collecting several statistical observations about a collection of items. For instance, in a medical study we may collect the age, weight, blood pressure, and heart rate of 100 patients. Then, each patient i can be represented by a point ~xi in R4 storing these four values. Of course, such statistics may exhibit strong correlation. For instance, patients with higher blood pressure may be likely to have higher weights or heart rates. For this reason, although we collected our data in R4, in reality it may—to some approximate degree—live in a lowerdimensional space better capturing the relationships between the different variables. For now, suppose that in fact there exists a one-dimensional space approximating our dataset. Then, we expect all the data points to be nearly parallel to some vector ~v, so that each can be written as ~xi ≈ ci~v for different ci ∈ R. From before, we know that the best approximation of ~xi parallel to ~v is proj~v ~xi:
+proj~v ~xi = ~xi · ~v
+~v · ~v ~v by definition
+= (~xi · vˆ)vˆ since ~v · ~v = ‖~v‖2
+83
+
+
+Here, we define vˆ ≡ ~v/‖~v‖. Of course, the magnitude of ~v does not matter for the problem at hand, so it is reasonable to search over the space of unit vectors vˆ. Following the pattern of least squares, we have a new optimization problem:
+minimize ∑
+i
+‖~xi − projvˆ ~xi‖2
+such that ‖vˆ‖ = 1
+We can simplify our optimization objective a bit:
+∑
+i
+‖~xi − projvˆ ~xi‖2 = ∑
+i
+‖~xi − (~xi · vˆ)vˆ‖2 by definition of projection
+=∑
+i
+(‖~xi‖2 − (~xi · vˆ)2) since ‖vˆ‖ = 1 and ‖~w‖2 = ~w · ~w
+= const. − ∑
+i
+(~xi · vˆ)2
+This derivation shows that we can solve an equivalent optimization problem:
+maximize ‖X>vˆ‖2
+such that ‖vˆ‖2 = 1,
+where the columns of X are the vectors ~xi. Notice that ‖X>vˆ‖2 = vˆ>XX>vˆ, so by Example 0.27
+the vector vˆ corresponds to the eigenvector of XX> with the highest eigenvalue. The vector vˆ is known as the first principal component of the dataset.
+5.1.2 Differential Equations
+Many physical forces can be written as functions of position. For instance, the force between two particles at positions ~x and ~y in R3 exerted by a spring can be written as k(~x − ~y) by Hooke’s Law; such spring forces are used to approximate forces holding cloth together in many simulation systems. Although these forces are not necessarily linear in position, we often approximate them in a linear fashion. In particular, in a physical system with n particles encode the positions of all the particles simultaneously in a vector ~X ∈ R3n. Then, if we assume such an approximation we can write that the forces in the system are approximately ~F ≈ A~X for some matrix A. Recall Newton’s second law of motion F = ma, or force equals mass times acceleration. In our context, we can write a diagonal mass matrix M ∈ R3n×3n containing the mass of each particle in the system. Then, we know ~F = M~X′′, where prime denotes differentiation in time. Of course, ~X′′ = (~X′)′, so in the end we have a first-order system of equations:
+d dt
+( ~X
+~V
+)
+=
+( 0 I3n×3n
+M−1 A 0
+) ( ~X
+~V
+)
+Here, we simultaneously compute both positions in ~X ∈ R3n and velocities ~V ∈ R3n of all n particles as functions of time. More generally, differential equations of the form ~x′ = A~x appear in many contexts, including simulation of cloth, springs, heat, waves, and other phenomena. Suppose we know eigenvectors
+84
+
+
+~x1, . . . , ~xk of A, such that A~xi = λi~xi. If we write the initial condition of the differential equation in terms of the eigenvectors, as
+~x(0) = c1~x1 + · · · + ck~xk,
+then the solution to the equation can be written in closed form:
+~x(t) = c1eλ1t~x1 + · · · + ckeλkt~xk,
+This solution is easy to check by hand. That is, if we write the initial conditions of this differential equation in terms of the eigenvectors of A, then we know its solution for all times t ≥ 0 for free. Of course, this formula is not the end of the story for simulation: Finding the complete set of eigenvectors of A is expensive, and A may change over time.
+5.2 Spectral Embedding
+Suppose we have a collection of n items in a dataset and a measure wij ≥ 0 of how similar each pair of elements i and j are; we will assume wij = wji. For instance, maybe we are given a collection of photographs and use wij to compare the similarity of their color distributions. We might wish to sort the photographs based on their similarity to simplify viewing and exploring the collection. One model for ordering the collection might be to assign a number xi for each item i, asking that similar objects are assigned similar numbers. We can measure how well an assignment groups similar objects by using the energy
+E(~x) = ∑
+ij
+wij(xi − xj)2.
+That is, E(~x) asks that items i and j with high similarity scores wij get mapped to nearby values. Of course, minimizing E(~x) with no constraints gives an obvious minimum: xi = const. for all i. Adding a constraint ‖~x‖ = 1 does not remove this constant solution! In particular, taking
+xi = 1/√n for all i gives ‖~x‖ = 1 and E(~x) = 0 in an uninteresting way. Thus, we must remove this case as well:
+minimize E(~x)
+such that ‖~x‖2 = 1
+~1 · ~x = 0
+Notice that our second constraint asks that the sum of ~x is zero. Once again we can simplify the energy:
+E(~x) = ∑
+ij
+wij(xi − xj)2
+=∑
+ij
+wij(xi2 − 2xi xj + xj2)
+=∑
+i
+aixi2 − 2 ∑
+ij
+wijxixj + ∑
+j
+bj xj2
+for ai ≡ ∑
+j
+wij and bj ≡ ∑
+i
+wij
+= ~x>(A − 2W + B)~x where diag(A) = ~a and diag(B) = ~b
+= ~x>(2A − 2W)~x by symmetry of W
+85
+
+
+It is easy to check that ~1 is an eigenvector of 2A − 2W with eigenvalue 0. More interestingly, the eigenvector corresponding to the second-smallest eigenvalue corresponds to the solution of our minimization objective above! (TODO: Add KKT proof from lecture)
+5.3 Properties of Eigenvectors
+We have established a variety of applications in need of eigenspace computation. Before we can explore algorithms for this purpose, however, we will more closely examine the structure of the eigenvalue problem. We can begin with a few definitions that likely are evident at this point:
+Definition 5.1 (Eigenvalue and eigenvector). An eigenvector ~x 6= ~0 of a matrix A ∈ Rn×n is any vector satisfying A~x = λ~x for some λ ∈ R; the corresponding λ is known as an eigenvalue. Complex eigenvalues and eigenvectors satisfy the same relationships with λ ∈ C and ~x ∈ Cn.
+Definition 5.2 (Spectrum and spectral radius). The spectrum of A is the set of eigenvalues of A. The spectral radius ρ(A) is the eigenvalue λ maximizing |λ|.
+The scale of an eigenvector is not important. In particular, scaling an eigenvector ~x by c yields A(c~x) = cA~x = cλ~x = λ(c~x), so c~x is an eigenvector with the same eigenvalue. We often restrict our search by adding a constraint ‖~x‖ = 1. Even this constraint does not completely relieve ambiguity, since now ±~x are both eigenvectors with the same eigenvalue. The algebraic properties of eigenvectors and eigenvalues easily could fill a book. We will limit our discussion to a few important theorems that affect the design of numerical algorithms; we will follow development of CITE AXLER. First, we should check that every matrix has at least one eigenvector so that our search is not in vain. Our usual strategy is to notice that if λ is an eigenvalue such that A~x = λ~x, then (A − λIn×n)~x = ~0; thus, λ is an eigenvalue exactly when the matrix A − λIn×n is not full-rank.
+Lemma 5.1 (CITE Theorem 2.1). Every matrix A ∈ Rn×n has at least one (complex) eigenvector.
+Proof. Take any vector ~x ∈ Rn\{~0}. The set {~x, A~x, A2~x, · · · , An~x} must be linearly dependent because it contains n + 1 vectors in n dimensions. So, there exist constants c0, . . . , cn ∈ R with cn 6= 0 such that
+~0 = c0~x + c1 A~x + · · · + cn An~x.
+We can write down a polynomial
+f (z) = c0 + c1z + · · · + cnzn.
+By the Fundamental Theorem of Algebra, there exist n roots zi ∈ C such that
+f (z) = cn(z − z1)(z − z2) · · · (z − zn).
+Then, we have:
+~0 = c0~x + c1 A~x + · · · + cn An~x
+= (c0 In×n + c1 A + · · · + cn An)~x
+= cn(A − z1 In×n) · · · (A − zn In×n)~x by our factorization
+Thus, at least one A − zi In×n has a null space, showing that there exists ~v with A~v = zi~v, as needed.
+86
+
+
+There is one additional fact worth checking to motivate our discussion of eigenvector computation:
+Lemma 5.2 (CITE Proposition 2.2). Eigenvectors corresponding to different eigenvalues must be linearly independent.
+Proof. Suppose this is not the case. Then there exist eigenvectors ~x1, · · · , ~xk with distinct eigenvalues λ1, · · · , λk that are linearly dependent. This implies that there are coefficients c1, . . . , ck not all
+zero with~0 = c1~x1 + · · · + ck~xk. If we premultiply by the matrix (A − λ2 In×n) · · · (A − λk In×n), we find:
+~0 = (A − λ2 In×n) · · · (A − λk In×n)(c1~x1 + · · · + ck~xk)
+= c1(λ1 − λ2) · · · (λ1 − λk)~x1 since A~xi = λi~xi
+Since all the λi’s are distinct, this shows c1 = 0. A similar proof shows that the rest of the ci’s have to be zero, contradicting linear dependence.
+This lemma shows that an n × n matrix can have at most n distinct eigenvalues, since a set of n eigenvalues yields n linearly independent vectors. The maximum number of linearly independent eigenvectors corresponding to a single eigenvalue λ is known as the geometric multiplicity of λ. It is not true, however, that a matrix has to have exactly n linearly independent eigenvectors. This is the case for many matrices, which we will call nondefective:
+Definition 5.3 (Nondefective). A matrix A ∈ Rn×n is nondefective or diagonalizable if its eigenvectors span Rn.
+We call such a matrix diagonalizable for the following reason: If a matrix is diagonalizable, then it has n eigenvectors ~x1, . . . , ~xn ∈ Rn with corresponding (possibly non-unique) eigenvalues λ1, . . . , λn. Take the columns of X to be the vectors ~xi, and define D to be the diagonal matrix with eigenvalues λ1, . . . , λn along the diagonal. Then, by definition of eigenvalues we have AX = XD; this is simply a “stacked” version of A~xi = λi~xi. In other words,
+D = X−1 AX,
+meaning A is diagonalized by a similarity transformation A 7→ X−1 AX :
+Definition 5.4 (Similar matrices). Two matrices A and B are similar if there exists T with B = T−1 AT.
+Similar matrices have the same eigenvalues, since if B~x = λx, then T−1 AT~x = λ~x. Equivalently, A(T~x) = λ(T~x), showing T~x is an eigenvector with eigenvalue λ.
+5.3.1 Symmetric and Positive Definite Matrices
+Unsurprisingly given our special consideration of normal matrices A> A, symmetric and/or positive definite matrices enjoy special eigenvector structure. If we can verify either of these properties, specialized algorithms can be used to extract their eigenvectors more quickly. First, we can prove a property of symmetric matrices that obliterates the need for complex arithmetic. We begin by making a generalization of symmetric matrices to matrices in Cn×n:
+Definition 5.5 (Complex conjugate). The complex conjugate of a number z ≡ a + bi ∈ C is z ̄ ≡ a − bi.
+87
+
+
+Definition 5.6 (Conjugate transpose). The conjugate transpose of A ∈ Cm×n is AH ≡ A ̄ >.
+Definition 5.7 (Hermitian matrix). A matrix A ∈ Cn×n is Hermitian if A = AH.
+Notice that a symmetric matrix A ∈ Rn×n is automatically Hermitian because it has no complex part. With this slight generalization in place, we can prove a symmetry property for eigenvalues. Our proof will make use of the dot product of vectors in Cn, given by
+〈~x,~y〉 = ∑
+i
+xi y ̄i ,
+where ~x,~y ∈ Cn. Notice that once again this definition coincides with ~x · ~y when ~x,~y ∈ Rn. For the most part, properties of this inner product coincide with those of the dot product on Rn, a notable exception being that 〈~v, ~w〉 = 〈~w,~v〉.
+Lemma 5.3. All eigenvalues of Hermitian matrices are real.
+Proof. Suppose A ∈ Cn×n is Hermitian with A~x = λ~x. By scaling we can assume ‖~x‖2 = 〈~x, ~x〉 = 1. Then, we have:
+λ = λ〈~x, ~x〉 since ~x has norm 1
+= 〈λ~x, ~x〉 by linearity of 〈·, ·〉
+= 〈A~x, ~x〉 since A~x = λ~x
+= (A~x)>~x ̄ by definition of 〈·, ·〉
+= ~x>(A ̄ >~x) by expanding the product and using ab = a ̄  ̄b
+= 〈~x, AH~x〉 by definition of AH and 〈·, ·〉
+= 〈~x, A~x〉 since A = AH
+=  ̄λ〈~x, ~x〉 since A~x = λ~x
+=  ̄λ since ~x has norm 1
+Thus λ =  ̄λ, which can happen only if λ ∈ R, as needed.
+Symmetric and Hermitian matrices also enjoy a special orthogonality property for their eigenvectors:
+Lemma 5.4. Eigenvectors corresponding to distinct eigenvalues of Hermitian matrices must be orthogonal.
+Proof. Suppose A ∈ Cn×n is Hermitian, and suppose λ 6= μ with A~x = λ~x and A~y = μ~y. By the previous lemma we know λ, μ ∈ R. Then, 〈A~x,~y〉 = λ〈~x,~y〉. But since A is Hermitian we can also write 〈A~x,~y〉 = 〈~x, AH~y〉 = 〈~x, A~y〉 = μ〈~x,~y〉. Thus, λ〈~x,~y〉 = μ〈~x,~y〉. Since λ 6= μ, we must have 〈~x,~y〉 = 0.
+Finally, we can state without proof a crowning result of linear algebra, the Spectral Theorem. This theorem states that no symmetric or Hermitian matrix can be defective, meaning that an n × n matrix satisfying this property has exactly n orthogonal eigenvectors.
+Theorem 5.1 (Spectral Theorem). Suppose A ∈ Cn×n is Hermitian (if A ∈ Rn×n, suppose it is symmetric). Then, A has exactly n orthonormal eigenvectors ~x1, · · · , ~xn with (possibly repeated) eigenvalues λ1, . . . , λn . In other words, there exists an orthonormal matrix X of eigenvectors and diagonal matrix D of
+eigenvalues such that D = X> AX.
+88
+
+
+This theorem implies that any vector ~y ∈ Rn can be decomposed into a linear combination of the eigenvectors of a Hermitian matrix A. Many calculations are easier in this basis, as shown below:
+Example 5.1 (Computation using eigenvectors). Take ~x1, . . . , ~xn ∈ Rn to be the unit-length eigenvectors of symmetric matrix A ∈ Rn×n. Suppose we wish to solve A~y = ~b. We can write
+~b = c1~x1 + · · · + cn~xn,
+where ci = ~b · ~xi by orthonormality. It is easy to guess the following solution:
+~y = c1
+λ1
+~x1 + · · · + cn
+λn
+~xn.
+In particular, we find:
+A~y = A
+( c1
+λ1
+~x1 + · · · + cn
+λn
+~xn
+)
+= c1
+λ1
+A~x1 + · · · + cn
+λn
+A~xn
+= c1~x1 + · · · + cn~xn
+= ~b, as desired.
+The calculation above is both a positive and negative result. It shows that given the eigenvectors of symmetric A, operations like inversion are straightforward. On the flip side, this means that finding the full set of eigenvectors of a symmetric matrix A is “at least” as difficult as solving A~x = ~b.
+Returning from our foray into the complex numbers, we return to real numbers to prove one final useful if straightforward fact about positive definite matrices:
+Lemma 5.5. All eigenvalues of positive definite matrices are nonnegative.
+Proof. Take A ∈ Rn×n positive definite, and suppose A~x = λ~x with ‖~x‖ = 1. By positive definiteness, we know ~x> A~x ≥ 0. But, ~x> A~x = ~x>(λ~x) = λ‖~x‖2 = λ, as needed.
+5.3.2 Specialized Properties1
+Characteristic Polynomial
+Recall that the determinant of a matrix det A satisfies the relationship that det A 6= 0 if and only if A is invertible. Thus, one way to find eigenvalues of a matrix is to find roots of the characteristic polynomial pA(λ) = det(A − λIn×n).
+We will not define determinants in our discussion here, but simplifying pA reveals that it is an n-th degree polynomial in λ. This provides an alternative reason why there are at most n distinct eigenvalues, since there are at most n roots of this function. From this construction, we can define the algebraic multiplicity of an eigenvalue as its multiplicity as a root of pA. It is easy to see that the algebraic multiplicity is at least as large as the geometric
+1This section can be skipped if readers lack sufficient background but is included for completeness.
+89
+
+
+multiplicity. If the algebraic multiplicity is 1, the root is called simple, because it corresponds to a single eigenvector that is linearly dependent with any others. Eigenvalues for which the algebraic and geometric multiplicities are not equal are called defective. In numerical analysis we avoid discussing the determinant of a matrix. While it is a convenient theoretical construction, its practical use is limited. Determinants are difficult to compute. In fact, eigenvalue algorithms do not attempt to find roots of pA since doing so would require evaluation of a determinant. Furthermore, the determinant det A has nothing to do with the conditioning of A, so near-zero determinant of det(A − λIn×n) might not show that λ is nearly an eigenvalue of A.
+Jordan Normal Form
+We can only diagonalize a matrix when it has a full eigenspace. All matrices, however, are similar to a matrix in Jordan normal form, which has the following form:
+• Nonzero values are on the diagonal entries aii and on the “superdiagonal” ai(i+1).
+• Diagonal values are eigenvalues repeated as many times as their multiplicity; the matrix is block diagonal about these clusters.
+• Off-diagonal values are 1 or 0.
+Thus, the shape looks something like the following
+
+         
+λ1 1
+λ1 1
+λ1 λ2 1
+λ2
+λ3
+...
+
+         
+Jordan normal form is attractive theoretically because it always exists, but the 1/0 structure is discrete and unstable under numerical perturbation.
+5.4 Computing Eigenvalues
+The computation and estimation of the eigenvalues of a matrix is a well-studied problem with many potential solutions. Each solution is tuned for a different situation, and achieving maximum conditioning or speed requires experimentation with several techniques. Here, we cover a few of the most popular and straightforward solutions to the eigenvalue problem frequently encountered in practice.
+5.4.1 Power Iteration
+For now, suppose that A ∈ Rn×n is symmetric. Then, by the spectral theorem we can write eigenvectors ~x1, . . . , ~xn ∈ Rn; we sort them such that their corresponding eigenvalues satisfy |λ1| ≥ |λ2| ≥ · · · ≥ |λn|.
+90
+
+
+Suppose we take an arbitrary vector ~v. Since the eigenvectors of A span Rn, we can write:
+~v = c1~x1 + · · · + cn~xn.
+Then,
+A~v = c1 A~x1 + · · · + cn A~xn
+= c1λ1~x1 + · · · + cnλn~xn since A~xi = λi~xi
+= λ1
+(
+c1~x1 + λ2
+λ1
+c2~x2 + · · · + λn
+λ1
+cn~xn
+)
+A2~v = λ21
+(
+c1~x1 +
+(
+λ2
+λ1
+)2
+c2~x2 + · · · +
+(
+λn
+λ1
+)2
+cn~xn
+)
+...
+Ak~v = λk1
+(
+c1~x1 +
+(
+λ2
+λ1
+)k
+c2~x2 + · · · +
+(
+λn
+λ1
+)k
+cn~xn
+)
+Notice that as k → ∞, the ratio (λi/λ1)k → 0 unless λi = λ1, since λ1 has the largest magnitude of any eigenvalue by definition. Thus, if ~x is the projection of ~v onto the space of eigenvectors with eigenvalues λ1, then as k → ∞ the following approximation holds more and more exactly:
+Ak~v ≈ λk1~x.
+This observation leads to an exceedingly simple algorithm for computing an eigenvector ~x of A corresponding to the largest eigenvalue λ1:
+1. Take ~v1 ∈ Rn to be an arbitrary nonzero vector.
+2. Iterate until convergence for increasing k:
+~vk = A~vk−1
+This algorithm, known as power iteration, will produce vectors ~vk more and more parallel to the desired ~x1. It is guaranteed to converge, even when A is asymmetric, although the proof of this fact is more involved than the derivation above. The one time that this technique may fail is if we accidentally choose ~v1 such that c1 = 0, but the odds of this occurring are slim to none. Of course , if |λ1| > 1, then ‖~vk‖ → ∞ as k → ∞, an undesirable property for floating point arithmetic. Recall that we only care about the direction of the eigenvector rather than its magnitude, so scaling has no effect on the quality of our solution. Thus, to avoid this divergence situation we can simply normalize at each step, producing the normalized power iteration algorithm:
+1. Take ~v1 ∈ Rn to be an arbitrary nonzero vector.
+2. Iterate until convergence for increasing k:
+~wk = A~vk−1
+~vk = ~wk
+‖ ~wk ‖
+91
+
+
+Notice that we did not decorate the norm ‖ · ‖ with a particular subscript. Mathematically, any norm will suffice for preventing the divergence issue, since we have shown that all norms on Rn are equivalent. In practice, we often use the infinity norm ‖ · ‖∞; in this case it is easy to check that ‖~wk‖ → |λ1|.
+5.4.2 Inverse Iteration
+We now have a strategy for finding the largest-magnitude eigenvalue λ1. Suppose A is invertible,
+so that we can evaluate ~y = A−1~v by solving A~y = ~v using techniques covered in previous chapters. If A~x = λ~x, then ~x = λA−1~x, or equivalently
+A−1~x = 1
+λ
+~x.
+Thus, we have shown that 1/λ is an eigenvalue of A−1 with eigenvector ~x. Notice that if |a| ≥ |b| then |b|−1 ≥ |a|−1 for any a, b ∈ R, so the smallest-magnitude eigenvalue of A is the largestmagnitude eigenvector of A−1. This observation yields a strategy for finding λn rather than λ1 called inverse power iteration:
+1. Take ~v1 ∈ Rn to be an arbitrary nonzero vector.
+2. Iterate until convergence for increasing k:
+(a) Solve for ~wk: A~wk = ~vk−1
+(b) Normalize: ~vk = ~wk
+‖ ~wk ‖
+We repeatedly are solving systems of equations using the same matrix A, which is a perfect application of factorization techniques from previous chapters. For instance, if we write A = LU, then we could formulate an equivalent but considerably more efficient version of inverse power iteration:
+1. Factor A = LU
+2. Take ~v1 ∈ Rn to be an arbitrary nonzero vector.
+3. Iterate until convergence for increasing k:
+(a) Solve for ~yk by forward substitution: L~yk = ~vk−1
+(b) Solve for ~wk by back substitution: U~wk = ~yk
+(c) Normalize: ~vk = ~wk
+‖ ~wk ‖
+5.4.3 Shifting
+Suppose λ2 is the eigenvalue with second-largest magnitude of A. Given our original derivation of power iteration, it is easy to see that power iteration converges fastest when |λ2/λ1| is small, since in this case the power (λ2/λ1)k decays quickly. Contrastingly, if this ratio is nearly 1 it may take many iterations of power iteration before a single eigenvector is isolated.
+92
+
+
+If the eigenvalues of A are λ1, . . . , λn, then it is easy to see that the eigenvalues of A − σIn×n are λ1 − σ, . . . , λn − σ. Then, one strategy for making power iteration converge quickly is to choose σ such that: ∣
+∣ ∣ ∣
+λ2 − σ
+λ1 − σ
+∣ ∣ ∣ ∣
+<
+∣ ∣ ∣ ∣
+λ2
+λ1
+∣ ∣ ∣ ∣
+.
+Of course, guessing such a σ can be an art, since the eigenvalues of A obviously are not known initially. Similarly, if we think that σ is near an eigenvalue of A, then A − σIn×n has an eigenvalue close to 0 that we can reveal by inverse iteration. One strategy that makes use of this observation is known as Rayleigh quotient iteration. If we have a fixed guess at an eigenvector ~x of A, then by NUMBER the least-squares approximation of the corresponding eigenvalue σ is given by
+σ ≈ ~x> A~x
+‖~x‖22
+.
+This fraction is known as a Rayleigh quotient. Thus, we can attempt to increase convergence by iterating as follows:
+1. Take ~v1 ∈ Rn to be an arbitrary nonzero vector or initial guess of an eigenvector.
+2. Iterate until convergence for increasing k:
+(a) Write the current estimate of the eigenvalue
+σk = ~v>
+k−1 A~vk−1
+‖~vk−1‖22
+(b) Solve for ~wk: (A − σk In×n)~wk = ~vk−1
+(c) Normalize: ~vk = ~wk
+‖ ~wk ‖
+This strategy converges much faster given a good starting guess, but the matrix A − σk In×n is different each iteration and cannot be prefactored using LU or most other strategies. Thus, fewer iterations are necessary but each iteration takes more time!
+5.4.4 Finding Multiple Eigenvalues
+So far, we have described techniques for finding a single eigenvalue/eigenvector pair: power iteration to find the largest eigenvalue, inverse iteration to find the smallest, and shifting to target values in between. Of course, for many applications a single eigenvalue will not suffice. Thankfully we can extend our strategies to handle this case as well.
+Deflation
+Recall our power iteration strategy: Choose an arbitrary ~v1, and iteratively multiply it by A until only the largest eigenvalue λ1 survives. Take ~x1 to be the corresponding eigenvector. We were quick to dismiss an unlikely failure mode of this algorithm, however, when ~v1 ·~x1 = 0. In this case, no matter how many times you premultiply by A you will never recover a vector
+93
+
+
+parallel to ~x1, since you cannot amplify a zero component. The probability of choosing such a ~v1 is exactly zero, so in all but the most pernicious of cases power iteration remains safe. We can turn this drawback on its head to formulate a strategy for finding more than one eigenvalue when A is symmetric. Suppose we find ~x1 and λ1 via power iteration as before. Now, we restart power iteration, but before beginning project ~x1 out of ~v1. Then, since the eigenvectors of A are orthogonal, power iteration will recover the second-largest eigenvalue! Due to numerical issues, it may be the case that applying A to a vector introduces a small component parallel to ~x1. In practice we can avoid this effect by projecting in each iteration. In the end, this strategy yields the following algorithm for computing the eigenvalues in order of descending magnitude:
+• For each desired eigenvalue ` = 1, 2, . . .
+1. Take ~v1 ∈ Rn to be an arbitrary nonzero vector.
+2. Iterate until convergence for increasing k:
+(a) Project out the eigenvectors we already have computed:
+~uk = ~vk−1 − projspan{~x1,...,~x`−1} ~vk−1
+(b) Multiply A~uk = ~wk
+(c) Normalize: ~vk = ~wk
+‖ ~wk ‖
+3. Add the result of iteration to the set of ~xi’s
+The inner loop is equivalent to power iteration on the matrix AP, where P projects out ~x1, . . . , ~x`−1. It is easy to see that AP has the same eigenvectors as A; its eigenvalues are λ`, . . . , λn with the remaining eigenvalues taken to zero. More generally, the strategy of deflation involves modifying the matrix A so that power iteration reveals an eigenvector you have not yet computed. For instance, AP is a modification of A so that the large eigenvalues we already have computed are zeroed out. Our projection strategy fails if A is asymmetric, since in that case its eigenvectors may not be orthogonal. Other less obvious deflation strategies can work in this case. For instance, suppose A~x1 = λ1~x1 with ‖~x1‖ = 1. Take H to be the Householder matrix such that H~x1 = ~e1, the first standard basis vector. Similarity transforms once again do not affect the set of eigenvectors, so we might try conjugating by H. Consider what happens when we multiply H AH> by ~e1:
+H AH>~e1 = H AH~e1 since H is symmetric
+= H A~x1 since H~x1 = ~e1 and H2 = In×n
+= λ1H~x1 since A~x1 = λ1~x1 = λ1~e1 by definition of H
+Thus, the first column of H AH> is λ1~e1, showing that H AH> has the following structure (CITE HEATH):
+HAH> =
+(
+λ1 ~b> ~0 B
+)
+.
+The matrix B ∈ R(n−1)×(n−1) has eigenvalues λ2, . . . , λn. Thus, another strategy for deflation is to construct smaller and smaller B matrices with each eigenvalue computed using power iteration.
+94
+
+
+QR Iteration
+Deflation has the drawback that we must compute each eigenvector separately, which can be slow and can accumulate error if individual eigenvalues are not accurate. Our remaining strategies attempt to find more than one eigenvector at a time. Recall that similar matrices A and B = T−1 AT must have the same eigenvalues. Thus, an algorithm attempting to find the eigenvalues of A can freely apply similarity transformations to A. Of course, applying T−1 in general may be a difficult proposition, since it effectively would require inverting T, so we seek T matrices whose inverses are easy to apply. One of our motivators for deriving QR factorization was that the matrix Q is orthogonal, satisfying Q−1 = Q>. Thus, Q and Q−1 are equally straightforward to apply, making orthogonal matrices strong choices for similarity transformations. But which orthogonal matrix Q should we choose? Ideally Q should involve the structure of A while being straightforward to compute. It is unclear how to apply simple transformations like Householder matrices strategically to reveal multiple eigenvalues,2 but we do know how to generate one such Q simply by factoring A = QR. Then, we could conjugate A by Q to find:
+Q−1 AQ = Q> AQ = Q>(QR)Q = (Q>Q)RQ = RQ
+Amazingly, conjugating A = QR by the orthogonal matrix Q is identical to writing the product RQ!
+Based on this reasoning, in the 1950s, multiple groups of European mathematicians hypothesized the same elegant iterative algorithm for finding the eigenvalues of a matrix A:
+1. Take A1 = A.
+2. For k = 1, 2, . . .
+(a) Factor Ak = QkRk.
+(b) Write Ak+1 = RkQk.
+By our derivation above, the matrices Ak all have the same eigenvalues as A. Furthermore, suppose the Ak’s converge to some A∞. Then, we can factor A∞ = Q∞R∞, and by convergence we know A∞ = Q∞R∞ = R∞Q∞. By NUMBER, the eigenvalues of R∞ are simply the values along the diagonal of R∞, and by NUMBER the product R∞Q∞ = A∞ in turn must have the same eigenvalues. Finally, by construction A∞ has the same eigenvalues as A. So, we have shown that if QR iteration converges, it reveals the eigenvalues of A in a straightforward way. Of course, the derivation above assumes that there exists A∞ with Ak → A∞ as k → ∞. In fact, QR iteration is a stable method guaranteed to converge in many important situations, and convergence can even be improved by shifting strategies. We will not derive exact conditions here but instead can provide some intuition for why this seemingly arbitrary strategy should converge. We provide some intuition below for the symmetric case A = A>, which is easier to analyze thanks to the orthogonality of eigenvectors in this case. Suppose the columns of A are given by ~a1, . . . ,~an, and consider the matrix Ak for large k. We can write:
+Ak = Ak−1 · A =
+
+
+|| |
+Ak−1~a1 Ak−1~a2 · · · Ak−1~an || |
+
+
+2More advanced techniques, however, do exactly this!
+95
+
+
+By our derivation of power iteration, the first column of Ak in general is parallel to the eigenvector ~x1 with largest magnitude |λ1| since we took a vector ~a1 and multiplied it by A many times. Applying our intuition from deflation, suppose we project~a1 out of the second column of Ak. This vector must be nearly parallel to ~x2, since it is the second-most dominant eigenvalue! Proceeding inductively, factoring Ak = QR would yield a set of near-eigenvectors as the columns of Q, in order of decreasing eigenvalue magnitude, with the corresponding eigenvalues along the diagonal of R.
+Of course, computing Ak for large k takes the condition number of A to the k-th power, so QR on the resulting matrix is likely to fail; this is clear to see since all the columns of Ak should look like ~x1 for large k. We can make the following observation, however:
+A = Q1R1
+A2 = (Q1R1)(Q1R1)
+= Q1(R1Q1)R1
+= Q1Q2R2R1 using the notation of QR iteration above, since A2 = R1Q1
+...
+Ak = Q1Q2 · · · QkRkRk−1 · · · R1
+Grouping the Qi variables and the Ri variables separately provides a QR factorization of Ak. Thus, we expect the columns of Q1 · · · Qk to converge to the eigenvectors of A.
+By a similar argument, we can find
+A = Q1R1
+A2 = R1Q1 by our construction of QR iteration
+= Q2R2 by definition of the factorization
+A3 = R2Q2 from QR iteration
+= Q>
+2 A2Q2 since A2 = Q2R2
+= Q>
+2 R1Q1Q2 since A2 = R1Q1
+= Q>
+2 Q>
+1 AQ1Q2 since A = Q1R1
+...
+Ak+1 = Q>
+k · · · Q>
+1 AQ1 · · · Qk inductively
+= (Q1 · · · Qk)> A(Q1 · · · Qk)
+where Ak is the k-th matrix from QR iteration. Thus, Ak+1 is simply the matrix A conjugated by the
+product Q ̄ k ≡ Q1 · · · Qk. We argued earlier that the columns of Q ̄ k converge to the eigenvectors of A. Thus, since conjugating by the matrix of eigenvectors yields a diagonal matrix of eigenvalues, we know Ak+1 = Q ̄ >
+k AQ ̄ will have approximate eigenvalues of A along its diagonal as k → ∞.
+96
+
+
+Krylov Subspace Methods
+Our justification of QR iteration involved analyzing the columns of Ak as k → ∞ as an extension of power iteration. More generally, for a vector~b ∈ Rn, we can examine the so-called Krylov matrix
+Kk =
+
+
+|| | |
+~b A~b A2~b · · · Ak−1~b || | |
+
+.
+Methods analyzing Kk to find eigenvectors and eigenvalues generally are known as Krylov subspace methods. For instance, the Arnoldi iteration algorithm uses Gram-Schmidt orthogonalization to maintain an orthogonal basis {~q1, . . . ,~qk} for the column space of Kk:
+1. Begin by taking ~q1 to be an arbitrary unit-norm vector
+2. For k = 2, 3, . . .
+(a) Take ~ak = A~qk−1
+(b) Project out the ~q’s you already have computed:
+~bk = ~ak − projspan {~q1,...,~qk−1}~ak
+(c) Renormalize to find the next ~qk = ~bk/‖~bk‖.
+The matrix Qk whose columns are the vectors found above is an orthogonal matrix with the same
+column space as Kk, and eigenvalue estimates can be recovered from the structure of Q>
+k AQk. The use of Gram-Schmidt makes this technique unstable and timing gets progressively worse as k increases, however, so many extensions are needed to make it feasible. For instance, one strategy involves running some iterations of Arnoldi, using the output to generate a better guess for the initial ~q1, and restarting. Methods in this class are suited for problems requiring multiple eigenvectors at one of the ends of the spectrum without computing the complete set.
+5.5 Sensitivity and Conditioning
+As warned, we have only outlined a few eigenvalue techniques out of a rich and long-standing literature. Almost any algorithmic technique has been experimented with for finding spectra, from iterative methods to root-finding on the characteristic polynomial to methods that divide matrices into blocks for parallel processing. Just as in linear solvers, we can evaluate the conditioning of an eigenvalue problem independently of the solution technique. This analysis can help understand whether a simplistic iterative scheme will be successful for finding the eigenvectors of a given matrix or if more complex methods are necessary; it is important to note that the conditioning of an eigenvalue problem is not the same as the condition number of the matrix for solving systems, since these are separate problems. Suppose a matrix A has an eigenvector ~x with eigenvalue λ. Analyzing the conditioning of the eigenvalue problem involves analyzing the stability of ~x and λ to perturbations in A. To this end, we might perturb A by a small matrix δA, thus changing the set of eigenvectors. In particular, we can write eigenvectors of A + δA as perturbations of eigenvectors of A by solving the problem
+(A + δA)(~x + δ~x) = (λ + δλ)(~x + δ~x).
+97
+
+
+Expanding both sides yields:
+A~x + Aδ~x + δA · ~x + δA · δ~x = λ~x + λδ~x + δλ · ~x + δλ · δ~x
+Assuming δA is small, we will assume3 that δ~x and δλ also are small. Products between these variables then are negligible, yielding the following approximation:
+A~x + Aδ~x + δA · ~x ≈ λ~x + λδ~x + δλ · ~x
+Since A~x = λ~x, we can subtract this value from both sides to find:
+Aδ~x + δA · ~x ≈ λδ~x + δλ · ~x
+We now apply an analytical trick to complete our derivation. Since A~x = λ~x, we know (A − λIn×n)~x = ~0, so A − λIn×n is not full rank. The transpose of a matrix is full-rank only if the matrix is full-rank, so we know (A − λIn×n)> = A> − λIn×n also has a null space vector ~y. Thus A>~y = λ~y; we can call ~y the left eigenvector corresponding to ~x. We can left-multiply our perturbation estimate above by ~y>:
+~y>(Aδ~x + δA · ~x) ≈ ~y>(λδ~x + δλ · ~x)
+Since A>~y = λ~y, we can simplify:
+~y>δA · ~x ≈ δλ~y>~x
+Rearranging yields:
+δλ ≈ ~y>(δA)~x
+~y>~x
+Assume ‖~x‖ = 1 and ‖~y‖ = 1. Then, if we take norms on both sides we find:
+|δλ| / ‖δA‖2
+|~y · ~x|
+So in general conditioning of the eigenvalue problem depends on the size of the perturbation δAas expected–and the angle between the left and right eigenvectors ~x and ~y. We can use 1/~x·~y as an approximate condition number. Notice that ~x = ~y when A is symmetric, yielding a condition number of 1; this reflects the fact that the eigenvectors of symmetric matrices are orthogonal and thus maximally separated.
+5.6 Problems
+3This assumption should be checked in a more rigorous treatment!
+98
+
+
+Chapter 6
+Singular Value Decomposition
+In Chapter 5, we derived a number of algorithms for computing the eigenvalues and eigenvectors of matrices A ∈ Rn×n. Having developed this machinery, we complete our initial discussion of numerical linear algebra by deriving and making use of one final matrix factorization that exists for any matrix A ∈ Rm×n: the singular value decomposition (SVD).
+6.1 Deriving the SVD
+For A ∈ Rm×n, we can think of the function ~x 7→ A~x as a map taking points in Rn to points in Rm. From this perspective, we might ask what happens to the geometry of Rn in the process, and in particular the effect A has on lengths of and angles between vectors. Applying our usual starting point for eigenvalue problems, we can ask the effect that A has on the lengths of vectors by examining critical points of the ratio
+R(~x) = ‖A~x‖
+‖~x‖
+over various values of ~x. Scaling ~x does not matter, since
+R(α~x) = ‖A · α~x‖
+‖α~x‖ = |α|
+|α| · ‖A~x‖
+‖~x‖ = ‖A~x‖
+‖~x‖ = R(~x).
+Thus, we can restrict our search to ~x with ‖~x‖ = 1. Furthermore, since R(~x) ≥ 0, we can instead consider [R(~x)]2 = ‖A~x‖2 = ~x> A> A~x. As we have shown in previous chapters, however, critical points of ~x> A> A~x subject to ‖~x‖ = 1 are exactly the eigenvectors ~xi satisfying A> A~xi = λi~xi;
+notice λi ≥ 0 and ~xi · ~xj = 0 when i 6= j since A> A is symmetric and positive semidefinite. Based on our use of the function R, the {~xi} basis is a reasonable one for studying the geometric effects of A. Returning to this original goal, define ~yi ≡ A~xi. We can make an additional observation about ~yi revealing even stronger eigenvalue structure:
+λi~yi = λi · A~xi by definition of ~yi
+= A(λi~xi)
+= A(A> A~xi) since ~xi is an eigenvector of A> A
+= (AA>)(A~xi) by associativity
+= (AA>)~yi
+99
+
+
+Thus, we have two cases:
+1. When λi 6= 0, then ~yi 6= ~0. In this case, ~xi is an eigenvector of A> A and ~yi = A~xi is
+a corresponding eigenvector of AA> with ‖~yi‖ = ‖A~xi‖ = √‖A~xi‖2 =
+√
+~x>
+i A> A~xi =
+√
+λi ‖~xi ‖.
+2. When λi = 0, ~yi = ~0.
+An identical proof shows that if ~y is an eigenvector of AA>, then ~x ≡ A>~y is either zero or an eigenvector of A> A with the same eigenvalue. Take k to be the number of strictly positive eigenvalues λi > 0 discussed above. By our con
+struction above, we can take ~x1, . . . , ~xk ∈ Rn to be eigenvectors of A> A and corresponding eigen
+vectors ~y1, . . . ,~yk ∈ Rm of AA> such that
+A> A~xi = λi~xi
+AA>~yi = λi~yi
+for eigenvalues λi > 0; here we normalize such that ‖~xi‖ = ‖~yi‖ = 1 for all i. Following traditional
+notation, we can define matrices V ̄ ∈ Rn×k and U ̄ ∈ Rm×k whose columns are ~xi’s and ~yi’s, resp. We can examine the effect of these new basis matrices on A. Take ~ei to be the i-th standard basis vector. Then,
+U ̄ > AV ̄~ei = U ̄ > A~xi by definition of V ̄
+=1
+λi
+U ̄ > A(λi~xi) since we assumed λi > 0
+=1
+λi
+U ̄ > A(A> A~xi) since ~xi is an eigenvector of A> A
+=1
+λi
+U ̄ >(AA>)A~xi by associativity
+= √1
+λi
+U ̄ >(AA>)~yi since we rescaled so that ‖~yi‖ = 1
+=
+√
+λiU ̄ >~yi since AA>~yi = λi~yi
+=
+√
+λi~ei
+Take Σ ̄ = diag(√
+λ1, . . . , √
+λk). Then, the derivation above shows that U ̄ > AV ̄ = Σ ̄ .
+Complete the columns of U ̄ and V ̄ to U ∈ Rm×m and V ∈ Rn×n by adding orthonormal vectors ~xi and ~yi with A> A~xi = ~0 and AA>~yi = ~0, resp. In this case it is easy to show U> AV~ei = ~0 and/or
+~e>
+i U> AV = ~0>. Thus, if we take
+Σij ≡
+{√
+λi i = j and i ≤ k 0 otherwise
+then we can extend our previous relationship to show U> AV = Σ, or equivalently
+A = UΣV>.
+100
