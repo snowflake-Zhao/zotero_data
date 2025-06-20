@@ -40,4 +40,7 @@ if __name__ == "__main__":
     for dir in os.listdir('.'):
         if len([f for f in os.listdir(dir) if f.lower().endswith('.pdf')]) <= 0:
             continue
-        compress_n_update(dir,[f for f in os.listdir(dir) if f.lower().endswith('.pdf')][0])
+        try:
+            compress_n_update(dir,[f for f in os.listdir(dir) if f.lower().endswith('.pdf')][0])
+        except Exception as e:
+            print(f"Error occurred in dir:{dir}, Exception:{e}")
