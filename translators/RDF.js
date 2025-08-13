@@ -12,7 +12,7 @@
 		"async": true,
 		"dataMode": "rdf/xml"
 	},
-	"lastUpdated": "2023-05-20 18:20:00"
+	"lastUpdated": "2025-08-07 14:50:00"
 }
 
 /*
@@ -1012,10 +1012,13 @@ function importItem(newItem, node) {
 		n.so + "issueNumber"], true);
 
 
-	// number means the same thing as issue
-	// and will automatically then also map
-	// to patentNumber or reportNumber
-	newItem.number = newItem.issue;
+	// Move issue to number if issue isn't valid for this type,
+	// because number will automatically then also map to
+	// patentNumber or reportNumber
+	if (!ZU.fieldIsValidForType("issue", newItem.itemType)) {
+		newItem.number = newItem.issue;
+		delete newItem.issue;
+	}
 
 	// edition
 	newItem.edition = getFirstResults(node, [n.prism + "edition", n.prism2_0 + "edition", n.prism2_1 + "edition", n.bibo + "edition", n.so + "bookEdition", n.so + "version"], true);
