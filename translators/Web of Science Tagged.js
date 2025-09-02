@@ -8,7 +8,7 @@
 	"maxVersion": null,
 	"priority": 100,
 	"inRepository": true,
-	"lastUpdated": "2025-03-06 20:20:00"
+	"lastUpdated": "2025-08-18 17:15:00"
 }
 
 /*
@@ -258,7 +258,9 @@ ItemMap.prototype = {
 					extra.push(`Notes: ${tagValueString}`);
 					break;
 				case "UT":
-					extra.push(`Web of Science ID: ${tagValueString}`);
+					if (tagValueString.trim()) {
+						extra.push(`Web of Science ID: ${tagValueString}`);
+					}
 					break;
 
 				// ISSN
@@ -273,6 +275,9 @@ ItemMap.prototype = {
 				case "TI":
 					tagValueString = selectiveTitleCase(tagValueString);
 					item[FIELD_MAP[wosTag]] = tagValueString;
+					break;
+				case "DI": // DOI
+					item[FIELD_MAP[wosTag]] = ZU.cleanDOI(tagValueString);
 					break;
 				// The following non-title fields are converted to Title Case
 				case "AE": // patent assignee
