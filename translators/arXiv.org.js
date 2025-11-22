@@ -9,7 +9,7 @@
 	"priority": 100,
 	"inRepository": true,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2024-12-03 16:00:00"
+	"lastUpdated": "2025-11-12 15:50:00"
 }
 
 /*
@@ -388,7 +388,8 @@ function parseSingleEntry(entry) {
 		.filter(Boolean);
 	newItem.tags.push(...categories);
 
-	let arxivURL = text(entry, "id").replace(/v\d+/, '');
+	let versionedArXivURL = text(entry, "id");
+	let arxivURL = versionedArXivURL.replace(/v\d+/, '');
 	let doi = text(entry, "doi");
 	if (doi) {
 		newItem.DOI = doi;
@@ -407,7 +408,7 @@ function parseSingleEntry(entry) {
 		newItem.extra = "arXiv:" + articleID + " " + articleField;
 	}
 
-	let pdfURL = attr(entry, "link[title='pdf']", "href");
+	let pdfURL = versionedArXivURL.replace("/abs/", "/pdf/");
 
 	newItem.attachments.push({
 		title: "Preprint PDF",
