@@ -1,0 +1,519 @@
+© AME Publishing Company. Gland Surg 2025;14(6):1052-1065 | https://dx.doi.org/10.21037/gs-2025-35
+Original Article
+Individualized survival prediction and risk stratification using
+machine learning for patients with malignant struma ovarii: a
+population-based study with external validation
+Shangcheng Yan1#^, Zhen Cao1#, Qiyao Zhang1, Bingrong Chen1, Hao Wu1, Hongtao Cao1, Xiaobin Li1, Yaqi Wang1, Yalei Wang1, Yonghui Chen2, Ziwen Liu1
+1Department of General Surgery, Peking Union Medical College Hospital, Chinese Academy of Medical Sciences and Peking Union Medical
+College, Beijing, China; 2Department of Nuclear Medicine and Beijing Key Laboratory of Molecular Targeted Diagnosis and Therapy in Nuclear
+Medicine, Peking Union Medical College Hospital, Chinese Academy of Medical Sciences and Peking Union Medical College, Beijing, China
+Contributions: (I) Conception and design: S Yan, Z Liu, Y Chen; (II) Administrative support: Z Liu, X Li; (III) Provision of study materials or patients:
+All authors; (IV) Collection and assembly of data: S Yan, Z Cao, Q Zhang, B Chen, H Wu, H Cao; (V) Data analysis and interpretation: S Yan,
+Z Cao, Q Zhang, B Chen, H Wu, H Cao, Yaqi Wang, Yalei Wang; (VI) Manuscript writing: All authors; (VII) Final approval of manuscript: All
+authors.
+#These authors contributed equally to this work as co-first authors.
+Correspondence to: Ziwen Liu, MD, PhD. Department of General Surgery, Peking Union Medical College Hospital, Chinese Academy of
+Medical Sciences and Peking Union Medical College, 1 Shuaifuyuan, Dongcheng District, Beijing 100730, China. Email: liuziwen@pumch.cn;
+Yonghui Chen, MD, PhD. Department of Nuclear Medicine and Beijing Key Laboratory of Molecular Targeted Diagnosis and Therapy in Nuclear
+Medicine, Peking Union Medical College Hospital, Chinese Academy of Medical Sciences and Peking Union Medical College, 1 Shuaifuyuan,
+Dongcheng District, Beijing 100730, China. Email: chenyufirst@sina.com.
+Background: Malignant struma ovarii (MSO) is a rare thyroid-type cancer originating in ovarian teratoma. Prognosis of MSO is less studied without unanimous staging or stratification system. This study aimed to developed and validated a machine learning (ML)-based model to predict overall survival (OS) for patients with MSO and to risk-stratify them. Methods: Patients with histologically confirmed MSO diagnosed in 1975–2021 from the Surveillance, Epidemiology, and End Results (SEER) program were identified as the training cohort. Patients in a systematic literature review were collected as the testing cohort. OS was selected as the outcome, while demographic, clinicopathological and therapeutic information were used as features. Following data encoding, imputing and scaling, univariate feature selection was performed. Cox proportional hazard (CoxPH), Cox with elastic net penalty (CoxNet), random survival forest (RSF), gradient boosting machine (GBM), and survival tree (ST) models were trained and tuned. Each model was evaluated on its c-index, time-dependent area under the curve (AUC), time-dependent Brier score (BS) and stratification ability in the training and the testing cohort respectively. The algorithm that performed the best in the testing cohort was finally chosen for SHapley Additive exPlanations (SHAP) interpretation and Streamlit web application deployment. Results: The study included 120 and 194 patients in the training and testing cohort respectively. At the end of follow-up (median time 115.5 and 32.5 months respectively), 101 (84.2%) and 181 patients (93.3%) survived respectively. RSF had the best performance in the testing cohort, possessing the highest c-index (0.841, 95% confidence interval: 0.732–0.916), the highest mean AUC (0.852), the lowest integrated BS (0.042), and the smallest P value (<0.001) on log-rank test comparing the stratified groups. According to SHAP, older age, hysterectomy, larger tumor size and more advanced American Joint Committee on Cancer stage had the strongest predictive power for worse OS among all 13 features. An interactive application
+^ ORCID: 0000-0002-6008-722X.
+
+
+Gland Surgery, Vol 14, No 6 June 2025 1053
+© AME Publishing Company. Gland Surg 2025;14(6):1052-1065 | https://dx.doi.org/10.21037/gs-2025-35
+Introduction
+Struma ovarii (SO) is an ovarian teratoma containing >50% thyroid tissue or thyroid-associated malignancy (1). Most SOs are benign, but they can contain histologically malignant components, namely malignant struma ovarii (MSO) (2). MSO is extremely rare with less than 300 cases
+reported so far. In a recent hospital-based report, MSO only represents 0.10% of all ovarian teratomas (3). As MSO has unspecific clinical manifestations or imaging appearances, almost all patients are diagnosed and assessed postoperatively (4-6). The complexity of the disease requires multidisciplinary team (MDT) discussion including gynecologists, surgeons, endocrinologists, radiologists and pathologists. Prognosis of MSO remains controversial with most patients having favorable outcomes but some having lethal disease (7-9). However, given the data paucity there is no widely accepted staging system, hindering its personalized management (10). Using cases extracted from literature, several studies have found age and histology as prognostic factors for MSO (11-15). Nevertheless, due to the limited number of deaths, it is inadequate to draw convincible conclusions. As for MSO confined to the ovary, Ao et al. identified ovarian cystectomy as the independent risk factor for disease-free survival (DFS) (15) but another study found no potential risk factors (12). A few recent studies also attempted to develop risk stratification systems for MSO (16,17). Egan et al. adapted 2015 American Thyroid Association (ATA) risk guidelines and proposed a schema for MSO (16). Although high-risk groups were significantly associated with worse overall survival (OS) in National Cancer Database (NCDB) patients, the schema failed to stratify patients in Surveillance, Epidemiology, and End Results (SEER) cohort. With machine learning (ML) algorithms, Alshwayyat et al. predicted 5-year survival of MSO patients and achieved a highest accuracy of 80.3% (17), but their study only predicted binary outcomes and was not tested externally. Development of a validated prediction model and risk stratification system may help individualize management and form standard care.
+Highlight box
+Key findings
+• We developed and validated a time-to-event machine learning (ML)-based prognostic tool for patients with malignant struma ovarii (MSO). This model can predict the patients’ overall survival (OS) probability at a particular time point and stratify them into high- and low-risk groups. An interactive application was also implemented. Furthermore, explainable ML revealed the association between OS and patient features.
+What is known and what is new?
+• MSO is an extremely rare cancer arising from thyroid tissue of the ovarian teratoma. Prognosis of MSO seems favorable but remains under-researched. Recent studies attempted to develop prediction systems for MSO but were unsuccessful or not tested externally. • We used five algorithms to build prognostic prediction models based on Surveillance, Epidemiology, and End Results (SEER) program and validated them in a cohort from a systematic review. Random survival forest had the best performance with a c-index of 0.841 (95% confidence interval: 0.732–0.916). Explainable ML revealed four features most strongly predictive of OS: older age, hysterectomy, larger tumor size and more advanced stage. A user-friendly web application was implemented to visualize and interpret the predicted outcomes.
+What is the implication, and what should change now?
+• The model has the potential to be translated into clinical practice and help patient counselling, therapeutic and surveillance decisionmaking. Future studies at a finer scale are needed, especially to incorporate histological, molecular, and genetic information.
+(https://mso-surv.streamlit.app/) was then implemented which can display the predicted Kaplan-Meier curve, survival probability, risk stratification and the contributions of features for the output. Conclusions: We reported the first externally tested time-to-event prognostic prediction model for MSO. ML algorithms enabled precise individual-patient prediction and stratification, and can potentially assist patient counselling and decision-making for treatment and surveillance.
+Keywords: Malignant struma ovarii (MSO); machine learning (ML); prediction model; survival analysis; risk
+stratification
+Submitted Jan 29, 2025. Accepted for publication May 19, 2025. Published online Jun 26, 2025.
+doi: 10.21037/gs-2025-35
+View this article at: https://dx.doi.org/10.21037/gs-2025-35
+
+
+Yan et al. ML-based survival prediction and stratification for MSO
+1054
+© AME Publishing Company. Gland Surg 2025;14(6):1052-1065 | https://dx.doi.org/10.21037/gs-2025-35
+Herein, the current study aimed to train and externally validate a prognostic prediction model and risk stratification for MSO using time-to-event ML. We present this article in accordance with the TRIPOD reporting checklist (available at https://gs.amegroups.com/article/view/10.21037/gs2025-35/rc).
+Methods
+Study population and patients
+Flowchart of the study is depicted in Figure 1A. Our training dataset used population-based data from National Cancer Institute’s SEER program (https://seer.cancer.gov/) that represents about 48.0% of the US population (18). Female patients with histologically confirmed MSO [International Classification of Diseases for Oncology, 3rd Edition (ICD-O-3) 9090/3] (19) of the ovary diagnosed in 1975–2021 were included from three databases [IncidenceSEER Research Data, 8 Registries, Nov 2023 Sub (19752021); 12 Registries, Nov 2023 Sub (1992–2021); and 17 Registries, Nov 2023 Sub (2000–2021)] of the program and extracted using case listing session of the SEER*Stat (version 8.4.4). All patients’ records were reported by hospital or clinic. Dataset of 194 patients with MSO from a previous study (13) that systematically reviewed the literature published in 1957–2021 was used for external testing. Sample size calculation was not performed since all available data were used. This study was conducted in accordance with the Declaration of Helsinki and its subsequent amendments. This study was exempt from ethical review by the Institutional Review Board of Peking Union Medical College Hospital (No. I-24ZM0036) and informed consent was not required as the study utilized only publicly available, de-identified data from previously published literature and SEER database.
+Study variables
+Given that MSO has good disease-specific survival (DSS) and SEER database does not contain information for DFS, OS was selected as the outcome variable (the label), calculated from diagnosis to death due to all causes. All related fields in SEER database were screened to choose predictor variables (features), including age, tumor-nodemetastasis (TNM) categories, American Joint Committee on Cancer (AJCC) stage, extent of disease, grade, tumor
+size, chemotherapy, surgical extent, hysterectomy, chemotherapy, and radiotherapy. TNM categories and AJCC stage was defined according to the AJCC version 8 staging system for ovarian cancers (20). Extent of disease was categorized as confined to ovary (CTO) and distant metastasis or peritoneal extension (DM/PE). Tumor grade was categorized as differentiated and poorly-differentiated or undifferentiated (PD/UD). Surgical extent included unilateral salpingo-oophorectomy (USO), bilateral salpingo-oophorectomy (BSO), salpingo-oophorectomy with omentectomy (SOwO) and partial resection (PR; ovarian cystectomy). Hysterectomy and chemotherapy were dichotomous. Radiotherapy included radioiodine (RAI) and external beam radiation therapy (EBRT). For descriptive analysis, we also collected DSS and cause of death.
+Data preprocessing and feature selection
+Before model training, several steps of data preparation were performed (Figure 1A). First, rank variables were ordinally encoded while nominal variables were one-hot encoded. Second, all features with missing values were kept and imputed using an iterative imputer (21). Third, the dataset was scaled by a power transformer (22). The external dataset was then transformed by the fitted imputer and scaler. Lastly, univariate feature selection in the training set was performed. For each algorithm, Harrell’s concordance (c-index) of each feature was calculated in 100-times 2-fold cross-validation with 0.5 as the threshold to eliminate the unimportant features.
+Model training and evaluation
+Cox proportional hazard (CoxPH) (23) and four survival ML algorithms [Cox with elastic net penalty (CoxNet) (24), random survival forest (RSF) (25), gradient boosting machine (GBM) (26) and survival tree (ST) (27)] were used for model training. Optimal hyperparameters for each ML model were chosen by grid search with 5-fold crossvalidation, using c-index as the evaluation metric. Each model’s performance was evaluated on the training and external testing dataset. The model performed the best on the testing dataset was determined as the final model. C-index and time-dependent area under the curve (TdAUC) were used to assess models’ discrimination. Timedependent Brier score (TdBS) was used to assess models’ calibration. Mean c-index with 95% confidence interval (CI) was calculated by 1,000-times bootstrapping. For TdAUC
+
+
+Gland Surgery, Vol 14, No 6 June 2025 1055
+© AME Publishing Company. Gland Surg 2025;14(6):1052-1065 | https://dx.doi.org/10.21037/gs-2025-35
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+est. probability of survival
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+est. probability of survival
+DSS OS
+DSS OS
+0 60 120 180 240 300 360 420 480 540 Time, months
+0 60 120 180 240 300 360 420 480 Time, months Model
+Feature
+CoxPH CoxNet RSF GBM ST
+Age
+T category
+N category
+M category
+AJCC stage
+Extent
+Grade
+Tumor size
+Hysterectomy
+Chemotherapy
+Surgery_BSO
+Surgery_No
+Surgery_PR
+Surgery_SOwO
+Surgery_USO
+Radiotherapy_EBRT
+Radiotherapy_No/Unknown
+Radiotherapy_RAI
+0.65
+0.60
+0.55
+0.50
+0.45
+0.60±0.12
+0.45±0.08
+0.55±0.09
+0.53±0.10
+0.47±0.09
+0.63±0.08
+0.52±0.10
+0.53±0.10
+0.58±0.08
+0.54±0.07
+0.48±0.06
+0.48±0.06
+0.55±0.02
+0.48±0.08
+0.51±0.06
+0.51±0.03
+0.48±0.10
+0.52±0.03
+0.65±0.09
+0.44±0.08
+0.50±0.09
+0.53±0.10
+0.47±0.08
+0.65±0.06
+0.56±0.10
+0.57±0.10
+0.56±0.10
+0.57±0.09
+0.45±0.04
+0.49±0.08
+0.55±0.02
+0.47±0.08
+0.49±0.06
+0.57±0.09
+0.54±0.09
+0.49±0.04
+0.64±0.11
+0.45±0.08
+0.59±0.08
+0.53±0.09
+0.50±0.10
+0.63±0.07
+0.51±0.11
+0.51±0.09
+0.59±0.09
+0.54±0.07
+0.48±0.06
+0.49±0.06
+0.55±0.02
+0.47±0.08
+0.52±0.06
+0.51±0.03
+0.48±0.10
+0.52±0.03
+0.69±0.10
+0.53±0.08
+0.64±0.09
+0.57±0.08
+0.62±0.11
+0.62±0.07
+0.56±0.13
+0.47±0.11
+0.62±0.09
+0.57±0.09
+0.45±0.04
+0.49±0.08
+0.55±0.02
+0.47±0.08
+0.49±0.06
+0.57±0.09
+0.54±0.09
+0.49±0.04
+0.69±0.10
+0.53±0.08
+0.64±0.09
+0.57±0.08
+0.62±0.11
+0.62±0.07
+0.56±0.13
+0.47±0.11
+0.62±0.09
+0.57±0.10
+0.45±0.04
+0.49±0.08
+0.55±0.02
+0.47±0.08
+0.49±0.06
+0.56±0.10
+0.54±0.09
+0.49±0.04
+SEER dataset (n=120)
+Label time, status
+Label time, status
+Features
+CoxPH CoxNet RSF
+Best model
+SHAP explainability
+Web application deployment
+GBM ST
+Preprocessing Encoding Imputing Scaling
+Feature selection
+based on Univariate C-index in 100-times 2-fold CV
+Training & Hyperparameter tuning based on C-index in 5-fold Grid Search CV
+Predicting & Evaluation
+C-index, TdAUC, TdBS, KM curve
+Features
+External dataset (n=194)
+Recoding
+Fit & transform
+Transform
+A BC
+D
+Figure 1 Study overview. (A) Flowchart of the study methodology. (B) KM curves of OS and DSS for patients in the SEER cohort. (C) KM curves of OS and DSS for patients in the external cohort. (D) Heatmap of features’ Harrell’s concordances (c-indices) in each machine learning model during feature selection. Each c-index was calculated in 100-times 2-fold CV and presented as mean ± standard deviation. AJCC, American Joint Committee on Cancer; BSO, bilateral salpingo-oophorectomy; CoxNet, Cox with elastic net penalty; CoxPH, Cox proportional hazard; CV, cross validation; DSS, disease-specific survival; EBRT, external beam radiation therapy; est., estimated; GBM, gradient boosting machine; KM, Kaplan-Meier; OS, overall survival; PR, partial resection; RAI, radioiodine; RSF, random survival forest; SEER, Surveillance, Epidemiology, and End Results; SHAP, SHapley Additive exPlanations; SOwO, salpingo-oophorectomy with omentectomy; ST, survival tree; TdAUC, time-dependent area under the curve; TdBS, time-dependent Brier score; TNM, tumor-nodemetastasis; USO, unilateral salpingo-oophorectomy.
+and TdBS, time points were selected within the 5th–95th percentile ranges of the follow-up time of both cohorts. Mean AUC (mAUC) and integrated Brier score (IBS) were also calculated.
+For risk stratification, a risk score was generated for each patient of the cohorts by scikit-survival’s “predict” method. Based on the predicted risk scores, a minimal P approach was used to identify the best cut-off value between the 25th and 75th percentile to divide the patients into high- and lowrisk groups. P values between the low- and high-risk groups
+were calculated by log-rank tests.
+Model interpretation and deployment
+SHapley Additive exPlanations (SHAP)’s permutation explainer method was utilized to interpret the best model (28). SHAP beeswarm plot was generated to show each feature’s contribution on the survival prediction (SHAP value). Features are ranked vertically according to their mean absolute SHAP value. Each dot on a feature line
+
+
+Yan et al. ML-based survival prediction and stratification for MSO
+1056
+© AME Publishing Company. Gland Surg 2025;14(6):1052-1065 | https://dx.doi.org/10.21037/gs-2025-35
+represents a single patient. Color indicates the feature value, while the position denotes the correlation between feature’s contribution and mortality risk. We also implemented the best model into a Streamlit web application. This application could collect input data interactively and output a SHAP waterfall plot together with the prediction result which includes risk stratification, 5- and 10-year survival probability, and a survival curve. SHAP waterfall plot can display how the input features contribute to the particular prediction.
+Statistical analysis
+Survival curves and probabilities were estimated by KaplanMeier (KM) method. Categorical variables were reported as n (%) and compared by Chi-squared tests. Normally distributed continuous variables were reported as mean ± standard deviation (SD) and compared with Student t-tests, while non-normally distributed ones were reported as median [interquartile range (IQR)] and compared with Mann-Whitney U tests. A two-sided P value <0.05 was considered statistically significant.
+Data recoding and characteristics comparison were performed in R (version 4.4.1), while all other analyses were conducted in Python (version 3.11.5). Model training and evaluation were performed with scikit-learn (29) (version 1.3.2) and scikit-survival (30) (version 0.22.2). Model explanation and deployment was performed with SHAP (28) (version 0.43.0), Streamlit (version 1.28.2) and StreamlitSHAP (version 1.0.2).
+Results
+Patient characteristics and survival analysis
+One hundred twenty patients from SEER program were included as the training dataset, while 194 patients were included as external testing dataset. Their characteristics are shown in Table 1. Median age was 46.5 (IQR, 36.0–59.3) and 46.0 (IQR, 36.0–56.0) years in the SEER and external datasets respectively (P=0.76). There was a comparable distribution of tumor staging and extent between two groups with majority of the patients having T1N0M0, stage I tumor confined to the ovary. However, patients in the external cohort had larger tumor sizes (mean 86.5 vs. 57.4 mm, P<0.001) and more differentiated tumors (95.2% vs. 62.5%, P<0.001). No significant difference existed in treatment modalities except for radiotherapy, where more
+patients received RAI in the external cohort (35.6% vs. 10.8%, P<0.001). At the end of follow-up, 101 patients (84.2%) of the training dataset and 181 patients (93.3%) of the external dataset survived (P=0.02, Table 1). For the SEER cohort, OS was 94.3% at 5 years and 89.1% at 10 years (Figure 1B). For the external cohort, OS was 91.4% at 5 years and 87.6% at 10 years (Figure 1C). However, OS of the SEER patients continued to decrease (Figure 1B), likely because they had a significantly longer median follow-up time than the external cohort (115.5 vs. 32.5 months, P<0.001). MSO was the main cause of death in both cohorts, followed by cardiopulmonary diseases (Table 1). DSS declined slightly and then flattened in both groups (SEER: 97.5% and 96.0% at 5 and 10 years respectively, Figure 1B; external: 93.7% and 89.8% at 5 and 10 years respectively, Figure 1C). Given the good DSS, subsequent modelling study was focused on OS.
+Model development and evaluation
+In univariate feature selection (Figure 1D), age was the most important feature in all algorithms except for ST, with the highest c-index in CoxPH and CoxNet (0.69±0.10). Among oncological characteristics, extent of disease exhibited the strongest and most robust predictive value (c-index ≥0.62 in all algorithms). Hysterectomy performed better than other treatment characteristics except in GBM. Features with c-index under 0.5 were considered having no predictive value and eliminated before subsequent training of each algorithm. The one-hot encoded features for BSO, no surgery and SOwO were eliminated in all models. After model training and hyperparameter training, each model was evaluated on the training and testing set respectively. In the training cohort, GBM had the highest c-index (0.966, 95% CI: 0.938–0.988, Figure S1A) followed by RSF (0.924, 95% CI: 0.874–0.965). Meanwhile, ST and CoxNet only had slightly higher c-index than CoxPH (0.820, 95% CI: 0.698–0.925). GBM also had the highest mAUC of 0.985 with an almost horizontal TdAUC curve (Figure S1B). On the contrary, TdAUC curves of other models declined first and increased from 170 months. RSF performed best in calibration with the lowest IBS of 0.057 (Figure S1C). In GBM, CoxNet and CoxPH, TdBS curves increased continuously with time. For risk stratification, each model discriminated patients into low-risk and high-risk group satisfactorily with P values <0.001 (Figure S1D-S1H). There were negligible little or no overlapping of KM
+
+
+Gland Surgery, Vol 14, No 6 June 2025 1057
+© AME Publishing Company. Gland Surg 2025;14(6):1052-1065 | https://dx.doi.org/10.21037/gs-2025-35
+Table 1 Characteristics of patients with MSO in SEER and external datasets
+Variables SEER (n=120) External (n=194) P
+Age (years) 46.5 [36.0, 59.3] 46.0 [36.0, 56.0] 0.76
+T categorya 0.12
+T1 92 (86.8) 142 (81.1)
+T2 7 (6.6) 8 (4.6)
+T3 7 (6.6) 25 (14.3)
+N categoryb 0.85
+N0 94 (97.9) 192 (99.0)
+N1 2 (2.1) 2 (1.0)
+M categoryc 0.06
+M0 105 (92.1) 163 (84.0)
+M1 9 (7.9) 31 (16.0)
+AJCC staged 0.12
+I 80 (82.5) 142 (73.2)
+II 5 (5.2) 6 (3.1)
+III 3 (3.1) 15 (7.7)
+IV 9 (9.3) 31 (16.0)
+Extente 0.59
+CTO 78 (69.6) 142 (73.2)
+DM/PE 34 (30.4) 52 (26.8)
+Gradef <0.001
+Differentiated 15 (62.5) 180 (95.2)
+PD/UD 9 (37.5) 9 (4.8)
+Tumor size (mm)g 57.4±57.1 86.5±51.8 <0.001
+Surgeryh, n (%) 0.72
+USO 24 (22.2) 48 (27.7)
+BSO 42 (38.9) 54 (31.2)
+SOwO 26 (24.1) 46 (26.6)
+PR 9 (8.3) 14 (8.1)
+No 7 (6.5) 11 (6.4)
+Hysterectomyi 0.20
+Yes 54 (52.9) 77 (44.3)
+No 48 (47.1) 97 (55.7)
+Chemotherapy 0.24
+Yes 6 (5.0) 18 (9.3)
+No/unknown 114 (95.0) 176 (90.7)
+Table 1 (continued)
+
+
+Yan et al. ML-based survival prediction and stratification for MSO
+1058
+© AME Publishing Company. Gland Surg 2025;14(6):1052-1065 | https://dx.doi.org/10.21037/gs-2025-35
+Table 1 (continued)
+Variables SEER (n=120) External (n=194) P
+Radiotherapy <0.001
+RAI 13 (10.8) 69 (35.6)
+EBRTj 4 (3.3) 5 (2.6)
+No/unknown 103 (85.8) 120 (61.9)
+Follow-up (months) 115.5 [50.3, 196.0] 32.5 [12.0, 74.3] <0.001
+Vital status 0.02
+Alive 101 (84.2) 181 (93.3)
+Dead 19 (15.8) 13 (6.7)
+Cause of death 
+MSO 4 10
+Ischemic heart disease 3 
+Myocardial infarction – 1
+Diseases of pulmonary circulation 1 
+COPD – 1
+Diseases of kidney 1 
+Multiple myeloma – 1
+Diseases of head or CNS 1 
+Thyroid 2 
+Accidents and adverse effects 3 
+Other 4 
+OS (%) 
+5-year 94.3 91.4
+10-year 89.1 87.6
+DSS (%) 
+5-year 97.5 93.7
+10-year 96.0 89.8
+Data are presented as median [IQR], n (%), mean ± SD, n or percentage. a, based on AJCC staging for ovarian tumors. Unknown in 14 (SEER) and 19 (External) patients; b, based on AJCC staging for ovarian tumors. Unknown in 24 (SEER) patients; c, based on AJCC staging for ovarian tumors. Unknown in six (SEER) patients; d, based on AJCC staging for ovarian tumors. Unknown in 23 (SEER) patients; e, unknown in eight (SEER) patients; f, unknown in 96 (SEER) and five (External) patients; g, unknown in 34 (SEER) and 40 (External) patients; h, unknown in 12 (SEER) and 21 (External) patients; i, unknown in 18 (SEER) and 20 (External) patients; j, including one patient with both EBRT and RAI. AJCC, American Joint Committee on Cancer; BSO, bilateral salpingo-oophorectomy; CNS, central nervous system; COPD, chronic obstructive pulmonary disease; CTO, confined to ovary; DM/PE, distant metastasis or peritoneal extension; DSS, disease-specific survival; EBRT, external beam radiation therapy; IQR, interquartile range; MSO, malignant struma ovarii; OS, overall survival; PD/UD, poorly differentiated or undifferentiated; PR, partial resection; RAI, radioiodine; SD, standard deviation; SEER, Surveillance, Epidemiology, and End Results; SOwO, salpingo-oophorectomy with omentectomy; TNM, tumor-node-metastasis; USO, unilateral salpingo-oophorectomy.
+
+
+Gland Surgery, Vol 14, No 6 June 2025 1059
+© AME Publishing Company. Gland Surg 2025;14(6):1052-1065 | https://dx.doi.org/10.21037/gs-2025-35
+curves’ 95% CI. In the testing cohort, RSF had the most outstanding performance (c-index =0.841, 95% CI: 0.732–0.916) compared to other models (Figure 2A). Similarly, RSF had the highest mAUC (0.852, Figure 2B) and the lowest IBS (0.042, Figure 2C). TdAUC curves gradually dropped but recovered slightly since 170 months (Figure 2B) while TdBS curves went up with time (Figure 2C). All models
+distinguished significantly between low-risk and high-risk groups (Figure 2D-2H) with RSF having the smallest P value (<0.001). Taken together, these results indicated that RSF should be selected as the final optimal model. As shown by the KM curves for each of the 194 individuals of the testing cohort (Figure 3A), risk stratification based on RSF clearly differentiated patients with higher death risk from those
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+est. probability of survival
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+est. probability of survival
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+est. probability of survival
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+est. probability of survival
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+est. probability of survival
+0.25
+0.20
+0.15
+0.10
+0.05
+0.00
+Time-dependent BS
+1.0
+0.9
+0.8
+0.7
+0.6
+0.5
+Time-dependent AUC
+1.0
+0.9
+0.8
+0.7
+0.6
+0.5
+C-index with 95% CI
+0 60 120 180 240 Time, months
+0 60 120 180 240 Time, months
+0 60 120 180 240 Time, months
+0 60 120 180 240 Time, months
+0 60 120 180 240 Time, months
+0 30 60 90 120 150 180 210 Time, months
+0 30 60 90 120 150 180 210 Time, months
+Low risk High risk
+CoxPH 0.778 0.642–0.885
+CoxNet 0.779 0.645–0.886
+RSF 0.841 0.732–0.916
+GBM 0.786 0.646–0.897
+ST 0.793 0.636–0.889
+Low risk High risk
+Low risk High risk
+Low risk High risk
+CoxPH IBS =0.050 CoxNet IBS =0.049 RSF IBS =0.042 GBM IBS =0.053 ST IBS =0.049 Chance level IBS =0.250
+CoxPH mAUC =0.773 CoxNet mAUC =0.775 RSF mAUC =0.852 GBM mAUC =0.815 ST mAUC =0.803 Chance level mAUC =0.500
+ST
+RSF
+CoxPH CoxNet
+GBM
+Low risk High risk
+P-value <0.001
+P-value <0.001
+P-value =0.002 P-value =0.001
+P-value <0.001
+Model performance in testing set
+A
+B
+C
+D
+F
+H
+E
+G
+Figure 2 Evaluation of the five models in the external testing set. (A) Bar plot of Harrell’s concordances (c-indices) with 95% CIs calculated by 1,000-times bootstrapping. (B) Time-dependent AUC curves in the 5th–95th percentile ranges of the follow-up time. (C) Time-dependent BS curves in the 5th–95th percentile ranges of the follow-up time. (D-H) Kaplan-Meier curves of low-risk and high-risk groups stratified by CoxPH (D), CoxNet (E), RSF (F), GBM (G), and ST (H). P values were calculated by log-rank test. AUC, area under the curve; BS, Brier score; CIs, confidence intervals; CoxNet, Cox with elastic net penalty; CoxPH, Cox proportional hazard; est., estimated; GBM, gradient boosting machine; IBS, integrated Brier score; mAUC, mean area under the curve; RSF, random survival forest; ST, survival tree.
+
+
+Yan et al. ML-based survival prediction and stratification for MSO
+1060
+© AME Publishing Company. Gland Surg 2025;14(6):1052-1065 | https://dx.doi.org/10.21037/gs-2025-35
+with lower risk.
+Model interpretability and web application
+The best hyperparameters for the final RSF model were “max_depth” =680 and “n_estimators” =4. Unlike traditional CoxPH, there is no coefficient for each predictor variable in RSF, therefore we introduced SHAP visualization to aid in
+its interpretability. Among all 13 features, age had the highest mean absolute SHAP value, indicating its strongest predictive power, followed by hysterectomy, tumor size and AJCC stage (Figure 3B). N category, EBRT and USO had nearly no predictive significance. With the increase in age, tumor size and AJCC stage, the probability for death increased, although there were some outliers. Patients with higher M
+0 60 120 180 240 300 360 Time, months
+−2 0
+456789
+2.0 2.5 3.0 3.5 4.0 4.5
+2 4 6 8 10 12 SHAP value (impact on model output)
+0 60 120 180 240 300 360 Time, months
+0 60 120 180 240 300 360 Time, months
+E[f(x)] =4.342
+E[f(x)] =4.342 f(x) =4.304
+f(x) =9.14
+Age Hysterectomy Tumor size AJCC stage Radiotherapy_RAI M category Grade Extent Surgery_PR Chemotherapy N category Radiotherapy_EBRT Surgery_USO
+54 years = Age Yes = Hysterectomy I = AJCC stage 60 mm = Tumor size No/Unknown = Radiotherapy_RAI CTO = Extent M0 = M category No = Surgery_PR Differentiated = Grade No/Unknown = Chemotherapy N0 = N category No/Unknown = Radiotherapy_EBRT No = Surgery_USO
+PD/UD = Grade 30 years = Age No = Hysterectomy CTO = Extent No = Surgery_PR No/Unknown = Radiotherapy_RAl M0 = M category No/Unknown = Chemotherapy I = AJCC stage 130 mm = Tumor size N0 = N category No/Unknown = Radiotherapy_EBRT Yes = Surgery_USO
+High Yes
+Feature value
+Low No
+High-risk group Low-risk group
+High-risk group Survival probability 5-year: 65.6% 10-year: 60.5%
+Survival probability 5-year: 99.2% 10-year: 89.0%
+Low-risk group
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+est. probability of survival
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+est. probability of survival
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+est. probability of survival
+AB
+C DE
+FG
+Figure 3 Interpretability and deployment of the final RSF model. (A) KM curves of patients of the testing cohort in the high-risk and lowrisk group, stratified by the RSF model. (B) SHAP beeswarm plot of the RSF model. (C) The interface of the web application “MSO-Surv”. (D,E) Illustration of an exemplary output of a 54-year-old patient who was predicted to be at high-risk, with a predicted KM curve plotted (E). (F,G) Illustration of an exemplary output of a 30-year-old patient who was predicted to be at low-risk, with a predicted KM curve plotted (G). The x-axis of the SHAP waterfall plot quantifies each feature’s contribution to MSO-Surv’s output (D,F). AJCC, American Joint Committee on Cancer; BSO, bilateral salpingo-oophorectomy; CTO, confined to ovary; D, differentiated; DM/PE, distant metastasis or peritoneal extension; EBRT, external beam radiation therapy; est., estimated; KM, Kaplan-Meier; MSO, malignant struma ovarii; PD/UD, poorly differentiated or undifferentiated; PR, partial resection; RAI, radioiodine; RSF, random survival forest; SEER, Surveillance, Epidemiology, and End Results; SHAP, SHapley Additive exPlanations; SOwO, salpingo-oophorectomy with omentectomy; TNM, tumor-node-metastasis; USO, unilateral salpingo-oophorectomy.
+
+
+Gland Surgery, Vol 14, No 6 June 2025 1061
+© AME Publishing Company. Gland Surg 2025;14(6):1052-1065 | https://dx.doi.org/10.21037/gs-2025-35
+category and grade were more likely to be predicted with higher death risk, while the role of disease extent seemed ambiguous. In terms of treatment modalities, receiving RAI and PR seemed associated with lower death probability while receiving hysterectomy and chemotherapy seemed associated with higher probability however there were high missing rate for RAI and chemotherapy. Lastly, we established a web application for the best model (https://mso-surv.streamlit.app/), namely “MSOSurv”. By inputting the patient’s characteristics in a userfriendly interface (Figure 3C), a SHAP waterfall plot is created implying how the prediction was made (Figure 3D). Meanwhile, MSO-Surv can generate a predicted KM curve with survival probability and risk stratification (Figure 3E). For example, a 54-year-old patient with a 60 mm-sized stage I differentiated tumor who underwent hysterectomy is stratified into the high-risk group with a 5-year and 10-year survival probability of 65.6% and 60.5% respectively (Figure 3D,3E). In contrast, a 30-year-old patient with a 130 mm-sized stage I non-differentiated tumor is stratified into the low-risk group with a 5-year and 10-year survival probability of 99.2% and 89.0% respectively (Figure 3F,3G).
+Discussion
+Our study constructed and validated a ML-based prognostic tool for patients with MSO. This model can predict the patients’ OS probability at a particular time and stratify them into binary risk groups. An interactive application implementing this model is also available online. Furthermore, explainable ML revealed the association between patient features and the predicted prognosis. SO is a rare type of ovarian germ cell tumors (OGCTs), while MSO only represents around 0.5–10% of all SOs (31). Furthermore, although MSO is historically malignant, its biological behavior varies considerably, unrelated to its morphologic features (32). In this context, disease course and prognosis of MSO is little understood with evidence mainly from systematic review of case reports/series (11-15,33,34). In 2015, Goffredo et al. identified 68 patients with MSO from the SEER program, which was the largest cohort at the time (9). They concluded that both OS and DSS for MSO were excellent whatsoever the treatment administered. The current study provided the updated survival profile of MSO using the latest SEER databases and compared them with a pooled series. We reconfirmed that MSO had an almost horizontal DSS curve (Figure 1B,1C) with age as the most important predictor for OS (Figure 3B),
+showing a survival pattern similar to eutopic thyroid cancer (TC). Recently, statistical and ML-based models have been widely used to predict prognosis of endocrine and gynecological tumors (35-37). In thyroidology, structural recurrence of papillary TC was predicted by ML algorithms which overperformed ATA risk stratification (38). He et al. improved the AJCC TNM staging system using decision tree methodology (39). ML models were also applied in OS prediction for anaplastic TC (40). For ovarian tumors, Song et al. developed a nomogram to predict 1-, 3-, and 5-year OS of malignant OGCT which included MSO in their study (41). However, very few reports have studied the prediction system exclusively for MSO, probably due to its rarity, which hindered our understanding over the disease as well as personalized managements.
+To the best of our knowledge, this is the first study that used time-to-event ML to predict survival of patients with MSO. A recent study by Alshwayyat et al. trained a series of ML prognostic models for MSO using data from the SEER program (17). However, their models were only tested internally and could only predict the probability of survival at 5 years. Instead, our study validated the models on an external dataset and yielded robust accuracies. Our models can predict the survival probability for each individual with MSO at all timepoints in a period of more than 25 years. Among all algorithms, RSF reached the highest c-index (0.841, Figure 2A) and mAUC (0.852, Figure 2B), and the lowest IBS (0.042, Figure 2C) in the testing cohort. It is worth noting that RSF also performed well in classification, reaching an AUC of 0.87 for 5-year OS (Figure 2B).
+Moreover, there has been no unanimous risk stratification for MSO. Addley et al. introduced a risk stratification and management algorithm based on experience of a single institution (6). Another study modified eutopic TC’s risk system for MSO but stratified these patients unsatisfactorily (16). Using a data-driven approach and ML algorithms, our study successfully built a risk system for MSO de novo for the first time which can assist decision making and forming guidelines (Figure 3A). Additionally, a user-friendly web application was implemented to enhance its clinical utility (Figure 3C-3G). We then used SHAP to explain the ML model’s output and to identify MSO’s prognostic risk factors (Figure 3B). Consistent with previous studies, higher tumor grade and distant metastasis was associated with poorer OS. This relationship was also similar for tumor size and AJCC stage, although several outliers were noted which was likely due to
+
+
+Yan et al. ML-based survival prediction and stratification for MSO
+1062
+© AME Publishing Company. Gland Surg 2025;14(6):1052-1065 | https://dx.doi.org/10.21037/gs-2025-35
+the limited case number. On the other hand, extent (CTO vs. DM/PE) had an undetermined ambiguous impact on prediction outcome. Together with a previous study (13), our result questioned whether CTO [AJCC/International Federation of Gynecology and Obstetrics (FIGO) stage I] itself plays a role as a prognostic factor. Also, N category had nearly no predictive power for OS, suggesting that staging or therapeutic lymph node dissection could be omitted in MSO. Future efforts should be made to develop a new staging system for MSO as it has a different survival profile from other ovarian tumors and the traditional AJCC/FIGO system might not be suitable. The optimal extent of resection for MSO remains under debate (15,31). Unexpectedly, we have found that hysterectomy was associated with poorer OS while PR was associated with better OS. Similar to other malignant ovarian germ cell tumors (MOGCTs) (42,43), a conservative surgery might be considered for MSO in order to preserve fertility and improve quality of life, since our data showed no prognostic benefits from extended resection. However, this observation might likely also reflect selection bias, where hysterectomy may have been performed more frequently in advanced cases. Definitive treatment recommendations should await validation in larger prospective studies. We also found that chemotherapy was negatively associated with OS, implying that MSO might be treated as a different entity from other MOGCTs where platinum-based regimen is a major treatment (44). Contrarily, our results showed RAI was related to improved survival, possibly supporting the positive role of thyroidrelated treatment. Though postoperative treatment for MSO was not standardized, total thyroidectomy with subsequent RAI may be recommended for selected patients especially those with distant metastasis or synchronous eutopic TC (45). However, these observations require careful interpretation due to high rate of missingness (Table 1). We emphasize these therapy-related associations should be viewed as hypothesis-generating rather than conclusive and need future validation. Taken together, although MSO is mainly treated by gynecologists and diagnosed postoperatively, its biological features may resemble an eutopic TC. MDT involving endocrine surgeons and nuclear radiologists should be considered for all patients with MSO. And in this case, our study provided a helpful tool for patient consultation, therapeutic decision making and tailoring follow-up plan. While future large-scale studies are needed for validation, at this stage our prognostic model may serve as a valuable
+counseling tool in visualizing outcomes, informing modifiable/non-modifiable factors and managing follow-up expectations. There are some limitations of this study. Firstly, the sample size was small for a modelling study which may introduce some biases (46). Nevertheless, our study attempted to include all available cases and was one of the largest series so far, given the extremely rare incidence of the tumor. Secondly, similar to other SEER-based studies (47), some features had a high proportion of missing values, such as RAI and chemotherapy. To address this problem, we used multiple imputation and external validation to ensure reliability, but residual confounding may persist, rendering our associations suggestive rather than conclusive. Thirdly, some therapeutic, histological and molecular features of MSO were not included in this study due to SEER database constraints. Unfortunately, we were not able to assess the impact of total thyroidectomy and surgical margin on MSO OS. Recent efforts have found some genetic mutations associated with malignancy and aggressiveness of MSO (48,49), however their prognostic values are still to be studied. Lastly, although SHAP technique was used to explain the ML model, it was not designed for causal inference. Research is warranted to further uncover the underlying mechanisms in MSO tumorigenesis and progression. Meanwhile, results of our study should be verified in a larger population and with longer follow-up. Future multi-center or national hospital-based registry studies may incorporate histopathological, molecular, and genetic profiles to investigate this disease at a finer scale.
+Conclusions
+In conclusion, we successfully developed the first externally validated time-to-event model to predict prognosis of individuals with MSO. A web-based system named MSOSurv was deployed integrating probability prediction, risk stratification, and interpretability. We identified the most significant predictive features for worse OS, which include older age, hysterectomy, larger tumor size and higher AJCC stage. The presented model has the potential to be translated into clinical practice, to aid in patient counselling and designating treatment or surveillance plan.
+Acknowledgments
+The authors thank Dr. Sijian Li et al. of Peking Union Medical College Hospital for creating a database of
+
+
+Gland Surgery, Vol 14, No 6 June 2025 1063
+© AME Publishing Company. Gland Surg 2025;14(6):1052-1065 | https://dx.doi.org/10.21037/gs-2025-35
+MSO patients. The authors also thank the patients who participated in SEER program and personnel involved.
+Footnote
+Reporting Checklist: The authors have completed the TRIPOD reporting checklist. Available at https:// gs.amegroups.com/article/view/10.21037/gs-2025-35/rc
+Peer Review File: Available at https://gs.amegroups.com/ article/view/10.21037/gs-2025-35/prf
+Funding: This study was funded by the General Program of National Natural Science Foundation of China (No. 82172727) and the General Program of Beijing Natural Science Foundation (No. 7202164).
+Conflicts of Interest: All authors have completed the ICMJE uniform disclosure form (available at https://gs.amegroups. com/article/view/10.21037/gs-2025-35/coif). The authors have no conflicts of interest to declare.
+Ethical Statement: The authors are accountable for all aspects of the work in ensuring that questions related to the accuracy or integrity of any part of the work are appropriately investigated and resolved. This study was conducted in accordance with the Declaration of Helsinki and its subsequent amendments. This study was exempt from ethical review by the Institutional Review Board of Peking Union Medical College Hospital (No. I-24ZM0036) and informed consent was not required as the study utilized only publicly available, de-identified data from previously published literature and SEER database.
+Open Access Statement: This is an Open Access article distributed in accordance with the Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International License (CC BY-NC-ND 4.0), which permits the noncommercial replication and distribution of the article with the strict proviso that no changes or edits are made and the original work is properly cited (including links to both the formal publication through the relevant DOI and the license). See: https://creativecommons.org/licenses/by-nc-nd/4.0/.
+References
+1. Wei S, Baloch ZW, LiVolsi VA. Pathology of Struma Ovarii: A Report of 96 Cases. Endocr Pathol
+2015;26:342-8. 2. Tondi Resta I, Sande CM, LiVolsi VA. Neoplasms in Struma Ovarii: A Review. Endocr Pathol 2023;34:455-60. 3. Li S, Hong R, Yin M, et al. Incidence, clinical characteristics, and survival outcomes of ovarian strumal diseases: a retrospective cohort study. BMC Womens Health 2023;23:497. 4. Ye R, Zheng Y, Pan F, et al. Differentiating struma ovarii from FIGO stage I malignant ovarian tumors in O-RADS MRI 5 lesions: a targeted cohort study. Abdom Radiol (NY) 2025;50:1426-34. 5. Ryu HJ, Leem DE, Yoo JH, et al. Clinical Manifestations of Malignant Struma Ovarii: A Retrospective Case Series in a Tertiary Hospital in Korea. Endocrinol Metab (Seoul) 2024;39:461-7. 6. Addley S, Mihai R, Alazzam M, et al. Malignant struma ovarii: surgical, histopathological and survival outcomes for thyroid-type carcinoma of struma ovarii with recommendations for standardising multi-modal management. A retrospective case series sharing the experience of a single institution over 10 years. Arch Gynecol Obstet 2021;303:863-70. 7. Marcy PY, Thariat J, Benisvy D, et al. Lethal, malignant, metastatic struma ovarii. Thyroid 2010;20:1037-40. 8. Shaco-Levy R, Bean SM, Bentley RC, et al. Natural history of biologically malignant struma ovarii: analysis of 27 cases with extraovarian spread. Int J Gynecol Pathol 2010;29:212-27. 9. Goffredo P, Sawka AM, Pura J, et al. Malignant struma ovarii: a population-level analysis of a large series of 68 patients. Thyroid 2015;25:211-5. 10. González Aguilera B, Guerrero Vázquez R, Gros Herguido N, et al. The lack of consensus in management of malignant struma ovarii. Gynecol Endocrinol 2015;31:258-9. 11. Li S, Yang T, Li X, et al. FIGO Stage IV and Age Over 55 Years as Prognostic Predicators in Patients With Metastatic Malignant Struma Ovarii. Front Oncol 2020;10:584917. 12. Li S, Yang T, Xiang Y, et al. Clinical characteristics and survival outcomes of malignant struma ovarii confined to the ovary. BMC Cancer 2021;21:383. 13. Li S, Kong S, Wang X, et al. Survival Outcomes and Prognostic Predictors in Patients With Malignant Struma Ovarii. Front Med (Lausanne) 2021;8:774691. 14. Ayhan S, Kilic F, Ersak B, et al. Malignant struma ovarii: From case to analysis. J Obstet Gynaecol Res 2021;47:3339-51. 15. Ao M, Wu Y, Huo Z, et al. Surgical approach and
+
+
+Yan et al. ML-based survival prediction and stratification for MSO
+1064
+© AME Publishing Company. Gland Surg 2025;14(6):1052-1065 | https://dx.doi.org/10.21037/gs-2025-35
+recurrence risk in struma ovarii: A retrospective and systematic analysis. Biomol Biomed 2025;25:1092-8. 16. Egan C, Stefanova D, Thiesmeyer JW, et al. Proposed Risk Stratification and Patterns of Radioactive Iodine Therapy in Malignant Struma Ovarii. Thyroid 2022;32:1101-8. 17. Alshwayyat S, Abo-Elnour DE, Dabash TY, et al. Personalized approach to malignant struma ovarii: Insights from a web-based machine learning tool. Int J Gynaecol Obstet 2025;168:343-52. 18. Park JI, Bozkurt S, Park JW, et al. Evaluation of race/ ethnicity-specific survival machine learning models for Hispanic and Black patients with breast cancer. BMJ Health Care Inform 2023;30:e100666.
+19. Fritz AG. International Classification of Diseases for Oncology: ICD-O. World Health Organization; 2000. 20. Amin MB, Greene FL, Edge SB, et al. The Eighth Edition AJCC Cancer Staging Manual: Continuing to build a bridge from a population-based to a more "personalized" approach to cancer staging. CA Cancer J Clin 2017;67:93-9. 21. van Buuren S, Groothuis-Oudshoorn K. mice: Multivariate imputation by chained equations in R. Journal of Statistical Software 2011;45:1-67. 22. Yeo IK, Johnson RA. A new family of power transformations to improve normality or symmetry. Biometrika 2000;87:954-9. 23. Cox DR. Regression Models and Life-Tables. Journal of the Royal Statistical Society: Series B (Methodological) 1972;34:187-220. 24. Simon N, Friedman J, Hastie T, et al. Regularization Paths for Cox's Proportional Hazards Model via Coordinate Descent. J Stat Softw 2011;39:1-13. 25. Ishwaran H, Kogalur UB, Blackstone EH, et al. Random Survival Forests. The Annals of Applied Statistics 2008;2:841-60. 26. Ridgeway G. The State of Boosting. Computing science and statistics 1999;31:172-81. 27. Leblanc M, Crowley J. Survival Trees by Goodness of Split. Journal of the American Statistical Association 1993;88:457-67.
+28. Lundberg SM, Lee SI. A unified approach to interpreting model predictions. Advances in Neural Information Processing Systems 2017;30:4765-74. 29. Pedregosa F, Varoquaux G, Gramfort A, et al. Scikit-learn: Machine learning in Python. Journal of machine Learning research 2011;12:2825-30. 30. Pölsterl S. scikit-survival: A Library for Time-to-Event Analysis Built on Top of scikit-learn. Journal of Machine
+Learning Research 2020;21:1-6. 31. Smith LP, Brubaker LW, Wolsky RJ. It Does Exist! Diagnosis and Management of Thyroid Carcinomas Originating in Struma Ovarii. Surg Pathol Clin 2023;16:75-86. 32. Shaco-Levy R, Peng RY, Snyder MJ, et al. Malignant struma ovarii: a blinded study of 86 cases assessing which histologic features correlate with aggressive clinical behavior. Arch Pathol Lab Med 2012;136:172-8. 33. Marti JL, Clark VE, Harper H, et al. Optimal surgical management of well-differentiated thyroid cancer arising in struma ovarii: a series of 4 patients and a review of 53 reported cases. Thyroid 2012;22:400-6. 34. Jenkins CR, Hajibandeh S, Hajibandeh S, et al. Prognostic significance of surgically treated malignant struma
+ovarii with or without adjuvant thyroid-related therapy: A systematic review and meta-analysis. World J Surg 2025;49:401-8. 35. P D, C G. A systematic review on machine learning and deep learning techniques in cancer survival prediction. Prog Biophys Mol Biol 2022;174:62-71. 36. Luisa Garo M, Deandreis D, Campennì A, et al. Accuracy of papillary thyroid cancer prognostic nomograms: a systematic review. Endocr Connect 2023;12:e220457. 37. Sheehy J, Rutledge H, Acharya UR, et al. Gynecological cancer prognosis using machine learning techniques: A systematic review of the last three decades (1990-2022). Artif Intell Med 2023;139:102536. 38. Wang H, Zhang C, Li Q, et al. Development and validation of prediction models for papillary thyroid cancer structural recurrence using machine learning approaches. BMC Cancer 2024;24:427. 39. He L, Xiang J, Zhang H. Rethinking the prognosis model of differentiated thyroid carcinoma. Front Endocrinol (Lausanne) 2024;15:1419125. 40. Barfejani AH, Rostami M, Rahimi M, et al. Predicting overall survival in anaplastic thyroid cancer using machine learning approaches. Eur Arch Otorhinolaryngol 2025;282:1653-7. 41. Song Z, Wang Y, Zhou Y, et al. Nomograms to predict the prognosis in malignant ovarian germ cell tumors: a large cohort study. BMC Cancer 2022;22:257. 42. Nasioudis D, Frey MK, Chapman-Davis E, et al. Fertilitypreserving surgery for advanced stage ovarian germ cell tumors. Gynecol Oncol 2017;147:493-6. 43. Zamani N, Rezaei Poor M, Ghasemian Dizajmehr S, et al. Fertility sparing surgery in malignant ovarian Germ cell tumor (MOGCT): 15 years experiences. BMC Womens
+
+
+Gland Surgery, Vol 14, No 6 June 2025 1065
+© AME Publishing Company. Gland Surg 2025;14(6):1052-1065 | https://dx.doi.org/10.21037/gs-2025-35
+Health 2021;21:282. 44. Uccello M, Boussios S, Samartzis EP, et al. Systemic anti-cancer treatment in malignant ovarian germ cell tumours (MOGCTs): current management and promising approaches. Ann Transl Med 2020;8:1713. 45. Bellini P, Dondi F, Zilioli V, et al. The Role of Radioiodine Therapy in Differentiated Thyroid Cancer Arising from Struma Ovarii: A Systematic Review. J Clin Med 2024;13:7729. 46. Tsegaye B, Snell KIE, Archer L, et al. Larger sample sizes are needed when developing a clinical prediction model using machine learning in oncology: methodological systematic review. J Clin Epidemiol 2025;180:111675.
+47. Doll KM, Rademaker A, Sosa JA. Practical Guide to Surgical Data Sets: Surveillance, Epidemiology, and End Results (SEER) Database. JAMA Surg 2018;153:588-9. 48. Neyrand S, Trecourt A, Lopez J, et al. Role of gene sequencing in classifying struma ovarii: BRAF p.G469A mutation and TERT promoter alterations favour malignant struma ovarii. Histopathology 2024;84:291-300. 49. Pires C, Saramago A, Moura MM, et al. Identification of Germline FOXE1 and Somatic MAPK Pathway Gene Alterations in Patients with Malignant Struma Ovarii, Cleft Palate and Thyroid Cancer. Int J Mol Sci 2024;25:1966.
+Cite this article as: Yan S, Cao Z, Zhang Q, Chen B, Wu H, Cao H, Li X, Wang Y, Wang Y, Chen Y, Liu Z. Individualized survival prediction and risk stratification using machine learning for patients with malignant struma ovarii: a population-based study with external validation. Gland Surg 2025;14(6):10521065. doi: 10.21037/gs-2025-35
