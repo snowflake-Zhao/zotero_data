@@ -1,0 +1,125 @@
+Java 核心技术(进阶)
+第四章 高级文件处理
+第六节 docx简介及解析
+华东师范大学 陈良育
+1
+
+
+Docx 简介
+• 以Microsoft Office的doc/docx为主要处理对象。
+• Word2003(包括)之前都是doc,文档格式不公开。
+• Word2007(包括)之后都是docx,遵循XML路线,文档格
+式公开。
+• docx为主要研究对象
+– 文字样式
+– 表格
+– 图片
+– 公式
+
+
+Docx 功能和处理
+• 常见功能
+– docx解析
+– docx生成(完全生成,模板加部分生成:套打)
+• 处理的第三方库
+– Jacob, COM4J (Windows 平台)
+– POI, docx4j, OpenOffice/Libre Office SDK (免费)
+– Aspose (收费)
+– 一些开源的OpenXML的包。
+
+
+POI
+• Apache POI
+– Apache 出品,必属精品, poi.apache.org
+– 可处理docx, xlsx, pptx, visio等office套件
+– 纯Java工具包,无需第三方依赖
+– 主要类
+• XWPFDocument 整个文档对象
+• XWPFParagraph 段落
+• XWPFRun 一个片段(字体样式相同的一段)
+• XWPFPicture 图片
+• XWPFTable 表格
+
+
+Doc/Docx处理总结
+• 不同的Office工具,产生出来的docx文件格式不兼容
+• 不同的第三方包,能够解析和生成的内容也不同,使用的类也不同
+• doc/docx功能非常非常多,第三方包不是万能的,也存在无法解析
+的情况
+• API很多,需要多查询、多练习
+
+
+代码(1) TextRead.java
+
+
+代码(2) TextRead.java
+
+
+代码(3) TextRead.java
+
+
+代码(4) ImageRead.java
+
+
+代码(5) ImageRead.java
+
+
+代码(6) ImageRead.java
+
+
+代码(7) ImageRead.java
+
+
+代码(8) ImageWrite.java
+
+
+代码(9) ImageWrite.java
+
+
+代码(10) ImageWrite.java
+
+
+代码(11) TableRead.java
+
+
+代码(12) TableRead.java
+
+
+代码(13) TableRead.java
+
+
+代码(14) TableRead.java
+
+
+代码(15) TableWrite.java
+
+
+代码(16) TableWrite.java
+
+
+代码(17) TableWrite.java
+
+
+代码(18) TemplateTest.java
+
+
+代码(19) TemplateTest.java
+
+
+代码(20) TemplateTest.java
+
+
+代码(21) TemplateTest.java
+
+
+代码(22) TemplateTest.java
+
+
+代码(23) TemplateTest.java
+
+
+代码(24) TemplateTest.java
+
+
+30
+谢 谢!
