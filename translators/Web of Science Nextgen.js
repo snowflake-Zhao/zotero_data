@@ -9,7 +9,7 @@
 	"priority": 100,
 	"inRepository": true,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2025-08-19 15:30:00"
+	"lastUpdated": "2026-01-05 17:50:00"
 }
 
 /*
@@ -74,7 +74,7 @@ async function getSearchResultsLazy(doc, url) {
 	let [, qid, sortBy] = url.match(SEARCH_RE);
 	Z.debug('Export params:');
 	Z.debug({ qid, sortBy });
-	let markFrom = parseInt(text(doc, 'app-records-list > app-record .mat-checkbox-label'));
+	let markFrom = parseInt(text(doc, 'app-records-list > app-record .mdc-label'));
 	if (isNaN(markFrom)) {
 		markFrom = 1;
 	}
