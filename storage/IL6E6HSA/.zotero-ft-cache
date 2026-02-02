@@ -1,0 +1,361 @@
+© AME Publishing Company. Quant Imaging Med Surg 2025;15(8):6751-6762 | https://dx.doi.org/10.21037/qims-2024-2671
+Original Article
+Peritumoral and intratumoral magnetic resonance imaging-based
+radiomics of brain metastases for predicting the response to
+EGFR-tyrosine kinase inhibitors in metastatic non-small cell
+lung cancer
+Ye Li1#, Xinna Lv2#, Xiaoyue Xu2, Ziwei Zheng2, Yiyan Lu2, Zhijie Yao3, Dailun Hou2
+1Department of Radiology, Shandong Provincial Hospital Affiliated to Shandong First Medical University, Jinan, China; 2Department of Radiology,
+Beijing Chest Hospital, Capital Medical University, Beijing, China; 3Department of Radiology, Shandong Cancer Hospital and Institute, Shandong
+First Medical University, Shandong Academy of Medical Sciences, Jinan, China
+Contributions: (I) Conception and design: Y Li, X Lv, D Hou, Z Yao; (II) Administrative support: D Hou; (III) Provision of study materials or patients:
+Z Yao; (IV) Collection and assembly of data: X Xu, Z Zheng, Y Lu; (V) Data analysis and interpretation: Y Li, X Lv; (VI) Manuscript writing: All
+authors; (VII) Final approval of manuscript: All authors.
+#These authors contributed equally to this work.
+Correspondence to: Zhijie Yao, MS. Department of Radiology, Shandong Cancer Hospital and Institute, Shandong First Medical University, Shandong
+Academy of Medical Sciences, 440 Jiyan Highway, Huaiyin District, Jinan 250021, China. Email: yaozhijiezz@163.com; Dailun Hou, PhD.
+Department of Radiology, Beijing Chest Hospital, Capital Medical University, No. 9, Beiguan Street, Tongzhou District, Beijing 101149, China.
+Email: hou.dl@mail.ccmu.edu.cn.
+Background: The early prediction of treatment response for EGFR-tyrosine kinase inhibitors (EGFRTKIs) is critical to guiding therapy in patients with metastatic non-small cell lung cancer (NSCLC). This study aimed to develop a magnetic resonance imaging (MRI)-based radiomics model based on intratumoral and peritumoral regions to assess the response of patients with metastatic NSCLC to EGFR-TKIs.
+Methods: We retrospectively recruited 418 and 160 patients with brain metastases (BMs) from EGFRmutant NSCLC who received EGFR-TKI therapy from hospital 1 and hospital 2, respectively. The intratumoral region of interest (ROI_I) was manually segmented for contrast-enhanced T1-weighted (T1-CE) imaging. Five peritumoral ROIs (ROI_P) at 2-, 4-, 6-, 8-, and 10-mm expansions along ROI_I were defined, and combined ROIs (ROI_I and ROI_P) were automatically generated. The least absolute shrinkage and selection operator (LASSO) was used to select the most predictive features, which was followed by the construction of radiomics models (the ROI_I model, ROI_P model, and the combined model). The area under the curve (AUC) and Shapley method were used to validate the performance of the models and explain the best models. Results: The combined intratumoral and peritumoral 6-mm regions achieved the best performance, with AUCs of 0.913 and 0.826 in the training and test cohort. The ROI_I model also demonstrated a degree of classification power in both the training and test cohort, with AUCs of 0.868 and 0.762, respectively.
+Conclusions: As compared to models consisting of intratumoral or peritumoral radiomics features alone, the model combining intratumoral and peritumoral radiomics features achieved better performance in predicting therapeutic response to EGFR-TKIs. The optimal combined region model with 6-mm peritumoral expansion along the tumor may benefit the clinical treatment of NSCLC.
+Keywords: Radiomics; brain metastases (BMs); EGFR; peritumoral; magnetic resonance imaging (MRI)
+
+
+Li et al. Peritumoral radiomics predicts EGFR-TKIs effectiveness
+6752
+© AME Publishing Company. Quant Imaging Med Surg 2025;15(8):6751-6762 | https://dx.doi.org/10.21037/qims-2024-2671
+Introduction
+Brain metastasis (BM) is a prevalent and lethal complication of cancer, with the associated median survival being less than 1 year (1). Advancements in systemic therapies and imaging techniques have led to an increase in the incidence of asymptomatic BM (2). Lung cancer is the predominant type of cancer that commonly metastasizes to the central nervous system (CNS) (3). Patients with non-small cell lung cancer (NSCLC) harboring epidermal growth factor receptor (EGFR) are more prone to BM (3). EGFR-tyrosine kinase inhibitor (EGFR-TKI) therapy is routinely administered as the first-line treatment for these patients and has demonstrated significant clinical benefit in recent years (3). However, the treatment response varies among patients with the EGFR mutation and BM due to individual differences, with some experiencing rapid tumor progression following treatment (4). The early prediction of treatment response of targeted therapy, which can be combined with immunotherapy if necessary, may prolong patient survival. Magnetic resonance imaging (MRI) is a critical tool for diagnosing and monitoring BM in clinical practice (5). However, subjective radiological assessments cannot predict the therapeutic response to treatment. Markers capable of evaluating the therapeutic efficacy of EGFR-TKIs and identifying patients at high risk of tumor progression in advance could effectively improve their prognosis, yet such markers are lacking. Radiomics, an emerging technique, involves the deep mining and quantification of medical image information and can thus clarify the pathological and biological basis of diseases (6). The application of radiomics based on MRI in predicting mutation status in BM patients has garnered considerable attention (7-9), yet only a few studies have evaluated the therapeutic effect of EGFRTKIs in these patients (10,11). These studies (10,11) found that radiomics features based on the peritumoral edema area may have a degree of value in predicting patients’ therapeutic response to EGFR-TKIs. However, the radiomics model of peritumoral edema is not applicable to a large portion of patients with BM. Tumor cells in BM tend to be highly aggressive and infiltrate beyond the margin of the solid tumor, with poorly defined borders (12). The region surrounding the tumor contains various stromal and
+immune cells, such as astrocytes, microglia, macrophages, and lymphocytes, which are hyperactive and interact with the tumor cells (1,13). This interface region plays a pivotal role in the tumor microenvironment in terms of tumor growth and progression (13). Recent studies have reported that a model combining intra- and peritumoral radiomics features could achieve superior performance for therapeutic evaluation and prognostic prediction in different cancers (14-16). However, the underlying information contained in peritumoral region of BM has not been extensively characterized, significantly limiting our understanding of the tumor microenvironment. Consequently, the purpose of this study was to develop and validate a radiomics model consisting of intratumoral and peritumoral features to predict the treatment efficacy of targeted therapy in patients with EGFR-mutant NSCLC and BM. Additionally, the predictive values of various peritumoral regions that may assist in identifying patients who are the most likely to benefit from targeted therapy were compared. We present this article in accordance with the CLEAR reporting checklist (available at https://qims. amegroups.com/article/view/10.21037/qims-2024-2671/rc).
+Methods
+Participants
+This study was conducted in accordance with the Declaration of Helsinki and its subsequent amendments. This study was approved by the institutional ethics committee of Beijing Chest Hospital, Capital Medical University (No. YJS-2022-27) and Shandong Cancer Hospital and Institute, Shandong First Medical University, Shandong Academy of Medical Sciences (No. SDTHEC202409016). Written informed consent was waived due to retrospective nature of the study. A total of 418 patients were recruited from Beijing Chest Hospital from January 2017 to August 2023 as the training cohort, while 160 patients were recruited from Shandong Cancer Hospital and Institute between January 2016 to August 2023 as the test cohort. The inclusion criteria were as follows: (I) confirmed BM from NSCLC, (II) genetic testing results confirming the EGFR mutation, (III) administration of EGFR-TKI therapy, (IV) no other
+Submitted Nov 28, 2024. Accepted for publication May 15, 2025. Published online Jul 30, 2025.
+doi: 10.21037/qims-2024-2671
+View this article at: https://dx.doi.org/10.21037/qims-2024-2671
+
+
+Quantitative Imaging in Medicine and Surgery, Vol 15, No 8 August 2025 6753
+© AME Publishing Company. Quant Imaging Med Surg 2025;15(8):6751-6762 | https://dx.doi.org/10.21037/qims-2024-2671
+antitumor treatment for BM, and (V) completion of contrast-enhanced T1-weighted (T1-CE) imaging before treatment. Meanwhile, the exclusion criteria were (I) lowquality MRI data, (II) a history of other tumors, and (III) a lack of clinical materials. The interval between MRI acquisition and initiation of EGFR-TKI therapy was required to be no longer than 1 month.
+The assessment of treatment response to EGFR-TKIs was based on the Response Evaluation Criteria in Solid Tumors (RECIST) 1.1 (17). According to these criteria, we divided the patients into groups that were responsive and nonresponsive to EGFR-TKIs. The workflow of patient enrollment is provided in Figure 1.
+MRI acquisition
+The MRI scans of all patients were performed with 3.0-T MR scanners (Signa Pioneer, GE HealthCare, Chicago, IL, USA; MAGNETOM Skyra, Siemens Healthineers, Erlangen, Germany; Ingenia, Philips Healthcare, Best, the Netherlands) and 1.5-T MR scanners (Signa HDXT, GE HealthCare), with a 48- or 16-channel head coil. The MR scans mainly included T1-CE imaging. An intravenous gadolinium-based contrast agent was used at a dose of
+0.1 mmol/kg body weight. The T1-CE scan was acquired after contrast administration. The scanning parameters for the T1-CE imaging are presented in Table S1.
+Image registration and BM segmentation
+The images of the T1-CE sequence were resampled to 1×1×1 mm3 voxels. Three-dimensional tumor segmentation was conducted by a radiologist with 4 years of experience in brain MRI and was then confirmed or modified by another radiologist with 10 years of experience using 3D slicer software (http://www.slicer.org). The largest lesion for each patient was delineated as the intratumoral region of interest (ROI_I). Lesions with a long axis less than 10 mm in size were excluded from segmentation. The two radiologists were blind to the results of EGFR-TKI therapy.
+We used a dilation technique via Python to enlarge the tumor mask by a specified distance (in mm) to augment the areas and dimensions of BM regions. As a result, we expanded ROI_I by 2, 4, 6, 8, and 10 mm, yielding peritumoral regions defined ROI_P2, ROI_P4, ROI_P6, ROI_P8, and ROI_ P10, respectively. Finally, we combined the intratumoral and peritumoral regions into whole ROIs, which included ROI2, ROI4, ROI6, ROI8, and ROI10. Briefly, for each lesion, we
+Figure 1 The flowchart of patient enrollment. BM, brain metastasis; EGFR, epidermal growth factor receptor; MRI, magnetic resonance imaging; NSCLC, non-small cell lung cancer; T1-CE, contrast-enhanced T1-weighted; TKI, tyrosine kinase inhibitor.
+Testing cohort (n=160)
+Training cohort (n=418)
+786 patients enrolled between January 2017 to August 2023 from center 1
+301 patients enrolled between January 2016 to August 2023 from center 2
+Responder (n=277)
+Non-responder (n=141)
+Non-responder (n=50)
+Responder (n=110)
+Exclusion criteria: • Low-quality MRI data (n=185) • History of other tumors (n=127) • Lack of clinical materials (n=197)
+Inclusion criteria: • Confirmed BM from NSCLC • With genetic testing results of EGFR mutation • Received EGFR-TKI therapy • With no other anti-tumor treatment to BM • Underwent contrast-enhanced T1-CE before treatment
+
+
+Li et al. Peritumoral radiomics predicts EGFR-TKIs effectiveness
+6754
+© AME Publishing Company. Quant Imaging Med Surg 2025;15(8):6751-6762 | https://dx.doi.org/10.21037/qims-2024-2671
+created 11 ROIs for further analysis.
+Radiomics feature extraction
+The feature extraction process was performed through use of the “Pyradiomics” open-source Python package. To reduce and minimize the variations of images due to the application of different scanners and MRI protocols, normalization and discretization were applied to all datasets prior to feature extraction. Radiomics features were extracted based on the original images and seven filtertransformed images, which included Laplacian of Gaussian filter, gradient filter, wavelet filter, square filter, square root filter, logarithm filter, and exponential filter. In total, 1,835 features were extracted for each BM from the 11 ROIs including the intratumoral, peritumoral and combined ROIs. Detailed information of the radiomics features is available in the PyRadiomics official documentation (https:// pyradiomics.readthedocs.io/en/latest/features.html).
+Radiomics feature selection
+The synthetic minority oversampling technique (SMOTE) was first used to balance patients with BM according to response or nonresponse to EGFR-TKIs in order to avoid bias from the large training cohort. Subsequently, the independent samples t-test was applied to select the significantly different features between the two groups (P<0.05). Following this, Pearson correlation analysis was used to remove redundant features. For the feature pairs with an absolute value of the Pearson correlation coefficient greater than 0.9, features with a larger mean absolute correlation were removed. Least absolute shrinkage and selection operator (LASSO) regression was then applied to select the most predictive features with nonzero coefficients. Tenfold cross-validation was performed to determine the optimal tuning parameter λ value, and the features with nonzero coefficients were selected.
+Model construction
+We constructed 11 radiomics models using the optimally selected features from ROI_I (intratumoral regions alone); ROI_P2, ROI_P4, ROI_P6, ROI_P8, and ROI_ P10 (peritumoral regions alone); and ROI2, ROI4, ROI6, ROI8, and ROI10 models (combination of intratumoral and peritumoral regions). To determine the optimal classifier algorithm, the following machine learning
+classifier algorithms were applied: logistic regression (LR), k-nearest neighbors (KNN), random forest (RF), extremely randomized trees (extra trees), extreme gradient boosting (XGBoost), light gradient boosting machine (LightGBM), and multilayer perceptron (MLP). The best classifier algorithm was selected to establish the radiomics models. Model construction included the random division of the participants into training and validation cohorts at a ratio of 7:3 then using 10-fold cross-validation. Finally, the constructed model was tested in the test cohort.
+Model explanation and visualization
+Shapley additive explanation (SHAP) can explain the results of machine learning models, thus allowing clinicians to understand and enhance model transparency by providing global and local explainability. The SHAP value plots can provide the positive and negative contributions of the features to the model and rank the features in order of importance. In our study, a SHAP plot was used to display the most prominent features of the best model among the 11 radiomics models. The process of feature selection, model construction, and explanation were conducted via the Python “Scikit-learn” package (Scikit-learn version 0.21; http://scikit-learn.org/). The workflow of this study is presented in Figure 2.
+Statistical analysis
+Statistical analysis was completed via by SPSS software version 26 (IBM Corp., Armonk, NY, USA) and the Python “Scikit-learn” package. Continuous variables that had a normal distribution are expressed as the mean ± standard deviation and were compared with the t-test. Meanwhile, differences between groups of categorical variables were compared via the chi-squared test. The receiver operating characteristic (ROC) curve, accuracy, precision (positive predictive value), recall (sensitivity), F1 score, and area under ROC curve (AUC) with the 95% confidence interval (CI) were calculated to assess the performance of the models. P<0.05 indicated a significant difference.
+Results
+Clinical characteristics of patients
+Ultimately, a total of 578 patients with EGFR-mutant NSCLC with BM were recruited in the study. There were
+
+
+Quantitative Imaging in Medicine and Surgery, Vol 15, No 8 August 2025 6755
+© AME Publishing Company. Quant Imaging Med Surg 2025;15(8):6751-6762 | https://dx.doi.org/10.21037/qims-2024-2671
+Figure 2 The workflow of the study. (A) Acquisition of T1-CE images of patients with EGFR-mutant NSCLC and BM. (B) Segmentation of intratumoral, peritumoral, and combined ROIs. (C) Feature extraction via the t-test, Pearson correlation analysis, and the LASSO method. (D) To select the best algorithm for each ROI to construct model. (E) ROC curves were used to evaluate the model’s performance, and the SHAP summary plot was used to explain the contribution of features. (F) Illustrative example of model prediction result interpretation. BM, brain metastasis; EGFR, epidermal growth factor receptor; extra trees, extremely randomized trees; KNN, k-nearest neighbors; LASSO, least absolute shrinkage and selection operator; LightGBM, light gradient boosting machine; LR, logistic regression; MLP, multilayer perceptron; NSCLC, non-small cell lung cancer; RF, random forest; ROC, receiver operating characteristic; ROI, region of interest; SHAP, Shapley additive explanation; T1-CE, contrast-enhanced T1-weighted; XGBoost, extreme gradient boosting.
+418 lesions (mean diameter: 1.45±0.69 cm) in the training cohort and 160 lesions (mean diameter: 1.88±1.04 cm) in the test cohort. In the training cohort, there were 277 responsive and 141 non-responsive patients. In the test cohort, there were 110 responsive and 50 non-responsive patients. The clinical data of the patients are summarized in Table 1. In the training and test cohorts, the mean difference in age was −1.3 (95% CI: −3.437 to 0.837) and 0.7 (95% CI: −2.491 to 3.891), respectively. There were no significant differences in the basic characteristics between the training and test cohorts.
+Feature selection
+After the t-test, Pearson correlation analysis, and LASSO were applied (Figures S1-S11), a total of 393 highly predictive radiomics features were selected from 11 ROIs, including 100 first-order, 8 shape, and 285 texture features. The selected features of each ROI are listed in Table 2.
+Evaluation of the peritumoral region-based radiomics models
+Among the models based on peritumoral regions, the ROI_P4 model, constructed via KNN, showed the best
+Images acquisition ROI segmentation Features extraction
+Individual prediction Model evaluation and explanation
+SHAP
+ROC
+Model construction
+Best
+LR Intratumoral
+model
+Peritumoral
+model
+Combined
+model
+KNN
+RF
+MLP
+LightGBM
+XGBoost
+Extra tree
+t-test
+Pearson correlation
+LASSO
+First order Shape Texture
+ROI_I
+ROI_P2
+ROI2
+ROI_P4
+ROI4
+ROI_P6
+ROI6
+ROI_P8
+ROI8
+ROI_P10
+ROI10
+NSCLC patients with BM
+T1-CE
+A
+F
+B
+E
+C
+D
+
+
+Li et al. Peritumoral radiomics predicts EGFR-TKIs effectiveness
+6756
+© AME Publishing Company. Quant Imaging Med Surg 2025;15(8):6751-6762 | https://dx.doi.org/10.21037/qims-2024-2671
+performance in predicting the results of EGFR-TKI therapy,
+with AUCs of 0.863 (95% CI: 0.840–0.887) and 0.763
+(95% CI: 0.704–0.821) in the training and test cohorts,
+respectively. The ROI_P8 model, constructed via XGBoost,
+also performed well, with an AUC of 0.892 (95% CI: 0.871
+0.913) and 0.732 (95% CI: 0.667–0.797), respectively, for
+the training and test cohorts, which were higher than those of the ROI_P2 (KNN), ROI_P6 (RF), and ROI_P10 (LR) models, whose AUCs were 0.841 (95% CI: 0.816–0.866) and 0.708 (0.642–0.773), 0.834 (95% CI: 0.805–0.863), 0.663 (0.584–0.743), and 0.808 (95% CI: 0.779–0.838) and 0.618 (95% CI: 0.541–0.696), respectively. The ROC curve of the peritumoral region-based radiomics models in the training and test cohorts are shown in Figure 3A,3B, respectively, while the details of each model’s performance in the two cohorts are presented in Table 3 and Tables S2-S6, respectively.
+Evaluation of the combination radiomics models
+Compared to other models that combined regions, the ROI 6 model based on 6-mm intratumoral and peritumoral features using XGBoost achieved the best performance in the training and test cohorts, with AUCs of 0.913 (95% CI: 0.894–0.932) and 0.826 (95% CI: 0.773–0.879), respectively. The ROI_I model using KNN also showed a good discrimination power in the two cohorts, with AUCs of 0.868 (95% CI: 0.844–0.892) and 0.762 (95% CI: 0.702–0.822), respectively. In addition, the ROI 2, ROI 4, ROI 8, and ROI 10 models yielded AUCs of 0.853 (95% CI: 0.828–0.878), 0.853 (95% CI: 0.829–0.878), 0.887 (95% CI: 0.865–0.910), and 0.826 (95% CI: 0.798-0.854) in the training cohort, respectively, which were confirmed in the test cohort, with AUCs of 0.742 (95% CI: 0.677–0.806), 0.763 (95% CI: 0.705–0.820), 0.724 (95% CI: 0.661–0.786),
+Table 1 The clinical characteristics of patients in the training and test cohort
+Characteristic
+Training cohort (n=418) Test cohort (n=160)
+Responder (n=277) Nonresponder (n=141) P Responder (n=110) Nonresponder (n=50) P
+Age (years), mean ± SD 57.0±10.8 58.3±10.0 0.234 58.6±10.2 57.9±7.9 0.668
+Gender, n (%) 0.480 0.450
+Male 179 (64.62) 96 (68.09) 77 (70.00) 32 (64.00)
+Female 98 (35.38) 45 (31.91) 33 (30.00) 18 (36.00)
+Alcohol consumption, n (%) 0.802 0.230
+Yes 147 (53.07) 73 (51.77) 57 (51.82) 31 (62.00)
+No 130 (46.93) 68 (48.23) 53 (48.18) 19 (38.00)
+Smoking, n (%) 0.375 0.770
+Yes 158 (57.04) 74 (52.48) 73 (66.36) 32 (64.00)
+No 119 (42.96) 67 (47.52) 37 (33.64) 18 (36.00)
+SD, standard deviation.
+Table 2 The number of features selected for each model
+Model
+Number of features
+First-order features
+Shape features
+Texture
+features Total
+ROI_I 8 0 29 37
+ROI2 19 1 27 47
+ROI4 8 1 22 31
+ROI6 6 2 17 25
+ROI8 6 1 37 44
+ROI10 7 1 16 24
+ROI_P2 5 0 2 7
+ROI_P4 6 1 20 27
+ROI_P6 17 1 58 76
+ROI_P8 5 0 19 24
+ROI_P10 13 0 38 51
+Total 100 8 285 393
+ROI, region of interest.
+
+
+Quantitative Imaging in Medicine and Surgery, Vol 15, No 8 August 2025 6757
+© AME Publishing Company. Quant Imaging Med Surg 2025;15(8):6751-6762 | https://dx.doi.org/10.21037/qims-2024-2671
+Figure 3 ROC curves of radiomics models. ROC curves of peritumoral models in the (A) training and (B) test cohorts. ROC curves of the combined models in the (C) training and (D) test cohorts. AUC, area under the receiver operating characteristic curve; ROC, receiver operating characteristic; ROI, region of interest.
+Table 3 Predictive performance of each model in the training and test cohorts
+Index
+Training cohort Test cohort
+Accuracy AUC Sensitivity Specificity Accuracy AUC Sensitivity Specificity
+ROI_I 0.769 0.868 0.604 0.935 0.685 0.762 0.632 0.710
+ROI2 0.761 0.853 0.859 0.662 0.711 0.742 0.662 0.732
+ROI4 0.738 0.853 0.556 0.923 0.708 0.763 0.587 0.762
+ROI6 0.832 0.913 0.813 0.851 0.733 0.826 0.907 0.655
+ROI8 0.813 0.887 0.748 0.881 0.658 0.724 0.853 0.571
+ROI10 0.754 0.826 0.751 0.756 0.663 0.736 0.827 0.589
+ROI_P2 0.732 0.841 0.532 0.935 0.699 0.708 0.493 0.789
+ROI_P4 0.753 0.863 0.580 0.930 0.714 0.763 0.600 0.765
+ROI_P6 0.764 0.834 0.802 0.716 0.647 0.663 0.641 0.650
+ROI_P8 0.810 0.892 0.798 0.823 0.648 0.732 0.787 0.586
+ROI_P10 0.740 0.808 0.827 0.652 0.586 0.618 0.667 0.550
+AUC, area under the receiver operating characteristic curve; ROI, region of interest.
+ROI_P2 AUC =0.841 ROI_P4 AUC =0.863 ROI_P6 AUC =0.834 ROI_P8 AUC =0.892 ROI_P10 AUC =0.808
+ROI_I AUC =0.868 ROI2 AUC =0.853 ROI4 AUC =0.853 ROI6 AUC =0.913 ROI8 AUC =0.887 ROI10 AUC =0.826
+ROI_I AUC =0.762 ROI2 AUC =0.742 ROI4 AUC =0.763 ROI6 AUC =0.826 ROI8 AUC =0.724 ROI10 AUC =0.736
+ROI_P2 AUC =0.708 ROI_P4 AUC =0.763 ROI_P6 AUC =0.663 ROI_P8 AUC =0.732 ROI_P10 AUC =0.618
+False positive rate
+False positive rate
+False positive rate
+False positive rate
+0.0 0.2 0.4 0.6 0.8 1.0
+0.0 0.2 0.4 0.6 0.8 1.0
+0.0 0.2 0.4 0.6 0.8 1.0
+0.0 0.2 0.4 0.6 0.8 1.0
+True positive rate True positive rate
+True positive rate True positive rate
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0
+A
+C
+B
+D
+
+
+Li et al. Peritumoral radiomics predicts EGFR-TKIs effectiveness
+6758
+© AME Publishing Company. Quant Imaging Med Surg 2025;15(8):6751-6762 | https://dx.doi.org/10.21037/qims-2024-2671
+and 0.736 (95% CI: 0.671–0.800), respectively. The ROC curves of these models are presented in Figure 3C,3D, while the details of each model’s performance are presented in Table 3 and Tables S7-S12.
+Interpretability of the best model
+The contributions of radiomics features to the positive and negative predictions of patients are displayed in a summary plot in Figure 4. As can be seen from the figure, square_ firstorder_Median and wavelet-HLL_glcm_InverseVariance were the features that contributed most to the best model (ROI 6). The SHAP force plot in Figure 5 illustrates how the model predicts whether a patient will respond to
+treatment at the individual level.
+Discussion
+This study recruited 578 patients with EGFR-mutant NSCLC and BM from two centers to evaluate their therapeutic response to EGFR-TKIs. To stratify patients according to response, 77 radiomics models were constructed with 7 machine learning algorithms based on 11 different tumor regions (intratumoral, peritumoral, and combined regions). After comparing the predictive performance of these models, we selected the optimal range for reflecting treatment efficacy. We found that the radiomics model developed using features from 6-mm
+Figure 4 SHAP summary plots of the ROI6 model. The plot demonstrates the features’ importance and contribution to model performance. ROI, region of interest; SHAP, Shapley additive explanation.
+Figure 5 SHAP force plots explaining how the ROI6 model discriminates the treatment response of two patients. (A) Patient A was placed in the responsive group, and (B) patient B was placed in the nonresponsive group. ROI, region of interest; SHAP, Shapley additive explanation.
+High
+Low
+SHAP value (impact on model output)
+–1.00 –0.75 –0.50 –0.25 0.00 0.25 0.50 0.75 1.00
+Feature value
+Square_firstorder_Median
+wavelet_HLL_glcm_Inverse Variance
+original_shape_Sphericity
+wavelet_LLL_firstorder_10Percentile
+wavelet_LLH_firstorder_RootMeanSquared
+lbp_3D_m2_glszm_SmallAreaHighGrayLevelEmphasis
+original_shape_Elongation log_sigma_1_0_mm_3D_glszm_SmallAreaHighGrayLevelEmphasis
+lbp_3D_m2_glrlm_ShortRunHighGrayLevelEmphasis
+Sum of 16 other features
+Higher
+Higher
+Lower f (x)
+–3.0 –2.5
+–2.64 –2.0
+2.0
+–1.5
+–1.5 1.5 1.76
+–1.0
+–1.0 1.0
+–0.5
+–0.5
+0.0
+0.0
+Base value
+Base value
+0.5
+0.5
+f (x)
+Lower
+A
+B
+
+
+Quantitative Imaging in Medicine and Surgery, Vol 15, No 8 August 2025 6759
+© AME Publishing Company. Quant Imaging Med Surg 2025;15(8):6751-6762 | https://dx.doi.org/10.21037/qims-2024-2671
+intratumoral and peritumoral regions via the XGBoost algorithm could effectively stratify patients at high risk of progression. This model has the potential to enhance survival among patients with EGFR-mutant NSCLC and BM through precision therapy.
+Tumor cells metastasized from NSCLC exhibit high invasiveness, often infiltrating adjacent brain parenchyma (18). The tumor microenvironment plays a pivotal role in promoting tumorigenesis and progression (19). Interactions between cancer cells and cerebral stromal cells, a key component of the tumor microenvironment, drive tumor growth and invasiveness (19,20). Astrocytes and microglia, the primary brain cells maintaining and regulating CNS homeostasis, become activated when tumor cells disrupt the blood-brain barrier and invade the brain parenchyma (20,21). Reactive astrocytes predominantly localize to the periphery of BMs, forming a physical and functional barrier around the lesions (22). Microglia mediate the response to brain tissue damage and accumulate in the peritumoral range (23). Lymphocytes are typically absent from healthy brain parenchyma due to strict regulation of lymphocyte influx (24) but are recruited to the CNS upon BM occurrence, primarily localizing within the tumor stroma and at the lesion border. These recruited immune cells can potentially facilitate metastatic growth and are correlated with survival prognosis in BM (10,25). Therefore, the peritumoral region is infiltrated by various mediators that promote tumor growth and may affect the efficacy of targeted therapy. The T1-CE sequence delineates the tumor border clearly and has high sensitivity in detecting BM (26). Considering these strengths, we selected the T1CE sequence to analyze the peritumoral regions to facilitate generalization of the radiomics model.
+Recent studies on various cancers have demonstrated that a model combining intratumoral and peritumoral radiomics features can achieve superior predictive performance in assessing prognosis as compared to models employing intratumoral or peritumoral features alone (14-16,27,28). Li et al. (27) developed and validated a prognostic model based on intra- and peritumoral tissue for preoperatively predicting tumor recurrence risk in patients with rectal cancer. Zhao et al. (28) evaluated whether a radiomics signature consisting of peritumoral regions from contrastenhanced MR estimate treatment response for patients with hepatocellular carcinoma receiving transarterial chemoembolization. They found that radiomics assessment of intratumoral regions combined with 3-mm peritumoral ranges could effectively identify patients who would benefit
+from therapy. However, the value of peritumoral regions in improving the accuracy of efficacy prediction for targeted therapy in patients with EGFR-mutant NSCLC with BM has not been widely discussed. Fan et al. (10,11) found that a radiomics signature combining the tumor active area and peritumoral edema area achieved the best performance in predicting response to EGFR-TKIs in patients with metastatic NSCLC, suggesting that peritumoral regions enhance the predictive potential of intratumoral models. However, not all patients with BM exhibit significant edema around metastatic lesions, limiting the applicability of this model. Moreover, a consensus on the optimal peritumoral range to reflect EGFR-TKI response, which could aid in precise and individualized treatment for patients with NSCLC and BM, remains lacking.
+Our study improves upon the existing body of literature in many aspects. First, the targeted lesions analyzed were not limited by peritumoral edema, which may enhance the universality of our predictive model. Second, previous studies on this subject mainly developed a combined model via prefusion or postfusion. However, in order to reflect the interactions between tumor cells and stromal cells or immune cells around the lesions, it may be beneficial to first construct the combined model by merging the intratumoral and peritumoral regions. Furthermore, we selected the optimal performance region to assess the therapeutic efficacy by expanding ROI_I outward by 2, 4, 6, 8, and 10 mm to generate five peritumoral regions, which were then combined with the intratumoral region to form five combined regions, respectively. Different radiomics models were constructed for each region via different machine learning classifier algorithms, and then the optimal algorithm for each region was selected. The best model was determined through a comparison of model performance. Overall, our study provides a more comprehensive analysis of the prediction of response to EGFR-TKIs in patients with NSCLC and BM.
+The results of our study confirmed that the radiomics model based on 6-mm intratumoral and peritumoral regions derived from the XGBoost algorithm provides exceptional performance in predicting the response to EGFR-TKIs. Specifically, the model yielded AUCs of 0.913 and 0.826 in the training and test cohorts, respectively. From this predictive region, 25 radiomics features were ultimately selected to build the ROI6 model, including 6 first-order features, 2 shape features, and 16 texture features. The texture features, which reflect the pattern and spatial distribution of voxel intensities within the ROI, contributed
+
+
+Li et al. Peritumoral radiomics predicts EGFR-TKIs effectiveness
+6760
+© AME Publishing Company. Quant Imaging Med Surg 2025;15(8):6751-6762 | https://dx.doi.org/10.21037/qims-2024-2671
+substantially to evaluation of treatment efficacy. We also found that the tumor heterogeneity may influence the response to EGFR-TKIs in patients with NSCLC and BM. SHAP could clearly explain and visualize the significance of radiomics features, the impact of these features on the overall prediction model, and the individual features’ importance to the model output. Consequently, we further illuminated the ROI6 model using the SHAP method. Additionally, the independent peritumoral radiomics model, particularly the ROI_P4 model, exhibited a degree of predictive value. There are several limitations to our study that should be acknowledged. First, despite enrolling patients from another center as the external test cohort to validate the repeatability and stability of the predictive model, future research should recruit additional patients from a diversity of countries and regions. Second, while this study compared the performance of seven machine learning algorithms, there are numerous methods for constructing models, such as 2D or 3D deep learning. Thus, it may be worth developing a deep learning model for predicting the efficacy of targeted therapy in patients with BM. Third, the manual drawing of ROIs for tumors is labor-intensive and may be influenced by observer subjectivity. It is therefore crucial to develop an automatic segmentation model to enhance efficiency.
+Conclusions
+A model combining intratumoral and peritumoral radiomics features exhibited superior performance over models employing intratumoral or peritumoral radiomics features alone in predicting patient response to EGFR-TKIs. The combined model with 6-mm intratumoral and peritumoral regions was optimal. These findings suggest that peritumoral heterogeneity, in addition to the intratumoral region, may influence the treatment efficacy of targeted therapy in patients with EGFR-mutant NSCLC and BM. This may aid in identifying high-risk patients susceptible to progression and enable more precise therapy in clinical practice.
+Acknowledgments
+We would like to thank the staff from the Beijing Chest Hospital, Capital Medical University, and Shandong Cancer Hospital and Institute, Shandong First Medical University, Shandong Academy of Medical Sciences for data collection
+and interpretation.
+Footnote
+Reporting Checklist: The authors have completed the CLEAR reporting checklist. Available at https://qims.amegroups. com/article/view/10.21037/qims-2024-2671/rc
+Data Sharing Statement: Available at https://qims. amegroups.com/article/view/10.21037/qims-2024-2671/dss
+Funding: This research was supported by the Beijing Municipal Health Commission Talent Development Plan for High-level Public Health Technical Personnel Project-Subject Leaders and Shandong Provincial Hospital Research Incubation Grant Program (No. 2024FY131).
+Conflicts of Interest: All authors have completed the ICMJE uniform disclosure form (available at https://qims.amegroups. com/article/view/10.21037/qims-2024-2671/coif). The authors have no conflicts of interest to declare.
+Ethical Statement: The authors are accountable for all aspects of the work in ensuring that questions related to the accuracy or integrity of any part of the work are appropriately investigated and resolved. This study was conducted in accordance with the Declaration of Helsinki and its subsequent amendments. This study was approved by the institutional ethics committee of Beijing Chest Hospital, Capital Medical University (No. YJS-2022-27) and Shandong Cancer Hospital and Institute, Shandong First Medical University, Shandong Academy of Medical Sciences (No. SDTHEC202409016). Written informed consent was waived due to retrospective nature of the study.
+Open Access Statement: This is an Open Access article distributed in accordance with the Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International License (CC BY-NC-ND 4.0), which permits the noncommercial replication and distribution of the article with the strict proviso that no changes or edits are made and the original work is properly cited (including links to both the formal publication through the relevant DOI and the license). See: https://creativecommons.org/licenses/by-nc-nd/4.0/.
+References
+1. Doron H, Pukrop T, Erez N. A Blazing Landscape:
+
+
+Quantitative Imaging in Medicine and Surgery, Vol 15, No 8 August 2025 6761
+© AME Publishing Company. Quant Imaging Med Surg 2025;15(8):6751-6762 | https://dx.doi.org/10.21037/qims-2024-2671
+Neuroinflammation Shapes Brain Metastasis. Cancer Res 2019;79:423-36. 2. Giridharan N, Glitza Oliva IC, O’Brien BJ, Parker Kerrigan BC, Heimberger AB, Ferguson SD. Targeting the Tumor Microenvironment in Brain Metastasis. Neurosurg Clin N Am 2020;31:641-9. 3. Tang M, Xu M, Wang J, Liu Y, Liang K, Jin Y, Duan W, Xia S, Li G, Chu H, Liu W, Wang Q. Brain Metastasis from EGFR-Mutated Non-Small Cell Lung Cancer: Secretion of IL11 from Astrocytes Up-Regulates
+PDL1 and Promotes Immune Escape. Adv Sci (Weinh) 2024;11:e2306348.
+4. Rebuzzi SE, Alfieri R, La Monica S, Minari R, Petronini PG, Tiseo M. Combination of EGFR-TKIs and chemotherapy in advanced EGFR mutated NSCLC:
+Review of the literature and future perspectives. Crit Rev Oncol Hematol 2020;146:102820.
+5. Rosen J, Werner JM, Ceccon GS, Rosen EK, Wollring MM, Stetter I, Lohmann P, Mottaghy FM, Fink GR, Langen KJ, Galldiks N. MRI and (18)F-FET PET for
+Multimodal Treatment Monitoring in Patients with Brain Metastases: A Cost-Effectiveness Analysis. J Nucl Med 2024;65:838-44.
+6. Ni J, Zhang H, Yang Q, Fan X, Xu J, Sun J, Zhang J, Hu Y, Xiao Z, Zhao Y, Zhu H, Shi X, Feng W, Wang J, Wan C, Zhang X, Liu Y, You Y, Yu Y. Machine-Learning and Radiomics-Based Preoperative Prediction of Ki
+67 Expression in Glioma Using MRI Data. Acad Radiol 2024;31:3397-405.
+7. Li Y, Lv X, Wang B, Xu Z, Wang Y, Gao S, Hou D.
+Differentiating EGFR from ALK mutation status using radiomics signature based on MR sequences of brain metastasis. Eur J Radiol 2022;155:110499.
+8. Li Y, Lv X, Chen C, Yu R, Wang B, Wang D, Hou D. A deep learning model integrating multisequence MRI to predict EGFR mutation subtype in brain metastases from non-small cell lung cancer. Eur Radiol Exp 2024;8:2.
+9. Meißner AK, Gutsche R, Galldiks N, Kocher M, Jünger ST, Eich ML, Montesinos-Rongen M, Brunn A, Deckert M, Wendl C, Dietmaier W, Goldbrunner R, Ruge
+MI, Mauch C, Schmidt NO, Proescholdt M, Grau S,
+Lohmann P. Radiomics for the noninvasive prediction of the BRAF mutation status in patients with melanoma brain metastases. Neuro Oncol 2022;24:1331-40. 10. Fan Y, Wang X, Dong Y, Cui E, Wang H, Sun X, Su J, Luo Y, Yu T, Jiang X. Multiregional radiomics of brain metastasis can predict response to EGFR-TKI in metastatic NSCLC. Eur Radiol 2023;33:7902-12.
+11. Fan Y, Zhao Z, Wang X, Ai H, Yang C, Luo Y, Jiang X. Radiomics for prediction of response to EGFR-TKI based on metastasis/brain parenchyma (M/BP)-interface. Radiol Med 2022;127:1342-54.
+12. Kamp MA, Slotty PJ, Cornelius JF, Steiger HJ, Rapp M, Sabel M. The impact of cerebral metastases growth pattern on neurosurgical treatment. Neurosurg Rev 2018;41:77-86. 13. Shang Y, Chen W, Li G, Huang Y, Wang Y, Kui X, Li M, Zheng H, Zhao W, Liu J. Computed Tomography-derived intratumoral and peritumoral radiomics in predicting EGFR mutation in lung adenocarcinoma. Radiol Med 2023;128:1483-96.
+14. Lin P, Xie W, Li Y, Zhang C, Wu H, Wan H, Gao M,
+Liang F, Han P, Chen R, Cheng G, Liu X, Fan S, Huang X. Intratumoral and peritumoral radiomics of MRIs predicts pathologic complete response to neoadjuvant chemoimmunotherapy in patients with head and
+neck squamous cell carcinoma. J Immunother Cancer 2024;12:e009616.
+15. Zhao R, Wan L, Chen S, Peng W, Liu X, Wang S, Li L, Zhang H. MRI-based Multiregional Radiomics for Pretreatment Prediction of Distant Metastasis After
+Neoadjuvant Chemoradiotherapy in Patients with Locally Advanced Rectal Cancer. Acad Radiol 2024;31:1367-77. 16. Zhou J, Bai Y, Zhang Y, Wang Z, Sun S, Lin L, Gu Y, You C. A preoperative radiogenomic model based on quantitative heterogeneity for predicting outcomes in triple-negative breast cancer patients who underwent
+neoadjuvant chemotherapy. Cancer Imaging 2024;24:98. 17. Eisenhauer EA, Therasse P, Bogaerts J, Schwartz LH, Sargent D, Ford R, Dancey J, Arbuck S, Gwyther S,
+Mooney M, Rubinstein L, Shankar L, Dodd L, Kaplan R, Lacombe D, Verweij J. New response evaluation criteria in solid tumours: revised RECIST guideline (version 1.1). Eur J Cancer 2009;45:228-47. 18. Siam L, Bleckmann A, Chaung HN, et al. The metastatic infiltration at the metastasis/brain parenchyma-interface is very heterogeneous and has a significant impact on survival in a prospective study. Oncotarget 2015;6:29254-67. 19. Erez N, Coussens LM. Leukocytes as paracrine regulators of metastasis and determinants of organ-specific colonization. Int J Cancer 2011;128:2536-44. 20. Dankner M, Maritan SM, Priego N, Kruck G, NkiliMeyong A, Nadaf J, et al. Invasive growth of brain
+metastases is linked to CHI3L1 release from pSTAT3positive astrocytes. Neuro Oncol 2024;26:1052-66. 21. Feng Y, Hu X, Zhang Y, Wang Y. The Role of Microglia in Brain Metastases: Mechanisms and Strategies. Aging
+
+
+Li et al. Peritumoral radiomics predicts EGFR-TKIs effectiveness
+6762
+© AME Publishing Company. Quant Imaging Med Surg 2025;15(8):6751-6762 | https://dx.doi.org/10.21037/qims-2024-2671
+Dis 2024;15:169-85. 22. Karimi E, Yu MW, Maritan SM, Perus LJM, Rezanejad M, Sorin M, et al. Single-cell spatial immune landscapes of primary and metastatic brain tumours. Nature 2023;614:555-63.
+23. Yousuf MA, Tan C, Torres-Altoro MI, Lu FM, Plautz E, Zhang S, Takahashi M, Hernandez A, Kernie SG, Plattner F, Bibb JA. Involvement of aberrant cyclin-dependent kinase 5/p25 activity in experimental traumatic brain injury. J Neurochem 2016;138:317-27. 24. Berghoff AS, Fuchs E, Ricken G, Mlecnik B, Bindea G, Spanberger T, Hackl M, Widhalm G, Dieckmann K, Prayer D, Bilocq A, Heinzl H, Zielinski C, Bartsch R, Birner P, Galon J, Preusser M. Density of tumorinfiltrating lymphocytes correlates with extent of brain edema and overall survival time in patients with brain metastases. Oncoimmunology 2016;5:e1057388.
+25. Teillaud JL, Houel A, Panouillot M, Riffard C, DieuNosjean MC. Tertiary lymphoid structures in anticancer
+immunity. Nat Rev Cancer 2024;24:629-46. 26. Wang Y, Lang J, Zuo JZ, Dong Y, Hu Z, Xu X,
+Zhang Y, Wang Q, Yang L, Wong STC, Wang H, Li H. The radiomic-clinical model using the SHAP method for assessing the treatment response of wholebrain radiotherapy: a multicentric study. Eur Radiol 2022;32:8737-47. 27. Li H, Chen XL, Liu H, Liu YS, Li ZL, Pang MH, Pu H. MRI-based multiregional radiomics for preoperative prediction of tumor deposit and prognosis in resectable rectal cancer: a bicenter study. Eur Radiol 2023;33:7561-72. 28. Zhao Y, Zhang J, Wang N, Xu Q, Liu Y, Liu J, Zhang Q, Zhang X, Chen A, Chen L, Sheng L, Song Q, Wang F, Guo Y, Liu A. Intratumoral and peritumoral radiomics based on contrast-enhanced MRI for preoperatively predicting treatment response of transarterial
+chemoembolization in hepatocellular carcinoma. BMC Cancer 2023;23:1026.
+Cite this article as: Li Y, Lv X, Xu X, Zheng Z, Lu Y, Yao Z, Hou D. Peritumoral and intratumoral magnetic resonance imaging-based radiomics of brain metastases for predicting the response to EGFR-tyrosine kinase inhibitors in metastatic non-small cell lung cancer. Quant Imaging Med Surg 2025;15(8):6751-6762. doi: 10.21037/qims-2024-2671
