@@ -8,7 +8,7 @@
 	"maxVersion": null,
 	"priority": 100,
 	"inRepository": true,
-	"lastUpdated": "2025-07-27 05:00:00"
+	"lastUpdated": "2026-04-01 05:25:00"
 }
 
 /*
@@ -69,7 +69,7 @@ async function processDOI(doi) {
 	// Outage: 17 May 2025, 14:00–15:00 UTC
 	// Start 1 hour before (13:00 UTC) and end 2 hours after (17:00 UTC)
 	// TEMP for May 22 outage
-	let startDate = new Date(Date.UTC(2025, 4, 22, 00, 0, 0));
+	let startDate = new Date(Date.UTC(2025, 4, 22, 0, 0, 0));
 	let endDate   = new Date(Date.UTC(2025, 4, 24, 0, 0, 0));
 
 	// At least for now, always use REST API for Crossref DOIs
