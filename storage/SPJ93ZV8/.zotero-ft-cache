@@ -1,0 +1,282 @@
+Development, validation, and
+visualization of a novel
+nomogram for predicting clinical
+outcomes of radiotherapy
+combined with chemotherapy in
+locally advanced cervical cancer
+Nan Jiang1, Xiaoxia Ping1, Qian Meng1, Yuanqing Liu1, Xi Wang2 and Chunhong Hu1*
+1Department of Radiology, The First Affiliated Hospital of Soochow University, Suzhou, Jiangsu, China, 2Department of Radiation Oncology, The First Affiliated Hospital of Soochow University, Suzhou, Jiangsu, China
+Background: Patients with locally advanced cervical cancer (LACC) have been advised to undergo radical chemoradiotherapy. To determine whether local recurrence or distant metastasis (LRDM) will occur in patients with locally advanced cervical cancer (LACC) after chemoradiotherapy, this study aims to develop and validate a model using clinical and radiomic parameters. Methods: A total of 118 patients with LACC who were treated with radiotherapy combined with chemotherapy were included. They were divided into a training set (n=83) and a validation set (n=35) at an 7:3 ratio. All patients' diffusionweighted imaging (DWI) images were uploaded to the ITK-SNAP software. Regions of interest (ROIs) were manually delineated, and a radiomic model was constructed using radiomic features by the LightGBM algorithm. A comprehensive model was constructed by integrating clinical and radiomic features and was visualized as a nomogram. The area under the curve (AUC) values were used to evaluate their predictive performance, and Decision curve analysis (DCA) was employed to assess the clinical utility of the predictive models. The calibration curves were used to assess the agreement between predicted and observed outcomes for the LRDM in both cohorts. Results: Seven variables were finally chosen for modeling using the least absolute shrinkage and selection operator (LASSO) regression analysis. The AUC values for the training and test sets of the DWI radiomic model were 0.789 and 0.785, respectively. AUC values for the training and test sets were 0.897 and 0.889, respectively, for the combined model LGBM-nomogram that used DWI and
+Frontiers in Oncology 01 frontiersin.org
+OPEN ACCESS
+EDITED BY
+Federica Perelli, Azienda Ospedaliera Universitaria Meyer IRCCS - Firenze, Italy
+REVIEWED BY Xuhui Fan, Shanghai General Hospital, China Hassan Mumtaz, Resear-Ligent Limited, United Kingdom
+*CORRESPONDENCE Chunhong Hu sdhuchunhong@sina.com
+RECEIVED 18 July 2025 ACCEPTED 24 September 2025 PUBLISHED 08 October 2025
+CITATION
+Jiang N, Ping X, Meng Q, Liu Y, Wang X and Hu C (2025) Development, validation, and visualization of a novel nomogram for predicting clinical outcomes of radiotherapy combined with chemotherapy in locally advanced cervical cancer. Front. Oncol. 15:1668971.
+doi: 10.3389/fonc.2025.1668971
+COPYRIGHT
+© 2025 Jiang, Ping, Meng, Liu, Wang and Hu. This is an open-access article distributed under the terms of the Creative Commons Attribution License (CC BY). The use, distribution or reproduction in other forums is permitted, provided the original author(s) and the copyright owner(s) are credited and that the original publication in this journal is cited, in accordance with accepted academic practice. No use, distribution or reproduction is permitted which does not comply with these terms.
+TYPE Original Research PUBLISHED 08 October 2025 DOI 10.3389/fonc.2025.1668971
+
+
+clinical characteristics. The nomogram worked remarkably well in both the training and test cohorts, as shown by the calibration curves. Conclusion: The model integrating DWI and clinical features has shown high value in non-invasive prediction of LRDM, which may aid in treatment and prognostication.
+KEYWORDS
+chemoradiotherapy, locally advanced cervical cancer, clinical outcomes, machine learning, DWI
+1 Introduction
+Cervical cancer ranks fourth among women globally, making it a serious global health concern (1). Cervical cancer is typically treated with a combination of treatment modalities. For locally advanced disease, including stages IB3 to IVA, synchronous chemoradiotherapy is the standard treatment and works well for many patients. For some patients, the prognosis is poor even with the recommended treatment (2). Despite the advantages of concurrent cisplatin and radiation therapy, 40% of patients have a poor prognosis and recurrence with distant metastases (3). The prognosis and survival duration of patients can be enhanced by early detection of potential distant metastases or local recurrence and modification of appropriate treatment measures. Existing tumor biomarkers often lack high sensitivity and accuracy in early detection of metastasis progression or recurrence (4–6), recurrence or metastases are often detected during follow-up several months after onset. Traditional MRI is a common imaging method for clinical evaluation of cervical cancer, and DWI is now recommended for initial staging, monitoring of response and evaluation of recurrence (7). Nevertheless, the radiologist's eyes have found only a limited amount of data. The subjective assessment dependent on conventional imaging modalities poses inherent and substantial constraints in the prediction of cervical cancer. The use of tumor morphology based criteria may be limited by the false negative rate (8). Moreover, the interpretation exhibits significant subjectivity and is prone to being influenced by observer individual differences, which limits its accuracy and reproducibility in predicting recurrence and metastasis in LACC. If reliable biomarkers and models were available to early identify patients at high risk of recurrence or metastasis, clinicians could promptly adjust treatment plans (such as dose escalation or additional adjuvant therapy) to address these cases. Radiomics is a method that numerous quantitative features are extracted and analyzed from radiological images using computer algorithms. In addition to capturing imaging characteristics that are difficult or impossible for the human eye to distinguish, these radiomic features can be translated into mineable data for objective and repeatable evaluation (9). Also, radiomics surpasses
+traditional imaging tests in terms of early tumor diagnosis and response to treatment, and limitations of other applications, including survival prediction (10) Radiomics can better reflect the heterogeneity of tumors and effectively make up for the shortcomings of traditional methods. In addition, radiomics models can be combined with clinical and molecular data to predict far better than traditional imaging or biomarkers alone. Currently, there is some research on the prediction of metastasis or recurrence for cervical cancer patients showing the importance of developed models (11–14). However, we have not encountered any reports on the use of models based solely on DWI sequences to forecast local recurrence or distant metastasis in patients with locally advanced cervical cancer (LACC). The purpose of this research is to determine whether DWI radiomic features can independently or in combination with clinical features improve the predictive efficacy for recurrence or metastasis in LACC. Furthermore, it seeks to develop a novel DWI-based predictive model for assessing the risk of local recurrence or distant metastasis in LACC patients treated with a combination of radiotherapy and chemotherapy. The combination model LGBM-nomogram created as a result of this study may be able to forecast unfavorable clinical outcomes for LACC, which would improve treatment strategies and increase patient survival rates.
+2 Materials and methods
+2.1 Patients
+The institutional review board granted approval for this retrospective study (ethical code: 2025606), and written informed consent was not required. Data were collected from patients with stage IB3 to IVA cervical cancer, classified according to the 2018 International Federation of Gynecology and Obstetrics (FIGO) criteria, who were treated at the First Affiliated Hospital of Soochow University between October 2013 and December 2018. Due to their inability to undergo surgery, these patients were treated with a combination of chemotherapy and radiation therapy. Conventional MRI scans were conducted within two weeks before the radical chemoradiotherapy. At our institution, a follow-up
+Jiang et al. 10.3389/fonc.2025.1668971
+Frontiers in Oncology 02 frontiersin.org
+
+
+examination was performed using CT, MRI, PET, ultrasound, and biopsy three and six months following the conclusion of CRT. A total of 176 patients met the inclusion criteria, and 118 were ultimately enrolled in the study after applying the exclusion criteria (a flowchart is shown in Figure 1). Random assignment was used to assign the patients (age range 32-82 years, median age 52 years, mean age 53.92 ± 11.17 years) to either the training group (83 cases) or the validation group (35 cases) at a 7:3 ratio. Based on the outcomes of tests performed six months following CRT, patients in both the training and test groups were then divided into two groups: those with metastases or recurrences and those without either. Every patient received either standard chemoradiotherapy or radiotherapy plus chemotherapy. The Declaration of Helsinki's tenets were followed throughout the study. Every procedure was carried out in compliance with the regulatory requirements and established institutional protocols. Medical records belonging to patients were anonymized before the review in order to eliminate any identifying information.
+2.2 MRI protocol
+All examinations were performed on 3.0 T MRI scanners, including those manufactured by GE, Philips, and Siemens. The
+scan range extended from the superior edge of the iliac crest to the inferior edge of the symphysis. The detailed MRI scanning protocols are presented in the Supplementary Material and Supplementary Table S1.
+2.3 Clinical features and image analysis
+The medical record system was used to gather clinical information such as age, hypertension, systolic and diastolic blood pressure, labor, abortion times, SCC antigen levels, CA199, CA125, CEA, CA153, CA724, menopausal status, and pregnancy history. The clinical stage was reassessed by a radiologist in collaboration with a radiotherapist, adhering to the 2018 FIGO staging criteria, using original images. The DWI images of cervical cancer were resampled to a voxel size of 1 x 1 x 1 mm3 to standardize voxel spacing. Furthermore, the images were normalized to minimize differences in signal intensity among images captured by various machines. The section with the largest cross-sectional diameter of primary lesions in the axial DWI sequence with b = 1000 s/mm2 was utilized to measure tumor diameters by two senior radiologists. The tumor diameters were averaged. In cases of significant discrepancies, the two radiologists resolved the issue together. Prior to image
+FIGURE 1
+Flowchart for patient screening.
+Jiang et al. 10.3389/fonc.2025.1668971
+Frontiers in Oncology 03 frontiersin.org
+
+
+segmentation, the images underwent N4 bias field correction (N4). As shown in Figures 2 and 3, axial diffusion-weighted imaging (DWI) images were loaded into the ITK-SNAP program, where regions of interest (ROIs) containing necrosis, bleeding, and degeneration were drawn layer by layer and then combined to create a volume of interest (VOI). PyRadiomics package in Python was used to extract unique radiomic features from the volumes of interest (VOIs) by a senior radiologist. For 30 randomly selected cases, ROI outlining and feature extraction were performed again, and the interobserver agreement was assessed using the intraclass correlation coefficient (ICC). Manual delineation of ROIs is a laborious task subject to inter-observer variability, and semiautomated or automated methods can be used in the future to improve reproducibility. Details regarding the extraction of radiomic features are provided in the Supplementary Material.
+2.4 Treatment regimen and clinical outcome
+Chemotherapy could be administered using various combinations. The TP regimen refers to a Taxol and Platinumbased chemotherapy regimen. The TN regimen combines Taxol with Nedaplatin. The TC regimen involves Taxol and Carboplatin. There is also a regimen that involves transitioning from the sole use of Paclitaxel liposome (Lipusu) to a combination platinum chemotherapy. The radiotherapy regimen includes external pelvic radiation and brachytherapy. The external radiation dose ranges from 45 to 50 Gy (1.8-2.0 Gy, administered once daily). For lesions in the paracervical area, an additional dose of 4-10 Gy is administered, and for lymph nodes, an additional 6-10 Gy. The completion of external beam radiotherapy is followed by brachytherapy. Point A serves as the reference point, with a total dose of 21-30 Gy, delivered in fractions of 5-7 Gy, once weekly. The clinical outcomes of LACC were independently assessed by a radiologists and a radiation oncologist based on prechemoradiotherapy MRI images and six-month follow-up results. If discrepancies arose, they would deliberate and arrive at a consensus. The disappearance of the mass at the three-month follow-up and its reappearance at the six-month follow-up were defined as local recurrence. The newly added metastases include
+organ metastases and lymph node metastases. Patients with local recurrence or distant metastasis (LRDM) were classified as the positive group, while those with no evidence of LRDM detected on CT/MRI/PET/ultrasound/biopsy 6 months after completing treatment were categorized as the negative group.
+2.5 Statistical analysis
+SPSS 22.0 and Python 3.8.0 software were utilized for statistical analysis, with a probability value less than 0.05 considered significant. The ICC was employed to assess the stability of parameters, indicating high consistency between two measurements when the ICC exceeds 0.7. Dimensionality reduction using LASSO regression was performed on the radiomics features of the training group with the Python scikitlearn package. The selection of clinical predictors was based on the results of univariate and multivariate logistic regression analysis, combined with clinical experience and relevant literature. The researchers used radiomic features and clinical features to construct a combination model for predicting local recurrence or distant metastasis after CRT treatment of cervical cancer. The prediction model was subsequently introduced to the test group to further validate its diagnostic efficacy. The Hosmer-Lemeshow test was used to assess the fit of the prediction model, while the calibration curve was used to evaluate the predictive performance of the nomogram. The Decision curve analysis (DCA) was used to assess the clinical value of the nomogram. And the discriminatory power for LRDM in LACC was calculated by Receiver Operating Characteristic Curve (ROC).
+3 Results
+3.1 Clinical characteristics and measurement results of MRI
+A total of 118 patients were enrolled in this study, with 59 in the metastasis or recurrence group and 59 in the group with no evidence of local recurrence or metastasis. The clinical features of the training and test groups, including age, hypertension, systolic
+FIGURE 2
+Delineating lesion boundaries of a cervical mass on DWI images in the training group. In the middle is her VOI schematic. This 70-year-old cervical cancer patient showed no recurrence or metastasis in the follow-up review.
+Jiang et al. 10.3389/fonc.2025.1668971
+Frontiers in Oncology 04 frontiersin.org
+
+
+and diastolic blood pressure, pregnancy history, labor, abortion timing, SCC antigen levels, CA199, CA125, CEA, CA153, CA724, tumor diameter, FIGO stage, and menopausal status, are detailed in Table 1. Most results lacked statistical significance, suggesting that the groupings were randomized and reasonable. In terms of radiomics parameters, both radiologists achieved good interobserver agreement, with interclass correlation coefficients (ICCs) ranging from 0.74 to 0.98. Table 1 displays the clinical characteristics and MRI measurement results. The outcomes of the univariate logistic regression analysis are detailed in Table 2. Notably, only CEA
+demonstrated significant differentiation capabilities for local recurrence and distant metastases subtypes.
+3.2 Radiomics features extraction and selection
+A total of 1198 radiomic features were extracted from the ROIs of DWI images. These features include geometric shape features, texture features and intensity features. Texture features were extracted using various methods, including the Gray-Level Co
+TABLE 1 Clinical factors and MRI measurement results of patients in training and test groups.
+Characteristics Train
+all
+Recurrence or metastasis
+No evidence
+Pvalue
+Testall
+Recurrence or metastasis
+No evidence
+Pvalue
+Age 53.76
+±11.29 54.68±12.63 52.83±9.82 0.658 54.54
+±10.89 53.17±10.36 55.92±11.69 0.548
+Systolic pressure 123.61
+±15.95 119.94±13.66 127.28±17.33 0.025 123.79
+±16.43 118.08±12.50 129.50±18.35 0.132
+Diastolic pressure 78.13
+±11.19 76.11±8.93 80.15±12.85 0.161 78.58
+±14.76 74.83±8.45 82.33±18.81 0.451
+Pregnancy 2.44±1.50 2.40±1.65 2.47±1.35 0.523 2.29±1.04 2.42±1.24 2.17±0.83 0.466
+Labor 1.66±1.09 1.70±1.27 1.62±0.90 0.781 1.46±0.83 1.25±0.87 1.67±0.78 0.133
+Abortion 0.78±1.04 0.70±1.02 0.85±1.06 0.357 0.83±0.92 1.17±1.03 0.50±0.67 0.101
+SCCa(ng/ml) 9.00
+±12.67 10.58±14.50 7.42±10.47 0.108 10.12
+±18.48 12.53±13.51 7.72±22.78 0.004
+CA199(U/ml) 18.29
+±23.99 18.25±23.63 18.34±24.61 0.777 10.07
+±12.46 5.34±4.01 14.79±16.11 0.069
+CA125(U/ml) 34.70
+±79.18 33.49±55.82 35.91±97.75 0.304 40.25
+±67.53 33.56±25.32 46.94±93.79 0.285
+CEA(ng/ml) 7.39
+±11.45 10.75±14.97 4.03±4.23 0.034 10.17
+±19.39 11.92±17.29 8.43±21.93 0.341
+CA153(U/ml) 14.41
+±13.02 16.85±17.15 11.97±6.01 0.072 12.76
+±5.44 13.29±6.09 12.23±4.92 0.645
+(Continued)
+FIGURE 3
+The red portion in the DWI image represents the outlined region of interest (ROI). This 50-year-old cervical cancer patient showed liver metastasis in the follow-up enhanced CT examination.
+Jiang et al. 10.3389/fonc.2025.1668971
+Frontiers in Oncology 05 frontiersin.org
+
+
+occurrence Matrix (GLCM), the Gray-Level Run Length Matrix (GLRLM), the Gray-Level Size Zone Matrix (GLSZM), and other methods. The distribution of radiomics features across different classifications was presented in Supplementary Figure S1. First, we normalize the data by subtracting the average value and dividing by
+the standard deviation using the Z-score method. Z-score normalization effectively eliminated scale differences among features, ensuring that each feature contributed to subsequent modeling with comparable weight when using machine learning algorithms, thereby improving model convergence and stability.
+TABLE 1 Continued
+Characteristics Train
+all
+Recurrence or metastasis
+No evidence
+Pvalue
+Testall
+Recurrence or metastasis
+No evidence
+Pvalue
+CA724(U/ml) 5.49±6.76 4.87±4.72 6.11±8.32 0.871 6.29±9.81 8.19±13.39 4.39±3.76 0.665
+Tumor diameter (mm)
+44.31
+±17.73 45.64±18.71 42.98±16.78 0.469 43.19
+±18.99 53.17±17.49 33.21±15.21 0.007
+Hypertension 0.100 0.109
+0 56(67.47) 31(75.61) 25(59.52) 25(71.43) 15(83.33) 10(58.82)
+1 27(32.53) 10(24.39) 17(40.48) 10(28.57) 3(16.67) 7(41.18)
+Menopause 0.531 0.773
+0 27(32.53) 12(29.27) 15(35.71) 9(25.71) 5(27.78) 4(23.53)
+1 56(67.47) 29(70.73) 27(64.29) 26(74.29) 13(72.22) 13(76.47)
+Stage 0.682 0.001
+1 17(20.48) 10(24.39) 7(16.67) 7(20.00) 0 7(41.18)
+2 40(48.19) 19(46.34) 21(50.00) 16(45.71) 10(55.56) 6(35.29)
+3 15(18.07) 8(19.51) 7(16.67) 3(8.57) 0 3(17.65)
+4 11(13.25) 4(9.76) 7(16.67) 9(25.71) 8(44.44) 1(5.88)
+TABLE 2 Univariate logistic regression analysis of clinical and MRI results to differentiate local recurrence and distant metastases in the training cohort.
+Characteristics Log
+(OR) Lower 95%CI Upper 95%CI OR OR lower 95%CI OR upper 95%CI p_value
+Age -0.001 -0.007 0.006 0.999 0.993 1.006 0.87
+Hypertension 0.46 -0.147 1.066 1.583 0.863 2.904 0.213
+Systolic pressure 0 -0.002 0.003 1.001 0.998 1.003 0.775
+Diastolic pressure 0.001 -0.004 0.005 1.001 0.996 1.005 0.804
+Menopause -0.095 -0.51 0.32 0.909 0.6 1.377 0.706
+Pregnancy 0.008 -0.111 0.127 1.008 0.895 1.135 0.914
+Labor -0.022 -0.193 0.15 0.979 0.824 1.162 0.835
+Abortion 0.09 -0.175 0.355 1.094 0.839 1.426 0.578
+SCCa -0.014 -0.036 0.009 0.987 0.965 1.009 0.33
+CA199 0 -0.011 0.011 1 0.989 1.011 0.988
+CA125 0 -0.004 0.004 1 0.996 1.004 0.892
+CEA -0.048 -0.085 -0.011 0.953 0.919 0.989 0.032
+CA153 -0.014 -0.033 0.005 0.986 0.968 1.005 0.235
+CA724 0.017 -0.023 0.057 1.017 0.977 1.059 0.494
+Stage 0.018 -0.123 0.159 1.019 0.884 1.172 0.83
+Tumor diameter -0.001 -0.008 0.006 0.999 0.992 1.006 0.787
+Jiang et al. 10.3389/fonc.2025.1668971
+Frontiers in Oncology 06 frontiersin.org
+
+
+However, it is important to acknowledge that Z-score normalization primarily addresses the issue of feature scale variation within a single dataset. Its ability to correct for systematic distributional differences introduced by different scanners or acquisition protocols is limited. It cannot correct for systematic shifts in mean and variance between different batches of data. Then, we conducted the Mann-Whitney U test and feature screening for all radiomic features. Only those with a p-value less than 0.05 were retained. In the selection process, Pearson correlation analysis was employed to retain one of the two features with a correlation coefficient greater than or equal to 0.7. In order to retain the ability to depict features to the greatest extent, we use greedy recursive deletion strategy for feature filtering, that is, the feature with the greatest redundancy in the current set is deleted each time. After this, fifteen features were subjected to LASSO regression analysis, which ultimately screened out seven for modeling. To determine the optimal l, we employed 10-fold cross-validation using a minimum criteria approach, where the final l value resulted in the minimum cross-validation error. Figure 4 illustrates that the optimal lambda value is 0.0295. The features with nonzero coefficients that were retained were utilized for fitting the regression model and were combined to form a
+radiomics signature. We calculated a radiomics score for each patient through a linear combination of the retained features, weighted by their respective model coefficients. Figure 5 shows the weight of each feature.
+3.3 Radiomics model development and evaluation
+The AUC for distinguishing between the recurrence or metastasis group and the other group using a machine learning algorithm is 0.789 in the training cohort and 0.785 in the validation cohort. The LightGBM model exhibited superior performance in terms of AUC and was consequently employed to differentiate whether there will be distant metastasis or local recurrence after chemoradiotherapy. Visualization of sample predictions by LightGBM algorithm in training set and validation set was shown in Supplementary Figure S2. The DCA graph shows the net benefit (Net Benefit) of the LightGBM model at different threshold probabilities to evaluate the clinical utility of the model. The model curve (Blue solid line) of the training set and validation set
+FIGURE 4
+MRI radiomics feature selection utilizing the Least Absolute Shrinkage and Selection Operator (LASSO) algorithm. (A) LASSO coefficient profiles of diffusion-weighted imaging (DWI) radiomics features. (B) Mean square error path derived from tenfold cross-validation for the DWI radiomics feature selection process.
+Jiang et al. 10.3389/fonc.2025.1668971
+Frontiers in Oncology 07 frontiersin.org
+
+
+(Figure 6) is higher than that of "Treat all" (Black solid line) and "Treat none" (Black dashed line) in most threshold ranges, indicating that the model has clinical utility.
+3.4 Clinical model
+The construction of a clinical signature is nearly identical to that of a radiomic signature. Initially, features for constructing the clinical signature, CEA, were chosen based on baseline statistics with a p-value of less than 0.05. We also added age, tumor diameter, Figo stage, CA125, and SCCa to the clinical model based on relevant literature and clinical experience. The same machine learning model was used in the construction of the clinical signature.
+3.5 Development and assessment of the nomogram
+Based on radiomics and clinical characteristics, we developed a combined model named LGBM-nomogram. This model offers a quantitative representation of each variable and enables individualized calculations of the patient's total risk score, which correlates with the likelihood of metastasis or recurrence. ROC curves were utilized to evaluate the discriminative ability of the models. In the training group, the AUC value for the radiomics model was 0.789, and for the clinical model, it was 0.844. The AUC for the nomogram model, which incorporates both radiomics and clinical features, was 0.897 (refer to Figure 5). In the test group, the AUC for the radiomics model was 0.785, and for the clinical model, it was 0.726. The AUC for the nomogram model, which combines radiomics and clinical features, was 0.889 (refer to Figure 7). The
+model's calibration can be verified using the calibration plot, which demonstrates excellent agreement between the predicted and actual likelihood of recurrence or metastasis (Figure 8). DCA was used to evaluate the clinical utility of the predictive models. The results indicated that the net benefit is substantial. The fusion model was depicted in the nomogram (Figure 9).
+4 Discussion
+The early signs of cervical cancer are frequently vague and atypical. By the time cancer is diagnosed, it has usually progressed to a locally advanced stage. Chemoradiotherapy is used to treat locally advanced cervical cancer. One-third of patients who undergo chemoradiation followed by brachytherapy for locally advanced disease will experience a recurrence (15). Targeted therapies can enhance the uptake of chemotherapy drugs. Nonetheless, there are still cases with limited benefits, representing an unmet need. Therefore, early assessment of the undesirable clinical outcome of patients is essential for the selection of individualized treatment plans, which is crucial for improving survival rates. The current assessment of cervical cancer relies on morphological imaging modalities, including CT, MRI, and ultrasound. These conventional techniques pose challenges for direct visual assessment in predicting local recurrence or distant metastasis prior to treatment. Radiomics, unlike traditional imaging, can enable the high-throughput extraction, quantification, and analysis of subvisual features from medical images, thereby capturing intratumoral heterogeneity and reflecting underlying genetic variations. The heterogeneity detected by radiomics in LACC may be associated with different clinical outcomes. Predictive models based on radiomic features
+FIGURE 5
+The weight of the features that are ultimately selected. Rad-score=0.5112781954887218 -0.027037 * log_sigma_5_0_mm_3D_gldm_LargeDependenceHighGrayLevelEmphasis -0.009586 * wavelet_LHH_glszm_LargeAreaEmphasis -0.018953 * wavelet_LHL_firstorder_Median -0.046651 * wavelet_LHL_firstorder_RootMeanSquared +0.016458 * wavelet_LLH_glszm_ZonePercentage +0.016571 * wavelet_LLH_ngtdm_Contrast +0.045326 * wavelet_LLL_firstorder_Minimum.
+Jiang et al. 10.3389/fonc.2025.1668971
+Frontiers in Oncology 08 frontiersin.org
+
+
+show potential for identifying patients at increased risk of local recurrence or distant metastasis following chemoradiation. Consequently, for these patients, therapeutic strategies could be optimized and follow-up protocols intensified, thereby potentially improving overall clinical management and prognosis. Machine learning and deep learning methods can assist in the detection of cervical cancer, definitive diagnosis, staging, prognosis prediction, and the assessment of therapeutic sensitivity, among other applications (16–19). Previous studies have confirmed the feasibility of predicting sensitivity or response to concurrent chemoradiotherapy when combined with clinical prognostic factors (20–22). There have also been studies investigating the prediction of clinical outcomes for cervical cancer, using either multiple MRI sequences or focusing on a single outcome. However, no study has so far dealt with the prediction and discussion of local recurrence or distant metastasis by using a single sequence combined with clinical data. We have successfully developed the LGBM model, which is capable of predicting local recurrence or distant metastasis in locally advanced cervical cancer. This model is
+an efficient machine learning algorithm, based on the gradient boosting framework, and is used for ranking, classification, and other machine learning tasks. It is less prone to generalization issues than earlier machine learning models and yields significantly greater accuracy, surpassing that of any other boosting algorithms (23). It is robust against noise and outliers and does not easily overfit when faced with complex data distributions. The LGBM employs a histogram-based decision tree algorithm, which can effectively process large-scale data while maintaining high accuracy. The AUC value in the LGBM model reached 0.897, indicating a high level of accuracy and prediction efficiency. This model, which utilized easily obtainable clinical data, laboratory measurements, and DWI sequences, can serve as a valuable decision-support tool to inform and guide treatment planning in clinical practice. It can assist in identifying high-risk groups for local recurrence or distant metastases of LACC, enabling timely adjustments to clinical decision-making and proactive interventions. Our results indicate that the clinical model, developed using the LightGBM machine learning algorithm,
+FIGURE 6
+DCA curve in the training cohort and in the testing cohort. DCA, decision curve analysis.
+Jiang et al. 10.3389/fonc.2025.1668971
+Frontiers in Oncology 09 frontiersin.org
+
+
+achieved an AUC of 0.844 on the training set. The radiomics model followed with an AUC of 0.789, and the combined clinical-imaging model reached an AUC of 0.897. In the validation set, the clinical model demonstrated an AUC of 0.726, the radiomics model achieved an AUC of 0.785, and the combined clinical-imaging model attained an AUC of 0.889. A review study has found that elevated pretreatment levels of squamous cell carcinoma antigen (SCC Ag) are associated with poor survival rates in patients with cervical cancer who undergo definitive concurrent chemoradiotherapy (24). Hou et al. (25) studied that SCC-Ag, CEA, CA125, PLT, FIB and CRP were identified as important predictors of lymph node metastasis in IA2-IIA1 cervical cancer patients. According to clinical experience and relevant literature (26), we know that age is an important factor in the clinical prognosis of cervical cancer (CC) patients. This study failed to identify a significant role of age in influencing local recurrence or distant metastasis in LACC patients following CRT treatment. A possible explanation may lie in the fact that this was a single-center retrospective study, which is susceptible to selection
+bias. Middle-aged and older patients who sought medical care might have constituted a self-selected group with stronger healthseeking intentions and comparatively better physical condition. According to research (27) by Brodeur et al., the FIGO 2018 classification and MRI tumor diameter were predictors of recurrence in CC. It was found that the p-values for FIGO stage and tumor diameter were greater than 0.05 in this study. We speculate that the possible reasons may include the relatively small sample size, particularly the insufficient number of advanced-stage (Stage III/IV) cases and patients with larger tumors, resulting in inadequate statistical power to detect prognostic differences among different stages and tumor size groups. Additionally, the short follow-up period might have been insufficient to observe the occurrence of adverse outcomes, leading to current data that cannot fully reflect long-term prognostic value. So we added age, tumor diameter, Figo stage, CA125, and SCCa to construct our clinical model. A study found that pre-treatment CEA levels greater than 10 ng/ml can predict a poor prognosis for advanced cervical squamous cell carcinoma (28). In our research,
+FIGURE 7
+The receiver operating characteristic (ROC) curves of the DWI radiomics model, clinical model, and combined model in the training cohort and in the validation cohort. Regarding the prediction of LRDM, the combined model exhibited the best performance in both the training and test sets. LRDM, local recurrence or distant metastasis.
+Jiang et al. 10.3389/fonc.2025.1668971
+Frontiers in Oncology 10 frontiersin.org
+
+
+we also found that CEA exhibited significant statistical significance in distinguishing between positive and negative groups through multivariate logistic regression analysis. In both the training and validation groups, 10 ng/ml can indeed be used as an intercept to distinguish between positive and negative set. This study employed multiple screening methods to identify the final characteristics for building the radiomics model. The features with high coefficients selected by LASSO are utilized for model
+building: 'log_sigma_5_0_mm_3D_gldm_LargeDepen denceHighGrayLevelEmphasis', 'wavelet_LHH_ glszm_LargeAreaEmphasis', 'wavelet_LHL_firstorder_Median', 'wavelet_LHL_firstorder_RootMeanSquared', 'wavelet_LLH_ glszm_ZonePercentage', 'wavelet_LLH_ngtdm_Contrast', 'waveletLLL_firstorder_Minimum'. Of the seven features we ultimately selected, six were based on the wavelet transform, and one was based on the Gaussian filter. Among them, the feature with
+FIGURE 8
+The calibration curves for the training and test cohorts, along with the Hosmer-Lemeshow test results. The calilbration curves of this model were obtained by resampling 1000 times. The LGBM-nomogram calibration curves indicate a good agreement between predicted and observed outcomes for LRDM in both cohorts. These results demonstrate that the nomogram performs exceptionally well in both the training and test cohorts.
+Jiang et al. 10.3389/fonc.2025.1668971
+Frontiers in Oncology 11 frontiersin.org
+
+
+the highest weight is the RootMeanSquare (RMS) among the firstorder features. RootMeanSquare is also important in predicting 5year progression-free survival (PFS) in high-risk prostate cancer (29). RMS is calculated as the square root of the mean of all squared intensity values and serves as another measure of the magnitude of image values. This feature is susceptible to volume confounding. The feature 'Minimum,' which has a weight ranking among the primary features, was the second most significant. In a study of sensitivity prediction for concomitant chemoradiotherapy in cervical cancer, the feature Minimum was also used to build the model (20). This indicates that the shortest path, frequently overlooked morphologically, may be related to subsequent clinical outcomes for patients, thus meriting further attention. Ranking third in terms of weight is the LargeDependenceHigh GrayLevelEmphasis (LDHGLE). It employs a linear smoothing filter, which effectively preserves the edge information of the image while eliminating noise. This feature is used to measure the joint distribution of large dependence with higher gray-level values. These radiomics features are predictive of tumor prognosis, and First-order characteristics plays an important role in this regard. One study have found that five features, including ngtdm Contrast, FirstorderRootMeanSquared, LargeDependenceHighGrayLevel Emphasis, could be used as survival biomarkers for head and neck squamous cell carcinoma (30). Three of the characteristics are consistent with us, indicating that these characteristics are more important for the prognosis of squamous cell carcinoma. In the study of Cui et al., LargeDependenceHighGrayLevelEmphasis was independently associated with complete pathological response (CPR) (31). This feature is also very critical and has the third highest weight in our model. Distant metastasis poses a significant burden on patients with locally advanced cervical cancer, with the lungs, distant lymph nodes, and bones being the most common sites (32). Cervical cancer recurs in 25% to 61% of women, depending on the stage at initial presentation (33). In our findings, we identified 59 instances of distant metastasis and local recurrence. Specifically, there were 12 cases of recurrence, 15 instances of lung metastasis, 1 case of pancreatic metastasis, 9 cases of bone metastasis, 3 instances of liver metastasis, and 20 cases of metastasis in the supraclavicular, mediastinal, retroperitoneal, and inguinal lymph nodes, as well as 2
+cases of abdominal pelvic metastasis. In this study, treatment is not limited to curative chemoradiotherapy; some patients receive compensatory chemotherapy following radiotherapy. This subset of cases is relatively small, and no subgroup analysis has been conducted. Further exploration will be undertaken as more patients are enrolled in the future. Our results show that radiomics models based solely on DWI sequences, clinical features, and nomogram can be used to predict local recurrence and distant metastases. In the field of gynecological oncology, the European Society of Urogenital Radiology (ESUR) recommends the use of DWI and dynamic contrast enhanced imaging (DCE-MRI) for local staging of cervical cancer (34). The DLRN model was developed by integrating independent clinical factors using T2WI and DWI images. It can predict and stratify recurrence risk factors in early-stage cervical cancer based on intratumoral and peritumoral regions, thereby enhancing the value of personalized precision treatment (35). Huang et al. investigated a staging model integrating rFOV diffusion weighted imaging - derived radiomics with clinical features. In the training cohort, the AUC of the clinical radiomics model (AUC = 0.877) for cervical carcinoma staging was similar to that of the radiomics model (AUC = 0.867) and higher than that of the clinical model (AUC = 0.673) (36). There is also literature on the radiomics of T2WI and T2WI combined with DWI, which suggests that the DWI sequence may provide additional value for pretreatment risk assessment and for guiding personalized treatment strategies in cervical cancer (CC) (37). These studies are consistent with our findings, showing the important role of DWI sequences in the evaluation and prediction of cervical cancer patients. Our study has several limitations. Firstly, manual ROI delineation involves subjective empirical errors during the sketching process, necessitating subsequent comparison and analysis with automated and semi-automatic segmentation methods. Secondly, the number of cases is limited, as the data were sourced from a single hospital. Subsequent multicenter studies are required to obtain larger samples to further explore this issue. Thirdly, heterogeneity may exist during data acquisition using different scanners and parameters. Although we have employed the Z-score normalization method and utilized ensemble learning models to enhance anti-interference capability, this heterogeneity
+FIGURE 9
+The LGBM-nomogram for clinical use.
+Jiang et al. 10.3389/fonc.2025.1668971
+Frontiers in Oncology 12 frontiersin.org
+
+
+still poses a potential impact on the stability of radiomic features. To test the model's generalization ability, future studies should include patients from other hospitals while strengthening spatial consistency and device-specific gray-scale correction. Fourthly, a six-month follow-up may not capture long-term trends, therefore future studies should investigate longer follow-up periods. In addition, selecting cases in the locally advanced clinical stage may limit the model's general applicability to other stages of the disease.
+5 Conclusion
+In conclusion, the application value in predicting the clinical outcome of LACC patients who received chemoradiotherapy was compared. This method can non-invasively predict the clinical outcomes of local recurrence or distant metastases. It offers objective and scientific data to support clinical decision-making, enabling clinicians to develop individualized treatment plans in a more rational and scientific manner.
+Data availability statement
+The original contributions presented in the study are included in the article/Supplementary Material. Further inquiries can be directed to the corresponding author.
+Ethics statement
+This study was conducted in accordance with the Declaration of Helsinki and approved by the Ethics Committee of the First Affiliated Hospital of Soochow University. This study was a retrospective study, and the requirement for informed consent was waived by the Ethics Committee (No.2025606).
+Author contributions
+NJ: Formal Analysis, Methodology, Writing – original draft. XP: Methodology, Writing – original draft, Data curation. QM: Investigation, Writing – original draft. YL: Writing original draft, Investigation. XW: Data curation, Writing original draft. CH: Writing – review & editing, Conceptualization.
+Funding
+The author(s) declare financial support was received for the research and/or publication of this article. This work was supported by the Gusu Health Talent Project of Suzhou (grant number GSWS2020003); Suzhou Key Laboratory of Medical Imaging (grant number SZS2024032); Jiangsu Province Capability Improvement Project through Science, Technology and Education (JSDW202242).
+Conflict of interest
+The authors declare that the research was conducted in the absence of any commercial or financial relationships that could be construed as a potential conflict of interest.
+Generative AI statement
+The author(s) declare that no Generative AI was used in the creation of this manuscript. Any alternative text (alt text) provided alongside figures in this article has been generated by Frontiers with the support of artificial intelligence and reasonable efforts have been made to ensure accuracy, including review by the authors wherever possible. If you identify any issues, please contact us.
+Publisher’s note
+All claims expressed in this article are solely those of the authors and do not necessarily represent those of their affiliated organizations, or those of the publisher, the editors and the reviewers. Any product that may be evaluated in this article, or claim that may be made by its manufacturer, is not guaranteed or endorsed by the publisher.
+Supplementary material
+The Supplementary Material for this article can be found online at: https://www.frontiersin.org/articles/10.3389/fonc.2025.1668971/ full#supplementary-material
+References
+1. Caruso G, Wagar MK, Hsu HC, Hoegl J, Rey Valzacchi GM, Fernandes A, et al. Cervical cancer: a new era. Int J Gynecol Cancer. (2024) 34:1946–70. doi: 10.1136/ijgc2024-005579
+2. Mayadev JS, Ke G, Mahantshetty U, Pereira MD, Tarnawski R, Toita T. Global challenges of radiotherapy for the treatment of locally advanced cervical cancer. Int J Gynecol Cancer. (2022) 32:436–45. doi: 10.1136/ijgc2021-003001
+3. Gennigens C, De Cuypere M, Hermesse J, Kridelka F, Jerusalem G. Optimal treatment in locally advanced cervical cancer. Expert Rev Anticancer Ther. (2021) 21:657–71. doi: 10.1080/14737140.2021.1879646
+4. Shi V, Grover S, Huang Y, Thaker PH, Kuroki LM, Powell MA, et al. Accuracy of surveillance serum squamous cell carcinoma antigen for cervical cancer recurrence after definitive chemoradiation. Int J Gynecol Cancer. (2024) 34:808–16. doi: 10.1136/ ijgc-2024-005303
+Jiang et al. 10.3389/fonc.2025.1668971
+Frontiers in Oncology 13 frontiersin.org
+
+
+5. Sookha RR, Zhi W, Shen Y, Lazare C, Wang L, Meng Y, et al. Clinical value of combining 18F-FDG PET/CT and routine serum tumor markers in the early detection of recurrence among follow-up patients treated for cervical squamous cell carcinoma. J Cancer. (2018) 9:3101–8. doi: 10.7150/jca.27206
+6. Ran C, Sun J, Qu Y, Long N. Clinical value of MRI, serum SCCA, and CA125 levels in the diagnosis of lymph node metastasis and para-uterine infiltration in cervical cancer. World J Surg Oncol. (2021) 19:343. doi: 10.1186/s12957-021-02448-3
+7. Manganaro L, Lakhman Y, Bharwani N, Gui B, Gigli S, Vinci V, et al. Staging, recurrence and follow-up of uterine cervical cancer using MRI: Updated Guidelines of the European Society of Urogenital Radiology after revised FIGO staging 2018. Eur Radiol. (2021) 31:7802–16. doi: 10.1007/s00330-020-07632-9
+8. Yang WT, Lam WW, Yu MY, Cheung TH, Metreweli C. Comparison of dynamic helical CT and dynamic MR imaging in the evaluation of pelvic lymph nodes in cervical carcinoma. AJR Am J Roentgenol. (2000) 175:759–66. doi: 10.2214/ajr.175.3.1750759
+9. Yi Z, Long L, Zeng Y, Liu Z. Current advances and challenges in radiomics of brain tumors. Front Oncol. (2021) 11:732196. doi: 10.3389/fonc.2021.732196
+10. Jha AK, Mithun S, UB S, Jaiswar V, Osong B, Purandare N, et al. Systematic review and meta-analysis of prediction models used in cervical cancer. Artif Intell Med. (2023) 139:102549. doi: 10.1016/j.artmed.2023.102549
+11. Jajodia A, Gupta A, Prosch H, Mayerhoefer M, Mitra S, Pasricha S, et al. Combination of radiomics and machine learning with diffusion-weighted MR imaging for clinical outcome prognostication in cervical cancer. Tomography. (2021) 7:344–57. doi: 10.3390/tomography7030031
+12. Meng J, Liu S, Zhu L, Zhu L, Wang H, Xie L, et al. Texture Analysis as Imaging Biomarker for recurrence in advanced cervical cancer treated with CCRT. Sci Rep. (2018) 8:11399. doi: 10.1038/s41598-018-29838-0
+13. Lucia F, Bourbonne V, Pleyers C, Dupré PF, Miranda O, Visvikis D, et al. Multicentric development and evaluation of 18F-FDG PET/CT and MRI radiomics models to predict para-aortic lymph node involvement in locally advanced cervical cancer. Eur J Nucl Med Mol Imaging. (2023) 50:2514–28. doi: 10.1007/s00259-023-06180-w
+14. Cai C, Xiao JF, Cai R, Ou D, Wang YW, Chen JY, et al. Longitudinal dynamic MRI radiomic models for early prediction of prognosis in locally advanced cervical cancer treated with concurrent chemoradiotherapy. Radiat Oncol. (2024) 19:181. doi: 10.1186/s13014-024-02574-8
+15. Gennigens C, Jerusalem G, Lapaille L, De Cuypere M, Streel S, Kridelka F, et al. Recurrent or primary metastatic cervical cancer: current and future treatments. ESMO Open. (2022) 7:100579. doi: 10.1016/j.esmoop.2022.100579
+16. Saini SK, Sharma DN, Chauhan S, Srivastava S, Gopishankar N, Subramani V. Precision prediction of cervical cancer outcomes: A machine learning approach to recurrence and survival analysis. J Cancer Res Ther. (2025) 21:538–46. doi: 10.4103/ jcrt.jcrt_2524_24
+17. Akazawa M, Hashimoto K. Artificial intelligence in gynecologic cancers: Current status and future challenges -A systematic review. Artif Intell Med. (2021) 120:102164. doi: 10.1016/j.artmed.2021.102164
+18. Ali MM, Ahmed K, Bui FM, Paul BK, Ibrahim SM, Quinn JMW, et al. Machine learning-based statistical analysis for early stage detection of cervical cancer. Comput Biol Med. (2021) 139:104985. doi: 10.1016/j.compbiomed.2021.104985
+19. Vazquez B, Rojas-Garcı́a M, Rodrı́guez-Esquivel JI, Marquez-Acosta J, ArandaFlores CE, Cetina-Pérez LDC, et al. Machine and deep learning for the diagnosis, prognosis, and treatment of cervical cancer: A scoping review. Diagnostics (Basel). (2025) 15:1543. doi: 10.3390/diagnostics15121543
+20. Zhang Y, Zhang K, Jia H, Xia B, Zang C, Liu Y, et al. IVIM-DWI and MRI-based radiomics in cervical cancer: Prediction of concurrent chemoradiotherapy sensitivity in combination with clinical prognostic factors. Magn Reson Imaging. (2022) 91:37–44. doi: 10.1016/j.mri.2022.05.005
+21. Weyl A, Chollet C, Gabiache E, Cancès-Lauwers V, Gallo F, Martinez A, et al. PET-MRI for evaluation of response to radiochemotherapy in patients with locally advanced cervical cancer. Int J Gynecol Cancer. (2023) 33:676–82. doi: 10.1136/ijgc2022-003958
+22. Yoo JG, Kim SI, Yeo SG, Park DC. Usefulness of short-term imaging and squamous cell carcinoma antigen to early predict response to concurrent chemoradiotherapy in patients with cervical cancer. Cancer Control. (2022) 29:10732748221074530. doi: 10.1177/10732748221074530
+23. Rufo DD, Debelee TG, Ibenthal A, Negera WG. Diagnosis of diabetes mellitus using gradient boosting machine (LightGBM). Diagnostics (Basel). (2021) 11:1714. doi: 10.3390/diagnostics11091714
+24. Fu J, Wang W, Wang Y, Liu C, Wang P. The role of squamous cell carcinoma antigen (SCC Ag) in outcome prediction after concurrent chemoradiotherapy and treatment decisions for patients with cervical cancer. Radiat Oncol. (2019) 14:146. doi: 10.1186/s13014-019-1355-4
+25. Hou Y, Zhang L, Wang H, Wang W, Hao M. Development and validation of a risk prediction model for lymph node metastasis in stage IA2-IIA1 cervical cancer based on laboratory parameters. Am J Cancer Res. (2025) 15:1081–95. doi: 10.62347/ EOXM6715
+26. Quinn BA, Deng X, Colton A, Bandyopadhyay D, Carter JS, Fields EC. Increasing age predicts poor cervical cancer prognosis with subsequent effect on treatment and overall survival. Brachytherapy. (2019) 18:29–37. doi: 10.1016/ j.brachy.2018.08.016
+27. Brodeur MN, Dejean R, Beauchemin MC, Samouëlian V, Cormier B, Bacha OM, et al. Oncologic outcomes in the era of modern radiation therapy using FIGO 2018 staging system for cervical cancer. Gynecol Oncol. (2021) 162:277–83. doi: 10.1016/ j.ygyno.2021.05.023
+28. Chen SW, Liang JA, Hung YC, Yeh LS, Chang WC, Yang SN, et al. Clinical implications of elevated pretreatment carcinoembryonic antigen in patients with advanced squamous cell carcinoma of the uterine cervix. Tumour Biol. (2008) 29:255–61. doi: 10.1159/000152943
+29. Ching JCF, Lam S, Lam CCH, Lui AOY, Kwong JCK, Lo AYH, et al. Integrating CT-based radiomic model with clinical features improves long-term prognostication in high-risk prostate cancer. Front Oncol. (2023) 13:1060687. doi: 10.3389/ fonc.2023.1060687
+30. Ling X, Bazyar S, Ferris M, Molitoris J, Allor E, Thomas H, et al. Identification of CT based radiomic biomarkers for progression free survival in head and neck squamous cell carcinoma. Sci Rep. (2025) 15:1279. doi: 10.1038/s41598-025-85498-x
+31. Cui Y, Lin Y, Zhao Z, Long H, Zheng L, Lin X. Comprehensive 18F-FDG PETbased radiomics in elevating the pathological response to neoadjuvant immunochemotherapy for resecta ble stage III non-small-cell lung cancer: A pilot study. Front Immunol. (2022) 13:994917. doi: 10.3389/fimmu.2022.994917
+32. Knoth J, Nout RA, Pötter R, Mahantshetty U, Jürgenliemk-Schulz I, Haie-Meder C, et al. Distant metastasis after chemoradiation and image guided adaptive brachytherapy in locally advanced cervical cancer. Int J Radiat Oncol Biol Phys. (2025) 123:503–12. doi: 10.1016/j.ijrobp.2025.04.03
+33. Tempfer CB, Beckmann MW. State-of-the-art treatment and novel agents in local and distant recurrences of cervical cancer. Oncol Res Treat. (2016) 39:525–33. doi: 10.1159/000448529
+34. De Muzio F, Fusco R, Simonetti I, Grassi F, Grassi R, MC B, et al. Functional assessment in endometrial and cervical cancer: diffusion and perfusion, two captivating tools for radiologists. Eur Rev Med Pharmacol Sci. (2023) 27:7793–810. doi: 10.26355/ eurrev_202308_33435
+35. Zhang Y, Wu C, Du J, Xiao Z, Lv F, Liu Y. Prediction of recurrence risk factors in patients with early-stage cervical cancers by nomogram based on MRI handcrafted radiomics features and deep learning features: a dual-center study. Abdom Radiol (NY). (2024) 49:258–70. doi: 10.1007/s00261-023-04125-3
+36. Huang Q, Deng B, Wang Y, Shen Y, Hu X, Feng C, et al. Reduced field-of-view DWI−derived clinical-radiomics model for the prediction of stage in cervical cancer. Insights Imaging. (2023) 14:18. doi: 10.1186/s13244-022-01346-w
+37. Wagner-Larsen KS, Hodneland E, Fasmer KE, Lura N, Woie K, Bertelsen BI, et al. MRI-based radiomic signatures for pretreatment prognostication in cervical cancer. Cancer Med. (2023) 12:20251–65. doi: 10.1002/cam4.6526
+Jiang et al. 10.3389/fonc.2025.1668971
+Frontiers in Oncology 14 frontiersin.org
