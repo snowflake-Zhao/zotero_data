@@ -3,13 +3,13 @@
 	"translatorType": 4,
 	"label": "newspapers.com",
 	"creator": "Peter Binkley",
-	"target": "^https?://[^/]+\\.newspapers\\.com/(article|image)/",
+	"target": "^https?://[^/]+\\.newspapers\\.com/(article|image|newspage)/",
 	"minVersion": "3.0",
 	"maxVersion": null,
 	"priority": 100,
 	"inRepository": true,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2025-04-29 03:15:00"
+	"lastUpdated": "2026-05-21 16:15:00"
 }
 
 /*
@@ -39,8 +39,9 @@ function detectWeb(doc, url) {
 	if (url.includes('/article/')) {
 		return 'newspaperArticle';
 	}
-	else if (url.includes('/image/')) {
-		if (new URL(url).searchParams.has('clipping_id')) {
+	else if (url.includes('/image/') || url.includes('/newspage/')) {
+		let searchParams = new URL(url).searchParams;
+		if (searchParams.has('clipping_id') && /^\d+$/.test(searchParams.get('clipping_id'))) {
 			return 'newspaperArticle';
 		}
 		else {
@@ -51,7 +52,7 @@ function detectWeb(doc, url) {
 }
 
 async function getClippings(url) {
-	let id = url.match(/\/image\/(\d+)/)[1];
+	let id = url.match(/\/(?:image|newspage)\/(\d+)/)[1];
 	let json = await requestJSON(`/api/clipping/page?page_id=${id}&start=0&count=25`);
 	let clippings = {};
 	for (let clipping of json.clippings) {

@@ -9,7 +9,7 @@
 	"priority": 100,
 	"inRepository": true,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2022-11-11 15:00:00"
+	"lastUpdated": "2026-07-22 16:30:00"
 }
 
 /*
@@ -55,9 +55,9 @@ function getItem(doc, url) {
 	var urlParts = url.split('/');
 	if (urlParts.length>5) {
 		var chapterId = urlParts[urlParts.length-1].replace('.xml', '');
-		var citeLink = '//sk.sagepub.com/CitationExport/ExportEntryCitation/'+id+'?type=Endnote&xmlId='+chapterId;
+		var citeLink = '/CitationExport/ExportEntryCitation/'+id+'?type=Endnote&xmlId='+chapterId;
 	} else  {
-		var citeLink = '//sk.sagepub.com/CitationExport/exportcitation/'+id+'?type=Endnote';
+		var citeLink = '/CitationExport/exportcitation/'+id+'?type=Endnote';
 	}
 	//Z.debug(citeLink)
 
