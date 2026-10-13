@@ -9,7 +9,7 @@
 	"priority": 100,
 	"inRepository": true,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2023-08-24 15:35:00"
+	"lastUpdated": "2026-10-07 16:45:00"
 }
 
 /*
@@ -229,13 +229,7 @@ var testCases = [
 				"pages": "1891-1899",
 				"publicationTitle": "Medicine and Science in Sports and Exercise",
 				"volume": "46",
-				"attachments": [
-					{
-						"title": "PubMed entry",
-						"mimeType": "text/html",
-						"snapshot": false
-					}
-				],
+				"attachments": [],
 				"tags": [
 					{
 						"tag": "Aged"

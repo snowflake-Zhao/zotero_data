@@ -1,0 +1,733 @@
+Journal Pre-proofs
+Original Article
+An intelligent postoperative management system for glioblastoma integrating automated segmentation, risk stratification, and recurrence spatial mapping
+Yan Li, Zekun Jiang, Jia Tan, Zhihao Wang, Yuehao Ma, Deng Xiong, Yanhui Liu, Kang Li, Su Lui, Min Wu
+PII: S0167-8140(25)05184-9 DOI: https://doi.org/10.1016/j.radonc.2025.111180 Reference: RADION 111180
+To appear in: Radiotherapy and Oncology
+Received Date: 8 July 2025 Revised Date: 15 September 2025 Accepted Date: 26 September 2025
+Please cite this article as: Li, Y., Jiang, Z., Tan, J., Wang, Z., Ma, Y., Xiong, D., Liu, Y., Li, K., Lui, S., Wu, M., An intelligent postoperative management system for glioblastoma integrating automated segmentation, risk stratification, and recurrence spatial mapping, Radiotherapy and Oncology (2025), doi: https://doi.org/10.1016/ j.radonc.2025.111180
+This is a PDF file of an article that has undergone enhancements after acceptance, such as the addition of a cover page and metadata, and formatting for readability, but it is not yet the definitive version of record. This version will undergo additional copyediting, typesetting and review before it is published in its final form, but we are providing this version to give early visibility of the article. Please note that, during the production process, errors may be discovered which could affect the content, and all legal disclaimers that apply to the journal pertain.
+© 2025 Published by Elsevier B.V.
+
+
+1
+An Intelligent Postoperative Management System for Glioblastoma
+Integrating Automated Segmentation, Risk Stratification, and
+Recurrence Spatial Mapping
+Yan Li a,b,#, Zekun Jiang c,#, Jia Tan a,b, Zhihao Wang e, Yuehao Ma d, Deng Xiong f,
+Yanhui Liu e, Kang Li b,c,d*, Su Lui a,b*, Min Wu a,b,*
+a Department of Radiology and Huaxi MR Research Center (HMRRC), Functional and
+Molecular Imaging Key Laboratory of Sichuan Province, West China Hospital, Sichuan
+University, Chengdu, China
+b Sichuan Provincial Engineering Research Center of Intelligent Medical Imaging, West
+China Hospital, Sichuan University, Chengdu, China
+c West China Biomedical Big Data Center, West China Hospital, Sichuan University,
+Chengdu, China
+d Sichuan University-Pittsburgh Institute, Sichuan University, Chengdu, China
+e Department of Neurosurgery, West China Hospital, Sichuan University, Chengdu,
+China
+f Computer Science Department/Mechanical Engineering Department, Stevens Institute
+of Technology, 1 Castle Point Terrace, Hoboken, NJ 07030, USA
+# The authors contributed equally to this work.
+* Corresponding Authors at: #37 Guoxue Alley, Wuhou District, Chengdu, Sichuan
+Province, 610041, China.
+Email address: likang@wchscu.cn (K. Li), lusuwcums@tom.com (S. Lui),
+wuminscu@scu.edu.cn (M. Wu).
+Short title: Integrated AI System for Postoperative GBM Management
+1. DeepGBM-Recure automates GBM segmentation, recurrence prediction and
+spatial mapping.
+
+
+2
+2. Patient-level risk stratification optimizes clinical surveillance.
+3. Recurrence probability heatmaps spatially guide radiotherapy planning.
+4. Validated high performance in segmentation and prediction tasks.
+Abstract
+Purpose: This study aimed to develop DeepGBM-Recure, an integrated artificial
+intelligence (AI) system for optimizing precision radiotherapy and individualized
+surveillance in glioblastoma (GBM) by automating postoperative risk stratification and
+spatial targeting of recurrence hotspots.
+Methods: This DeepGBM-Recure system comprises three synergistic modules: 1)
+Automated segmentation of peri-cavitary hyperintense regions on postoperative fluid
+attenuated inversion recovery (FLAIR) images using a 3D nnU-Net framework; 2)
+Patient-level early recurrence prediction based on radiomics features and random forest
+classification; 3) Voxel-wise spatial mapping of high-risk subregions via supervoxel
+analysis. The system was trained and validated on data from 145 patients across two
+centers and externally tested on data from 39 patients across another two centers.
+Results: On the test set, the nnU-Net segmentation model achieved a mean Dice
+coefficient of 0.85 ± 0.09. The patient-level and voxel-level prediction models achieved
+area under the ROC curves (AUCs) of 0.76 and 0.80, respectively. Notably, the voxel
+level model exhibited strong spatial concordance between predicted high-risk heatmaps
+and ground-truth recurrence regions. Performance was further supported by calibration
+curves, decision curve analysis, and clinical application in representative cases,
+demonstrating favorable predictive accuracy in real-world scenarios.
+Conclusion: DeepGBM-Recure represents a pioneering integrated solution that
+combines automated anatomical delineation, individualized risk stratification, and
+spatial recurrence guidance, offering a clinically applicable tool for precision
+radiotherapy and individualized surveillance. Prospective multi-center trials with larger
+cohorts are warranted to validate clinical utility and facilitate integration into real-world
+decision-making workflows.
+Keywords
+Glioblastoma, Deep learning, Radiomics, Automated segmentation, Risk stratification,
+Spatial mapping, Precision radiotherapy, Individualized surveillance
+
+
+3
+Introduction
+Glioblastoma (GBM) is the most common primary malignant neoplasm of the
+central nervous system, continues to carry a poor prognosis, with a 5-year survival rate
+below 10% despite recent therapeutic advances. A significant proportion of patients
+experience tumor recurrence during the early phases of radiotherapy [1,2], and over 80%
+of recurrence occurs at the surgical residual margin [3], where infiltrative tumor cells
+invade non-enhancing regions typically excluded from clinical target volumes (CTV)
+in conventional radiotherapy planning[4,5].
+Current diagnostic and therapeutic monitoring strategies rely heavily on
+conventional magnetic resonance imaging (MRI), particularly contrast-enhanced T1
+weighted imaging (CE-T1WI) and T2-fluid-attenuated inversion recovery (FLAIR)
+sequences. Although CE-T1WI delineates enhancing tumor bulk effectively, it fails to
+discriminate non-enhancing tumor infiltration from vasogenic edema in perilesional
+T2/FLAIR hyperintense regions. Moreover, microscopic tumor invasion often extends
+beyond radiologically visible abnormalities [6], limiting the ability of conventional
+MRI to detect early recurrence. Precise identification of high-risk patients could
+significantly improve personalized postoperative management.
+Artificial intelligence (AI)-driven methods integrating multiparametric MRI with
+machine learning have shown promise in predicting early recurrence and delineating
+tumor invasion range [7-15]. However, critical limitations remain: (1) small sample
+sizes in existing studies increase overfitting risks [16,17], and heavy reliance on
+advanced imaging modalities impairs clinical applicability; (2) most research focuses
+on preoperative imaging, neglecting the complex postoperative microenvironment,
+which includes a mixture of edema, gliosis, and residual non-enhancing tumor tissue
+[18]. Additionally, anatomical shifts between pre- and postoperative imaging
+complicate spatial registration and diminish model reliability [10,11].
+Recent advances in multi-task deep learning have demonstrated superior
+performance in preoperative tumor segmentation, molecular profiling, and grading of
+gliomas and other tumors [19,20]. These automated pipelines allow for rapid, non
+invasive acquisition of imaging biomarkers and assist clinical decision-making.
+Extending this paradigm to the postoperative setting is critical for optimizing
+radiotherapy protocols, treatment planning, and follow-up strategies. An integrated
+system performing automated segmentation, risk stratification, and spatial mapping of
+recurrence-prone regions could redefine CTV delineation and enable personalized
+precision therapy [21].
+Building upon these advances, we developed DeepGBM-Recure, an intelligent
+deep learning system translating routine postoperative MRI into actionable
+radiotherapy guidance. It uniquely integrates: (1) automated segmentation of peri
+cavitary hyperintensities; (2) early recurrence prediction for risk-adapted surveillance;
+and (3) voxel-level spatial mapping to guide precision dose painting. This integrated
+system can enable a seamless transition from routine MRI data to clinically actionable
+guidance without the need for manual intervention.
+Materials and Methods
+
+
+4
+Study Population
+This retrospective multicenter study was approved by the Ethics Committee of
+West China Hospital, Sichuan University (NO.20251449), with a waiver for written
+informed consent. GBM data were collected from four centers: one internal cohort
+(West China Hospital, WCH) and three public datasets from The Cancer Imaging
+Archive (TCIA), including the Ivy Glioblastoma Atlas Project (Ivy GAP) [22,23], the
+Burdenko Glioblastoma Progression Dataset (BGPD) [24], and the Río Hortega
+University Hospital Glioblastoma Dataset (RHUH-GBM) [25]. The inclusion criteria
+were as follows: (1) histopathologically confirmed newly diagnosed GBM according
+to contemporary WHO classification standards at the time of resection; (2) gross total,
+near total or subtotal resection of contrast-enhancing tumor components; (3) availability
+of postoperative MRI sequences, including pre-recurrence FLAIR images and CE
+T1WI images at the time of recurrence. Patients were excluded if they exhibited distant
+recurrence, cerebrospinal fluid dissemination, or significant image artifacts. A detailed
+overview of datasets distribution and inclusion/exclusion criteria is presented in
+Supplementary Fig. S1. Early recurrence was defined as tumor progression within six
+months postoperatively, confirmed either by histopathology or based on mRANO
+criteria [26]. The full dataset was divided into three subsets: a train and validation
+cohort (derived from WCH and RHUH-GBM) for model development and internal
+validation, and an independent test cohort (from Ivy GAP and BGPD) for evaluating
+the model’s performance in automated segmentation, early recurrence prediction and
+spatially mapping high-risk recurrence areas in GBM.
+MRI Acquisitions
+MRI examinations were performed using 1.5T and 3.0T scanners from multiple
+vendors, including GE, Siemens, Toshiba, Philips, and UIH, across participating
+centers. Primary imaging parameters varied across scanner platforms. A detailed
+summary of MRI acquisition parameters for the train, validation, and test sets is
+provided in Supplementary Table S1.
+Data Preprocessing and Delineation
+All Digital Imaging and Communications in Medicine (DICOM) files were
+converted to Neuroimaging Informatics Technology Initiative (NIfTI) format. CE
+T1WI images at recurrence were rigidly registered to the corresponding pre-recurrence
+FLAIR images. Intensity normalization was applied to harmonize grayscale
+distributions across scanners, followed by isotropic resampling to a voxel resolution of
+1×1×1 mm3 to ensure spatial consistency.
+A neuroradiologist (Y. Li, 5 years of experience) manually segmented two regions
+of interest using ITK-SNAP software (version 3.8.0): (1) enhancing tumor regions on
+recurrence CE-T1WI and (2) peri-cavitary hyperintense signal zones on postoperative
+FLAIR images. All segmentations were subsequently reviewed and refined by a senior
+neuroradiologist (S. Lui, >10 years of experience) to ensure consistency and accuracy.
+Development of DeepGBM-Recure
+We developed and validated DeepGBM-Recure, an integrated deep learning
+
+
+5
+system composed of three synergistic modules: a peri-cavity hyperintensities
+segmentation model (referred to as the auto-seg model), a patient-level recurrence
+prediction model, and a voxel-level recurrence prediction and spatial mapping model.
+The overall study workflow is shown in Fig. 1A.
+Hyperintensities Segmentation Model
+We first trained a 3D MRI segmentation model, named auto-seg model, based on
+the nnU-Net framework implemented in PyTorch (version 1.12) [27]. The model was
+trained using postoperative FLAIR images from the train and validation sets to
+automatically delineates peri-cavity hyperintense regions. It addressed the complexity
+of postoperative brains through adaptive kernel size selection and cascade architectures.
+Segmentation performance was validated on the test set using Dice similarity
+coefficient.
+Patient-Level Prediction Model
+Radiomic features were extracted from automatically segmented peri-cavity
+regions on postoperative FLAIR images using Pyradiomics library (version 3.0.1)
+[28,29]. Following a three-step feature selection pipeline (Mann-Whitney U test,
+Pearson correlation analysis, and SHAP-based importance ranking), the top-10
+prognostic features were used to train and compare eight machine learning classifiers
+for predicting early recurrence. The optimal classifier, selected based on validation set
+performance, was designated as the final patient-level model and evaluated on an
+independent test set. Detailed radiomics analysis information is provided in
+Supplementary Material A.1.
+Voxel-Level Prediction Model
+Based on the 3D volume of interest (VOI) obtained from the auto-seg model, we
+further applied the Simple Linear Iterative Clustering (SLIC) algorithm to partition the
+VOI into 9×9×9 supervoxels [30]. Each VOI could be divided into thousands of
+supervoxel objects. The recurrence regions from follow-up CE-T1WI were registered
+to baseline FLAIR, and each supervoxel was labeled as recurrent or non-recurrent
+accordingly. Radiomic features were then extracted from each supervoxel object,
+followed by a three-stage feature selection process and modeling using eight classifiers
+on the train set. The best-performing voxel-level model was selected based on
+validation set results. The algorithmic pipeline was consistent with that of the patient
+level model. Based on the voxel-level model, we assigned a recurrence probability to
+each supervoxel, and high-risk recurrence regions were visualized as probability
+heatmaps overlaid on the FLAIR images.
+Machine Learning Classifier Implementation
+Eight machine learning classifiers were implemented using the Python Scikit-learn
+library (version 0.24.2), including logistic regression (LR), support vector machine
+(SVM), decision tree (DT), random forest (RF), gradient boosting (GB), extreme
+gradient boosting (XGBoost), light gradient boosting machine (LightGBM), and Neural
+Network multilayer perceptron (MLP). The optimal classifier was compared and
+selected based on five-fold cross-validation on the train set and performance on the
+
+
+6
+validation set. The final selected model was then evaluated on the independent test set.
+Clinical Deployment and Inference
+The DeepGBM-Recure system integrates clinical inference by processing
+postoperative FLAIR images through its three core components: 1) automated
+segmentation, 2) patient-level recurrence prediction, and 3) voxel-level spatial
+localization. This workflow generates two key outputs including a personalized early
+recurrence probability score (0-1 scale) and a high-risk recurrence heatmap. These
+outputs are integrated into a Clinical Decision Support (CDS). These reports
+incorporate risk-adapted follow-up recommendations, evidence-based treatment
+strategies, and optimized radiotherapy targets. Finalized outputs are seamlessly
+delivered to clinician workstations (e.g., PACS/RIS terminals) to support real-time
+clinical implementation (see Fig. 1B).
+Statistical Analysis
+Statistical analyses were performed using SPSS (version 22.0; IBM Corp.,
+Armonk, NY, USA) and Python (version 3.8). Comparisons of clinical characteristics
+were performed using Pearson's chi-squared test, the Kruskal-Wallis rank sum test, or
+Fisher's exact test, depending on variable type. The Mann-Whitney U test was used to
+evaluate the association between radiomic features and the predictive variable, while
+the Pearson correlation test was used to assess the correlations among features. The
+performance of hyperintensity segmentation model was evaluated using the Dice
+similarity coefficient. For recurrence prediction tasks, receiver operating characteristic
+(ROC) curves were generated to evaluate overall model performance. Quantitative
+metrics including the area under the ROC curve (AUC), accuracy, precision, recall, and
+F1-score were calculated. The DeLong test was used to evaluate statistical differences
+in AUC between different classifiers. Model interpretability was evaluated using
+SHapley Additive exPlanations (SHAP) feature importance rankings for both patient
+level and voxel-level prediction models. Calibration curves and decision curve analyses
+were employed to assess the accuracy of predicted recurrence probabilities and the
+clinical utility. Finally, voxel-level model's performance was visualized via parametric
+heatmaps, which illustrated predicted high-risk recurrence zones surrounding the
+surgical cavity. Statistical significance was defined as a P-value < 0.05.
+Results
+A total of 184 patients were enrolled in this study (118 males, 64%; mean age 55
+± 12 years), including 110 from the WCH cohort, 35 from the RHUH-GBM dataset, 22
+from the Ivy GAP, and 17 from the BGPD. Patients from the WCH and RHUH-GBM
+cohorts were randomly assigned to train (n=116; 84 males, 72%; mean age 56 ± 11
+years) and validation (n=29; 15 males, 52%; mean age 52 ± 14 years) sets via an 8:2
+stratified sampling ratio. The independent test set consisted of 39 patients from Ivy
+GAP and BGPD (19 males, 49%; mean age 55 ± 14 years). The demographic and
+clinical characteristics of the train, validation, and test sets are summarized in Table 1.
+A comparison of early-recurrence versus non-early-recurrence subgroups is provided
+in Supplementary Table S2.
+
+
+7
+From these 184 patients, a total of 5,006,961 supervoxels were extracted from
+hyperintense signal VOIs surrounding the surgical cavities. These supervoxels were
+also stratified into train (n=3,031,275), validation (n=1,299,119), and test sets
+(n=665,567) based on patient-level groupings (see Supplementary Fig. S2).
+Across the train, validation, and test sets, the auto-seg model yielded mean Dice
+coefficients of 0.93 ± 0.03, 0.89 ± 0.07, and 0.85 ± 0.09, respectively (Supplementary
+Fig. S3).
+Prediction metrics and ROC curves for all machine learning classifiers in the train
+and validation sets at patient-level and voxel-level models are summarized in
+Supplementary Table S3 and Fig. S4. Among the classifiers, the RF modal achieved
+the highest predictive performance (P < 0.05). SHAP summary plots (Supplementary
+Fig. S5) revealed the contribution of the top-10 radiomic features to the RF model’s
+output, enhancing model interpretability. Detailed definitions and biological
+interpretations of these features F1-F10 are provided in Supplementary Table S4 and
+S5.
+On the independent test set, the patient-level and voxel-level models achieved the
+following performance, an AUC of 0.76 and 0.80, accuracy of 0.69 and 0.79, precision
+of 0.63 and 0.78, recall of 0.95 and 0.80, and F1-score of 0.76 and 0.79 respectively
+(Table 2). ROC curves for both models across the three study sets are shown in Fig. 2A
+and 2B. The calibration curve for the patient-level model demonstrated strong
+agreement between predictive and observed outcomes, with a mean absolute error of
+0.034 (Fig. 2C). Decision curve analysis further confirmed the model’s clinical utility,
+showing net benefit across a broad range of thresholds probabilities (Fig. 2D).
+Representative voxel-level predictions from the test set are shown in Fig. 3.
+Heatmaps depicting high-risk recurrence regions showed strong spatial concordance
+with actual recurrence locations. And the normalized histograms of voxel-based
+prediction probabilities are provided in Supplementary Fig. S6. However, a subset of
+cases exhibited spatial discrepancies between predicted and observed recurrence areas
+due to postoperative morphological alterations of the surgical cavity (Supplementary
+Fig. S7).
+Given that 45% of patients in our study had unknown MGMT methylation status,
+we conducted additional subgroup analyses of MGMT-known versus MGMT-unknown
+patients in the test cohort to verify the model's robust predictive capability regardless
+of MGMT status. The results demonstrate that the model’s performance is not
+influenced by MGMT status, supporting its role as an imaging-based AI tool capable
+of achieving reliable prediction (Supplementary Fig. S8).
+We further conducted a hypothetical clinical deployment and case-based analysis
+to illustrate the potential utility of DeepGBM-Recure. Fig. 4 demonstrates
+representative cases of early and non-early recurrence predicted by the system during
+clinical application. Case W45 involved a 63-year-old female with unknown IDH status
+and MGMT promoter methylation, while case Burdenko-GBM-032 involved a 55-year
+old female with IDH-wildtype glioblastoma and undetermined MGMT promoter status.
+The patient-level model predicted recurrence probabilities of 0.74 and 0.31 for both
+cases, respectively. Voxel-level probability heatmaps revealed high-risk subregions
+
+
+8
+that corresponded closely with the actual recurrence sites, which were confirmed at 2
+and 44 months postoperatively, demonstrating strong spatial concordance between
+model predictions and clinical outcomes. As a demonstration of how the model's
+outputs could inform clinical decision-making: for case W45 (high predicted risk),
+more intensive follow-up intervals could be considered, along with potential enrollment
+in trials exploring combined targeted/immunotherapeutic regimens. For case
+Burdenko-GBM-032 (low predicted risk), maintaining the standard Stupp protocol with
+standard or extended surveillance intervals might be justified. Furthermore, a
+hypothetical radiotherapy plans was generated to illustrate how voxel-level heatmaps
+could guide precision dose painting, suggesting dose escalation to high-risk subregions
+within acceptable safety limits while maintaining standard dosing in low-risk areas. It
+is critical to emphasize that these management strategies were not implemented in this
+retrospective cohort but are presented here solely as examples of potential clinical
+applications.
+Discussion
+In this study, we developed and evaluated DeepGBM-Recure, the first robust
+integrated AI system that unifies automated segmentation, patient-level recurrence
+prediction, and voxel-wise spatial localization for comprehensive postoperative
+management of GBM. This synergistic triad establishes an efficient clinical workflow,
+where nnU-Net based segmentation provides standardized anatomical inputs, patient
+level risk stratification supports personalized surveillance planning, and voxel-level
+spatial mapping informs precision radiotherapy, all while minimizing manual
+intervention and enhancing therapeutic precision.
+DeepGBM-Recure demonstrated strong performance across all modules. The
+segmentation model achieved a Dice coefficient of 0.85 ± 0.09 in the test set; the
+patient-level model yielded an AUC of 0.76 for early recurrence risk stratification; and
+the voxel-level model achieved an AUC of 0.80, with notable spatial concordance
+between predicted high-risk zones and actual recurrence regions. Through rigorous
+validation and representative clinical application, the system has proven to be an
+accurate, robust, and interpretable AI solution for postoperative GBM management.
+Prior radiomic studies have primarily focused on single-scale recurrence
+prediction. For example, Cepeda et al. [31] developed a voxel-level model using
+postoperative multiparametric MRI (AUC=0.81 in n=15 test cases), though the small
+sample size (n=55) raised concerns about overfitting. Similarly, Akbari et al. [15]
+constructed a model using preoperative multiparametric MRI to delineate GBM
+infiltration zones, achieving AUCs of 0.80 and 0.84 in the training (n=31) and
+validation (n=34) cohorts, respectively. However, as previously noted, beyond risks of
+overfitting due to limited sample size, preoperative MRI-based predictions face
+additional challenges: postoperative anatomical shifts in peri-cavitary regions increase
+co-registration complexity between preoperative scans and recurrence imaging,
+frequently resulting in spatial mismatches between predicted and actual recurrence sites.
+This discordance complicates model validation and clinical interpretation. In addition,
+other similar studies have also reported significant findings. However, except for the
+
+
+9
+research by Yan, Hu, and Cepeda et al. [31-33], the data in the remaining studies were
+derived from single-center cohorts [8-13,15,34,35]. The lack of external validation
+undermines the generalizability and reproducibility of these models, posing a barrier to
+clinical translation.
+MRI-derived radiomic phenotypes have recently gained attention as promising
+surrogate biomarkers for GBM prognosis [36-38], although their biological
+interpretability remains insufficiently explored. In our study, ten radiomic features were
+separately selected for constructing both patient-level and voxel-level models. These
+features predominantly capture the complex biological landscape surrounding the
+postoperative residual cavity, which often includes necrosis, edema, viable tumor
+remnants, and treatment response. Among the top five most important features in the
+patient-level model, F1 represents low-intensity gray-level regions in original images,
+possibly indicating necrosis or cystic changes. A lower F1 may reflect more extensive
+necrotic, potentially signaling a therapeutic response but also harboring residual tumor
+cells that contribute early recurrence. F2 quantifies complex gray-level dependence
+structures near the cavity, higher entropy values may reflect microstructural
+heterogeneity consistent with infiltrative tumor behavior [39]. F3 captures high
+intensity signals, possibly linked to hypermetabolic tumor activity or blood-brain
+barrier disruption. F4 may correlate with irregular enhancing margins or microvascular
+proliferation, while F5 characterized by high Imc1 values, indicates a combination of
+textural regularity and heterogeneity, potentially representing disorganized tissue
+architecture such as irregular tumor cell distribution [40]. Collectively, these features
+encapsulate peri-cavitary abnormal signal regions from multiple perspectives,
+including intensity, texture, and spatial heterogeneity. They offer a quantitative
+objective basis for identifying early recurrence, optimizing radiotherapy targets, and
+stratifying patient prognosis, potentially reducing reliance on subjective imaging
+interpretations. Future research should focus on integrating multimodal data and
+validating the predictive value of feature combinations through large-scale, prospective
+multicenter trials.
+In addition, we observed that the important features differ between the patient
+level and voxel-level models, which can be attributed to the differences in spatial scales
+of the analysis targets. This observation underscores the inherent spatial heterogeneity
+within peri-tumor regions. By employing our proposed radiomics-based dual-model
+strategy, recurrence-related information can be effectively extracted and characterized
+from both global (patient-level) and local (supervoxel-level) perspectives, enabling
+multi-scale prediction of recurrence risk in GBM patients.
+Among the various machine learning classifiers tested, the RF algorithm achieved
+the best predictive performance at both the patient and voxel levels. This result may be
+attributed to the RF algorithm's capacity to capture complex, non-linear patterns in
+high-dimensional biomedical data which is consistent with previous studies [29]. In
+addition, the incorporation of SHAP analysis enhanced model interpretability, and the
+integration of recurrence probability heatmap visualization further improved the
+transparency and trustworthiness of the system for clinicians [20,41]. These features
+collectively support the deployment of the system in real-world clinical settings and
+
+
+10
+may facilitate broader adoption. For patients stratified as high-risk for early recurrence
+by the system, follow-up intervals are recommended to be shortened, incorporating
+advanced MRI sequences for focused surveillance of predicted high-risk zones. During
+adjuvant chemotherapy, alternative regimens such as dose-dense temozolomide or
+inclusion in clinical trials involving targeted/immunotherapy may be considered. At
+recurrence monitoring phases, early intervention is recommended over awaiting clinical
+deterioration. Dose painting may be implemented for high-risk subregions within safety
+constraints guided by probability heatmaps [42,43]. However, treatment options for
+early recurrence of glioblastoma are limited. DeepGBM-Recure is only a CDS tool
+designed to provide evidence-based information to assist clinicians, not to mandate any
+specific treatment plan. The final treatment decisions should be made by the clinical
+team according to the individual circumstances, physical condition, and available
+resources of patients.
+This study has several limitations that should be acknowledged. Firstly, although
+we utilized a multicenter dataset with one of the largest sample sizes reported in
+comparable studies, the retrospective design and relatively modest cohort size may
+restrict the generalizability of findings. Furthermore, heterogeneity in MRI scanners
+and imaging protocols across institutions may affect the model’s external validity.
+Secondly, in certain cases, ill-defined boundaries between surgical cavities and peri
+cavity hyperintense signals on early postoperative FLAIR images led to uncertainties
+in ROI delineation. Postoperative anatomical shifts (e.g., cavity contraction and
+displacement of surrounding brain tissue) may also cause spatial mismatches between
+predicted and observed recurrence locations, thereby compromising voxel-level
+prediction accuracy. Future studies may consider employing deformable image
+registration algorithms to better account for such brain shifts. In addition, our analysis
+was restricted to single-timepoint postoperative FLAIR imaging. The absence of
+longitudinal, multi-timepoint data precludes evaluation of dynamic signal evolution in
+peri-cavitary regions—a potentially valuable biomarker for recurrence risk
+stratification. Further investigation should explore integrating temporal imaging
+features to enhance prognostic accuracy and provide deeper insights into recurrence
+kinetics. Meanwhile, future research could develop fused models by incorporating
+preoperative radiomic features with longitudinal postoperative radiomic features,
+thereby further enhancing predictive performance. Additionally, incorporating broader
+patient data will comprehensively assess system performance across patient subgroups.
+Finally, while our model currently focuses exclusively on postoperative MRI radiomics
+to ensure broad applicability, future work should integrate multimodal data streams
+(e.g., molecular markers, pathomics) where feasible as data completeness improves.
+Conclusion
+This study establishes DeepGBM-Recure, the first fully integrated deep learning
+system that unifies automated segmentation of postoperative anatomy, patient-level
+recurrence prediction, and voxel-wise spatial mapping for glioblastoma management.
+By eliminating manual delineation and synergistically integrating recurrence risk
+stratification with spatial localization of recurrence hotspots, our approach delivers a
+
+
+11
+comprehensive solution for precision neuro-oncology. Future directions will include
+validate in prospective multi-center trials and the development of real-time clinical
+interfaces to enable automated radiotherapy targeting and adaptive surveillance,
+translating computational innovations into actionable strategies at the bedside.
+Funding statement
+This study was supported by 1.3.5 project of Center for High Altitude Medicine,
+West China Hospital, Sichuan University (Project No. GYYX24004); National Natural
+Science Foundation of China (Project Nos. 82441007, 82120108014); 1.3.5 project for
+disciplines of excellence, West China Hospital, Sichuan University (Project Nos.
+ZYGD23003, ZYYC21004); 1.3.5 projects for Artificial Intelligence, West China
+Hospital, Sichuan University (Project No. ZYAI24010); the Fundamental Research
+Funds for the Central Universities (Project No. ZYGX2022YGRH008); Chengdu
+Science and Technology Office, major technology application demonstration project
+(Project No.2022-GH03-00017-HZ); Science and Technology Program of Xinjiang
+Uyghur Autonomous Region (Project No. 2025E01032).
+CRediT authorship contribution statement
+Yan Li: Writing – review & editing, Writing – original draft, Visualization,
+Validation, Software, Methodology, Investigation, Formal analysis, Data curation,
+Conceptualization. Zekun Jiang: Writing – review & editing, Visualization, Validation,
+Software, Methodology, Formal analysis, Conceptualization. Jia Tan: Investigation,
+Formal analysis. Zhihao Wang: Investigation, Formal analysis. Yuehao Ma: Software,
+Formal analysis. Deng Xiong: Data curation. Yanhui Liu: Writing – review & editing,
+Resources. Kang Li: Writing – review & editing, Supervision, Resources, Project
+administration, Funding acquisition. Su Lui: Writing – review & editing, Supervision,
+Resources, Project administration, Funding acquisition. Min Wu: Writing – review &
+editing, Supervision, Resources, Project administration, Funding acquisition.
+Declaration of competing interest
+The authors declare that they have no competing interests.
+Data availability
+The code in this study can be obtained from corresponding author with reasonable
+request. Raw MRI imaging data from West China Hospital cannot be shared at this time
+due to institutional protocols and patient privacy concerns. The data from the public
+datasets are available in TCIA under the following DOIs:
+ RHUH-GBM: 10.7937/4545-c905
+ Ivy GAP: 10.7937/K9/TCIA.2016.XLwaN6Nl
+ Burdenko-GBM-Progression: 10.7937/E1QP-D183
+References
+[1] X Wang, Q Cao, Y Shi, X Wu, Y Mi, K Liu, et al. Identification of low-dose radiation-induced
+exosomal circ-METRN and miR-4709-3p/GRB14/PDGFRα pathway as a key regulatory mechanism in
+
+
+12
+glioblastoma progression and radioresistance: Functional validation and clinical theranostic significance.
+Int J Biol Sci 2021;17:1061-1078. https://doi.org/10.7150/ijbs.57168.
+[2] J Wang, X Yi, Y Fu, P Pang, H Deng, H Tang, et al. Preoperative magnetic resonance imaging
+radiomics for predicting early recurrence of glioblastoma. Front Oncol 2021;11:769188.
+https://doi.org/10.3389/fonc.2021.769188.
+[3] R Huang, S Harmsen, JM Samii, H Karabeber, KL Pitter, EC Holland, et al. High precision imaging
+of microscopic spread of glioblastoma with a targeted ultrasensitive SERRS molecular imaging probe.
+Theranostics 2016;6:1075-84. https://doi.org/10.7150/thno.13842.
+[4] A Claes, AJ Idema and P Wesseling. Diffuse glioma growth: a guerilla war. Acta Neuropathol
+2007;114:443-58. https://doi.org/10.1007/s00401-007-0293-7.
+[5] VA Cuddapah, S Robel, S Watkins and H Sontheimer. A neurocentric perspective on glioma invasion.
+Nat Rev Neurosci 2014;15:455-65. https://doi.org/10.1038/nrn3765.
+[6] M Watanabe, R Tanaka and N Takeda. Magnetic resonance imaging and histopathology of cerebral
+gliomas. Neuroradiology 1992;34:463-9. https://doi.org/10.1007/bf00598951.
+[7] SH d'Este, MB Nielsen and AE Hansen. Visualizing glioma infiltration by the combination of
+multimodality imaging and artificial intelligence, a systematic review of the literature. Diagnostics (Basel)
+2021;11:592. https://doi.org/10.3390/diagnostics11040592.
+[8] LS Hu, H Yoon, JM Eschbacher, LC Baxter, AC Dueck, A Nespodzany, et al. Accurate patient
+specific machine learning models of glioblastoma invasion using transfer learning. AJNR Am J
+Neuroradiol 2019;40:418-425. https://doi.org/10.3174/ajnr.A5981.
+[9] N Verburg, T Koopman, MM Yaqub, OS Hoekstra, AA Lammertsma, F Barkhof, et al. Improved
+detection of diffuse glioma infiltration with imaging combinations: a diagnostic accuracy study. Neuro
+Oncol 2020;22:412-422. https://doi.org/10.1093/neuonc/noz180.
+[10] PD Chang, DS Chow, PH Yang, CG Filippi and A Lignelli. Predicting glioblastoma recurrence by
+early changes in the apparent diffusion coefficient value and signal intensity on FLAIR images. AJR Am
+J Roentgenol 2017;208:57-65. https://doi.org/10.2214/ajr.16.16234.
+[11] DT Blumenthal, M Artzi, G Liberman, F Bokstein, O Aizenstein and D Ben Bashat. Classification
+of high-grade glioma into tumor and nontumor components using support vector machine. AJNR Am J
+Neuroradiol 2017;38:908-914. https://doi.org/10.3174/ajnr.A5127.
+[12] S Rathore, H Akbari, J Doshi, G Shukla, M Rozycki, M Bilello, et al. Radiomic signature of
+infiltration in peritumoral edema predicts subsequent recurrence in glioblastoma: implications for
+personalized radiotherapy planning. J Med Imaging (Bellingham) 2018;5:021219.
+https://doi.org/10.1117/1.Jmi.5.2.021219.
+[13] J Lipkova, P Angelikopoulos, S Wu, E Alberts, B Wiestler, C Diehl, et al. Personalized radiotherapy
+design for glioblastoma: integrating mathematical tumor models, multimodal scans, and bayesian
+inference. IEEE Trans Med Imaging 2019;38:1875-1884. https://doi.org/10.1109/tmi.2019.2902044.
+[14] M Lundemann, P Munck Af Rosenschöld, A Muhic, VA Larsen, HS Poulsen, SA Engelholm, et al.
+Feasibility of multi-parametric PET and MRI for prediction of tumour recurrence in patients with
+glioblastoma. Eur J Nucl Med Mol Imaging 2019;46:603-613. https://doi.org/10.1007/s00259-018-4180
+3.
+[15] H Akbari, L Macyszyn, X Da, M Bilello, RL Wolf, M Martinez-Lage, et al. Imaging surrogates of
+infiltration obtained via multiparametric imaging pattern analysis predict subsequent location of
+recurrence of glioblastoma. Neurosurgery 2016;78:572-80.
+https://doi.org/10.1227/neu.0000000000001202.
+
+
+13
+[16] C Parmar, JD Barry, A Hosny, J Quackenbush and H Aerts. Data analysis strategies in medical
+imaging. Clin Cancer Res 2018;24:3492-3499. https://doi.org/10.1158/1078-0432.Ccr-18-0385.
+[17] A van der Schaaf, CJ Xu, P van Luijk, AA Van't Veld, JA Langendijk and C Schilstra. Multivariate
+modeling of complications with data driven variable selection: guarding against overfitting and effects
+of data set size. Radiother Oncol 2012;105:115-21. https://doi.org/10.1016/j.radonc.2011.12.006.
+[18] PO Zinn, SK Singh, A Kotrotsou, I Hassan, G Thomas, MM Luedi, et al. A coclinical radiogenomic
+validation study: conserved magnetic resonance radiomic appearance of periostin-expressing
+glioblastoma in patients and xenograft models. Clin Cancer Res 2018;24:6288-6299.
+https://doi.org/10.1158/1078-0432.Ccr-17-3420.
+[19] SR van der Voort, F Incekara, MMJ Wijnenga, G Kapsas, R Gahrmann, JW Schouten, et al.
+Combined molecular subtyping, grading, and segmentation of glioma using multi-task deep learning.
+Neuro Oncol 2023;25:279-289. https://doi.org/10.1093/neuonc/noac166.
+[20] C Jiang, Z Jiang, X Zhang, L Qu, K Fu, Y Teng, et al. Robust and interpretable deep learning system
+for prognostic stratification of extranodal natural killer/T-cell lymphoma. Eur J Nucl Med Mol Imaging
+2025;52:1739-1750. https://doi.org/10.1007/s00259-024-07024-x.
+[21] G Marshall Raj, S Dananjayan and K Gudivada. Applications of artificial intelligence and machine
+learning in clinical medicine: What lies ahead? Med. Adv. 2024;2:202-204.
+https://doi.org/10.1002/med4.62.
+[22] RB Puchalski, N Shah, J Miller, R Dalley, SR Nomura, JG Yoon, et al. An anatomic transcriptional
+atlas of human glioblastoma. Science 2018;360:660-663. https://doi.org/10.1126/science.aaf2666.
+[23] N Shah, Feng, X., Lankerovich, M., Puchalski, R. B., & Keogh, B. Data from Ivy Glioblastoma
+Atlas Project (IvyGAP) [Data set], The Cancer Imaging Archive; 2016.
+https://doi.org/10.7937/K9/TCIA.2016.XLwaN6nL.
+[24] SV Zolotova, Golanov, A. V., Pronin, I. N., Dalechina, A. V., Nikolaeva, A. A., Belyashova, A. S.,
+Usachev, D. Y., Kondrateva, E. A., Druzhinina, P. V., Shirokikh, B. N., Saparov, T. N., Belyaev, M. G.,
+& Kurmukov, A. I. Burdenko’s Glioblastoma Progression Dataset (Burdenko-GBM-Progression)
+(Version 1) [Data set], The Cancer Imaging Archive; 2023. https://doi.org/10.7937/E1QP-D183.
+[25] S Cepeda, S García-García, I Arrese, F Herrero, T Escudero, T Zamora, et al. The Río Hortega
+University Hospital Glioblastoma dataset: A comprehensive collection of preoperative, early
+postoperative and recurrence MRI scans (RHUH-GBM). Data Brief 2023;50:109617.
+https://doi.org/10.1016/j.dib.2023.109617.
+[26] BM Ellingson, PY Wen and TF Cloughesy. Modified criteria for radiographic response assessment
+in glioblastoma clinical trials. Neurotherapeutics 2017;14:307-320. https://doi.org/10.1007/s13311-016
+0507-6.
+[27] F Isensee, PF Jaeger, SAA Kohl, J Petersen and KH Maier-Hein. nnU-Net: a self-configuring
+method for deep learning-based biomedical image segmentation. Nat Methods 2021;18:203-211.
+https://doi.org/10.1038/s41592-020-01008-z.
+[28] JJM van Griethuysen, A Fedorov, C Parmar, A Hosny, N Aucoin, V Narayan, et al. Computational
+radiomics system to decode the radiographic phenotype. Cancer Res 2017;77:e104-e107.
+https://doi.org/10.1158/0008-5472.Can-17-0339.
+[29] Z Jiang, B Wang, X Han, P Zhao, M Gao, Y Zhang, et al. Multimodality MRI-based radiomics
+approach to predict the posttreatment response of lung cancer brain metastases to gamma knife
+radiosurgery. Eur Radiol 2022;32:2266-2276. https://doi.org/10.1007/s00330-021-08368-w.
+[30] W Wu, Z Zhou, S Wu and Y Zhang. Automatic liver segmentation on volumetric CT images using
+
+
+14
+supervoxel-based graph cuts. Comput Math Methods Med 2016;2016:9093721.
+https://doi.org/10.1155/2016/9093721.
+[31] S Cepeda, LT Luppino, A Pérez-Núñez, O Solheim, S García-García, M Velasco-Casares, et al.
+Predicting regions of local recurrence in glioblastomas using voxel-based radiomic features of
+multiparametric postoperative MRI. Cancers (Basel) 2023;15:1894.
+https://doi.org/10.3390/cancers15061894.
+[32] JL Yan, C Li, A van der Hoorn, NR Boonzaier, T Matys and SJ Price. A neural network approach
+to identify the peritumoral invasive areas in glioblastoma patients by using MR radiomics. Sci Rep
+2020;10:9748. https://doi.org/10.1038/s41598-020-66691-6.
+[33] LS Hu, S Ning, JM Eschbacher, N Gaw, AC Dueck, KA Smith, et al. Multi-parametric MRI and
+texture analysis to visualize spatial histologic heterogeneity and tumor extent in glioblastoma. PLoS One
+2015;10:e0141506. https://doi.org/10.1371/journal.pone.0141506.
+[34] M Anwar, AM Molinaro, O Morin, SM Chang, DA Haas-Kogan, SJ Nelson, et al. Identifying voxels
+at risk for progression in glioblastoma based on dosimetry, physiologic and metabolic MRI. Radiat Res
+2017;188:303-313. https://doi.org/10.1667/rr14662.1.
+[35] Y Lao, D Ruan, A Vassantachart, Z Fan, JC Ye, EL Chang, et al. Voxelwise prediction of recurrent
+high-grade glioma via proximity estimation-coupled multidimensional support vector machine. Int J
+Radiat Oncol Biol Phys 2022;112:1279-1287. https://doi.org/10.1016/j.ijrobp.2021.12.153.
+[36] S Bae, YS Choi, SS Ahn, JH Chang, SG Kang, EH Kim, et al. Radiomic MRI phenotyping of
+glioblastoma: improving survival prediction. Radiology 2018;289:797-806.
+https://doi.org/10.1148/radiol.2018180200.
+[37] P Kickingereder, U Neuberger, D Bonekamp, PL Piechotta, M Götz, A Wick, et al. Radiomic
+subtyping improves disease stratification beyond key molecular, clinical, and standard imaging
+characteristics in patients with glioblastoma. Neuro Oncol 2018;20:848-857.
+https://doi.org/10.1093/neuonc/nox188.
+[38] Q Sun, Y Chen, C Liang, Y Zhao, X Lv, Y Zou, et al. Biologic pathways underlying prognostic
+radiomics phenotypes from paired MRI and RNA sequencing in glioblastoma. Radiology 2021;301:654
+663. https://doi.org/10.1148/radiol.2021203281.
+[39] X Pei, P Wang, JL Ren, XP Yin, LY Ma, Y Wang, et al. Comparison of different machine models
+based on contrast-enhanced computed tomography radiomic features to differentiate high from low grade
+clear cell renal cell carcinomas. Front Oncol 2021;11:659969. https://doi.org/10.3389/fonc.2021.659969.
+[40] P Prasanna, J Patel, S Partovi, A Madabhushi and P Tiwari. Radiomic features from the peritumoral
+brain parenchyma on treatment-naïve multi-parametric MR imaging predict long versus short-term
+survival in glioblastoma multiforme: Preliminary findings. Eur Radiol 2017;27:4188-4197.
+https://doi.org/10.1007/s00330-016-4637-3.
+[41] H Yuan, K Yu, F Xie, M Liu and S Sun. Automated machine learning with interpretation: A
+systematic review of methodologies and applications in healthcare. Med. Adv. 2024;2:205-237.
+https://doi.org/10.1002/med4.75.
+[42] R Singh, EJ Lehrer, M Wang, HK Perlow, NG Zaorsky, DM Trifiletti, et al. Dose escalated radiation
+therapy for glioblastoma multiforme: An international systematic review and meta-analysis of 22
+prospective trials. Int J Radiat Oncol Biol Phys 2021;111:371-384.
+https://doi.org/10.1016/j.ijrobp.2021.05.001.
+[43] M Le, H Delingette, J Kalpathy-Cramer, ER Gerstner, T Batchelor, J Unkelbach, et al. Personalized
+radiotherapy planning based on a computational tumor growth model. IEEE Trans Med Imaging
+
+
+15
+2017;36:815-825. https://doi.org/10.1109/tmi.2016.2626443.
+Figure Captions
+Fig. 1. Overall framework and clinical deployment strategy of the study. A. Study
+workflow: (a) Preparation of postoperative fluid attenuated inversion recovery (FLAIR)
+images: Postoperative FLAIR images from four centers were divided into train,
+validation, and independent test sets. Following preprocessing, peri-cavitary
+hyperintense regions on FLAIR images were delineated. (b) Development of
+DeepGBM-Recure: The system comprises an automated segmentation model based on
+nnU-Net to delineate peri-cavitary hyperintense regions, a patient-level model using
+Random Forest classifiers with the entire lesion as the analytical unit for individualized
+recurrence risk stratification, and a voxel-level model employing supervoxels as the
+analytical unit for spatial localization of high-risk recurrence subregions. (c) Validation
+of DeepGBM-Recure: Model performance and clinical utility were evaluated using
+receiver operating characteristic (ROC) curves, calibration curves, and decision curve
+analysis, with heatmaps visualizing high-risk recurrence zones. B. Clinical Deployment
+and Inference: Illustration of the real-time clinical implementation pipeline,
+demonstrating seamless integration from magnetic resonance imaging (MRI) input to
+risk-stratified therapeutic guidance.
+Fig. 2. Predictive performance of patient-level model and voxel-level model. ROC
+curves of random forest classifier in three study sets at patient-level (A) and voxel-level
+model(B). Calibration curve (C) and decision curve (D) of patient-level model in test
+set.
+Fig. 3. Visualization of voxel-level model of representative cases in test set. For each
+patient (left column: patient ID), three imaging panels are displayed from left to right:
+postoperative FLAIR images prior to tumor recurrence, predicted recurrence
+probability map (Red regions indicate high-risk areas for recurrence) and contrast
+enhanced T1-weighted imaging (CE-T1WI) at tumor recurrence. Four patients on the
+left side presented with early recurrence, with progression free survival (PFS) of 5-6
+months, while other four patients on the right side exhibited non-early recurrence, with
+PFS of 8-12 months.
+Fig. 4. Two cases predicted by DeepGBM-Recure system and the hypothetical clinical
+deployment. IDH, isocitrate dehydrogenase; MGMT, O6‐methylguanine‐DNA
+methyltransferase; PFS, progression free survival; OS, overall survival.
+
+
+16
+Table 1. Characteristics of all Patients in three study sets.
+Characteristics
+Overall,
+N = 184
+Train set,
+N = 116
+Validation set,
+N = 29
+Test set,
+N = 39
+Gender
+Male 118 (64%) 84 (72%) 15 (52%) 19 (49%)
+Female 66 (36%) 32 (28%) 14 (48%) 20 (51%)
+Age [Mean (SD)] 55 (12) 56 (11) 52 (14) 55 (14)
+KPS
+≥80 125 (68%) 85 (73%) 20 (69%) 20 (51%)
+<80 42 (23%) 31 (27%) 9 (31%) 2 (5.1%)
+Unknown 17 (9.2%) 0 (0%) 0 (0%) 17 (44%)
+PFS/month
+[Median (IQR)]
+10 (6, 16) 11 (6, 16) 15 (8, 19) 8 (6, 10)
+IDH
+Mutated 12 (6.5%) 8 (6.9%) 0 (0%) 4 (10%)
+Wildtype 148 (80%) 93 (80%) 25 (86%) 30 (77%)
+Unknown 24 (13%) 15 (13%) 4 (14%) 5 (13%)
+MGMT
+Methylation
+Positive 47 (26%) 30 (26%) 8 (28%) 9 (23%)
+Negative 54 (29%) 29 (25%) 7 (24%) 18 (46%)
+Unknown 83 (45%) 57 (49%) 14 (48%) 12 (31%)
+EOR
+NTR/STR 44 (24%) 28 (24%) 11 (38%) 5 (13%)
+GTR 140 (76%) 88 (76%) 18 (62%) 34 (87%)
+Supervoxels
+Recurrence 895622 (18%) 645598 (18%) 162121 (19%) 87903 (13%)
+Non-Recurrence 4100339 (82%) 2818717 (82%) 703958 (81%) 577664 (87%)
+Abbreviations: SD, Standard Deviation; KPS, Karnofsky; PFS, progression free survival; IQR,
+interquartile range; IDH, isocitrate dehydrogenase; MGMT, O6‐methylguanine‐DNA
+methyltransferase; EOR, extent of resection; NTR, Near total resection; STR, Subtotal resection;
+GTR, Gross total resection.
+
+
+17
+Table 2. Predictive performance of patient-level and voxel-level models in test set.
+Abbreviations: RF, random forest; AUC, area under the receiver operating characteristic curve.
+RF-based Classifier AUC Accuracy Precision Recall F1-score
+Patient-level Model 0.76 0.69 0.63 0.95 0.76
+Voxel-level Model 0.80 0.79 0.78 0.80 0.79
+
+
+18
+
+
+19
+
+
+20
+
+
+21
+
+
+22
+
+
+23
+
+
+24
+
+
+25

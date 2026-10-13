@@ -1,15 +1,15 @@
 {
 	"translatorID": "70dc2609-d6fd-415a-822c-a2c04293cb5a",
+	"translatorType": 4,
 	"label": "UpToDate References",
 	"creator": "Sebastian Karcher",
 	"target": "^https?://www\\.uptodate\\.com/contents/",
 	"minVersion": "3.0",
-	"maxVersion": "",
+	"maxVersion": null,
 	"priority": 100,
 	"inRepository": true,
-	"translatorType": 4,
 	"browserSupport": "gcv",
-	"lastUpdated": "2019-06-11 13:44:39"
+	"lastUpdated": "2026-10-07 16:45:00"
 }
 
 /*
@@ -174,11 +174,6 @@ var testCases = [
 				"publicationTitle": "CA: a cancer journal for clinicians",
 				"volume": "61",
 				"attachments": [
-					{
-						"title": "PubMed entry",
-						"mimeType": "text/html",
-						"snapshot": false
-					},
 					{
 						"title": "UpToDate Record",
 						"mimeType": "text/html"
